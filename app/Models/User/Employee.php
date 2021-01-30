@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
 
 class Employee extends Authenticatable
@@ -59,4 +60,21 @@ class Employee extends Authenticatable
         'attempt_count',
         'attempt_date',
     ];
+
+    protected $appends = ['is_admin'];
+
+    public function getIsAdminAttribute(): bool
+    {
+        $permission = static::query()->select(DB::raw("dbmaster.GetPermitByUser(emp_id, ai.acc_id) as user_permit"),
+            DB::raw("dbmaster.getpermitByUserJob(emp_id, ai.acc_id) as position_permit"),
+            'ai.acc_level')
+            ->leftJoin('dbmaster.acc_info as ai', 'ai.acc_id', '=', 7)
+            ->where('emp_id', '=', $this->emp_id)->first();
+        if (!empty($permission)) {
+            $permitted = $permission->acc_level == "2" || $permission->user_permit == "1"
+                || $permission->position_permit == "1";
+        }
+
+        return $permitted ?? false;
+    }
 }
