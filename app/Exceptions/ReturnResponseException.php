@@ -29,7 +29,7 @@ class ReturnResponseException extends Exception
             $response['data'] = $this->data;
         }
 
-        return response($response, $this->getCode());
+        return response()->json($response, $this->getCode());
     }
 
     public function getData()

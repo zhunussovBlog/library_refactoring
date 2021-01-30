@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -36,5 +37,30 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request, Throwable $e)
+    {
+        if ($e instanceof QueryException) {
+            $e = new QueryResponseException($e->getSql(), $e->getBindings(), $e->getPrevious());
+        }
+
+        if ($e instanceof QueryResponseException) {
+            return $e->render($request);
+        }
+
+        if ($e instanceof ReturnResponseException) {
+            return $e->render($request);
+        }
+
+        if ($e instanceof \Exception) {
+            $e = new ReturnOtherException($e->getMessage(), $e->getCode(), $e->getPrevious());
+        }
+
+        if ($e instanceof ReturnOtherException) {
+            return $e->render($request);
+        }
+
+        return parent::render($request, $e);
     }
 }

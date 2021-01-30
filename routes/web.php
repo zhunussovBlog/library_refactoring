@@ -14,5 +14,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    dd(\App\Models\Employee::paginate(10));
+    echo 'Yeah!';
 });

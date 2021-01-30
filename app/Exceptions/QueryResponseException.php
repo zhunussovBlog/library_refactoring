@@ -28,6 +28,6 @@ class QueryResponseException extends QueryException
             ];
         }
 
-        return response($response, 500);
+        return response()->json($response, 500);
     }
 }

@@ -23,6 +23,6 @@ class ReturnOtherException extends Exception
             $response['error'] = ['message' => __('general.error')];
         }
 
-        return response($response, 500);
+        return response()->json($response, 500);
     }
 }

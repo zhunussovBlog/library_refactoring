@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\User;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
 
-class Employee extends Authenticatable
+class Employee extends Authenticatable implements UserCidAttribute
 {
     use HasApiTokens, HasFactory;
 
@@ -61,7 +61,12 @@ class Employee extends Authenticatable
         'attempt_date',
     ];
 
-    protected $appends = ['is_admin'];
+    protected $appends = ['is_admin', 'user_cid'];
+
+    public function getUserCidAttribute()
+    {
+        return DB::table('lib_user_cards as uc')->select('uc.user_cid')->where('uc.emp_id', $this->emp_id)->first()->user_cid;
+    }
 
     public function getIsAdminAttribute(): bool
     {

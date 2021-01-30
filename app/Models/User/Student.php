@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\User;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
 
-class Student extends Authenticatable
+class Student extends Authenticatable implements UserCidAttribute
 {
     use HasApiTokens, HasFactory;
 
@@ -59,4 +60,11 @@ class Student extends Authenticatable
         'entrance_year',
         'study_count'
     ];
+
+    protected $appends = ['user_cid'];
+
+    public function getUserCidAttribute()
+    {
+        return DB::table('lib_user_cards as uc')->select('uc.user_cid')->where('uc.stud_id', $this->stud_id)->first()->user_cid;
+    }
 }
