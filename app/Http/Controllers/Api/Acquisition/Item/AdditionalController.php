@@ -13,9 +13,4 @@ class AdditionalController extends Controller
         $data = Item::createdData();
         return response()->json(['res' => $data]);
     }
-
-    public function searchFields(): JsonResponse
-    {
-        return response()->json(['res' => Item::SEARCH_FIELDS]);
-    }
 }

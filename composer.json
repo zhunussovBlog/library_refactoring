@@ -8,11 +8,11 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "^8.0|^7.2",
         "ext-json": "*",
         "ext-oci8": "*",
         "ext-pdo": "*",
-        "barryvdh/laravel-dompdf": "^0.8.7",
+        "barryvdh/laravel-dompdf": "^0.9.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
@@ -21,7 +21,10 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.2",
         "orchestra/parser": "^6.0",
-        "yajra/laravel-oci8": "^8.3"
+        "phpoffice/phpspreadsheet": "^1.16.0",
+        "yajra/laravel-oci8": "^8.3",
+        "ext-simplexml": "*",
+        "maatwebsite/excel": "^3.1"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

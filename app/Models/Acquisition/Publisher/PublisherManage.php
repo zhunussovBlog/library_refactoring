@@ -4,6 +4,7 @@
 namespace App\Models\Acquisition\Publisher;
 
 
+use App\Common\Helpers\Query\ManageBuilder;
 use App\Exceptions\ReturnResponseException;
 use Illuminate\Support\Facades\DB;
 
@@ -44,7 +45,8 @@ trait PublisherManage
         DB::beginTransaction();
         $id = $this->publisher_id;
 
-        if (!static::updateBuilder(static::class, $this->getKeyName(), $id, $attributes, $this->fillable)) {
+        if (!ManageBuilder::updateBuilder(static::class, $this->getKeyName(), $id, $attributes, $this->fillable)) {
+            DB::rollBack();
             return false;
         }
 
@@ -94,7 +96,7 @@ trait PublisherManage
             throw new ReturnResponseException(__('general.contacts_delete_failed', ['name' => 'publisher']), 409);
         }
 
-        $result = static::deleteBuilder(static::class, $this->getKeyName(), $this->publisher_id);
+        $result = ManageBuilder::deleteBuilder(static::class, $this->getKeyName(), $this->publisher_id);
         DB::commit();
 
         return $result;

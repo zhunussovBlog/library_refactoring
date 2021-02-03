@@ -11,12 +11,10 @@ class Student extends Authenticatable implements UserCidAttribute
 {
     use HasApiTokens, HasFactory;
 
+    public $incrementing = false;
     protected $table = 'dbmaster.students';
-
     protected $primaryKey = 'stud_id';
     protected $keyType = 'string';
-    public $incrementing = false;
-
     protected $fillable = [
         'stud_id',
         'name',

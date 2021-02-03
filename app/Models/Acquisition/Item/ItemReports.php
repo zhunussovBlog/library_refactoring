@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 trait ItemReports
 {
-    public static function searchInventoryBooks($lang, $from, $count): Builder
+    public static function searchInventoryBooks($from, $count): Builder
     {
         $query = static::query()->select(DB::raw("TO_CHAR(i.receive_date, 'YYYY-MM-DD') as create_date"),
             'i.hesab_id as batch_id', 'bii.item_no',
@@ -30,17 +30,17 @@ trait ItemReports
             ->where(DB::raw("rownum"), '<=', $count);
     }
 
-    public static function bookHistoryQuery($lang): Builder
+    public static function bookHistoryQuery(): Builder
     {
         $query = static::query()->select('i.barcode', 'i.inv_id',
             DB::raw("(case when i.book_id is not null
-                                    then (select mt.title_{$lang} from lib_material_types mt,
+                                    then (select mt.title_" . app()->getLocale() . " from lib_material_types mt,
                                             lib_books b where b.type = mt.key and b.book_id = i.book_id)
                                         when i.disc_id is not null
-                                    then (select mt.title_{$lang} from lib_material_types mt,
+                                    then (select mt.title_" . app()->getLocale() . " from lib_material_types mt,
                                             lib_discs d where d.type = mt.key and d.disc_id = i.disc_id)
                                         when i.j_issue_id is not null
-                                    then (select mt.title_{$lang} from lib_material_types mt,
+                                    then (select mt.title_" . app()->getLocale() . " from lib_material_types mt,
                                             lib_journals j, lib_journal_issues ji where j.type = mt.key
                                             and j.journal_id = ji.journal_id and ji.j_issue_id = i.j_issue_id) end) as type"),
             DB::raw("(case when i.book_id is not null

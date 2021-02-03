@@ -4,6 +4,7 @@
 namespace App\Models\Acquisition\Supplier;
 
 
+use App\Common\Helpers\Query\ManageBuilder;
 use App\Exceptions\ReturnResponseException;
 use Illuminate\Support\Facades\DB;
 
@@ -44,7 +45,7 @@ trait SupplierManage
         DB::beginTransaction();
         $id = $this->supplier_id;
 
-        if (!static::updateBuilder(static::class, $this->getKeyName(), $id, $attributes, $this->fillable)) {
+        if (!ManageBuilder::updateBuilder(static::class, $this->getKeyName(), $id, $attributes, $this->fillable)) {
             return false;
         }
 
@@ -94,7 +95,7 @@ trait SupplierManage
             throw new ReturnResponseException(__('general.contacts_delete_failed', ['name' => 'supplier']), 409);
         }
 
-        $result = static::deleteBuilder(static::class, $this->getKeyName(), $this->supplier_id);
+        $result = ManageBuilder::deleteBuilder(static::class, $this->getKeyName(), $this->supplier_id);
         DB::commit();
 
         return $result;

@@ -11,11 +11,9 @@ class Employee extends Authenticatable implements UserCidAttribute
 {
     use HasApiTokens, HasFactory;
 
-    protected $table = 'dbmaster.employee';
-
-    protected $primaryKey = 'emp_id';
     public $incrementing = false;
-
+    protected $table = 'dbmaster.employee';
+    protected $primaryKey = 'emp_id';
     protected $fillable = [
         'emp_id',
         'name',

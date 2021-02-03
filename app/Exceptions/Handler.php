@@ -53,14 +53,6 @@ class Handler extends ExceptionHandler
             return $e->render($request);
         }
 
-        if ($e instanceof \Exception) {
-            $e = new ReturnOtherException($e->getMessage(), $e->getCode(), $e->getPrevious());
-        }
-
-        if ($e instanceof ReturnOtherException) {
-            return $e->render($request);
-        }
-
         return parent::render($request, $e);
     }
 }

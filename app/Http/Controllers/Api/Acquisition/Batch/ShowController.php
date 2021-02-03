@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers\Api\Acquisition\Batch;
 
-use App\Helpers\ControllerHelpers\GetData;
+use App\Common\Fields\Acquisition\BatchFields;
+use App\Common\Helpers\Show\Index;
+use App\Common\Helpers\Show\LastCreated;
+use App\Common\Helpers\Show\SearchFields;
+use App\Common\Helpers\Show\Show;
+use App\Common\Helpers\Show\SortFields;
 use App\Http\Controllers\Controller;
 use App\Models\Acquisition\Batch\Batch;
 use Illuminate\Http\JsonResponse;
@@ -12,32 +17,39 @@ class ShowController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $response = GetData::index($request, Batch::defaultQuery(), Batch::LAST_QUERY_NAME, Batch::SORT_FIELDS);
-
-        return response()->json($response);
+        $data = Index::index($request, new Batch());
+        return response()->json([
+            'res' => $data
+        ]);
     }
 
     public function show(int $id): JsonResponse
     {
-        $response = GetData::show(Batch::defaultQuery(), $id);
-        return response()->json($response);
-    }
-
-    public function last(Request $request): JsonResponse
-    {
-        $response = GetData::last($request, Batch::LAST_QUERY_NAME, Batch::SORT_FIELDS);
-        return response()->json($response);
+        $data = Show::show(new Batch(), $id);
+        return response()->json([
+            'res' => $data
+        ]);
     }
 
     public function lastCreated(Request $request): JsonResponse
     {
-        $response = GetData::created($request, Batch::class,
-            Batch::CREATED_ID_NAME, Batch::LAST_QUERY_NAME, Batch::SORT_FIELDS);
-        return response()->json($response);
+        $data = LastCreated::lastCreated(new Batch());
+        return response()->json([
+            'res' => $data
+        ]);
     }
 
-    public function sortByFields(): JsonResponse
+    public function searchFields(): JsonResponse
     {
-        return response()->json(GetData::sortFields(Batch::SORT_FIELDS));
+        return response()->json([
+            'res' => SearchFields::searchFields(new BatchFields())
+        ]);
+    }
+
+    public function sortFields(): JsonResponse
+    {
+        return response()->json([
+            'res' => SortFields::sortFields(new BatchFields())
+        ]);
     }
 }

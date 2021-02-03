@@ -4,15 +4,17 @@
 namespace App\Models\Acquisition\Batch;
 
 
+use App\Common\Helpers\Query\ManageBuilder;
+
 trait BatchManage
 {
     public function update(array $attributes = [], array $options = []): bool
     {
-        return static::updateBuilder(self::class, $this->getKeyName(), $this->hesab_id, $attributes, $this->fillable);
+        return ManageBuilder::updateBuilder(self::class, $this->getKeyName(), $this->hesab_id, $attributes, $this->fillable);
     }
 
     public function delete(): ?bool
     {
-        return static::deleteBuilder(self::class, $this->getKeyName(), $this->hesab_id);
+        return ManageBuilder::deleteBuilder(self::class, $this->getKeyName(), $this->hesab_id);
     }
 }

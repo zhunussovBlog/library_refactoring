@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Api\Acquisition\Batch;
 
-use App\Helpers\ControllerHelpers\ManageData;
+use App\Common\Helpers\Manage\Create;
+use App\Common\Helpers\Manage\Delete;
+use App\Common\Helpers\Manage\Update;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Acquisition\Batch\CreateRequest;
 use App\Http\Requests\Acquisition\Batch\UpdateRequest;
@@ -14,21 +16,10 @@ class ManageController extends Controller
 {
     public function create(CreateRequest $request): JsonResponse
     {
-        $response = ManageData::create(Batch::class, self::createInputs($request->validated(), $request->user()));
-        return response()->json($response, 201);
-    }
-
-    public function update(UpdateRequest $request): JsonResponse
-    {
-        $validated = $request->validated();
-        $response = ManageData::update(Batch::class, $validated['batch_id'], self::updateInputs($validated, $request->user()));
-        return response()->json($response);
-    }
-
-    public function delete(int $id): JsonResponse
-    {
-        $response = ManageData::delete(Batch::class, $id);
-        return response()->json($response);
+        $response = Create::create(new Batch(), self::createInputs($request->validated(), $request->user()));
+        return response()->json([
+            'res' => $response
+        ]);
     }
 
     static function createInputs(array $validated, $user): array
@@ -48,6 +39,15 @@ class ManageController extends Controller
         ];
     }
 
+    public function update(UpdateRequest $request): JsonResponse
+    {
+        $validated = $request->validated();
+        $response = Update::update(new Batch(), $validated['batch_id'], self::updateInputs($validated, $request->user()));
+        return response()->json([
+            'res' => $response
+        ]);
+    }
+
     static function updateInputs(array $validated, $user): array
     {
         return [
@@ -62,5 +62,13 @@ class ManageController extends Controller
             'cost' => $validated['cost'],
             'edited_by' => $user->user_cid
         ];
+    }
+
+    public function delete(int $id): JsonResponse
+    {
+        $response = Delete::delete(new Batch(), $id);
+        return response()->json([
+            'res' => $response
+        ]);
     }
 }

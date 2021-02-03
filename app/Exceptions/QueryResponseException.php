@@ -2,7 +2,6 @@
 
 namespace App\Exceptions;
 
-use Exception;
 use Illuminate\Database\QueryException;
 
 class QueryResponseException extends QueryException

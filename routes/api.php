@@ -30,9 +30,9 @@ Route::middleware(['auth:api-student,api-employee'])->group(function () {
         Route::group(['prefix' => 'batch'], static function () {
             Route::get('index', 'Api\Acquisition\Batch\ShowController@index');
             Route::get('show/{id}', 'Api\Acquisition\Batch\ShowController@show');
-            Route::get('last', 'Api\Acquisition\Batch\ShowController@last');
             Route::get('last-created', 'Api\Acquisition\Batch\ShowController@lastCreated');
-            Route::get('sort-fields', 'Api\Acquisition\Batch\ShowController@sortByFields');
+            Route::get('sort-fields', 'Api\Acquisition\Batch\ShowController@sortFields');
+            Route::get('search-fields', 'Api\Acquisition\Batch\ShowController@searchFields');
 
             Route::post('create', 'Api\Acquisition\Batch\ManageController@create');
             Route::put('update', 'Api\Acquisition\Batch\ManageController@update');
@@ -49,9 +49,9 @@ Route::middleware(['auth:api-student,api-employee'])->group(function () {
         Route::group(['prefix' => 'supplier'], static function () {
             Route::get('index', 'Api\Acquisition\Supplier\ShowController@index');
             Route::get('show/{id}', 'Api\Acquisition\Supplier\ShowController@show');
-            Route::get('last', 'Api\Acquisition\Supplier\ShowController@last');
             Route::get('last-created', 'Api\Acquisition\Supplier\ShowController@lastCreated');
-            Route::get('sort-fields', 'Api\Acquisition\Supplier\ShowController@sortByFields');
+            Route::get('sort-fields', 'Api\Acquisition\Supplier\ShowController@sortFields');
+            Route::get('search-fields', 'Api\Acquisition\Supplier\ShowController@searchFields');
 
             Route::post('create', 'Api\Acquisition\Supplier\ManageController@create');
             Route::put('update', 'Api\Acquisition\Supplier\ManageController@update');
@@ -70,7 +70,8 @@ Route::middleware(['auth:api-student,api-employee'])->group(function () {
             Route::get('show/{id}', 'Api\Acquisition\Publisher\ShowController@show');
             Route::get('last', 'Api\Acquisition\Publisher\ShowController@last');
             Route::get('last-created', 'Api\Acquisition\Publisher\ShowController@lastCreated');
-            Route::get('sort-fields', 'Api\Acquisition\Publisher\ShowController@sortByFields');
+            Route::get('sort-fields', 'Api\Acquisition\Publisher\ShowController@sortFields');
+            Route::get('search-fields', 'Api\Acquisition\Publisher\ShowController@searchFields');
 
             Route::post('create', 'Api\Acquisition\Publisher\ManageController@create');
             Route::put('update', 'Api\Acquisition\Publisher\ManageController@update');
@@ -88,7 +89,8 @@ Route::middleware(['auth:api-student,api-employee'])->group(function () {
             Route::get('show/{id}', 'Api\Acquisition\Item\ShowController@show');
             Route::get('last', 'Api\Acquisition\Item\ShowController@last');
             Route::get('last-created', 'Api\Acquisition\Item\ShowController@lastCreated');
-            Route::get('sort-fields', 'Api\Acquisition\Item\ShowController@sortByFields');
+            Route::get('sort-fields', 'Api\Acquisition\Item\ShowController@sortFields');
+            Route::get('search-fields', 'Api\Acquisition\Item\ShowController@searchFields');
 
             Route::post('create', 'Api\Acquisition\Item\ManageController@create');
             Route::put('update', 'Api\Acquisition\Item\ManageController@update');
@@ -97,9 +99,19 @@ Route::middleware(['auth:api-student,api-employee'])->group(function () {
             Route::post('search', 'Api\Acquisition\Item\SearchController@search');
 
             Route::get('create-data', 'Api\Acquisition\Item\AdditionalController@createData');
-            Route::get('search-fields', 'Api\Acquisition\Item\AdditionalController@searchFields');
         });
     });
 });
 
 Route::get('locale/{locale}', 'Api\LocaleController');
+
+// Media routes
+Route::group(['prefix' => 'media'], function () {
+    Route::get('search/autocomplete', 'Api\Media\AutocompleteController@autocomplete');
+    Route::post('search/{searchType}', 'Api\Media\SearchController@search')->where('searchType', 'simple|advanced');
+
+    Route::get('show', 'Api\Media\ShowController@show');
+    Route::post('save-excel', 'Api\Media\ExportController@export');
+    Route::get('search-fields', 'Api\Media\ShowController@searchFields');
+    Route::get('sort-fields', 'Api\Media\ShowController@sortFields');
+});

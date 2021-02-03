@@ -4,7 +4,7 @@
 namespace App\Models\Acquisition\Item;
 
 
-use App\Helpers\DatabaseHelpers\OracleProcedure;
+use App\Common\Helpers\Query\OracleProcedure;
 use Carbon\Carbon;
 use PDO;
 

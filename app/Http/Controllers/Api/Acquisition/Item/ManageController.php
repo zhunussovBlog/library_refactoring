@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Api\Acquisition\Item;
 
-use App\Helpers\ControllerHelpers\ManageData;
+use App\Common\Helpers\Manage\Create;
+use App\Common\Helpers\Manage\Delete;
+use App\Common\Helpers\Manage\Update;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Acquisition\Item\CreateRequest;
 use App\Http\Requests\Acquisition\Item\UpdateRequest;
@@ -13,21 +15,10 @@ class ManageController extends Controller
 {
     public function create(CreateRequest $request): JsonResponse
     {
-        $response = ManageData::create(Item::class, self::createInputs($request->validated(), $request->user()));
-        return response()->json($response, 201);
-    }
-
-    public function update(UpdateRequest $request): JsonResponse
-    {
-        $validated = $request->validated();
-        $response = ManageData::update(Item::class, $validated['inv_id'], self::updateInputs($validated, $request->user()));
-        return response()->json($response);
-    }
-
-    public function delete(int $id): JsonResponse
-    {
-        $response = ManageData::delete(Item::class, $id);
-        return response()->json($response);
+        $response = Create::create(new Item(), self::createInputs($request->validated(), $request->user()));
+        return response()->json([
+            'res' => $response
+        ]);
     }
 
     static function createInputs(array $validated, $user): array
@@ -49,6 +40,15 @@ class ManageController extends Controller
         ];
     }
 
+    public function update(UpdateRequest $request): JsonResponse
+    {
+        $validated = $request->validated();
+        $response = Update::update(new Item(), $validated['inv_id'], self::updateInputs($validated, $request->user()));
+        return response()->json([
+            'res' => $response
+        ]);
+    }
+
     static function updateInputs(array $validated, $user): array
     {
         return [
@@ -57,5 +57,13 @@ class ManageController extends Controller
             'location' => $validated['location'],
             'user_cid' => $user->user_cid
         ];
+    }
+
+    public function delete(int $id): JsonResponse
+    {
+        $response = Delete::delete(new Item(), $id);
+        return response()->json([
+            'res' => $response
+        ]);
     }
 }

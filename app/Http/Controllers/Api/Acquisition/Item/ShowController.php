@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers\Api\Acquisition\Item;
 
-use App\Helpers\ControllerHelpers\GetData;
+use App\Common\Fields\Acquisition\ItemFields;
+use App\Common\Helpers\Show\Index;
+use App\Common\Helpers\Show\LastCreated;
+use App\Common\Helpers\Show\SearchFields;
+use App\Common\Helpers\Show\Show;
+use App\Common\Helpers\Show\SortFields;
 use App\Http\Controllers\Controller;
 use App\Models\Acquisition\Item\Item;
 use Illuminate\Http\JsonResponse;
@@ -12,31 +17,39 @@ class ShowController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $response = GetData::index($request, Item::defaultQuery(), Item::LAST_QUERY_NAME, Item::SORT_FIELDS);
-        return response()->json($response);
+        $data = Index::index($request, new Item());
+        return response()->json([
+            'res' => $data
+        ]);
     }
 
     public function show(int $id): JsonResponse
     {
-        $response = GetData::show(Item::defaultQuery(), $id);
-        return response()->json($response);
-    }
-
-    public function last(Request $request): JsonResponse
-    {
-        $response = GetData::last($request, Item::LAST_QUERY_NAME, Item::SORT_FIELDS);
-        return response()->json($response);
+        $data = Show::show(new Item(), $id);
+        return response()->json([
+            'res' => $data
+        ]);
     }
 
     public function lastCreated(Request $request): JsonResponse
     {
-        $response = GetData::created($request, Item::class, Item::CREATED_ID_NAME,
-            Item::LAST_QUERY_NAME, Item::SORT_FIELDS);
-        return response()->json($response);
+        $data = LastCreated::lastCreated(new Item());
+        return response()->json([
+            'res' => $data
+        ]);
     }
 
-    public function sortByFields(): JsonResponse
+    public function searchFields(): JsonResponse
     {
-        return response()->json(GetData::sortFields(Item::SORT_FIELDS));
+        return response()->json([
+            'res' => SearchFields::searchFields(new ItemFields())
+        ]);
+    }
+
+    public function sortFields(): JsonResponse
+    {
+        return response()->json([
+            'res' => SortFields::sortFields(new ItemFields())
+        ]);
     }
 }
