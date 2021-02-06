@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use JetBrains\PhpStorm\ArrayShape;
 
 class UserLoginRequest extends FormRequest
 {
@@ -21,7 +22,7 @@ class UserLoginRequest extends FormRequest
      *
      * @return array
      */
-    public function rules(): array
+    #[ArrayShape(['username' => "string", 'password' => "string"])] public function rules(): array
     {
         return [
             'username' => 'required|string',

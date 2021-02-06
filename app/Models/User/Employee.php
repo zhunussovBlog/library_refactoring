@@ -15,10 +15,7 @@ class Employee extends Authenticatable implements UserCidAttribute
     protected $table = 'dbmaster.employee';
     protected $primaryKey = 'emp_id';
     protected $fillable = [
-        'emp_id',
         'name',
-        'sname',
-        'hname',
         'degree_id',
         'ip',
         'status',
@@ -40,6 +37,9 @@ class Employee extends Authenticatable implements UserCidAttribute
     ];
 
     protected $hidden = [
+        'emp_id',
+        'sname',
+        'hname',
         'degree_id',
         'ip',
         'passw',
@@ -59,7 +59,7 @@ class Employee extends Authenticatable implements UserCidAttribute
         'attempt_date',
     ];
 
-    protected $appends = ['is_admin', 'user_cid'];
+    protected $appends = ['is_admin', 'user_cid', 'surname', 'id', 'username'];
 
     public function getUserCidAttribute()
     {
@@ -79,5 +79,20 @@ class Employee extends Authenticatable implements UserCidAttribute
         }
 
         return $permitted ?? false;
+    }
+
+    public function getIdAttribute()
+    {
+        return $this->emp_id;
+    }
+
+    public function getSurnameAttribute()
+    {
+        return $this->sname;
+    }
+
+    public function getUsernameAttribute()
+    {
+        return $this->hname;
     }
 }

@@ -3,13 +3,15 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Http\JsonResponse;
+use JetBrains\PhpStorm\Pure;
 use Throwable;
 
 class ReturnResponseException extends Exception
 {
     private $data;
 
-    public function __construct($message = "", $code = 0, Throwable $previous = null, $data = [])
+    #[Pure] public function __construct($message = "", $code = 0, Throwable $previous = null, $data = [])
     {
         $this->data = $data;
         parent::__construct($message, $code, $previous);
@@ -19,7 +21,7 @@ class ReturnResponseException extends Exception
     {
     }
 
-    public function render($request)
+    public function render($request): JsonResponse
     {
         $response['error'] = [
             'message' => $this->getMessage(),

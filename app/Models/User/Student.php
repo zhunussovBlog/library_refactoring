@@ -16,7 +16,6 @@ class Student extends Authenticatable implements UserCidAttribute
     protected $primaryKey = 'stud_id';
     protected $keyType = 'string';
     protected $fillable = [
-        'stud_id',
         'name',
         'surname',
         'class',
@@ -41,6 +40,7 @@ class Student extends Authenticatable implements UserCidAttribute
     ];
 
     protected $hidden = [
+        'stud_id',
         'passw',
         'web_lan',
         'last_psw_set_date',
@@ -59,10 +59,20 @@ class Student extends Authenticatable implements UserCidAttribute
         'study_count'
     ];
 
-    protected $appends = ['user_cid'];
+    protected $appends = ['user_cid', 'username', 'id'];
 
     public function getUserCidAttribute()
     {
         return DB::table('lib_user_cards as uc')->select('uc.user_cid')->where('uc.stud_id', $this->stud_id)->first()->user_cid;
+    }
+
+    public function getUsernameAttribute()
+    {
+        return $this->stud_id;
+    }
+
+    public function getIdAttribute()
+    {
+        return $this->stud_id;
     }
 }

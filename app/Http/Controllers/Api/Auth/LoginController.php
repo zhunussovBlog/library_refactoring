@@ -7,7 +7,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserLoginRequest;
 use App\Models\User\Employee;
 use App\Models\User\Student;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use PDO;
 
@@ -39,9 +41,16 @@ class LoginController extends Controller
             ]);
         }
 
-        $token = $user->createToken('Auth Token')->accessToken;
+        Auth::login($user);
+
+        $user = Auth::user();
+
+        $token = $user->createToken('Auth Token');
+
         return response()->json(['res' => [
-            'access_token' => $token,
+            'access_token' => $token->accessToken,
+            'expires_in' => $token->token->expires_at->diffInSeconds(Carbon::now()),
+            'user' => $user,
         ]]);
     }
 }
