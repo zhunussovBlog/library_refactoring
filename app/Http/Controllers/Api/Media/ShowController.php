@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Media;
 
 use App\Common\Fields\Media\MediaFields;
 use App\Common\Helpers\Models\Media\GetModels;
+use App\Common\Helpers\Show\FilterFields;
 use App\Common\Helpers\Show\SearchFields;
 use App\Common\Helpers\Show\SortFields;
 use App\Common\Interfaces\Query\DefaultQueryInterface;
@@ -22,14 +23,13 @@ class ShowController extends Controller
     {
         $validated = $request->validate([
             'id' => 'required|integer',
-            'type' => 'required|string'
         ]);
 
         $data = self::findByType($validated, ...GetModels::getModels());
-        $fullInfo = self::getFullInfo($data->getKeyName(), $validated['id']);
+        $fullInfo = self::getFullInfo(explode('.', $data->getKeyName())[1], $validated['id']);
 
         return response()->json([
-            'res' => $data,
+            'res' => $data->toArray(),
             'xmlInfo' => $fullInfo
         ]);
     }
@@ -38,10 +38,7 @@ class ShowController extends Controller
     {
         $data = null;
         foreach ($queries as $query) {
-            $data = $query::defaultQuery()->where([
-                'type_key' => $validated['type'],
-                'id' => $validated['id']
-            ])->first();
+            $data = $query::defaultQuery()->find($validated['id']);
 
             if (!empty($data)) break;
         }
@@ -87,6 +84,13 @@ class ShowController extends Controller
     {
         return response()->json([
             'res' => SortFields::sortFields(new MediaFields())
+        ]);
+    }
+
+    public function filterFields(): JsonResponse
+    {
+        return response()->json([
+            'res' => FilterFields::filterFields(new MediaFields())
         ]);
     }
 }

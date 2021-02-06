@@ -10,6 +10,7 @@ use App\Http\Requests\Acquisition\Item\CreateRequest;
 use App\Http\Requests\Acquisition\Item\UpdateRequest;
 use App\Models\Acquisition\Item\Item;
 use Illuminate\Http\JsonResponse;
+use JetBrains\PhpStorm\ArrayShape;
 
 class ManageController extends Controller
 {
@@ -21,7 +22,7 @@ class ManageController extends Controller
         ]);
     }
 
-    static function createInputs(array $validated, $user): array
+    public static function createInputs(array $validated, $user): array
     {
         return [
             'title' => $validated['title'],
@@ -49,7 +50,8 @@ class ManageController extends Controller
         ]);
     }
 
-    static function updateInputs(array $validated, $user): array
+    #[ArrayShape(['cost' => "mixed", 'currency' => "mixed", 'location' => "mixed", 'user_cid' => "mixed"])]
+    public static function updateInputs(array $validated, $user): array
     {
         return [
             'cost' => $validated['cost'],

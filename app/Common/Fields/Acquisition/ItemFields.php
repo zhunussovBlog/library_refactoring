@@ -9,7 +9,7 @@ use App\Common\Interfaces\Fields\FieldInterface;
 class ItemFields extends FieldInterface
 {
     protected static array $sortFields = [['key' => 'barcode', 'title' => 'Barcode'],
-        ['key' => 'inv_id', 'title' => 'Inventory No'],
+        ['key' => 'id', 'title' => 'Inventory No'],
         ['key' => 'batch_id', 'title' => 'Batch No'],
         ['key' => 'author', 'title' => 'Author'],
         ['key' => 'title', 'title' => 'Title'],
@@ -18,11 +18,11 @@ class ItemFields extends FieldInterface
         ['key' => 'edited_by', 'title' => 'Edited By']];
 
     protected static array $searchFields = [
+        ['key' => 'id', 'title' => 'Inventory No', 'method' => SearchFieldConstants::EQUALS],
         ['key' => 'author', 'title' => 'Author', 'method' => SearchFieldConstants::LIKE],
         ['key' => 'title', 'title' => 'Title', 'method' => SearchFieldConstants::LIKE],
         ['key' => 'barcode', 'title' => 'Barcode', 'method' => SearchFieldConstants::EQUALS],
         ['key' => 'batch_id', 'title' => 'Batch No', 'method' => SearchFieldConstants::EQUALS],
-        ['key' => 'inv_id', 'title' => 'Inventory No', 'method' => SearchFieldConstants::EQUALS],
         ['key' => 'isbn', 'title' => 'ISBN', 'method' => SearchFieldConstants::EQUALS],
     ];
 

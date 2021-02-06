@@ -26,6 +26,7 @@ class SearchHelper
 
     public static function buildByField(EBuilder|Builder $builder, string $methodName, array $option): EBuilder|Builder
     {
+        $option['operator'] = $option['operator'] ?? 'and';
         switch ($option['operator']) {
             case 'and':
                 $builder = QuerySearchBuilder::$methodName($builder, $option['key'], $option['value']);

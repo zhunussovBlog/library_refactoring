@@ -11,7 +11,7 @@ class Journal extends Model implements DefaultQueryInterface
 {
     public $incrementing = false;
     protected $table = 'lib_journals as j';
-    protected $primaryKey = 'journal_id';
+    protected $primaryKey = 'j.journal_id';
     protected $fillable = [
         'journal_id',
         'isbn',

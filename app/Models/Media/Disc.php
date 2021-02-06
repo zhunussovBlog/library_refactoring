@@ -11,7 +11,7 @@ class Disc extends Model implements DefaultQueryInterface
 {
     public $incrementing = false;
     protected $table = 'lib_discs as d';
-    protected $primaryKey = 'disc_id';
+    protected $primaryKey = 'd.disc_id';
     protected $fillable = [
         'disc_id',
         'name',

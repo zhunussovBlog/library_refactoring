@@ -5,6 +5,7 @@ namespace App\Common\Helpers\Controller;
 
 
 use App\Common\Helpers\Search\FilterHelper;
+use App\Common\Helpers\Search\OrderHelper;
 use App\Common\Helpers\Search\SearchHelper;
 use App\Common\Interfaces\Fields\FieldInterface;
 use Illuminate\Database\Eloquent\Builder as EBuilder;
@@ -21,7 +22,8 @@ class Search
 
         // Advanced search
         $searchFields = $field::getSearchFields();
-        $options = $validated['search_options'];
+
+        $options = $validated['search_options'] ?? [];
         $builder = $builder->where(function ($query) use ($searchFields, $options) {
             foreach ($options as $option) {
                 switch ($option['key']) {
@@ -42,12 +44,15 @@ class Search
         });
 
         // Additional search
-        $options = $validated['add_options'];
         $searchFields = $field::getAddSearchFields();
+        $options = $validated['add_options'] ?? [];
 
         foreach ($options as $option) {
             $builder = SearchHelper::search($builder, $searchFields, $option);
         }
+
+        $options = $validated['order'] ?? [];
+        $builder = OrderHelper::order($builder, $options);
 
         $data = $builder->get();
 

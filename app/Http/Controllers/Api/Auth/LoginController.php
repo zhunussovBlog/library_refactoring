@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
-use App\Helpers\DatabaseHelpers\OracleProcedure;
+use App\Common\Helpers\Query\OracleProcedure;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserLoginRequest;
 use App\Models\User\Employee;

@@ -12,7 +12,7 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 class MediaExport implements FromCollection, WithHeadings, ShouldAutoSize
 {
     const FULL_MEDIA_URI = '/full';
-    private $data;
+    private Collection $data;
 
     public function __construct(Collection $data)
     {

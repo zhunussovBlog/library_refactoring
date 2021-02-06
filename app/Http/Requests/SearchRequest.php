@@ -36,6 +36,10 @@ class SearchRequest extends FormRequest
             'add_options.*.value' => 'nullable',
             'add_options.*.operator' => 'nullable|in:and,or,not',
 
+            'order' => 'nullable|array',
+            'order.key' => 'nullable|string',
+            'order.mode' => 'nullable|string',
+
             'filter' => 'nullable|array',
             'filter.*' => 'nullable|array',
             'filter.*.key' => 'nullable|string',

@@ -41,29 +41,19 @@ trait ItemAdditional
     public static function createdData(): array
     {
         $data = [];
-        $types = DB::table('lib_material_types')
-            ->select('key as item_type_key', 'title_' . app()->getLocale() . ' as item_type')
-            ->get()->toArray();
+        $types = self::materialTypes()->get()->toArray();
 
         $data['types'] = $types;
 
-        $locations = DB::table('sigle_types')
-            ->select('key as location_key', 'title_' . app()->getLocale() . ' as location')->get()->toArray();
+        $locations = self::locations()->get()->toArray();
 
         $data['locations'] = $locations;
 
-        $currencies = DB::table('lib_currencies')->select('code as currency_code', 'currency', 'title_' . app()->getLocale() . ' as currency_title')
-            ->get()->toArray();
+        $currencies = self::currencies()->get()->toArray();
 
         $data['currencies'] = $currencies;
 
-        $users = static::query()
-            ->select('i.user_cid', DB::raw("(case when u.stud_id is not null
-                                                        then (select t.name||' '||t.surname from dbmaster.students t where u.stud_id = t.stud_id)
-                                                        when u.emp_id is not null
-                                                        then (select e.name||' '||e.sname from dbmaster.employee e where e.emp_id = u.emp_id) end) as username"))
-            ->leftJoin('lib_user_cards as u', 'i.user_cid', '=', 'u.user_cid')
-            ->whereNotNull('i.user_cid')->distinct()->get()->toArray();
+        $users = self::users()->get()->toArray();
 
         $data['users'] = $users;
 

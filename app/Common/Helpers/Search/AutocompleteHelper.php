@@ -14,9 +14,10 @@ class AutocompleteHelper
     {
         $option['operator'] = 'and';
         $builder = SearchHelper::search($builder, $fields, $option);
+        $max = $option['max'] ?? 20;
 
         return DB::select(
-            DB::raw("select id, {$option['key']} as result from ({$builder->toSql()}) FETCH NEXT {$option['max']} ROWS ONLY"),
+            DB::raw("select id, {$option['key']} as result from ({$builder->toSql()}) FETCH NEXT {$max} ROWS ONLY"),
             $builder->getBindings()
         );
     }

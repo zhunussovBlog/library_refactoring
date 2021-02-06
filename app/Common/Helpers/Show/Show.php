@@ -11,10 +11,10 @@ class Show
 {
     public static function show(DefaultQueryInterface $query, mixed $id): array
     {
-        $data = $query::defaultQuery()->find($id)->toArray();
+        $data = $query::defaultQuery()->find($id);
 
         if (empty($data)) throw new ReturnResponseException(__('general.data_not_found'), 404);
 
-        return $data;
+        return $data->toArray();
     }
 }

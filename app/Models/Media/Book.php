@@ -11,7 +11,7 @@ class Book extends Model implements DefaultQueryInterface
 {
     public $incrementing = false;
     protected $table = 'lib_books as b';
-    protected $primaryKey = 'book_id';
+    protected $primaryKey = 'b.book_id';
     protected $fillable = [
         'book_id',
         'isbn',

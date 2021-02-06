@@ -23,7 +23,8 @@ Route::middleware(['auth:api-student,api-employee'])->group(function () {
     });
 
     // Admin routes
-    Route::middleware(['api-admin'])->group(function () {
+//    Route::middleware(['api-admin'])->group(function () {
+    Route::group([], function () {
         // Acquisition routes
 
         // Batch routes
@@ -33,6 +34,7 @@ Route::middleware(['auth:api-student,api-employee'])->group(function () {
             Route::get('last-created', 'Api\Acquisition\Batch\ShowController@lastCreated');
             Route::get('sort-fields', 'Api\Acquisition\Batch\ShowController@sortFields');
             Route::get('search-fields', 'Api\Acquisition\Batch\ShowController@searchFields');
+            Route::get('filter-fields', 'Api\Acquisition\Batch\ShowController@filterFields');
 
             Route::post('create', 'Api\Acquisition\Batch\ManageController@create');
             Route::put('update', 'Api\Acquisition\Batch\ManageController@update');
@@ -52,6 +54,7 @@ Route::middleware(['auth:api-student,api-employee'])->group(function () {
             Route::get('last-created', 'Api\Acquisition\Supplier\ShowController@lastCreated');
             Route::get('sort-fields', 'Api\Acquisition\Supplier\ShowController@sortFields');
             Route::get('search-fields', 'Api\Acquisition\Supplier\ShowController@searchFields');
+            Route::get('filter-fields', 'Api\Acquisition\Supplier\ShowController@filterFields');
 
             Route::post('create', 'Api\Acquisition\Supplier\ManageController@create');
             Route::put('update', 'Api\Acquisition\Supplier\ManageController@update');
@@ -68,10 +71,10 @@ Route::middleware(['auth:api-student,api-employee'])->group(function () {
         Route::group(['prefix' => 'publisher'], static function () {
             Route::get('index', 'Api\Acquisition\Publisher\ShowController@index');
             Route::get('show/{id}', 'Api\Acquisition\Publisher\ShowController@show');
-            Route::get('last', 'Api\Acquisition\Publisher\ShowController@last');
             Route::get('last-created', 'Api\Acquisition\Publisher\ShowController@lastCreated');
             Route::get('sort-fields', 'Api\Acquisition\Publisher\ShowController@sortFields');
             Route::get('search-fields', 'Api\Acquisition\Publisher\ShowController@searchFields');
+            Route::get('filter-fields', 'Api\Acquisition\Publisher\ShowController@filterFields');
 
             Route::post('create', 'Api\Acquisition\Publisher\ManageController@create');
             Route::put('update', 'Api\Acquisition\Publisher\ManageController@update');
@@ -87,10 +90,10 @@ Route::middleware(['auth:api-student,api-employee'])->group(function () {
         Route::group(['prefix' => 'item'], static function () {
             Route::get('index', 'Api\Acquisition\Item\ShowController@index');
             Route::get('show/{id}', 'Api\Acquisition\Item\ShowController@show');
-            Route::get('last', 'Api\Acquisition\Item\ShowController@last');
             Route::get('last-created', 'Api\Acquisition\Item\ShowController@lastCreated');
             Route::get('sort-fields', 'Api\Acquisition\Item\ShowController@sortFields');
             Route::get('search-fields', 'Api\Acquisition\Item\ShowController@searchFields');
+            Route::get('filter-fields', 'Api\Acquisition\Item\ShowController@filterFields');
 
             Route::post('create', 'Api\Acquisition\Item\ManageController@create');
             Route::put('update', 'Api\Acquisition\Item\ManageController@update');
@@ -114,4 +117,5 @@ Route::group(['prefix' => 'media'], function () {
     Route::post('save-excel', 'Api\Media\ExportController@export');
     Route::get('search-fields', 'Api\Media\ShowController@searchFields');
     Route::get('sort-fields', 'Api\Media\ShowController@sortFields');
+    Route::get('filter-fields', 'Api\Media\ShowController@filterFields');
 });

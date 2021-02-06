@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Acquisition\Publisher;
 
 use App\Common\Fields\Acquisition\PublisherFields;
+use App\Common\Helpers\Show\FilterFields;
 use App\Common\Helpers\Show\Index;
 use App\Common\Helpers\Show\LastCreated;
 use App\Common\Helpers\Show\SearchFields;
@@ -50,6 +51,13 @@ class ShowController extends Controller
     {
         return response()->json([
             'res' => SortFields::sortFields(new PublisherFields())
+        ]);
+    }
+
+    public function filterFields(): JsonResponse
+    {
+        return response()->json([
+            'res' => FilterFields::filterFields(new PublisherFields())
         ]);
     }
 }

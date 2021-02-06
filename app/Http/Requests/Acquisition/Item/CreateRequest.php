@@ -33,7 +33,6 @@ class CreateRequest extends FormRequest
             'pub_year' => 'required|digits:4',
             'pub_city' => 'required|string|max:250',
             'cost' => 'required|integer',
-            'user_cid' => 'required|string|max:7',
             'count' => 'required|integer',
             'location' => 'required|string|max:4',
             'currency' => 'required|string|max:3',

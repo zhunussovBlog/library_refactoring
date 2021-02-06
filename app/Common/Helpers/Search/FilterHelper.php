@@ -18,17 +18,30 @@ class FilterHelper
 
     public static function forFilter(ECollection|Collection $data, array $fields): array
     {
-        return $data->map(function ($item) use ($fields) {
-            $res = [];
-
+        $res = [];
+        $data->each(function ($item) use ($fields, &$res) {
             foreach ($fields as $field) {
-                $res[$field['key']][] = [
-                    'value' => $item->$field['key'],
-                    'title' => $item->$field['title_key']
-                ];
-            }
+                $key = $field['key'];
+                $titleKey = $field['title_key'];
 
-            return $res;
-        })->toArray();
+                if (!empty($item->$key)) {
+                    if ($key === $titleKey) {
+                        $value = $item->$key;
+                    } else {
+                        $value = [
+                            'value' => $item->$key,
+                            'title' => $item->$titleKey,
+                        ];
+                    }
+
+                    if (!key_exists($key, $res)) $res[$key] = [];
+
+                    if (!in_array($value, $res[$key])) {
+                        $res[$key][] = $value;
+                    }
+                }
+            }
+        });
+        return $res;
     }
 }
