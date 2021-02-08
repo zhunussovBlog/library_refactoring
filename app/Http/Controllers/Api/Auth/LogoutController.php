@@ -13,6 +13,8 @@ class LogoutController extends Controller
     {
         Auth::logout();
         $request->user()->tokens()->delete();
-        return response()->json(['res' => []]);
+        return response()->json(['res' => [
+            'message' => 'Logged out'
+        ]]);
     }
 }

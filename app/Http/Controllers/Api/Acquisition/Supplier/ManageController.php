@@ -18,7 +18,7 @@ class ManageController extends Controller
         $response = Create::create(new Supplier(), self::createInputs($request->validated()));
         return response()->json([
             'res' => $response
-        ]);
+        ], 201);
     }
 
     static function createInputs(array $validated): array

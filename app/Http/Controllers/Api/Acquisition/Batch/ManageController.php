@@ -19,7 +19,7 @@ class ManageController extends Controller
         $response = Create::create(new Batch(), self::createInputs($request->validated(), $request->user()));
         return response()->json([
             'res' => $response
-        ]);
+        ], 201);
     }
 
     static function createInputs(array $validated, $user): array

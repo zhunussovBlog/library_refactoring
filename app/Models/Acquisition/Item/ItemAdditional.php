@@ -13,7 +13,7 @@ trait ItemAdditional
     public static function materialTypes(): Builder
     {
         return DB::table('lib_material_types')
-            ->select('key as item_type_key', 'title_' . app()->getLocale() . ' as item_type');
+            ->select('key as type_key', 'title_' . app()->getLocale() . ' as type');
     }
 
     public static function locations(): Builder

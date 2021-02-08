@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,13 +17,11 @@ Route::post('login', 'Api\Auth\LoginController')->name('login');
 
 Route::middleware(['auth:api-student,api-employee'])->group(function () {
     Route::post('logout', 'Api\Auth\LogoutController')->name('logout');
-    Route::get('user', function (Request $request) {
-        return $request->user();
-    });
+    Route::get('user', 'Api\Auth\UserController')->name('user');
 
     // Admin routes
-//    Route::middleware(['api-admin'])->group(function () {
-    Route::group([], function () {
+    Route::middleware(['api-admin'])->group(function () {
+//    Route::group([], function () {
         // Acquisition routes
 
         // Batch routes
@@ -110,8 +107,8 @@ Route::get('locale/{locale}', 'Api\LocaleController');
 
 // Media routes
 Route::group(['prefix' => 'media'], function () {
-    Route::get('search/autocomplete', 'Api\Media\AutocompleteController@autocomplete');
-    Route::post('search/{searchType}', 'Api\Media\SearchController@search')->where('searchType', 'simple|advanced');
+    Route::get('autocomplete', 'Api\Media\AutocompleteController@autocomplete');
+    Route::post('search', 'Api\Media\SearchController@search');
 
     Route::get('show', 'Api\Media\ShowController@show');
     Route::post('save-excel', 'Api\Media\ExportController@export');

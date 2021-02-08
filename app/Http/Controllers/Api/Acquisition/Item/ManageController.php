@@ -19,7 +19,7 @@ class ManageController extends Controller
         $response = Create::create(new Item(), self::createInputs($request->validated(), $request->user()));
         return response()->json([
             'res' => $response
-        ]);
+        ], 201);
     }
 
     public static function createInputs(array $validated, $user): array
