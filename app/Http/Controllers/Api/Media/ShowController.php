@@ -19,14 +19,10 @@ use Orchestra\Parser\Xml\Facade as XmlParser;
 
 class ShowController extends Controller
 {
-    public function show(Request $request): JsonResponse
+    public function show(int $id): JsonResponse
     {
-        $validated = $request->validate([
-            'id' => 'required|integer',
-        ]);
-
-        $data = self::findByType($validated, ...GetModels::getModels());
-        $fullInfo = self::getFullInfo(explode('.', $data->getKeyName())[1], $validated['id']);
+        $data = self::findByType($id, ...GetModels::getModels());
+        $fullInfo = self::getFullInfo(explode('.', $data->getKeyName())[1], $id);
 
         return response()->json([
             'res' => $data->toArray(),
@@ -34,11 +30,11 @@ class ShowController extends Controller
         ]);
     }
 
-    private static function findByType(array $validated, DefaultQueryInterface ...$queries): Model|Builder
+    private static function findByType(int $id, DefaultQueryInterface ...$queries): Model|Builder
     {
         $data = null;
         foreach ($queries as $query) {
-            $data = $query::defaultQuery()->find($validated['id']);
+            $data = $query::defaultQuery()->find($id);
 
             if (!empty($data)) break;
         }

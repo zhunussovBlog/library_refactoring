@@ -110,7 +110,7 @@ Route::group(['prefix' => 'media'], function () {
     Route::get('autocomplete', 'Api\Media\AutocompleteController@autocomplete');
     Route::post('search', 'Api\Media\SearchController@search');
 
-    Route::get('show', 'Api\Media\ShowController@show');
+    Route::get('show/{id}', 'Api\Media\ShowController@show');
     Route::post('save-excel', 'Api\Media\ExportController@export');
     Route::get('search-fields', 'Api\Media\ShowController@searchFields');
     Route::get('sort-fields', 'Api\Media\ShowController@sortFields');
