@@ -1,0 +1,101 @@
+<template>
+	<div class="text-choosable">
+		<div class="justify-content-between align-items-center">
+			<div class="font-weight-500">{{$tc(tableName.name,1)}}</div>
+			<div class="font-weight-500 cursor-pointer pd-16" @click="close"><X /></div>
+		</div>
+		<table class="full-width">
+			<tr class="font-size-0875" v-for="(head,index) in heads">
+				<td class="color-gray">{{$tc(head.name,1)}} :</td>
+				<td class="pl">{{data[head.link]}}</td>
+			</tr>
+		</table>
+		<div class="mt-20 row">
+			<div class="pad ml-auto">
+				<button type="button" class="outline-black" @click="editit()">
+					<span><Edit /></span>
+					{{$t('edit')}}
+				</button>
+			</div>
+			<div class="pad ml-10">
+				<button type="button" class="outline-black" @click="deleteit()">
+					<span><Delete /></span>
+					{{$t('delete')}}					
+				</button>
+			</div>
+		</div>
+	</div>
+</template>
+<script type="text/javascript">
+// components
+import DeleteModal from './DeleteModal'
+// icons
+import X from '../../assets/icons/X'
+import Edit from '../../assets/icons/Edit'
+import Delete from '../../assets/icons/Delete'
+// mixins
+import showModal from '../../mixins/showModal'
+
+export default{
+	props:{
+		data:Object,
+		heads:Array,
+		status:{
+			type:Boolean,
+			default:()=>{return false}
+		},
+		tableName:{
+			type:Object,
+			default(){
+				return {name:'table'}
+			}
+		},
+		editObj:Object,
+		deleteObj:Object,
+		link:String,
+		commit:String
+	},
+	components:{X,Edit,Delete},
+	mixins:[showModal],
+	data(){
+		return{
+			DeleteModal:DeleteModal
+		}
+	},
+	methods:{
+		capitalize(string){
+			return capitalize(string);
+		},
+		close(){
+			this.$emit('close');
+		},
+		editit(){
+			let props={
+				data:this.data,
+				lastCreated:this.editObj.lastCreated,
+				edit:true,
+				afterSave:this.close
+			};
+			this.showModal(this.editObj.component,props);
+		},
+		deleteit(){
+			this.showModal(this.DeleteModal,{link:this.link,commit:this.commit,id:this.data.id,afterDelete:this.close,width:'41.6%'});
+		},
+	}
+}
+</script>
+<style scoped>
+.pd-16{
+	padding-right: 0;
+	padding-top: 0;
+}
+.bg-gray{
+	background-color: #E8E8E8;
+}
+td{
+  padding-top: 1.25em;
+}
+.pl{
+	padding-left: 1.25em; 
+}
+</style>

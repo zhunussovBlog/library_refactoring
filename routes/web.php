@@ -13,6 +13,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    print_r(\App\Models\Acquisition\Item\Item::users()->toSql());
+Route::group(['prefix' => 'admin', 'middleware' => ['web', 'isAdmin']], static function () {
+    Route::get('{any?}', static function () {
+        return view('admin');
+    })->where('any', '.*')->name('admin');
+});
+
+Route::group(['prefix' => ''], static function () {
+    Route::get('{any}', static function () {
+        return view('main');
+    })->where('any', '.*')->middleware('web')->name('user');
 });
