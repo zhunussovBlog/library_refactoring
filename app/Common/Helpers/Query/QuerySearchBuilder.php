@@ -14,17 +14,17 @@ class QuerySearchBuilder
 {
     public static function equals(EBuilder|Builder|ECollection|Collection $builder, string $column, mixed $query): EBuilder|Builder|ECollection|Collection
     {
-        return $builder->where($column, $query);
+        return $builder->where(DB::raw("{$column}"), $query);
     }
 
     public static function orEquals(EBuilder|Builder|ECollection|Collection $builder, string $column, mixed $query): EBuilder|Builder|ECollection|Collection
     {
-        return $builder->orWhere($column, $query);
+        return $builder->orWhere(DB::raw("{$column}"), $query);
     }
 
     public static function notEquals(EBuilder|Builder|ECollection|Collection $builder, string $column, mixed $query): EBuilder|Builder|ECollection|Collection
     {
-        return $builder->where($column, '!=', $query);
+        return $builder->where(DB::raw("{$column}"), '!=', $query);
     }
 
     public static function like(EBuilder|Builder|ECollection|Collection $builder, string $column, ?string $query): EBuilder|Builder|ECollection|Collection
@@ -44,17 +44,17 @@ class QuerySearchBuilder
 
     public static function in(EBuilder|Builder|ECollection|Collection $builder, string $column, ?array $query): EBuilder|Builder|ECollection|Collection
     {
-        return $builder->whereIn($column, $query);
+        return $builder->whereIn(DB::raw("{$column}"), $query);
     }
 
     public static function orIn(EBuilder|Builder|ECollection|Collection $builder, string $column, ?array $query): EBuilder|Builder|ECollection|Collection
     {
-        return $builder->orWhereIn($column, $query);
+        return $builder->orWhereIn(DB::raw("{$column}"), $query);
     }
 
     public static function notIn(EBuilder|Builder|ECollection|Collection $builder, string $column, ?array $query): EBuilder|Builder|ECollection|Collection
     {
-        return $builder->whereNotIn($column, $query);
+        return $builder->whereNotIn(DB::raw("{$column}"), $query);
     }
 
     public static function rangeDate(EBuilder|Builder|ECollection|Collection $builder, string $column, ?array $query): EBuilder|Builder|ECollection|Collection
@@ -119,5 +119,25 @@ class QuerySearchBuilder
         }
 
         return $builder;
+    }
+
+    public static function lessThan(EBuilder|Builder|ECollection|Collection $builder, string $column, mixed $query): EBuilder|Builder|ECollection|Collection
+    {
+        return $builder->where(DB::raw("{$column}"), '<', $query);
+    }
+
+    public static function greaterThan(EBuilder|Builder|ECollection|Collection $builder, string $column, mixed $query): EBuilder|Builder|ECollection|Collection
+    {
+        return $builder->where(DB::raw("{$column}"), '>', $query);
+    }
+
+    public static function lessOrEqual(EBuilder|Builder|ECollection|Collection $builder, string $column, mixed $query): EBuilder|Builder|ECollection|Collection
+    {
+        return $builder->where(DB::raw("{$column}"), '<=', $query);
+    }
+
+    public static function greaterOrEqual(EBuilder|Builder|ECollection|Collection $builder, string $column, mixed $query): EBuilder|Builder|ECollection|Collection
+    {
+        return $builder->where(DB::raw("{$column}"), '>=', $query);
     }
 }

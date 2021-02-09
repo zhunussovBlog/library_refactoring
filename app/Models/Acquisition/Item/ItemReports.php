@@ -4,15 +4,15 @@
 namespace App\Models\Acquisition\Item;
 
 
-use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
 trait ItemReports
 {
-    public static function searchInventoryBooks($from, $count): Builder
+    public static function inventoryBooks(): Builder
     {
-        $query = static::query()->select(DB::raw("TO_CHAR(i.receive_date, 'YYYY-MM-DD') as create_date"),
-            'i.hesab_id as batch_id', 'bii.item_no',
+        return static::query()->select(DB::raw("TO_CHAR(i.receive_date, 'YYYY-MM-DD') as create_date"),
+            'i.hesab_id as batch_id', 'bii.inventory_no', 'i.inv_id as id',
             DB::raw("(select decode(ba.name, null, '', ba.name || ' ')||decode(ba.surname, null, '', ba.surname||', ')||b.title
                                     from lib_books b left join lib_book_authors ba on b.book_id = ba.book_id and ba.is_main = 1
                                     where b.book_id = i.book_id) as author_title"),
@@ -22,17 +22,14 @@ trait ItemReports
                                 from lib_bibliographic_info bi, XMLTABLE('//Nodes/Node' PASSING XMLTYPE(bi.XML_DATA)) xt
                                 where bi.book_id = i.book_id and xt.extract('//Cell[1]/text()').getStringVal() in ('010.a')) as call_number"),
             'i.price as cost', 'i.currency', 'i.barcode', 'h.doc_no')->leftJoin('lib_hesablar as h', 'i.hesab_id', '=', 'h.hesab_id')
-            ->join('book_items as bii', 'i.inv_id', '=', 'bii.inv_id')
+            ->join('inventory_book as bii', 'i.inv_id', '=', 'bii.inv_id')
             ->whereNotNull('i.book_id')
-            ->orderBy('bii.item_no')
-            ->where('item_no', '>=', $from)->toSql();
-        return DB::table(DB::raw("{$query}"))
-            ->where(DB::raw("rownum"), '<=', $count);
+            ->orderBy('bii.inventory_no');
     }
 
-    public static function bookHistoryQuery(): Builder
+    public static function bookHistory(): Builder
     {
-        $query = static::query()->select('i.barcode', 'i.inv_id',
+        return static::query()->select('i.barcode', 'i.inv_id as id',
             DB::raw("(case when i.book_id is not null
                                     then (select mt.title_" . app()->getLocale() . " from lib_material_types mt,
                                             lib_books b where b.type = mt.key and b.book_id = i.book_id)
@@ -69,6 +66,5 @@ trait ItemReports
                                         then (select e.name||' '||e.sname from dbmaster.employee e where e.emp_id = u.emp_id) end)
                                         from lib_user_cards u where u.user_cid = l.user_cid) as username"))
             ->leftJoin('lib_loans as l', 'i.inv_id', '=', 'l.inv_id');
-        return DB::table(DB::raw("({$query->toSql()})"));
     }
 }

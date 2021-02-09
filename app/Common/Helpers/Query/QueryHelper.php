@@ -4,6 +4,7 @@
 namespace App\Common\Helpers\Query;
 
 use App\Common\Interfaces\Query\DefaultQueryInterface;
+use Illuminate\Database\Eloquent\Builder as EBuilder;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
 
@@ -23,5 +24,10 @@ class QueryHelper
     public static function nestedQuery(DefaultQueryInterface $query): Builder
     {
         return DB::table(DB::raw("({$query::defaultQuery()->getQuery()->toSql()})"));
+    }
+
+    public static function nestedQueryBuilder(EBuilder|Builder $builder): Builder
+    {
+        return DB::table(DB::raw("({$builder->toSql()})"));
     }
 }

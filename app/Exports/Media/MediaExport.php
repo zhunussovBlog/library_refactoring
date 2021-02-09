@@ -13,10 +13,12 @@ class MediaExport implements FromCollection, WithHeadings, ShouldAutoSize
 {
     const FULL_MEDIA_URI = '/full';
     private Collection $data;
+    private string $locale;
 
-    public function __construct(Collection $data)
+    public function __construct(Collection $data, string $locale)
     {
         $this->data = $data;
+        $this->locale = $locale;
     }
 
     public function collection(): Collection
@@ -32,13 +34,13 @@ class MediaExport implements FromCollection, WithHeadings, ShouldAutoSize
     public function headings(): array
     {
         return [
-            'Author(s)',
-            'Type',
-            'Title',
-            'Publisher',
-            'ISBN',
-            'Call number',
-            'URL to description'
+            __('prints/media.author', [], $this->locale),
+            __('prints/media.type', [], $this->locale),
+            __('prints/media.title', [], $this->locale),
+            __('prints/media.publisher', [], $this->locale),
+            __('prints/media.isbn', [], $this->locale),
+            __('prints/media.call_number', [], $this->locale),
+            __('prints/media.url', [], $this->locale),
         ];
     }
 }

@@ -229,7 +229,7 @@
         <tr class="headers">
             <th class="create_date batch_id"><b>{{ __('prints/inventories.create_date', [], $locale) }}
                     , {{ __('prints/inventories.batch_id', [], $locale) }}</b></th>
-            <th class="item_no"><b>{{ __('prints/inventories.item_no', [], $locale) }}</b></th>
+            <th class="item_no"><b>{{ __('prints/inventories.inventory_no', [], $locale) }}</b></th>
             <th class="check" colspan="2"><b>{{ __('prints/inventories.check', [], $locale) }}</b></th>
             <th class="author_title"><b>{{ __('prints/inventories.author_title', [], $locale) }}</b></th>
             <th class="year_city"><b>{{ __('prints/inventories.year_city', [], $locale) }}</b></th>

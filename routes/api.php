@@ -25,7 +25,7 @@ Route::middleware(['auth:api-student,api-employee'])->group(function () {
         // Acquisition routes
 
         // Batch routes
-        Route::group(['prefix' => 'batch'], static function () {
+        Route::group(['prefix' => 'batch'], function () {
             Route::get('index', 'Api\Acquisition\Batch\ShowController@index');
             Route::get('show/{id}', 'Api\Acquisition\Batch\ShowController@show');
             Route::get('last-created', 'Api\Acquisition\Batch\ShowController@lastCreated');
@@ -45,7 +45,7 @@ Route::middleware(['auth:api-student,api-employee'])->group(function () {
         });
 
         // Supplier routes
-        Route::group(['prefix' => 'supplier'], static function () {
+        Route::group(['prefix' => 'supplier'], function () {
             Route::get('index', 'Api\Acquisition\Supplier\ShowController@index');
             Route::get('show/{id}', 'Api\Acquisition\Supplier\ShowController@show');
             Route::get('last-created', 'Api\Acquisition\Supplier\ShowController@lastCreated');
@@ -65,7 +65,7 @@ Route::middleware(['auth:api-student,api-employee'])->group(function () {
         });
 
         // Publisher routes
-        Route::group(['prefix' => 'publisher'], static function () {
+        Route::group(['prefix' => 'publisher'], function () {
             Route::get('index', 'Api\Acquisition\Publisher\ShowController@index');
             Route::get('show/{id}', 'Api\Acquisition\Publisher\ShowController@show');
             Route::get('last-created', 'Api\Acquisition\Publisher\ShowController@lastCreated');
@@ -84,7 +84,7 @@ Route::middleware(['auth:api-student,api-employee'])->group(function () {
         });
 
         // Item routes
-        Route::group(['prefix' => 'item'], static function () {
+        Route::group(['prefix' => 'item'], function () {
             Route::get('index', 'Api\Acquisition\Item\ShowController@index');
             Route::get('show/{id}', 'Api\Acquisition\Item\ShowController@show');
             Route::get('last-created', 'Api\Acquisition\Item\ShowController@lastCreated');
@@ -99,6 +99,20 @@ Route::middleware(['auth:api-student,api-employee'])->group(function () {
             Route::post('search', 'Api\Acquisition\Item\SearchController@search');
 
             Route::get('create-data', 'Api\Acquisition\Item\AdditionalController@createData');
+        });
+
+        // Reports
+
+        // Inventory books report
+        Route::group(['prefix' => 'inventory-books'], function () {
+            Route::get('sort-fields', 'Api\Report\InventoryBooks\ShowController@sortFields');
+            Route::get('search-fields', 'Api\Report\InventoryBooks\ShowController@searchFields');
+            Route::get('filter-fields', 'Api\Report\InventoryBooks\ShowController@filterFields');
+
+            Route::post('search', 'Api\Report\InventoryBooks\SearchController');
+
+            Route::post('export', 'Api\Report\InventoryBooks\ExportController');
+            Route::post('print', 'Api\Report\InventoryBooks\PrintController');
         });
     });
 });

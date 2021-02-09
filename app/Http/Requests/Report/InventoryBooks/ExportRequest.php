@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Media;
+namespace App\Http\Requests\Report\InventoryBooks;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class MediaExportRequest extends FormRequest
+class ExportRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,9 @@ class MediaExportRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'media' => 'required|array',
-            'media.*' => 'required|integer'
+            'inventories' => 'required|array',
+            'inventories.*' => 'required|integer',
+            'locale' => 'nullable|string'
         ];
     }
 }
