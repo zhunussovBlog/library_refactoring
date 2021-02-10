@@ -114,6 +114,16 @@ Route::middleware(['auth:api-student,api-employee'])->group(function () {
             Route::post('export', 'Api\Report\InventoryBooks\ExportController');
             Route::post('print', 'Api\Report\InventoryBooks\PrintController');
         });
+
+        Route::group(['prefix' => 'book-history'], function () {
+            Route::get('sort-fields', 'Api\Report\BookHistory\ShowController@sortFields');
+            Route::get('search-fields', 'Api\Report\BookHistory\ShowController@searchFields');
+            Route::get('filter-fields', 'Api\Report\BookHistory\ShowController@filterFields');
+
+            Route::post('search', 'Api\Report\BookHistory\SearchController');
+
+            Route::post('export', 'Api\Report\BookHistory\ExportController');
+        });
     });
 });
 

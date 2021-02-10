@@ -55,7 +55,7 @@ trait ItemReports
                                 from lib_book_authors ba where ba.j_issue_id = i.j_issue_id)
                             when i.disc_id is not null
                             then (select listagg(ba.name||ba.surname, ', ') within group(order by ba.name)
-                                from lib_book_authors ba where ba.disc_id = i.disc_id) end) as authors"),
+                                from lib_book_authors ba where ba.disc_id = i.disc_id) end) as author"),
             'l.borrow_date', 'l.due_date', 'l.delivery_date',
             DB::raw("(case when i.status = 0 and current_date <= l.due_date then 0
                                  when i.status = 0 and current_date > l.due_date then -1
