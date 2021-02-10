@@ -21,7 +21,7 @@ class AutocompleteController extends Controller
         ]);
 
         return response()->json([
-            'res' => AutocompleteHelper::autocomplete(QueryHelper::unionAll(...GetModels::getModels()), MediaFields::getAddSearchFields(), $validated)
+            'res' => AutocompleteHelper::autocomplete(QueryHelper::unionAll(...GetModels::getModels()), MediaFields::getSearchFields(), $validated)
         ]);
     }
 }
