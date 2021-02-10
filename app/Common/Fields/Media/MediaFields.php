@@ -14,7 +14,7 @@ class MediaFields extends FieldInterface
         ['key' => 'title', 'title' => 'Title'],
         ['key' => 'publisher', 'title' => 'Publisher'],
         ['key' => 'isbn', 'title' => 'ISBN'],
-        ['key' => 'call_number', 'Call number' => 'Title'],
+        ['key' => 'call_number', 'title' => 'Call Number'],
         ['key' => 'year', 'title' => 'Year'],
     ];
 
@@ -23,7 +23,7 @@ class MediaFields extends FieldInterface
         ['key' => 'title', 'title' => 'Title', 'method' => SearchFieldConstants::LIKE],
         ['key' => 'publisher', 'title' => 'Publisher', 'method' => SearchFieldConstants::LIKE],
         ['key' => 'isbn', 'title' => 'ISBN', 'method' => SearchFieldConstants::LIKE],
-        ['key' => 'call_number', 'Call number' => 'Title', 'method' => SearchFieldConstants::LIKE],
+        ['key' => 'call_number', 'title' => 'Call Number', 'method' => SearchFieldConstants::LIKE],
     ];
 
     protected static array $addSearchFields = [];
