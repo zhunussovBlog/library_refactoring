@@ -121,7 +121,7 @@ Route::get('locale/{locale}', 'Api\LocaleController');
 
 // Media routes
 Route::group(['prefix' => 'media'], function () {
-    Route::post('autocomplete', 'Api\Media\AutocompleteController@autocomplete');
+    Route::get('autocomplete', 'Api\Media\AutocompleteController@autocomplete');
     Route::post('search', 'Api\Media\SearchController@search');
 
     Route::get('show/{id}', 'Api\Media\ShowController@show');
