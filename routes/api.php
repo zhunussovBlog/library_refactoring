@@ -20,8 +20,8 @@ Route::middleware(['auth:api-student,api-employee'])->group(function () {
     Route::get('user', 'Api\Auth\UserController')->name('user');
 
     // Admin routes
-    Route::middleware(['api-admin'])->group(function () {
-//    Route::group([], function () {
+//    Route::middleware(['api-admin'])->group(function () {
+    Route::group([], function () {
         // Acquisition routes
 
         // Batch routes
@@ -123,6 +123,16 @@ Route::middleware(['auth:api-student,api-employee'])->group(function () {
             Route::post('search', 'Api\Report\BookHistory\SearchController');
 
             Route::post('export', 'Api\Report\BookHistory\ExportController');
+        });
+
+        Route::group(['prefix' => 'most-read'], function () {
+            Route::get('sort-fields', 'Api\Report\MostReadBooks\ShowController@sortFields');
+            Route::get('search-fields', 'Api\Report\MostReadBooks\ShowController@searchFields');
+            Route::get('filter-fields', 'Api\Report\MostReadBooks\ShowController@filterFields');
+
+            Route::post('search', 'Api\Report\MostReadBooks\SearchController');
+
+            Route::post('export', 'Api\Report\MostReadBooks\ExportController');
         });
     });
 });

@@ -24,24 +24,26 @@ class Search
         $searchFields = $field::getSearchFields();
 
         $options = $validated['search_options'] ?? [];
-        $builder = $builder->where(function ($query) use ($searchFields, $options) {
-            foreach ($options as $option) {
-                switch ($option['key']) {
-                    case 'all':
-                        foreach ($searchFields as $field) {
-                            $customOption = [
-                                'key' => $field['key'],
-                                'operator' => 'or',
-                                'value' => $option['value'],
-                            ];
-                            $query = SearchHelper::search($query, $searchFields, $customOption);
-                        }
-                        break;
-                    default:
-                        $query = SearchHelper::search($query, $searchFields, $option);
+        if (!empty($options)) {
+            $builder = $builder->where(function ($query) use ($searchFields, $options) {
+                foreach ($options as $option) {
+                    switch ($option['key']) {
+                        case 'all':
+                            foreach ($searchFields as $field) {
+                                $customOption = [
+                                    'key' => $field['key'],
+                                    'operator' => 'or',
+                                    'value' => $option['value'],
+                                ];
+                                $query = SearchHelper::search($query, $searchFields, $customOption);
+                            }
+                            break;
+                        default:
+                            $query = SearchHelper::search($query, $searchFields, $option);
+                    }
                 }
-            }
-        });
+            });
+        }
 
         // Additional search
         $searchFields = $field::getAddSearchFields();
