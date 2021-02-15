@@ -12,7 +12,7 @@ trait ItemReports
     public static function inventoryBooks(): Builder
     {
         return static::query()->select(DB::raw("TO_CHAR(i.receive_date, 'YYYY-MM-DD') as create_date"),
-            'i.hesab_id as batch_id', 'bii.inventory_no', 'i.inv_id as id',
+            'h.hesab_id as batch_id', 'bii.inventory_no', 'i.inv_id as id',
             DB::raw("(select decode(ba.name, null, '', ba.name || ' ')||decode(ba.surname, null, '', ba.surname||', ')||b.title
                                     from lib_books b left join lib_book_authors ba on b.book_id = ba.book_id and ba.is_main = 1
                                     where b.book_id = i.book_id) as author_title"),
@@ -21,7 +21,9 @@ trait ItemReports
                                         within group (order by null)
                                 from lib_bibliographic_info bi, XMLTABLE('//Nodes/Node' PASSING XMLTYPE(bi.XML_DATA)) xt
                                 where bi.book_id = i.book_id and xt.extract('//Cell[1]/text()').getStringVal() in ('010.a')) as call_number"),
-            'i.price as cost', 'i.currency', 'i.barcode', 'h.doc_no')->leftJoin('lib_hesablar as h', 'i.hesab_id', '=', 'h.hesab_id')
+            'i.price as cost', 'i.currency', 'i.barcode', 'h.doc_no')
+            ->leftJoin('lib_hesab_mats as hm', 'i.book_id', '=', 'hm.book_id')
+            ->leftJoin('lib_hesablar as h', 'hm.hesab_id', '=', 'h.hesab_id')
             ->join('inventory_book as bii', 'i.inv_id', '=', 'bii.inv_id')
             ->whereNotNull('i.book_id')
             ->orderBy('bii.inventory_no');

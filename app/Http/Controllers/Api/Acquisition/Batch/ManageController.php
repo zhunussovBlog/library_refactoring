@@ -60,7 +60,8 @@ class ManageController extends Controller
             'contract_no' => trim($validated['contract_no']),
             'invoice_details' => trim($validated['inv_details']),
             'cost' => $validated['cost'],
-            'edited_by' => $user->user_cid
+            'edited_by' => $user->user_cid,
+            'edit_date' => Carbon::now()
         ];
     }
 

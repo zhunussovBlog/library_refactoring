@@ -23,7 +23,8 @@ class BatchFields extends FieldInterface
         ['key' => 'id', 'title' => 'Batch No', 'method' => SearchFieldConstants::EQUALS],
         ['key' => 'sup_id', 'title' => 'Supplier', 'method' => SearchFieldConstants::EQUALS],
         ['key' => 'statuses', 'title' => 'Statuses', 'method' => SearchFieldConstants::IN],
-        ['key' => 'create_date', 'title' => 'Dates', 'method' => SearchFieldConstants::RANGE_DATE],
+        ['key' => 'create_date', 'title' => 'Create date', 'method' => SearchFieldConstants::RANGE_DATE],
+        ['key' => 'edit_date', 'title' => 'Edit date', 'method' => SearchFieldConstants::RANGE_DATE],
         ['key' => 'cost', 'title' => 'Costs', 'method' => SearchFieldConstants::RANGE_NUMBER]
     ];
 
