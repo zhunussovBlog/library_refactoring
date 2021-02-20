@@ -134,6 +134,13 @@ Route::middleware(['auth:api-student,api-employee'])->group(function () {
 
             Route::post('export', 'Api\Report\MostReadBooks\ExportController');
         });
+
+        Route::group(['prefix' => 'attendance'], function () {
+            Route::get('virtual', 'Api\Report\Attendance\AttendanceController@getVirtualAttendance');
+            Route::get('library', 'Api\Report\Attendance\AttendanceController@getLibraryAttendance');
+            Route::get('departments', 'Api\Report\Attendance\AttendanceController@getDepartments');
+            Route::post('search', 'Api\Report\Attendance\AttendanceController@search');
+        });
     });
 });
 
