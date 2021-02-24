@@ -1,7 +1,7 @@
 # Stage 2, 3
 
 ### Stage 2
-
+[Mind Map](mindmap.pdf)
 1. Цель проекта:
     1. Сделать онлайн каталог книг для библиотеки университета СДУ
     2. Автоматизировать внутренние процессы (работу) библиотеки и библиотекаршей
@@ -93,17 +93,17 @@
 
 1. Какую информацию содержит о книгах наша библиотека ?
 
-    [dataset1.csv](Stage%202,%203%207d0fe0884a894b7fb34c79ab4aadbc70/dataset1.csv)
+    [dataset1.csv](dataset1.csv)
 
 2. Есть ли другие типы материалов кроме книг в библиотеке ?
 
-    [dataset2.csv](Stage%202,%203%207d0fe0884a894b7fb34c79ab4aadbc70/dataset2.csv)
+    [dataset2.csv](dataset2.csv)
 
-    [dataset3.csv](Stage%202,%203%207d0fe0884a894b7fb34c79ab4aadbc70/dataset3.csv)
+    [dataset3.csv](dataset3.csv)
 
 3. Как хранятся сами книги и копии книг ?
 
-    [dataset4.csv](Stage%202,%203%207d0fe0884a894b7fb34c79ab4aadbc70/dataset4.csv)
+    [dataset4.csv](dataset4.csv)
 
 4. По каким ключевым словам идет поиск книг ?
     1. Title
@@ -113,23 +113,23 @@
     5. Call Number
 5. Что такое партии книг ?
 
-    [dataset5.csv](Stage%202,%203%207d0fe0884a894b7fb34c79ab4aadbc70/dataset5.csv)
+    [dataset5.csv](dataset5.csv)
 
 6. Как сохраняются логи с каждого действия в библиотеке ?
 
-    [dataset6.csv](Stage%202,%203%207d0fe0884a894b7fb34c79ab4aadbc70/dataset6.csv)
+    [dataset6.csv](dataset6.csv)
 
 7. Как контралируется аттенденс в библиотеке ?
 
-    [dataset7.csv](Stage%202,%203%207d0fe0884a894b7fb34c79ab4aadbc70/dataset7.csv)
+    [dataset7.csv](dataset7.csv)
 
 8. Обслуживание в библотеке: Выдача книг
 
-    [dataset8.csv](Stage%202,%203%207d0fe0884a894b7fb34c79ab4aadbc70/dataset8.csv)
+    [dataset8.csv](dataset8.csv)
 
 9. Что такое экземпляры книг ?
 
-    [dataset4.csv](Stage%202,%203%207d0fe0884a894b7fb34c79ab4aadbc70/dataset4.csv)
+    [dataset4.csv](dataset4.csv)
 
 10. В чем разница между партиями и экземплярами ?
 
@@ -137,15 +137,15 @@
 
 11. Какие отчеты есть в библиотеке ?
 
-    [dataset9.csv](Stage%202,%203%207d0fe0884a894b7fb34c79ab4aadbc70/dataset9.csv)
+    [dataset9.csv](dataset9.csv)
 
 12. Что такое издатели книг ?
 
-    [dataset10.csv](Stage%202,%203%207d0fe0884a894b7fb34c79ab4aadbc70/dataset10.csv)
+    [dataset10.csv](dataset10.csv)
 
 13. Что такое поставщики книг ?
 
-    [dataset11.csv](Stage%202,%203%207d0fe0884a894b7fb34c79ab4aadbc70/dataset11.csv)
+    [dataset11.csv](dataset11.csv)
 
 14. Кто наши пользователи ?
     1. Студенты
