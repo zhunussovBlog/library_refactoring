@@ -1,23 +1,25 @@
-window.Vue = require('vue').default;
-
-import Axios from "axios";
-import App from "./App";
-import router from './router'
-import i18n from './locales'
-import store from './store';
+import Vue from 'vue'
 import VModal from 'vue-js-modal';
-import VueSimpleAlert from "vue-simple-alert";
+import Axios from 'axios'
+import App from './App.vue'
+import router from './router'
+import i18n from './locale'
+import store from './store'
+
+import base from './configs/base'
 
 Vue.use(VModal, { dynamic: true, injectModalsContainer: true });
-// for one alert only... may change it later
-Vue.use(VueSimpleAlert);
+Vue.configs=Object.assign({},base);
+
+Vue.config.productionTip = false;
 
 
-Axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+Axios.defaults.baseURL = Vue.configs.baseURL + Vue.configs.api
+Axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('access_token');
+Axios.defaults.headers.common['Content-Type'] = 'application/json';
+Axios.defaults.headers.common['Content-Language'] = i18n.locale;
 
 Vue.prototype.$http = Axios;
-
-// custom vue
 
 Vue.prototype.$mobileCheck=()=>{
   // checks if the device is mobile
@@ -26,34 +28,9 @@ Vue.prototype.$mobileCheck=()=>{
   return check;
 }
 
-const app = new Vue({
-  el: '#app',
+new Vue({
   render: h => h(App),
-  store,
+  i18n,
   router,
-  i18n
-});
-
-Vue.config.productionTip = false
-
-// custom window
-
-window.copy=(object)=>{
-	return JSON.parse(JSON.stringify(object));
-}
-
-window.capitalize = (s) => {
-	let string = s.slice();
-	if (typeof string !== 'string') return ''
-  return string.charAt(0).toUpperCase() + string.slice(1)
-}
-
-window.objectWithoutKey = (object, key) => {
-  const {[key]: deletedKey, ...otherKeys} = object;
-  return otherKeys;
-}
-
-/*to delete later -- this comment and vue-spinner library
-and those functions we don't need
-and those plugins we don't need out of node modules...and package.json
-*/
+  store
+}).$mount('#app')
