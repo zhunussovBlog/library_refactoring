@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VModal from 'vue-js-modal';
 import Axios from 'axios'
+import VueSimpleAlert from "vue-simple-alert";
+
 import App from './App.vue'
 import router from './router'
 import i18n from './locale'
@@ -9,8 +11,9 @@ import store from './store'
 import base from './configs/base'
 
 Vue.use(VModal, { dynamic: true, injectModalsContainer: true });
-Vue.configs=Object.assign({},base);
+Vue.use(VueSimpleAlert);
 
+Vue.configs=Object.assign({},base);
 Vue.config.productionTip = false;
 
 Axios.defaults.baseURL = Vue.configs.baseURL + Vue.configs.api
@@ -20,6 +23,7 @@ Axios.defaults.headers.common['Content-Language'] = i18n.locale;
 
 Vue.prototype.$http = Axios;
 
+// customs
 Vue.prototype.$mobileCheck=()=>{
   // checks if the device is mobile
   let check = false;

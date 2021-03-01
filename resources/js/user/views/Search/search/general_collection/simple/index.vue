@@ -2,7 +2,7 @@
 	<form class="position-relative">
 		<select-div :data="select_data" class="w-20 w-min-120 p-3 border-grey no-border-right no-border-right-radius border-width bg-white"/>
 		<div id="warn-simple" class="warn">{{$t('at_least_2')}}</div>
-		<autocomplete class="w-100 mr--5" input_classes="rounded-0 border-grey" />
+		<autocomplete class="w-100 mr--5" input_classes="rounded-0 border-grey" :placeholder="$t('search_books&media',{type:$t(type.key+'_by')})" />
 		<button type="submit" class="border-grey w-min-120">{{$t('search')}}</button>
 	</form>
 </template>

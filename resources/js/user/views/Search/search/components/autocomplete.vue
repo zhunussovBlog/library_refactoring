@@ -2,7 +2,7 @@
 	<form @submit.prevent="submitting()" @keyup="onKeyPress($event)">
 		<input type="text" autocomplete="off" class="h-100 w-100" 
 		:class="input_classes"
-		:placeholder="placeholder || $mobileCheck() ? $t('search') : $t('search_books&media',{type:$t(type.key+'_by')})"
+		:placeholder="placeholder || $t('search')"
 		@input="showResults()"
 		@blur="Choose($event)"
 		v-model="query"
@@ -15,7 +15,7 @@
 						<span v-if="result.title">, {{result.title}}</span>
 						<span v-if="result.year">, {{result.year}}</span>
 					</span>
-					<span class="ml-auto cursor-pointer align-items-center" @click="move(result)"><Book/> &nbsp;--></span>
+					<span class="ml-auto cursor-pointer align-items-center" @click="move(result)"><book /> &nbsp;--></span>
 				</div>
 			</div>
 		</div>
@@ -40,28 +40,14 @@ export default{
 	},
 	mixins:[goTo],
 	components:{Book},
-	computed:{
-		selectData(){
-			let types=[{key:'title'},{key:'author'},{key:'publisher'},{key:'isbn'},{key:'call_number'},{key:'all'}];
-			// this.type=types[0];
-			return types;
-		}
-	},
 	watch:{
 		'value'(newVal){
 			this.query=newVal.query;
-			if(newVal.type!=undefined && Object.keys(newVal.type).length>0){
-				this.type=newVal.type;
-			}
-			else{
-				this.type=this.selectData[0];
-			}
 		}
 	},
 	data: () => {
 		return {
 			query:'',
-			type:'',
 			chooseIndex:null,
 			results:[]
 		};

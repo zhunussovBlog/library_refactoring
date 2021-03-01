@@ -1,4 +1,6 @@
+import {message_success,message_error} from '../../../mixins/messages'
 export default{
+	mixins:[message_success,message_error],
 	data(){
 		return{
 			dropdown_links:[
@@ -12,8 +14,12 @@ export default{
 	methods:{
 		logout(){
 			this.$store.commit('setLoading',true);
-			this.$http.get('logout').then(()=>{
+			this.$http.get('logout').then(response=>{
 				this.$store.dispatch('logout');
+				this.message_success('logout',response);
+			}).catch(error=>{
+				this.message_error('logout',error);
+			}).then(()=>{
 				this.$store.commit('setLoading',false);
 			})
 		}

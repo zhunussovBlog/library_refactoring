@@ -8,7 +8,9 @@
 	</form>
 </template>
 <script type="text/javascript">
+	import {message_success,message_error} from '../../../mixins/messages'
 	export default{
+		mixins:[message_success,message_error],
 		data(){
 			return{
 				request:{
@@ -22,8 +24,12 @@
 				this.$store.commit('setLoading',true);
 				this.$http.post('login', this.request).then(response=>{
 					this.$store.dispatch('login',response.data.res);
-					this.$store.commit('setLoading',false);
+					this.message_success('login',response);
 					this.$emit('close');
+				}).catch(error=>{
+					this.message_error('login',error);
+				}).then(()=>{
+					this.$store.commit('setLoading',false);
 				});
 			}
 		}
