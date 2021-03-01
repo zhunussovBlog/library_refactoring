@@ -11,7 +11,7 @@
 				<!-- login button if ur not logged in -->
 				<div class="link bg-lightblue font-size-18 py-3 px-3 ml-3"  @click="showModal(login,{width:'300px'})" v-if="!logged">{{$t('login')}}</div>
 				<!-- name, in other cases -->
-				<div class="link bg-lightblue font-size-18 py-3 px-3 ml-3" v-else>{{user.name}}</div>
+				<dropdown :data="dropdown_links" class="bg-lightblue font-size-18 py-3 px-3 ml-3" :title="{link:user.name}" menu_classes="dropdown-menu-right" v-else />
 			</div>
 		</div>
 		<nav class="navbar navbar-expand-xl bg-blue navbar-dark padding py-2">
@@ -51,11 +51,12 @@
 	import links from '../../../mixins/links'
 	import langs from '../../../mixins/langs'
 	import modal from '../../../mixins/modal'
+	import account_dropdown from './account_dropdown'
 
 	import { mapGetters } from 'vuex'
 	
 	export default{
-		mixins:[links,langs,modal],
+		mixins:[links,langs,modal,account_dropdown],
 		components:{
 			dropdown
 		},
@@ -77,7 +78,7 @@
 				end.setHours(end_hours);
 				end.setMinutes(end_miutes);
 
-				this.time=begin.getHours() + ":" + begin.getMinutes() + ' - ' + end.getHours() + ':' + end.getMinutes();
+				this.time=begin.getHours() + ":" + begin.getMinutes().pad(0) + ' - ' + end.getHours() + ':' + end.getMinutes().pad(0);
 
 				return begin<now && now<end; 
 			}
@@ -86,11 +87,6 @@
 			return{
 				time:'',
 				login:login
-			}
-		},
-		methods:{
-			showLogin(){
-				
 			}
 		}
 	}

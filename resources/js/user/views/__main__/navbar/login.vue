@@ -19,8 +19,11 @@
 		},
 		methods:{
 			login(){
+				this.$store.commit('setLoading',true);
 				this.$http.post('login', this.request).then(response=>{
 					this.$store.dispatch('login',response.data.res);
+					this.$store.commit('setLoading',false);
+					this.$emit('close');
 				});
 			}
 		}

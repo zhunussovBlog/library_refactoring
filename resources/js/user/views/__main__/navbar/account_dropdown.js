@@ -1,0 +1,21 @@
+export default{
+	data(){
+		return{
+			dropdown_links:[
+			{
+				name:'logout',
+				on_click:this.logout
+			}
+			]
+		}
+	},
+	methods:{
+		logout(){
+			this.$store.commit('setLoading',true);
+			this.$http.get('logout').then(()=>{
+				this.$store.dispatch('logout');
+				this.$store.commit('setLoading',false);
+			})
+		}
+	}
+}

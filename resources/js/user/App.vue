@@ -16,7 +16,6 @@
             },
             checkLogin(){
                 this.$http.get('user').then(response=>{
-                    console.log(response);
                     this.$store.commit('setUser',response.data.res.user);
                 })
             }
