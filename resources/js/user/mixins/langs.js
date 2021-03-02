@@ -11,7 +11,7 @@ export default{
 	methods:{
 		setLang(lan){
 			this.$i18n.locale=lan.lan || 'en';
-			localStorage.setItem('lang',JSON.stringify(lan));
+			localStorage.setItem('lang',JSON.stringify(lan.lan));
 		}
 	}
 }

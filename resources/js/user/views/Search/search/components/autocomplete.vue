@@ -8,7 +8,7 @@
 		v-model="query"
 		/>
 		<div ref="results" class="position-absolute results bg-white shadow-sm w-100 mt-2">
-			<div class="p-2" :class="{'bg-lightgrey':chooseIndex==index}" @mouseover='chooseIndex=index' v-for="(result,index) in results" :key="index" @click="Choose();closeResults();">
+			<div class="p-2" :class="{'bg-lightgrey':chooseIndex==index}" @mouseover='chooseIndex=index' v-for="(result,index) in results" :key="index" @click="Choose();commitQuery();closeResults();">
 				<div class="d-flex">
 					<span class="ellipsis mr-10">
 						{{result.result}}
@@ -96,6 +96,7 @@ export default{
 						this.chooseIndex-=1;
 					}
 				}
+				this.Choose();
 			}
 			else if(event.keyCode==40){
 				if(this.chooseIndex==null){
@@ -106,13 +107,12 @@ export default{
 						this.chooseIndex+=1;
 					}
 				}
+				this.Choose();
 			}
-			this.Choose();
 		},
 		Choose(){
 			try{
 				this.query = this.results[this.chooseIndex].result;
-				this.commitQuery();
 			}catch(e){}
 		},
 		move(result){

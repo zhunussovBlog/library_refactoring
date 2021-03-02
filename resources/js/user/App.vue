@@ -12,7 +12,7 @@
         },
         methods:{
             setLanguage(){
-                this.setLang(JSON.parse(localStorage.getItem('lang')))
+                this.$i18n.locale=JSON.parse(localStorage.getItem('lang')) || 'en';
             },
             checkLogin(){
                 this.$http.get('user').then(response=>{

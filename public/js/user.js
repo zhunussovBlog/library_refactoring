@@ -1859,7 +1859,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     setLanguage: function setLanguage() {
-      this.setLang(JSON.parse(localStorage.getItem('lang')));
+      this.$i18n.locale = JSON.parse(localStorage.getItem('lang')) || 'en';
     },
     checkLogin: function checkLogin() {
       var _this = this;
@@ -2990,6 +2990,8 @@ __webpack_require__.r(__webpack_exports__);
             this.chooseIndex -= 1;
           }
         }
+
+        this.Choose();
       } else if (event.keyCode == 40) {
         if (this.chooseIndex == null) {
           this.chooseIndex = 0;
@@ -2998,14 +3000,13 @@ __webpack_require__.r(__webpack_exports__);
             this.chooseIndex += 1;
           }
         }
-      }
 
-      this.Choose();
+        this.Choose();
+      }
     },
     Choose: function Choose() {
       try {
         this.query = this.results[this.chooseIndex].result;
-        this.commitQuery();
       } catch (e) {}
     },
     move: function move(result) {
@@ -4133,7 +4134,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     setLang: function setLang(lan) {
       this.$i18n.locale = lan.lan || 'en';
-      localStorage.setItem('lang', JSON.stringify(lan));
+      localStorage.setItem('lang', JSON.stringify(lan.lan));
     }
   }
 });
@@ -15310,6 +15311,7 @@ var render = function() {
                 },
                 click: function($event) {
                   _vm.Choose()
+                  _vm.commitQuery()
                   _vm.closeResults()
                 }
               }
