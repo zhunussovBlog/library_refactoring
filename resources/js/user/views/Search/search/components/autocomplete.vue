@@ -3,19 +3,19 @@
 		<input type="text" autocomplete="off" class="h-100 w-100" 
 		:class="input_classes"
 		:placeholder="placeholder || $t('search')"
-		@input="showResults()"
-		@blur="Choose($event)"
+		@input="commitQuery()"
+		@blur="closeResults()"
 		v-model="query"
 		/>
 		<div ref="results" class="position-absolute results bg-white shadow-sm w-100 mt-2">
-			<div class="p-2" :class="{'bg-lightgrey':chooseIndex==index}" @mouseover='chooseIndex=index' v-for="(result,index) in results" :key="index" @click="Choose();resultsClose()">
+			<div class="p-2" :class="{'bg-lightgrey':chooseIndex==index}" @mouseover='chooseIndex=index' v-for="(result,index) in results" :key="index" @click="Choose();closeResults();">
 				<div class="d-flex">
 					<span class="ellipsis mr-10">
 						{{result.result}}
 						<span v-if="result.title">, {{result.title}}</span>
 						<span v-if="result.year">, {{result.year}}</span>
 					</span>
-					<span class="ml-auto cursor-pointer align-items-center" @click="move(result)"><book /> &nbsp;--></span>
+					<span class="ml-auto cursor-pointer" @click="move(result)"><book /> &nbsp;--></span>
 				</div>
 			</div>
 		</div>
@@ -36,69 +36,54 @@ export default{
 		placeholder:String,
 		value:[Object,String],
 		submit_method:Function,
-		input_classes:[String,Array]
+		input_classes:[String,Array],
+		results:Array,
 	},
 	mixins:[goTo],
 	components:{Book},
 	watch:{
 		'value'(newVal){
-			this.query=newVal.query;
+			this.query=newVal;
+			if(this.query.length>0){
+				this.showResults();
+			}
+			else{
+				this.closeResults();
+			}
 		}
 	},
-	data: () => {
+	data(){
 		return {
 			query:'',
-			chooseIndex:null,
-			results:[]
+			chooseIndex:null
 		};
 	},
 	methods:{
+		commitQuery(){
+			this.$emit('input',this.query);
+		},
+		closeResults(){
+			setTimeout(()=>{
+				this.chooseIndex=null;
+
+				let doc=this.$refs.results;
+				doc.style.maxHeight='0px';
+
+			},200);
+		},
 		showResults(){
-			const query = this.query;
-			let value={query:query,type:this.type};
-			this.$emit('input',value);
-			if(!this.$mobileCheck()){
-				try{
-					this.$store.state.request.cancel();
-				}
-				catch(e){
-					console.error(e);
-				}
-				this.$store.commit('setRequest',this.$http.CancelToken.source());
-				if(query!='' && !this.$store.state.loading){
-					var q =encodeURIComponent(query);
-					this.$http.get('media/autocomplete?query=' + q+'&type='+this.type.key,{cancelToken:this.$store.state.request.token})
-					.then(response => {
-						this.results = response.data.res;
-					})
-					.then(()=>{
-						this.resultsClose();
-					});
-				}
-				else{
-					this.resultsClose();
-				}
-			}
-		},
-		resultsClose(){
-			this.chooseIndex=null;
-			let doc=this.$refs.results;
-			doc.style.maxHeight='0px';
-		},
-		resultsShow(){
 			let doc=this.$refs.results;
 			doc.style.maxHeight=(window.innerHeight-doc.getBoundingClientRect().top)+'px'; 
 		},
 		submitting(){
 			try{
-				this.$store.state.request.cancel();
+				this.$store.getters.request.cancel();
 			}
-			catch(e){
-				console.error(e);
+			catch(e){}
+			if(this.submit_method){
+				this.submit_method();
 			}
-			if(this.submitMethod){
-				this.submitMethod();
-			}
+			this.closeResults();
 		},
 		onKeyPress(event){
 			if(event.keyCode==38){
@@ -111,7 +96,6 @@ export default{
 						this.chooseIndex-=1;
 					}
 				}
-				this.Choose();
 			}
 			else if(event.keyCode==40){
 				if(this.chooseIndex==null){
@@ -122,26 +106,16 @@ export default{
 						this.chooseIndex+=1;
 					}
 				}
-				this.Choose();
 			}
+			this.Choose();
 		},
-		Choose(event){
-			if(event){
-				setTimeout(()=>{this.resultsClose()},200);
-			}
-			else{
-				try{
-					this.query = this.results[this.chooseIndex].result;
-					let value={query:this.query,type:this.type};
-
-					this.$emit('input',value);
-				}catch(e){
-					console.error(e);
-				}
-			}
+		Choose(){
+			try{
+				this.query = this.results[this.chooseIndex].result;
+				this.commitQuery();
+			}catch(e){}
 		},
 		move(result){
-			console.log(result);
 			this.$router.push({path:'/full?type='+result.type_key+'&id='+result.id});
 		}
 	}
@@ -150,12 +124,12 @@ export default{
 <style scoped>
 .results{
 	min-width: 25em;
-    top: 102%;
-    left: 0;
-    z-index: 1000;
-    overflow: hidden;
-    overflow-y: auto;
-    max-height: 0;
+	top: 102%;
+	left: 0;
+	z-index: 1000;
+	overflow: hidden;
+	overflow-y: auto;
+	max-height: 0;
 }
 input::placeholder{
 	color: #9C9FA7, 100%;
