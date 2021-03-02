@@ -12,6 +12,7 @@
         "ext-json": "*",
         "ext-oci8": "*",
         "ext-pdo": "*",
+        "ext-simplexml": "*",
         "barryvdh/laravel-dompdf": "^0.9.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
@@ -20,11 +21,11 @@
         "laravel/passport": "^10.1",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.2",
+        "maatwebsite/excel": "^3.1",
         "orchestra/parser": "^6.0",
         "phpoffice/phpspreadsheet": "^1.16.0",
-        "yajra/laravel-oci8": "^8.3",
-        "ext-simplexml": "*",
-        "maatwebsite/excel": "^3.1"
+        "tecnickcom/tcpdf": "^6.3",
+        "yajra/laravel-oci8": "^8.3"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
