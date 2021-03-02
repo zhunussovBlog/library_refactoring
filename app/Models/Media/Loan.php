@@ -2,8 +2,8 @@
 
 namespace App\Models\Media;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
 
 class Loan extends Model
@@ -25,7 +25,8 @@ class Loan extends Model
         'uzatma_sayi'
     ];
 
-    public static function mostReadBooks(): Builder
+
+    public static function mostReadBooks(): \Illuminate\Database\Eloquent\Builder
     {
         return static::query()
             ->select(DB::raw("(case when i.book_id is not null then i.book_id
@@ -69,5 +70,10 @@ class Loan extends Model
             ->leftJoin('lib_inventory as i', 'l.inv_id', '=', 'i.inv_id')
             ->groupBy('i.book_id', 'i.disc_id', 'i.j_issue_id')
             ->orderBy('count_issue', 'desc');
+    }
+
+    public static function departments(): Builder
+    {
+        return DB::table("dbmaster.departments")->select('dep_id as id', 'title_' . app()->getLocale() . ' as title')->orderBy('dep_id');
     }
 }

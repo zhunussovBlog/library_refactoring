@@ -1,62 +1,157 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Stage 2, 3
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+### Stage 2
+[Mind Map](mindmap.pdf)
+1. Цель проекта:
+    1. Сделать онлайн каталог книг для библиотеки университета СДУ
+    2. Автоматизировать внутренние процессы (работу) библиотеки и библиотекаршей
+    3. Обслуживание пользователей: сервис для выдачи книг
+2. Проблемы и их решения:
+    1. Недоступность каталога книг во время карантина
+        1. Сделать онлайн каталог для пользователей со списком всех книг и ресурсов из библиотеки
+    2. Рутинная работа библиотекаршей:
+        - Покупка книг и их регистрация
+        - Внесение информаций о книгах в базу данных
+        - Выдача и контроль книг
+        - Отчеты о процессах, книг
+        1. Автоматизировать процессы (комплектование, каталогизация)
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+1. Масштаб и функции проекта:
+    1. Начиная с 1.07.2020 по текущей дате проект в процессе разработки
+    2. Проект состоит из таких модулей как:
+        1. Landing
+        2. Administration
+            1. Каталогизация
+            2. Комплектование
+            3. Обслуживание
+            4. Отчеты
+    3. Функции:
+        1. Landing
+            1. Предоставить полную информацию о книгах
+                - Название, авторы, год выпуска, изображение, описание и тд.
+            2. Поиск книг по ключевым словам
+                1. Простой поиск
+                2. Расширенный поиск
+            3. Поиск ресурсов и других материалов кроме книг
+            4. Фильтрация по языкам, датам, типам материалов
+        2. Administration
+            1. Каталогизация
+                1. Регистрация книг:
+                    1. Заполнение информаций о поступающих книгах
+                    2. Заполнить все поля по формату и стандарту MARC21
+                    3. Проверка на правильность вносимых данных
+            2. Комплектование
+                1. CRUD операции и поиск для:
+                    1. Партия книг (Batch)
+                    2. Экземпляр и копия (Item)
+                    3. Издатель (Publisher)
+                    4. Поставщик (Supplier)
+            3. Обслуживание
+                1. Поиск пользователей и клиентов (Студенты и сотрудники)
+                2. Вывод данных о пользователей
+                3. Выдача книг пользователям
+                4. Контроль период выдачи и даты возврата книг
+            4. Отчеты
+                1. Вывод отчетов в формате .pdf, .csv
+                    1. Инвентарные книги
+                    2. Часто читаемые книги
+                    3. Посещаемость (Виртуальный и оффлайн)
+                    4. История книг
+                    5. КСУ и Стат. отчет
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+1. Интерфейс и причины выбора:
+    - Интерфейс проекта - Web application
 
-## Learning Laravel
+    Мы решили сделать это веб приложением, так как в данный момент по миру ведутся карантинные меры против codiv-19. Для доступа к библиотеке удаленно, веб версия проекта - самый подходящий вариант и для пользователей и для библиотекарши.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+2. Язык программирования и база данных
 
-## Laravel Sponsors
+- Язык программирования:
+    - Backend part - PHP, Laravel
+    - Front end part - JS, Vue js
+- База данных - Oracle database
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+Описание:
 
-### Premium Partners
+- Мы выбрали этот стек для реализаций проекта, так как все проекты внутри университета имеют такие же стеки
+- База данных: в университете используют базу данных Oracle
+1. Сервер базы данных работает отдельно от сервера в котором развернут проект
+    - Подключения на базу данных идет через hostname/ip-address:port:sid с использованием username, password, database name.
+    - Так как проект реализован на фрэймворке Laravel, мы используем готовую библиотеку yajra/oracle-oci8 и php oci8 extension для подключения к базе данных Oracel и строения sql запросов используя ORM встроенную в сам фреймворк (Query builder, Eloquent builder)
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/)**
-- **[OP.GG](https://op.gg)**
+---
 
-## Contributing
+### Stage 3
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Вопросы:
 
-## Code of Conduct
+1. Какую информацию содержит о книгах наша библиотека ?
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+    [dataset1.csv](dataset1.csv)
 
-## Security Vulnerabilities
+2. Есть ли другие типы материалов кроме книг в библиотеке ?
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+    [dataset2.csv](dataset2.csv)
 
-## License
+    [dataset3.csv](dataset3.csv)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+3. Как хранятся сами книги и копии книг ?
+
+    [dataset4.csv](dataset4.csv)
+
+4. По каким ключевым словам идет поиск книг ?
+    1. Title
+    2. Author
+    3. ISBN/ISSN
+    4. Publisher
+    5. Call Number
+5. Что такое партии книг ?
+
+    [dataset5.csv](dataset5.csv)
+
+6. Как сохраняются логи с каждого действия в библиотеке ?
+
+    [dataset6.csv](dataset6.csv)
+
+7. Как контралируется аттенденс в библиотеке ?
+
+    [dataset7.csv](dataset7.csv)
+
+8. Обслуживание в библотеке: Выдача книг
+
+    [dataset8.csv](dataset8.csv)
+
+9. Что такое экземпляры книг ?
+
+    [dataset4.csv](dataset4.csv)
+
+10. В чем разница между партиями и экземплярами ?
+
+    Партия книг это сама книга с доп. информацией.
+    Экземляр это копия книги.
+    Например: В библиотеку поступила одна партия книг с 100 экземплярами.
+
+11. Какие отчеты есть в библиотеке ?
+
+    [dataset9.csv](dataset9.csv)
+
+12. Что такое издатели книг ?
+
+    [dataset10.csv](dataset10.csv)
+
+13. Что такое поставщики книг ?
+
+    [dataset11.csv](dataset11.csv)
+
+14. Кто наши пользователи ?
+    1. Студенты
+    2. Сотрудники
+15. Какие роли и доступы (разрешения) есть в библиотеке ?
+    1. Пользователь (Имеет доступ только к Landing)
+    2. Админ - Библиотекарша (Имеет доступ к Админке)

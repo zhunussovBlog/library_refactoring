@@ -17,6 +17,6 @@ class ExportController extends Controller
         $validated = $request->validated();
         $data = QueryHelper::unionAll(...GetModels::getModels())->whereIn('id', $validated['media'])->get();
 
-        return Excel::download(new MediaExport($data), 'media.xlsx');
+        return Excel::download(new MediaExport($data, $validated['locale'] ?? app()->getLocale()), 'media.xlsx');
     }
 }

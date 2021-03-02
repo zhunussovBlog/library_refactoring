@@ -25,7 +25,8 @@ class MediaExportRequest extends FormRequest
     {
         return [
             'media' => 'required|array',
-            'media.*' => 'required|integer'
+            'media.*' => 'required|integer',
+            'locale' => 'nullable|string'
         ];
     }
 }
