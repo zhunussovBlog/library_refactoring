@@ -30,12 +30,14 @@ class Search
                     switch ($option['key']) {
                         case 'all':
                             foreach ($searchFields as $field) {
-                                $customOption = [
-                                    'key' => $field['key'],
-                                    'operator' => 'or',
-                                    'value' => $option['value'],
-                                ];
-                                $query = SearchHelper::search($query, $searchFields, $customOption);
+                                if ($field['key'] !== 'all') {
+                                    $customOption = [
+                                        'key' => $field['key'],
+                                        'operator' => 'or',
+                                        'value' => $option['value'],
+                                    ];
+                                    $query = SearchHelper::search($query, $searchFields, $customOption);
+                                }
                             }
                             break;
                         default:
