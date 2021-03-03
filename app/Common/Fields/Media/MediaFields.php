@@ -10,7 +10,7 @@ use App\Common\Interfaces\Fields\FieldInterface;
 class MediaFields extends FieldInterface
 {
     protected static array $sortFields = [
-        ['key' => 'authors', 'title' => 'Authors'],
+        ['key' => 'author', 'title' => 'Authors'],
         ['key' => 'title', 'title' => 'Title'],
         ['key' => 'publisher', 'title' => 'Publisher'],
         ['key' => 'isbn', 'title' => 'ISBN'],
@@ -19,11 +19,12 @@ class MediaFields extends FieldInterface
     ];
 
     protected static array $searchFields = [
-        ['key' => 'authors', 'title' => 'Authors', 'method' => SearchFieldConstants::LIKE],
+        ['key' => 'author', 'title' => 'Author(s)', 'method' => SearchFieldConstants::LIKE],
         ['key' => 'title', 'title' => 'Title', 'method' => SearchFieldConstants::LIKE],
         ['key' => 'publisher', 'title' => 'Publisher', 'method' => SearchFieldConstants::LIKE],
         ['key' => 'isbn', 'title' => 'ISBN', 'method' => SearchFieldConstants::LIKE],
         ['key' => 'call_number', 'title' => 'Call Number', 'method' => SearchFieldConstants::LIKE],
+        ['key' => 'all', 'title' => 'Keywords', 'method' => SearchFieldConstants::LIKE],
     ];
 
     protected static array $addSearchFields = [];
