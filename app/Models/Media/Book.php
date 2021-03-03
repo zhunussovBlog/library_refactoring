@@ -40,7 +40,7 @@ class Book extends Model implements DefaultQueryInterface
         return static::query()->select('b.book_id as id', 'b.title as title',
             'b.pub_year as year', 'p.name as publisher', 'b.language as language',
             'mt.title_' . app()->getLocale() . ' as type', 'b.type as type_key', 'b.isbn', DB::raw("null as issn"),
-            DB::raw("(select listagg(a.name||a.surname, ', ') within group(order by a.name) as authors
+            DB::raw("(select listagg(a.name||a.surname, ', ') within group(order by a.name) as author
                             from lib_book_authors a where a.book_id = b.book_id group by a.book_id)"),
             DB::raw("(case when (select r.book_id from lib_reserve_list r
                             where b.book_id = r.book_id and r.status = 1) is not null

@@ -34,7 +34,7 @@ class Disc extends Model implements DefaultQueryInterface
         return static::query()->select('d.disc_id as id', 'd.name as title',
             'd.pub_year as year', 'p.name as publisher', 'd.language as language',
             'mt.title_' . app()->getLocale() . ' as type', 'd.type as type_key', 'd.isbn', 'd.issn',
-            DB::raw("(select listagg(a.name||a.surname, ', ') within group(order by a.name) as authors
+            DB::raw("(select listagg(a.name||a.surname, ', ') within group(order by a.name) as author
                             from lib_book_authors a where a.disc_id = d.disc_id group by a.disc_id)"),
             DB::raw("(case when (select r.disc_id from lib_reserve_list r
                             where d.disc_id = r.disc_id and r.status = 1) is not null

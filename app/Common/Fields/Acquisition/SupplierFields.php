@@ -20,11 +20,7 @@ class SupplierFields extends FieldInterface
         ['key' => 'fax', 'title' => 'Fax']
     ];
 
-    protected static array $searchFields = [];
-
     protected static array $addSearchFields = [
         ['key' => 'name', 'title' => 'Name', 'method' => SearchFieldConstants::LIKE]
     ];
-
-    protected static array $filterFields = [];
 }

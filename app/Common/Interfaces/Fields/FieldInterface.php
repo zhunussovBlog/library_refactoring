@@ -6,10 +6,10 @@ namespace App\Common\Interfaces\Fields;
 
 abstract class FieldInterface
 {
-    protected static array $sortFields;
-    protected static array $searchFields;
-    protected static array $addSearchFields;
-    protected static array $filterFields;
+    protected static array $sortFields = [];
+    protected static array $searchFields = [];
+    protected static array $addSearchFields = [];
+    protected static array $filterFields = [];
 
     public static function getSortFields(): array
     {
