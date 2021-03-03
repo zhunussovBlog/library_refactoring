@@ -41,8 +41,8 @@ class Journal extends Model implements DefaultQueryInterface
         return static::query()->select('j.journal_id as id', 'j.title as title',
             'j.pub_year as year', 'p.name as publisher', 'j.language as language',
             'mt.title_' . app()->getLocale() . ' as type', 'j.type as type_key', 'j.isbn', DB::raw("null as issn"),
-            DB::raw("(select listagg(a.name||a.surname, ', ') within group(order by a.name) as author
-                            from lib_book_authors a where a.j_issue_id = ji.j_issue_id group by a.j_issue_id)"),
+            DB::raw("(select listagg(a.name||a.surname, ', ') within group(order by a.name)
+                            from lib_book_authors a where a.j_issue_id = ji.j_issue_id group by a.j_issue_id) as author"),
             DB::raw("(case when (select r.j_issue_id from lib_reserve_list r
                             where ji.j_issue_id = r.j_issue_id and r.status = 1) is not null
                             then (select 1 from dual) else (select 0 from dual) end) as status"),
