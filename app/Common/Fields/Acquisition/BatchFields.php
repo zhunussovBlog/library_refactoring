@@ -17,8 +17,6 @@ class BatchFields extends FieldInterface
         ['key' => 'created_by', 'title' => 'Created by'],
         ['key' => 'edited_by', 'title' => 'Edited by']];
 
-    protected static array $searchFields = [];
-
     protected static array $addSearchFields = [
         ['key' => 'id', 'title' => 'Batch No', 'method' => SearchFieldConstants::EQUALS],
         ['key' => 'sup_id', 'title' => 'Supplier', 'method' => SearchFieldConstants::EQUALS],
@@ -27,6 +25,4 @@ class BatchFields extends FieldInterface
         ['key' => 'edit_date', 'title' => 'Edit date', 'method' => SearchFieldConstants::RANGE_DATE],
         ['key' => 'cost', 'title' => 'Costs', 'method' => SearchFieldConstants::RANGE_NUMBER]
     ];
-
-    protected static array $filterFields = [];
 }

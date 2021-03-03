@@ -27,8 +27,6 @@ class MediaFields extends FieldInterface
         ['key' => 'all', 'title' => 'Keywords', 'method' => SearchFieldConstants::LIKE],
     ];
 
-    protected static array $addSearchFields = [];
-
     protected static array $filterFields = [
         ['key' => 'year', 'title_key' => 'year', 'title' => 'Year', 'method' => SearchFieldConstants::EQUALS],
         ['key' => 'type_key', 'title_key' => 'type', 'title' => 'Type', 'method' => SearchFieldConstants::IN],

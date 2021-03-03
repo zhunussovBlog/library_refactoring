@@ -38,6 +38,4 @@ class ItemFields extends FieldInterface
         ['key' => 'create_date', 'title' => 'Dates', 'method' => SearchFieldConstants::RANGE_DATE],
         ['key' => 'cost', 'title' => 'Costs', 'method' => SearchFieldConstants::RANGE_NUMBER]
     ];
-
-    protected static array $filterFields = [];
 }

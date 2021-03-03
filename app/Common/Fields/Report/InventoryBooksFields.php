@@ -9,11 +9,8 @@ use App\Common\Interfaces\Fields\FieldInterface;
 
 class InventoryBooksFields extends FieldInterface
 {
-    protected static array $sortFields = [];
-    protected static array $searchFields = [];
     protected static array $addSearchFields = [
         ['key' => 'inventory_no', 'title' => 'Item No', 'method' => SearchFieldConstants::GREATER_OR_EQUAL],
         ['key' => 'rownum', 'title' => 'Count', 'method' => SearchFieldConstants::LESS_OR_EQUAL],
     ];
-    protected static array $filterFields = [];
 }
