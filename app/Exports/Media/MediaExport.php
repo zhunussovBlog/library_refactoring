@@ -25,7 +25,7 @@ class MediaExport implements FromCollection, WithHeadings, ShouldAutoSize
     {
         $url = url('/') . self::FULL_MEDIA_URI;
         return $this->data->map(function ($item) use ($url) {
-            return ['authors' => $item->authors, 'type' => $item->type, 'title' => $item->title,
+            return ['author' => $item->author, 'type' => $item->type, 'title' => $item->title,
                 'publisher' => $item->publisher, 'isbn' => $item->isbn, 'call_number' => $item->call_number,
                 'url' => $url . "?type={$item->type_key}&id={$item->id}"];
         });
