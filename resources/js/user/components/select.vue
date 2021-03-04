@@ -1,6 +1,6 @@
 <template>
 	<div tabindex="0" class="position-relative d-flex align-items-center rounded border" @focusout="num=0;show()">
-		<div class="d-flex justify-content-between align-items-center cursor-pointer w-100" @click="showIt()">
+		<div class="d-flex justify-content-between align-items-center cursor-pointer w-100" :class="labelClasses" @click="showIt()">
 			<label>{{$t((label ? value[label] : value ) || data[0])}}</label>
 			&nbsp;
 			<div class="rotate"><CaretUp/></div>
@@ -25,6 +25,7 @@ export default{
 		placeholder:String,
 		// label - what is shown as an option
 		label:String,
+		labelClasses:[String,Array],
 		disabled:Boolean,
 	},
 	components:{CaretUp},

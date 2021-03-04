@@ -1,21 +1,24 @@
 <template>
-	<form class="flex-column">
+	<form class="flex-column" @submit.prevent="search()">
 		<div class="d-flex position-relative mb-2" v-for="(input,index) in inputs" :key="index">
 			<div :id="'warn-'+index" class="warn">{{$t('at_least_2')}}</div>
-			<select-div :data="select_data" class="w-20 w-min-120 p-3 border-grey no-border-right no-border-right-radius border-width bg-white"/>
-			<autocomplete class="w-100 mr-3" input_classes="no-border-left-radius border-grey" />
-			<button type="button" class="w-min-120 ml-20" @click="addItem()" v-if="!(index < (inputs.length-1)) && (index < maximum-1)"> + </button>
-			<select-div :data="operations" class="w-min-120 border-grey border-width bg-white p-3 " v-else></select-div>
+			<select-div :data="select_data" label="name" class="w-min-120 p-3 border-grey no-border-right no-border-right-radius border-width bg-white" labelClasses="text-no-wrap" v-model="input.search.type"/>
+			<autocomplete class="flex-fill" input_classes="no-border-left-radius border-grey" v-model="input.search.query" :submit_method="search"/>
+			<select-div :data="operations" class="w-min-120 border-grey border-width bg-white p-3 ml-3" v-model="inputs[index+1].operator" v-if="index<(inputs.length-1)" />
+			<button type="button" class="w-min-120 ml-3" @click="addItem()" v-if="!(index < (inputs.length-1)) && (index < maximum-1)"> + </button>
 		</div>
 		<div class="d-flex justify-content-between flex-wrap mt-3">
 			<button type="button" @click="clear()">{{$t('reset')}}</button>
-			<button type="submit" >{{$t('search')}}</button>
+			<button type="submit">{{$t('search')}}</button>
 		</div>
 	</form>
 </template>
 <script type="text/javascript">
 	import SelectDiv from '../../../../../components/select'
 	import autocomplete from '../../components/autocomplete'
+
+	import {selectData} from '../../../../../mixins/search'
+	import {goTo} from '../../../../../mixins/goTo'
 	export default{
 		props:{
 			maximum:{
@@ -25,13 +28,13 @@
 				}
 			}
 		},
+		mixins:[selectData,goTo],
 		components:{
 			SelectDiv,
 			autocomplete
 		},
 		data(){
 			return{
-				select_data:[1,2,3],
 				operations:['and','or','not'],
 				inputs:[{search:{}},{search:{},operator:'and'}]
 			}
@@ -42,9 +45,41 @@
 					this.inputs.push({search:{},operator:'and'});
 				}
 			},
+			search(){
+				let options=[];
+				let query='';
+				this.inputs.forEach(input=>{
+					let option={}
+					
+					option.key=input.search.type.key
+					option.value=input.search.query
+					option.operator=input.operator
+					
+					if(option.operator){
+						query+=this.$t(option.operator).toLowerCase() + ' '
+					}
+					query+=this.$t(option.key)+' : '+option.value+' ';
+
+
+					options.push(option);
+				});
+				let request={
+					search_options:options
+				};
+				this.$store.commit('setFullPageLoading',true);
+				this.$http.post('media/search',request).then(response=>{
+					this.$store.dispatch('setSearches',response);
+					this.$store.commit('setQuery','"'+query+'"')
+					this.$store.commit('setSearchRequest',options);
+					this.$store.commit('setFullPageLoading',false);
+					this.$store.commit('setSearching',true)
+					this.goTo('search');
+				})
+
+			},
 			clear(){
 				this.inputs=[{search:{}},{search:{},operator:'and'}];
-			},
+			}
 		}
 	}
 </script>

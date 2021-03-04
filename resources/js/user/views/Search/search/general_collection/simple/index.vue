@@ -1,8 +1,8 @@
 <template>
 	<form @submit.prevent="search" class="position-relative">
-		<select-div :data="select_data" label="key" class="w-20 w-min-120 p-3 border-grey no-border-right no-border-right-radius border-width bg-white" v-model="type"/>
+		<select-div :data="select_data" label="name" class="w-min-120 p-3 border-grey no-border-right no-border-right-radius border-width bg-white" labelClasses="text-no-wrap" v-model="type"/>
 		<div id="warn-simple" class="warn">{{$t('at_least_2')}}</div>
-		<autocomplete class="w-100 mr--5" input_classes="rounded-0 border-grey" :placeholder="$t('search_books&media',{type:$t(type.name+'_by')})" v-model="query" :results="autocomplete_results" :submit_method="search"/>
+		<autocomplete class="flex-fill mr--5" input_classes="rounded-0 border-grey" :placeholder="$t('search_books&media',{type:$t(type.name+'_by')})" v-model="query" :results="autocomplete_results" :submit_method="search"/>
 		<button type="submit" class="border-grey w-min-120">{{$t('search')}}</button>
 	</form>
 </template>
@@ -12,44 +12,13 @@
 	import autocomplete from '../../components/autocomplete'
 	// mixins
 	import {goTo} from '../../../../../mixins/goTo'
+	import {selectData} from '../../../../../mixins/search'
 	export default{
 		components:{
 			SelectDiv,
 			autocomplete
 		},
-		mixins:[goTo],
-		computed:{
-			select_data(){
-				let types=[
-				{
-					key:'all',
-					name:'all_search'
-				},
-				{
-					key:'title',
-					name:'title'
-				},
-				{
-					key:'author',
-					name:'author'
-				},
-				{
-					key:'publisher',
-					name:'publisher'
-				},
-				{
-					key:'isbn',
-					name:'isbn'
-				},
-				{
-					key:'call_number',
-					name:'call_number'
-				}
-				];
-				this.type=types[0];
-				return types;
-			}
-		},
+		mixins:[goTo,selectData],
 		data(){
 			return{
 				query:'',
@@ -90,7 +59,6 @@
 					this.$store.dispatch('setSearches',response);
 					this.$store.commit('setQuery','"'+this.$t(key)+' : '+query+'"')
 					this.$store.commit('setSearchRequest',options);
-					this.$store.commit('setSearchMethod','simple');
 					this.$store.commit('setFullPageLoading',false);
 					this.$store.commit('setSearching',true)
 					this.goTo('search');

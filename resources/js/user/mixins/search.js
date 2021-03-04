@@ -23,3 +23,34 @@ export const filters={
 		}
 	}
 }
+export const selectData={
+	data(){
+		return{
+			select_data:[
+			{
+				key:'all',
+				name:'all_search'
+			},
+			{
+				key:'title',
+				name:'title'
+			},
+			{
+				key:'author',
+				name:'author'
+			},
+			{
+				key:'publisher',
+				name:'publisher'
+			},
+			{
+				key:'isbn',
+				name:'isbn'
+			},
+			{
+				key:'call_number',
+				name:'call_number'
+			}]
+		}
+	}
+}

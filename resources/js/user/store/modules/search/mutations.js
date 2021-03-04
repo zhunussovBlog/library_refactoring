@@ -11,9 +11,6 @@ export default{
 	setSearching(state,data){
 		state.searching=data;
 	},
-	setSearchMethod(state,data){
-		state.search_method=data;
-	},
 	setResults(state,data){
 		state.results=data;
 	},

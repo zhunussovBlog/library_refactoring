@@ -2016,6 +2016,7 @@ __webpack_require__.r(__webpack_exports__);
     placeholder: String,
     // label - what is shown as an option
     label: String,
+    labelClasses: [String, Array],
     disabled: Boolean
   },
   components: {
@@ -2997,6 +2998,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _components_select__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../../components/select */ "./resources/js/user/components/select.vue");
 /* harmony import */ var _components_autocomplete__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/autocomplete */ "./resources/js/user/views/Search/search/components/autocomplete.vue");
+/* harmony import */ var _mixins_search__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../mixins/search */ "./resources/js/user/mixins/search.js");
+/* harmony import */ var _mixins_goTo__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../../mixins/goTo */ "./resources/js/user/mixins/goTo.js");
 //
 //
 //
@@ -3012,6 +3015,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
+
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -3023,13 +3028,13 @@ __webpack_require__.r(__webpack_exports__);
       }
     }
   },
+  mixins: [_mixins_search__WEBPACK_IMPORTED_MODULE_2__.selectData, _mixins_goTo__WEBPACK_IMPORTED_MODULE_3__.goTo],
   components: {
     SelectDiv: _components_select__WEBPACK_IMPORTED_MODULE_0__.default,
     autocomplete: _components_autocomplete__WEBPACK_IMPORTED_MODULE_1__.default
   },
   data: function data() {
     return {
-      select_data: [1, 2, 3],
       operations: ['and', 'or', 'not'],
       inputs: [{
         search: {}
@@ -3047,6 +3052,42 @@ __webpack_require__.r(__webpack_exports__);
           operator: 'and'
         });
       }
+    },
+    search: function search() {
+      var _this = this;
+
+      var options = [];
+      var query = '';
+      this.inputs.forEach(function (input) {
+        var option = {};
+        option.key = input.search.type.key;
+        option.value = input.search.query;
+        option.operator = input.operator;
+
+        if (option.operator) {
+          query += _this.$t(option.operator).toLowerCase() + ' ';
+        }
+
+        query += _this.$t(option.key) + ' : ' + option.value + ' ';
+        options.push(option);
+      });
+      var request = {
+        search_options: options
+      };
+      this.$store.commit('setFullPageLoading', true);
+      this.$http.post('media/search', request).then(function (response) {
+        _this.$store.dispatch('setSearches', response);
+
+        _this.$store.commit('setQuery', '"' + query + '"');
+
+        _this.$store.commit('setSearchRequest', options);
+
+        _this.$store.commit('setFullPageLoading', false);
+
+        _this.$store.commit('setSearching', true);
+
+        _this.goTo('search');
+      });
     },
     clear: function clear() {
       this.inputs = [{
@@ -3124,6 +3165,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_select__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../../components/select */ "./resources/js/user/components/select.vue");
 /* harmony import */ var _components_autocomplete__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/autocomplete */ "./resources/js/user/views/Search/search/components/autocomplete.vue");
 /* harmony import */ var _mixins_goTo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../mixins/goTo */ "./resources/js/user/mixins/goTo.js");
+/* harmony import */ var _mixins_search__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../../mixins/search */ "./resources/js/user/mixins/search.js");
 //
 //
 //
@@ -3137,37 +3179,13 @@ __webpack_require__.r(__webpack_exports__);
  // mixins
 
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
     SelectDiv: _components_select__WEBPACK_IMPORTED_MODULE_0__.default,
     autocomplete: _components_autocomplete__WEBPACK_IMPORTED_MODULE_1__.default
   },
-  mixins: [_mixins_goTo__WEBPACK_IMPORTED_MODULE_2__.goTo],
-  computed: {
-    select_data: function select_data() {
-      var types = [{
-        key: 'all',
-        name: 'all_search'
-      }, {
-        key: 'title',
-        name: 'title'
-      }, {
-        key: 'author',
-        name: 'author'
-      }, {
-        key: 'publisher',
-        name: 'publisher'
-      }, {
-        key: 'isbn',
-        name: 'isbn'
-      }, {
-        key: 'call_number',
-        name: 'call_number'
-      }];
-      this.type = types[0];
-      return types;
-    }
-  },
+  mixins: [_mixins_goTo__WEBPACK_IMPORTED_MODULE_2__.goTo, _mixins_search__WEBPACK_IMPORTED_MODULE_3__.selectData],
   data: function data() {
     return {
       query: '',
@@ -3219,8 +3237,6 @@ __webpack_require__.r(__webpack_exports__);
         _this2.$store.commit('setQuery', '"' + _this2.$t(key) + ' : ' + query + '"');
 
         _this2.$store.commit('setSearchRequest', options);
-
-        _this2.$store.commit('setSearchMethod', 'simple');
 
         _this2.$store.commit('setFullPageLoading', false);
 
@@ -4311,7 +4327,8 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "filters": () => (/* binding */ filters)
+/* harmony export */   "filters": () => (/* binding */ filters),
+/* harmony export */   "selectData": () => (/* binding */ selectData)
 /* harmony export */ });
 var filters = {
   methods: {
@@ -4349,6 +4366,31 @@ var filters = {
         request.filter = filters;
       }
     }
+  }
+};
+var selectData = {
+  data: function data() {
+    return {
+      select_data: [{
+        key: 'all',
+        name: 'all_search'
+      }, {
+        key: 'title',
+        name: 'title'
+      }, {
+        key: 'author',
+        name: 'author'
+      }, {
+        key: 'publisher',
+        name: 'publisher'
+      }, {
+        key: 'isbn',
+        name: 'isbn'
+      }, {
+        key: 'call_number',
+        name: 'call_number'
+      }]
+    };
   }
 };
 
@@ -4721,9 +4763,6 @@ __webpack_require__.r(__webpack_exports__);
   filter_search: function filter_search(state) {
     return state.filter_search;
   },
-  search_method: function search_method(state) {
-    return state.search_method;
-  },
   wrapper_index: function wrapper_index(state) {
     return state.wrapper_index;
   }
@@ -4783,9 +4822,6 @@ __webpack_require__.r(__webpack_exports__);
   setSearching: function setSearching(state, data) {
     state.searching = data;
   },
-  setSearchMethod: function setSearchMethod(state, data) {
-    state.search_method = data;
-  },
   setResults: function setResults(state, data) {
     state.results = data;
   },
@@ -4838,8 +4874,6 @@ __webpack_require__.r(__webpack_exports__);
     languages: [],
     year: ''
   },
-  // searching method ( simple or advanced (used for filter) )
-  search_method: 'simple',
   // position of square in pagination 
   wrapper_index: 0
 });
@@ -14481,6 +14515,7 @@ var render = function() {
         {
           staticClass:
             "d-flex justify-content-between align-items-center cursor-pointer w-100",
+          class: _vm.labelClasses,
           on: {
             click: function($event) {
               return _vm.showIt()
@@ -15636,7 +15671,15 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "form",
-    { staticClass: "flex-column" },
+    {
+      staticClass: "flex-column",
+      on: {
+        submit: function($event) {
+          $event.preventDefault()
+          return _vm.search()
+        }
+      }
+    },
     [
       _vm._l(_vm.inputs, function(input, index) {
         return _c(
@@ -15649,20 +15692,56 @@ var render = function() {
             _vm._v(" "),
             _c("select-div", {
               staticClass:
-                "w-20 w-min-120 p-3 border-grey no-border-right no-border-right-radius border-width bg-white",
-              attrs: { data: _vm.select_data }
+                "w-min-120 p-3 border-grey no-border-right no-border-right-radius border-width bg-white",
+              attrs: {
+                data: _vm.select_data,
+                label: "name",
+                labelClasses: "text-no-wrap"
+              },
+              model: {
+                value: input.search.type,
+                callback: function($$v) {
+                  _vm.$set(input.search, "type", $$v)
+                },
+                expression: "input.search.type"
+              }
             }),
             _vm._v(" "),
             _c("autocomplete", {
-              staticClass: "w-100 mr-3",
-              attrs: { input_classes: "no-border-left-radius border-grey" }
+              staticClass: "flex-fill",
+              attrs: {
+                input_classes: "no-border-left-radius border-grey",
+                submit_method: _vm.search
+              },
+              model: {
+                value: input.search.query,
+                callback: function($$v) {
+                  _vm.$set(input.search, "query", $$v)
+                },
+                expression: "input.search.query"
+              }
             }),
+            _vm._v(" "),
+            index < _vm.inputs.length - 1
+              ? _c("select-div", {
+                  staticClass:
+                    "w-min-120 border-grey border-width bg-white p-3 ml-3",
+                  attrs: { data: _vm.operations },
+                  model: {
+                    value: _vm.inputs[index + 1].operator,
+                    callback: function($$v) {
+                      _vm.$set(_vm.inputs[index + 1], "operator", $$v)
+                    },
+                    expression: "inputs[index+1].operator"
+                  }
+                })
+              : _vm._e(),
             _vm._v(" "),
             !(index < _vm.inputs.length - 1) && index < _vm.maximum - 1
               ? _c(
                   "button",
                   {
-                    staticClass: "w-min-120 ml-20",
+                    staticClass: "w-min-120 ml-3",
                     attrs: { type: "button" },
                     on: {
                       click: function($event) {
@@ -15672,11 +15751,7 @@ var render = function() {
                   },
                   [_vm._v(" + ")]
                 )
-              : _c("select-div", {
-                  staticClass:
-                    "w-min-120 border-grey border-width bg-white p-3 ",
-                  attrs: { data: _vm.operations }
-                })
+              : _vm._e()
           ],
           1
         )
@@ -15802,8 +15877,12 @@ var render = function() {
     [
       _c("select-div", {
         staticClass:
-          "w-20 w-min-120 p-3 border-grey no-border-right no-border-right-radius border-width bg-white",
-        attrs: { data: _vm.select_data, label: "key" },
+          "w-min-120 p-3 border-grey no-border-right no-border-right-radius border-width bg-white",
+        attrs: {
+          data: _vm.select_data,
+          label: "name",
+          labelClasses: "text-no-wrap"
+        },
         model: {
           value: _vm.type,
           callback: function($$v) {
@@ -15818,7 +15897,7 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("autocomplete", {
-        staticClass: "w-100 mr--5",
+        staticClass: "flex-fill mr--5",
         attrs: {
           input_classes: "rounded-0 border-grey",
           placeholder: _vm.$t("search_books&media", {

@@ -19,8 +19,6 @@ export default{
 		languages:[],
 		year:''
 	},
-	// searching method ( simple or advanced (used for filter) )
-	search_method:'simple',
 	// position of square in pagination 
 	wrapper_index:0
 }
