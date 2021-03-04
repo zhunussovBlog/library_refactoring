@@ -2614,10 +2614,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         _this.$store.commit('setFullPageLoading', false);
       });
     }
-  },
-  created: function created() {
-    console.log(this.filter_data);
-    console.log(this.filter_search);
   }
 });
 
@@ -2712,9 +2708,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         } finally {
           _iterator.f();
         }
-      } catch (e) {
-        console.error(e);
-      }
+      } catch (e) {}
     },
     moveNext: function moveNext() {
       this.getResults(this.data.current_page + 1);
@@ -3000,6 +2994,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_autocomplete__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/autocomplete */ "./resources/js/user/views/Search/search/components/autocomplete.vue");
 /* harmony import */ var _mixins_search__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../mixins/search */ "./resources/js/user/mixins/search.js");
 /* harmony import */ var _mixins_goTo__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../../mixins/goTo */ "./resources/js/user/mixins/goTo.js");
+/* harmony import */ var _mixins_validate__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../../mixins/validate */ "./resources/js/user/mixins/validate.js");
+/* harmony import */ var _mixins_warn__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../../../mixins/warn */ "./resources/js/user/mixins/warn.js");
 //
 //
 //
@@ -3015,6 +3011,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
+
 
 
 
@@ -3028,7 +3026,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     }
   },
-  mixins: [_mixins_search__WEBPACK_IMPORTED_MODULE_2__.selectData, _mixins_goTo__WEBPACK_IMPORTED_MODULE_3__.goTo],
+  mixins: [_mixins_search__WEBPACK_IMPORTED_MODULE_2__.selectData, _mixins_goTo__WEBPACK_IMPORTED_MODULE_3__.goTo, _mixins_validate__WEBPACK_IMPORTED_MODULE_4__.default, _mixins_warn__WEBPACK_IMPORTED_MODULE_5__.default],
   components: {
     SelectDiv: _components_select__WEBPACK_IMPORTED_MODULE_0__.default,
     autocomplete: _components_autocomplete__WEBPACK_IMPORTED_MODULE_1__.default
@@ -3058,36 +3056,50 @@ __webpack_require__.r(__webpack_exports__);
 
       var options = [];
       var query = '';
-      this.inputs.forEach(function (input) {
+      var valid = 0;
+
+      for (var i = 0; i < this.inputs.length; i++) {
+        var input = this.inputs[i];
         var option = {};
         option.key = input.search.type.key;
-        option.value = input.search.query;
+        option.value = input.search.query || '';
         option.operator = input.operator;
 
-        if (option.operator) {
-          query += _this.$t(option.operator).toLowerCase() + ' ';
+        if (this.validate(option.value)) {
+          this.warn(i, false);
+        } else {
+          this.warn(i, true);
+          valid += 1;
         }
 
-        query += _this.$t(option.key) + ' : ' + option.value + ' ';
+        if (option.operator) {
+          query += this.$t(option.operator).toLowerCase() + ' ';
+        }
+
+        query += this.$t(option.key) + ' : ' + option.value + ' ';
         options.push(option);
-      });
+      }
+
       var request = {
         search_options: options
       };
-      this.$store.commit('setFullPageLoading', true);
-      this.$http.post('media/search', request).then(function (response) {
-        _this.$store.dispatch('setSearches', response);
 
-        _this.$store.commit('setQuery', '"' + query + '"');
+      if (valid <= 0) {
+        this.$store.commit('setFullPageLoading', true);
+        this.$http.post('media/search', request).then(function (response) {
+          _this.$store.dispatch('setSearches', response);
 
-        _this.$store.commit('setSearchRequest', options);
+          _this.$store.commit('setQuery', '"' + query + '"');
 
-        _this.$store.commit('setFullPageLoading', false);
+          _this.$store.commit('setSearchRequest', options);
 
-        _this.$store.commit('setSearching', true);
+          _this.$store.commit('setFullPageLoading', false);
 
-        _this.goTo('search');
-      });
+          _this.$store.commit('setSearching', true);
+
+          _this.goTo('search');
+        });
+      }
     },
     clear: function clear() {
       this.inputs = [{
@@ -3166,6 +3178,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_autocomplete__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/autocomplete */ "./resources/js/user/views/Search/search/components/autocomplete.vue");
 /* harmony import */ var _mixins_goTo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../mixins/goTo */ "./resources/js/user/mixins/goTo.js");
 /* harmony import */ var _mixins_search__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../../mixins/search */ "./resources/js/user/mixins/search.js");
+/* harmony import */ var _mixins_validate__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../../mixins/validate */ "./resources/js/user/mixins/validate.js");
+/* harmony import */ var _mixins_warn__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../../../mixins/warn */ "./resources/js/user/mixins/warn.js");
 //
 //
 //
@@ -3180,12 +3194,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
     SelectDiv: _components_select__WEBPACK_IMPORTED_MODULE_0__.default,
     autocomplete: _components_autocomplete__WEBPACK_IMPORTED_MODULE_1__.default
   },
-  mixins: [_mixins_goTo__WEBPACK_IMPORTED_MODULE_2__.goTo, _mixins_search__WEBPACK_IMPORTED_MODULE_3__.selectData],
+  mixins: [_mixins_goTo__WEBPACK_IMPORTED_MODULE_2__.goTo, _mixins_search__WEBPACK_IMPORTED_MODULE_3__.selectData, _mixins_warn__WEBPACK_IMPORTED_MODULE_5__.default, _mixins_validate__WEBPACK_IMPORTED_MODULE_4__.default],
   data: function data() {
     return {
       query: '',
@@ -3223,27 +3239,33 @@ __webpack_require__.r(__webpack_exports__);
 
       var key = this.type.key;
       var query = this.query;
-      var options = [{
-        key: key,
-        value: query
-      }];
-      var request = {
-        search_options: options
-      };
-      this.$store.commit('setFullPageLoading', true);
-      this.$http.post('media/search', request).then(function (response) {
-        _this2.$store.dispatch('setSearches', response);
 
-        _this2.$store.commit('setQuery', '"' + _this2.$t(key) + ' : ' + query + '"');
+      if (this.validate(query)) {
+        this.warn('simple', false);
+        var options = [{
+          key: key,
+          value: query
+        }];
+        var request = {
+          search_options: options
+        };
+        this.$store.commit('setFullPageLoading', true);
+        this.$http.post('media/search', request).then(function (response) {
+          _this2.$store.dispatch('setSearches', response);
 
-        _this2.$store.commit('setSearchRequest', options);
+          _this2.$store.commit('setQuery', '"' + _this2.$t(key) + ' : ' + query + '"');
 
-        _this2.$store.commit('setFullPageLoading', false);
+          _this2.$store.commit('setSearchRequest', options);
 
-        _this2.$store.commit('setSearching', true);
+          _this2.$store.commit('setFullPageLoading', false);
 
-        _this2.goTo('search');
-      });
+          _this2.$store.commit('setSearching', true);
+
+          _this2.goTo('search');
+        });
+      } else {
+        this.warn('simple', true);
+      }
     }
   }
 });
@@ -4396,6 +4418,58 @@ var selectData = {
 
 /***/ }),
 
+/***/ "./resources/js/user/mixins/validate.js":
+/*!**********************************************!*\
+  !*** ./resources/js/user/mixins/validate.js ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  methods: {
+    validate: function validate(string, nullAllowed) {
+      if (string.replace(/\s/g, "").length >= 2 || string.length == 0 && nullAllowed) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/user/mixins/warn.js":
+/*!******************************************!*\
+  !*** ./resources/js/user/mixins/warn.js ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  methods: {
+    warn: function warn(id, show) {
+      var warning = document.getElementById('warn-' + id);
+
+      if (show) {
+        warning.style.opacity = '1';
+      } else {
+        warning.style.opacity = '0';
+      }
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/js/user/router/index.js":
 /*!*******************************************!*\
   !*** ./resources/js/user/router/index.js ***!
@@ -5347,7 +5421,7 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css?family=Roboto:400,400italic,500,500italic,700,700italic,900,900italic,300italic,300,100italic,100);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "/*remove bootstrap*/\nlabel{\n\tmargin-bottom: 0;\n}\n\n/*defaults*/\n\nhtml{\n\tfont-family: 'Roboto', sans-serif;\n\tfont-style: normal;\n\tfont-weight: normal;\n\tcolor:#333;\n\toverflow-x: hidden;\n}\nhtml,body{\n\tmin-height: 100vh;\n\theight: 100%;\n}\n#app{\n\theight: 100%;\n}\n\n*{\n\tcursor: inherit;\n\t/*firefox only scrollbar*/\n\tscrollbar-color: #c5c5c5 white;\n\tscrollbar-width:thin;\n}\n\n*:focus{\n\toutline: none !important;\n}\n\n/*crossbrowser scrollbars*/\n::-webkit-scrollbar {\n\twidth: 0.3125em;\n\theight: 0.3125em;\n}\n\n::-webkit-scrollbar-thumb {\n\tbackground: #c5c5c5;\n}\n\n::-webkit-scrollbar-track {\n\tbackground: white;\n}\n\na{\n\ttext-decoration: none !important;\n}\n\ninput,button{\n\tpadding:0.625em 1.25em;\n}\n\ninput{\n\tborder: 0.125em solid #FF9D29;\n\tborder-radius: 0.3125em;\n\tcaret-color:#FF9D29;\n}\ninput[type=text]{\n\tmin-width: 12.5em;\n}\n\nbutton{\n\tborder:none;\n\tline-height: 1.3125em;\n\tcolor:white;\n\tbackground-color: #FF9D29;\n\tborder-radius: 0.3125em;\n}\n\n/*customs*/\n\n.filter-width{\n\twidth:13.8vw;\n\tmin-width: 12.5em;\n\tmargin-right:3.125em;\n}\n\n\n/*styles*/\n\n.warn{\n\tposition: absolute;\n\ttop: 0;\n\ttransition: .3s;\n\tcolor: #aaa;\n\topacity: 0;\n}\n\n.link{\n\tcursor: pointer;\n\tcolor:inherit;\n}\n\n.link:hover{\n\tcolor:#FF8E0A !important;\n}\n\n.flex-0{\n\tflex:0 !important;\n}\n\n.rotate{\n\ttransform: rotate(180deg);\n}\n\n.transition{\n\ttransition: .3s;\n}\n\n.cursor-pointer{\n\tcursor: pointer;\n}\n\n.logo{\n\twidth: 7.5em;\n}\n\n.padding{\n\tpadding-right: 11vw;\n\tpadding-left: 11vw;\n}\n\n.no-border-right{\n\tborder-right:none !important; \n}\n\n.no-border-right-radius{\n\tborder-top-right-radius: 0 !important;\n\tborder-bottom-right-radius: 0 !important;\n}\n\n.no-border-left-radius{\n\tborder-top-left-radius: 0 !important;\n\tborder-bottom-left-radius: 0 !important;\n}\n\n.border-grey{\n\tborder-color: #DADADA !important;\n}\n\n.border-width{\n\tborder-width: 0.125em !important;\n}\n\n.bg-white{\n\tbackground-color: white !important;\n}\n\n.bg-orange{\n\tbackground-color: #FF9D29 !important;\n}\n\n.bg-blue{\n\tbackground-color: #0a306a !important; \n}\n\n.bg-lightblue{\n\tbackground-color: rgba(\t163, 200, 255,.25) !important;\n}\n\n.bg-grey{\n\tbackground-color: #9c9fa7!important;\n}\n\n.bg-lightgrey{\n\tbackground-color: #F4F4F4 !important;\n}\n\n.ellipsis{\n\twidth:90%;\n\toverflow: hidden;\n\ttext-overflow: ellipsis;\n}\n\n.text-no-wrap{\n\twhite-space: nowrap;\n}\n\n.text-black{\n\tcolor:#333;\n}\n\n.text-grey{\n\tcolor: #9C9FA7 !important;\n}\n\n.text-lightgrey{\n\tcolor: #BDC5DA !important;\n}\n\n.text-blue{\n\tcolor: #274FB6 !important;\n}\n\n.text-orange{\n\tcolor: #FF9D29 !important;\n}\n\n.font-size-32{\n\tfont-size: 2em;\n}\n\n.font-size-24{\n\tfont-size: 1.5em;\n}\n\n.font-size-20{\n\tfont-size: 1.25em;\n}\n\n.font-size-18{\n\tfont-size: 1.125em;\n}\n\n.font-size-14{\n\tfont-size: .875em;\n}\n\n.mr--5{\n\tmargin-right: -.3125em;\n}\n\n.w-20{\n\twidth: 20% !important;\n}\n\n.w-10{\n\twidth: 10% !important;\n}\n\n.w-min-120{\n\tmin-width: 8.125em;\n}\n\n.w-min-0{\n\tmin-width: 0;\n}\n\n/*icons*/\n\nsvg:not(:root).svg-inline--fa {\n\toverflow: visible;\n}\n\n.svg-inline--fa.fa-w-10 {\n\twidth: 0.625em;\n}\n\n.svg-inline--fa.fa-w-11 {\n\twidth: 0.6875em;\n}\n\n.svg-inline--fa.fa-w-14 {\n\twidth: 0.875em;\n}\n\n.svg-inline--fa.fa-w-16 {\n\twidth: 1em;\n}\n\n.svg-inline--fa.fa-w-18 {\n\twidth: 1.125em;\n}\n\n.svg-inline--fa.fa-w-24 {\n\twidth:1.5em;\n}\n\n.svg-inline--fa {\n\tdisplay: inline-block;\n\tfont-size: inherit;\n\theight: 1em;\n\toverflow: visible;\n\tvertical-align: -0.125em;\n}\n\n/*rewrite bootstrap*/\n\n.font-weight-bold{\n\tfont-weight: 500!important;\n}\n\n/*responsiveness*/\n@media screen and (max-width: 350px){\n\t.padding{\n\t\tpadding-right: 5vw;\n\t\tpadding-left: 5vw;\n\t}\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "/*remove bootstrap*/\nlabel{\n\tmargin-bottom: 0;\n}\n\n/*defaults*/\n\nhtml{\n\tfont-family: 'Roboto', sans-serif;\n\tfont-style: normal;\n\tfont-weight: normal;\n\tcolor:#333;\n\toverflow-x: hidden;\n}\nhtml,body{\n\tmin-height: 100vh;\n\theight: 100%;\n}\n#app{\n\theight: 100%;\n}\n\n*{\n\tcursor: inherit;\n\t/*firefox only scrollbar*/\n\tscrollbar-color: #c5c5c5 white;\n\tscrollbar-width:thin;\n}\n\n*:focus{\n\toutline: none !important;\n}\n\n/*crossbrowser scrollbars*/\n::-webkit-scrollbar {\n\twidth: 0.3125em;\n\theight: 0.3125em;\n}\n\n::-webkit-scrollbar-thumb {\n\tbackground: #c5c5c5;\n}\n\n::-webkit-scrollbar-track {\n\tbackground: white;\n}\n\na{\n\ttext-decoration: none !important;\n}\n\ninput,button{\n\tpadding:0.625em 1.25em;\n}\n\ninput{\n\tborder: 0.125em solid #FF9D29;\n\tborder-radius: 0.3125em;\n\tcaret-color:#FF9D29;\n}\ninput[type=text]{\n\tmin-width: 12.5em;\n}\n\nbutton{\n\tborder:none;\n\tline-height: 1.3125em;\n\tcolor:white;\n\tbackground-color: #FF9D29;\n\tborder-radius: 0.3125em;\n}\n\n/*customs*/\n\n.filter-width{\n\twidth:13.8vw;\n\tmin-width: 12.5em;\n\tmargin-right:3.125em;\n}\n\n\n/*styles*/\n\n.warn{\n\tposition: absolute;\n\ttop: -35%;\n\ttransition: .3s;\n\tcolor: #aaa;\n\topacity: 0;\n}\n\n.link{\n\tcursor: pointer;\n\tcolor:inherit;\n}\n\n.link:hover{\n\tcolor:#FF8E0A !important;\n}\n\n.flex-0{\n\tflex:0 !important;\n}\n\n.rotate{\n\ttransform: rotate(180deg);\n}\n\n.transition{\n\ttransition: .3s;\n}\n\n.cursor-pointer{\n\tcursor: pointer;\n}\n\n.logo{\n\twidth: 7.5em;\n}\n\n.padding{\n\tpadding-right: 11vw;\n\tpadding-left: 11vw;\n}\n\n.no-border-right{\n\tborder-right:none !important; \n}\n\n.no-border-right-radius{\n\tborder-top-right-radius: 0 !important;\n\tborder-bottom-right-radius: 0 !important;\n}\n\n.no-border-left-radius{\n\tborder-top-left-radius: 0 !important;\n\tborder-bottom-left-radius: 0 !important;\n}\n\n.border-grey{\n\tborder-color: #DADADA !important;\n}\n\n.border-width{\n\tborder-width: 0.125em !important;\n}\n\n.bg-white{\n\tbackground-color: white !important;\n}\n\n.bg-orange{\n\tbackground-color: #FF9D29 !important;\n}\n\n.bg-blue{\n\tbackground-color: #0a306a !important; \n}\n\n.bg-lightblue{\n\tbackground-color: rgba(\t163, 200, 255,.25) !important;\n}\n\n.bg-grey{\n\tbackground-color: #9c9fa7!important;\n}\n\n.bg-lightgrey{\n\tbackground-color: #F4F4F4 !important;\n}\n\n.ellipsis{\n\twidth:90%;\n\toverflow: hidden;\n\ttext-overflow: ellipsis;\n}\n\n.text-no-wrap{\n\twhite-space: nowrap;\n}\n\n.text-black{\n\tcolor:#333;\n}\n\n.text-grey{\n\tcolor: #9C9FA7 !important;\n}\n\n.text-lightgrey{\n\tcolor: #BDC5DA !important;\n}\n\n.text-blue{\n\tcolor: #274FB6 !important;\n}\n\n.text-orange{\n\tcolor: #FF9D29 !important;\n}\n\n.font-size-32{\n\tfont-size: 2em;\n}\n\n.font-size-24{\n\tfont-size: 1.5em;\n}\n\n.font-size-20{\n\tfont-size: 1.25em;\n}\n\n.font-size-18{\n\tfont-size: 1.125em;\n}\n\n.font-size-14{\n\tfont-size: .875em;\n}\n\n.mr--5{\n\tmargin-right: -.3125em;\n}\n\n.w-20{\n\twidth: 20% !important;\n}\n\n.w-10{\n\twidth: 10% !important;\n}\n\n.w-min-120{\n\tmin-width: 8.125em;\n}\n\n.w-min-0{\n\tmin-width: 0;\n}\n\n/*icons*/\n\nsvg:not(:root).svg-inline--fa {\n\toverflow: visible;\n}\n\n.svg-inline--fa.fa-w-10 {\n\twidth: 0.625em;\n}\n\n.svg-inline--fa.fa-w-11 {\n\twidth: 0.6875em;\n}\n\n.svg-inline--fa.fa-w-14 {\n\twidth: 0.875em;\n}\n\n.svg-inline--fa.fa-w-16 {\n\twidth: 1em;\n}\n\n.svg-inline--fa.fa-w-18 {\n\twidth: 1.125em;\n}\n\n.svg-inline--fa.fa-w-24 {\n\twidth:1.5em;\n}\n\n.svg-inline--fa {\n\tdisplay: inline-block;\n\tfont-size: inherit;\n\theight: 1em;\n\toverflow: visible;\n\tvertical-align: -0.125em;\n}\n\n/*rewrite bootstrap*/\n\n.font-weight-bold{\n\tfont-weight: 500!important;\n}\n\n/*responsiveness*/\n@media screen and (max-width: 350px){\n\t.padding{\n\t\tpadding-right: 5vw;\n\t\tpadding-left: 5vw;\n\t}\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -15684,7 +15758,7 @@ var render = function() {
       _vm._l(_vm.inputs, function(input, index) {
         return _c(
           "div",
-          { key: index, staticClass: "d-flex position-relative mb-2" },
+          { key: index, staticClass: "d-flex position-relative mb-4" },
           [
             _c("div", { staticClass: "warn", attrs: { id: "warn-" + index } }, [
               _vm._v(_vm._s(_vm.$t("at_least_2")))

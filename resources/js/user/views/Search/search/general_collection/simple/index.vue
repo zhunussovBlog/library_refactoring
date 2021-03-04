@@ -13,12 +13,14 @@
 	// mixins
 	import {goTo} from '../../../../../mixins/goTo'
 	import {selectData} from '../../../../../mixins/search'
+	import validate from '../../../../../mixins/validate'
+	import warn from '../../../../../mixins/warn'
 	export default{
 		components:{
 			SelectDiv,
 			autocomplete
 		},
-		mixins:[goTo,selectData],
+		mixins:[goTo,selectData,warn,validate],
 		data(){
 			return{
 				query:'',
@@ -50,19 +52,25 @@
 			search(){
 				let key=this.type.key;
 				let query=this.query;
-				let options=[{key:key,value:query}]
-				let request={
-					search_options:options
-				};
-				this.$store.commit('setFullPageLoading',true);
-				this.$http.post('media/search',request).then(response=>{
-					this.$store.dispatch('setSearches',response);
-					this.$store.commit('setQuery','"'+this.$t(key)+' : '+query+'"')
-					this.$store.commit('setSearchRequest',options);
-					this.$store.commit('setFullPageLoading',false);
-					this.$store.commit('setSearching',true)
-					this.goTo('search');
-				})
+				if(this.validate(query)){
+					this.warn('simple',false);
+					let options=[{key:key,value:query}]
+					let request={
+						search_options:options
+					};
+					this.$store.commit('setFullPageLoading',true);
+					this.$http.post('media/search',request).then(response=>{
+						this.$store.dispatch('setSearches',response);
+						this.$store.commit('setQuery','"'+this.$t(key)+' : '+query+'"')
+						this.$store.commit('setSearchRequest',options);
+						this.$store.commit('setFullPageLoading',false);
+						this.$store.commit('setSearching',true)
+						this.goTo('search');
+					})
+				}
+				else{
+					this.warn('simple',true);
+				}
 			}
 		}
 	}

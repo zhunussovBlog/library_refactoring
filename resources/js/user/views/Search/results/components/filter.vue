@@ -80,10 +80,6 @@
 					this.$store.commit('setFullPageLoading',false);
 				})
 			}
-		},
-		created(){
-			console.log(this.filter_data);
-			console.log(this.filter_search);
 		}
 	}
 </script>

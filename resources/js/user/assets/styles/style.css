@@ -85,7 +85,7 @@ button{
 
 .warn{
 	position: absolute;
-	top: 0;
+	top: -35%;
 	transition: .3s;
 	color: #aaa;
 	opacity: 0;

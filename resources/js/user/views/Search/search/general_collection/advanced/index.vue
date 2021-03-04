@@ -1,6 +1,6 @@
 <template>
 	<form class="flex-column" @submit.prevent="search()">
-		<div class="d-flex position-relative mb-2" v-for="(input,index) in inputs" :key="index">
+		<div class="d-flex position-relative mb-4" v-for="(input,index) in inputs" :key="index">
 			<div :id="'warn-'+index" class="warn">{{$t('at_least_2')}}</div>
 			<select-div :data="select_data" label="name" class="w-min-120 p-3 border-grey no-border-right no-border-right-radius border-width bg-white" labelClasses="text-no-wrap" v-model="input.search.type"/>
 			<autocomplete class="flex-fill" input_classes="no-border-left-radius border-grey" v-model="input.search.query" :submit_method="search"/>
@@ -19,6 +19,8 @@
 
 	import {selectData} from '../../../../../mixins/search'
 	import {goTo} from '../../../../../mixins/goTo'
+	import validate from '../../../../../mixins/validate'
+	import warn from '../../../../../mixins/warn'
 	export default{
 		props:{
 			maximum:{
@@ -28,7 +30,7 @@
 				}
 			}
 		},
-		mixins:[selectData,goTo],
+		mixins:[selectData,goTo,validate,warn],
 		components:{
 			SelectDiv,
 			autocomplete
@@ -48,13 +50,23 @@
 			search(){
 				let options=[];
 				let query='';
-				this.inputs.forEach(input=>{
+				let valid=0;
+				for(let i=0;i<this.inputs.length;i++){
+					let input=this.inputs[i];
 					let option={}
 					
 					option.key=input.search.type.key
-					option.value=input.search.query
+					option.value=input.search.query || ''
 					option.operator=input.operator
 					
+					if(this.validate(option.value)){
+						this.warn(i,false);
+					}
+					else{
+						this.warn(i,true);
+						valid+=1;
+					}
+
 					if(option.operator){
 						query+=this.$t(option.operator).toLowerCase() + ' '
 					}
@@ -62,20 +74,22 @@
 
 
 					options.push(option);
-				});
+
+				}
 				let request={
 					search_options:options
 				};
-				this.$store.commit('setFullPageLoading',true);
-				this.$http.post('media/search',request).then(response=>{
-					this.$store.dispatch('setSearches',response);
-					this.$store.commit('setQuery','"'+query+'"')
-					this.$store.commit('setSearchRequest',options);
-					this.$store.commit('setFullPageLoading',false);
-					this.$store.commit('setSearching',true)
-					this.goTo('search');
-				})
-
+				if(valid<=0){
+					this.$store.commit('setFullPageLoading',true);
+					this.$http.post('media/search',request).then(response=>{
+						this.$store.dispatch('setSearches',response);
+						this.$store.commit('setQuery','"'+query+'"')
+						this.$store.commit('setSearchRequest',options);
+						this.$store.commit('setFullPageLoading',false);
+						this.$store.commit('setSearching',true)
+						this.goTo('search');
+					})
+				}
 			},
 			clear(){
 				this.inputs=[{search:{}},{search:{},operator:'and'}];

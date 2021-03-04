@@ -57,9 +57,7 @@
 						rect.style.left=rect.offsetWidth*this.wrapperIndex+'px';
 					}
 				}
-				catch(e){
-					console.error(e);
-				}
+				catch(e){}
 			},
 			moveNext(){
 				this.getResults(this.data.current_page+1);
