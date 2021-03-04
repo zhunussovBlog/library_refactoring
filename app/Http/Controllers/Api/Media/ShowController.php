@@ -47,7 +47,7 @@ class ShowController extends Controller
     {
         $fullInfo = [];
 
-        $nodes = $nodes = DB::table(DB::raw("lib_bibliographic_info bi, XMLTABLE('//Nodes/Node' PASSING XMLTYPE(bi.XML_DATA)) xt"))
+        $nodes = $nodes = DB::table(DB::raw("lib_bibliographic_info bi, XMLTABLE('//Nodes/Node' PASSING bi.XML_DATA) xt"))
             ->select('xt.*')->where('bi.' . $keyName, $id)->get()->toArray();
 
         foreach ($nodes as $node) {
