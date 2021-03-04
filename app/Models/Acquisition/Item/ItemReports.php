@@ -69,4 +69,27 @@ trait ItemReports
                                         from lib_user_cards u where u.user_cid = l.user_cid) as username"))
             ->leftJoin('lib_loans as l', 'i.inv_id', '=', 'l.inv_id');
     }
+
+    public static function barcodeQuery(): Builder
+    {
+        return static::query()->select('i.barcode', 'i.inv_id as id',
+            DB::raw("(case when i.book_id is not null
+                                then (select a.name||' '||a.surname
+                                        from lib_book_authors a where a.is_main = 1 and a.book_id = i.book_id)
+                                when i.j_issue_id is not null
+                                then (select a.name||' '||a.surname
+                                        from lib_book_authors a where a.is_main = 1 and a.j_issue_id = i.j_issue_id)
+                                when i.disc_id is not null
+                                then (select a.name||' '||a.surname
+                                        from lib_book_authors a where a.is_main = 1 and a.disc_id = i.disc_id)
+                                         end) as author"),
+            DB::raw("(case when i.book_id is not null
+                                then (select b.title from lib_books b where b.book_id = i.book_id)
+                                when i.j_issue_id is not null
+                                then (select j.title from lib_journals j
+                                        left join lib_journal_issues ji on j.journal_id = ji.journal_id
+                                        where ji.j_issue_id = i.j_issue_id)
+                                when i.disc_id is not null
+                                then (select d.name from lib_discs d where d.disc_id = i.disc_id) end) as title"));
+    }
 }
