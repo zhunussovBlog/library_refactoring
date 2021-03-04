@@ -13,14 +13,14 @@ export default{
 	},
 	methods:{
 		logout(){
-			this.$store.commit('setLoading',true);
+			this.$store.commit('setFullPageLoading',true);
 			this.$http.get('logout').then(response=>{
 				this.$store.dispatch('logout');
 				this.message_success('logout',response);
 			}).catch(error=>{
 				this.message_error('logout',error);
 			}).then(()=>{
-				this.$store.commit('setLoading',false);
+				this.$store.commit('setFullPageLoading',false);
 			})
 		}
 	}

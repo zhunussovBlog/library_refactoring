@@ -21,7 +21,7 @@
 		},
 		methods:{
 			login(){
-				this.$store.commit('setLoading',true);
+				this.$store.commit('setFullPageLoading',true);
 				this.$http.post('login', this.request).then(response=>{
 					this.$store.dispatch('login',response.data.res);
 					this.message_success('login',response);
@@ -29,7 +29,7 @@
 				}).catch(error=>{
 					this.message_error('login',error);
 				}).then(()=>{
-					this.$store.commit('setLoading',false);
+					this.$store.commit('setFullPageLoading',false);
 				});
 			}
 		}

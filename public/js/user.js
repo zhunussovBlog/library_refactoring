@@ -2055,9 +2055,7 @@ __webpack_require__.r(__webpack_exports__);
     if (!this.value) {
       try {
         this.$emit('change', this.data[0]);
-      } catch (e) {
-        console.error(e);
-      }
+      } catch (e) {}
     }
   }
 });
@@ -2146,9 +2144,7 @@ __webpack_require__.r(__webpack_exports__);
         var child = this.$refs['line'];
         child.style.left = parent.offsetLeft + 'px';
         child.style.width = parent.offsetWidth + 'px';
-      } catch (error) {
-        console.error(error);
-      }
+      } catch (error) {}
     },
     setActive: function setActive(index) {
       this.activeTab = index;
@@ -2389,6 +2385,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _search__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./search */ "./resources/js/user/views/Search/search/index.vue");
 /* harmony import */ var _results__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./results */ "./resources/js/user/views/Search/results/index.vue");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -2398,11 +2401,13 @@ __webpack_require__.r(__webpack_exports__);
 // components
 
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
     search: _search__WEBPACK_IMPORTED_MODULE_0__.default,
     results: _results__WEBPACK_IMPORTED_MODULE_1__.default
-  }
+  },
+  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_2__.mapGetters)(['searching']))
 });
 
 /***/ }),
@@ -2450,10 +2455,45 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     Checkbox: _components_checkbox__WEBPACK_IMPORTED_MODULE_0__.default
   },
+  props: {
+    data: Object
+  },
   data: function data() {
     return {
       image: ''
     };
+  },
+  watch: {
+    'data': function data(newValue, oldValue) {
+      this.getBookImage();
+    }
+  },
+  methods: {
+    getBookImage: function getBookImage() {
+      var _this = this;
+
+      // we use fetch() because there's cors mistake when use this.$http
+      fetch("https://www.googleapis.com/books/v1/volumes?q=isbn:" + this.data.isbn).then(function (response) {
+        response.json().then(function (data) {
+          try {
+            _this.image = data.items[0].volumeInfo.imageLinks.thumbnail;
+          } catch (e) {
+            fetch("https://www.googleapis.com/books/v1/volumes?q=isbn:0" + _this.data.isbn).then(function (response) {
+              response.json().then(function (data) {
+                try {
+                  _this.image = data.items[0].volumeInfo.imageLinks.thumbnail;
+                } catch (e) {
+                  _this.image = '';
+                }
+              });
+            });
+          }
+        });
+      });
+    }
+  },
+  created: function created() {
+    this.getBookImage();
   }
 });
 
@@ -2472,6 +2512,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _components_select__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../components/select */ "./resources/js/user/components/select.vue");
 /* harmony import */ var _components_checkbox__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../components/checkbox */ "./resources/js/user/components/checkbox.vue");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _mixins_search__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../mixins/search */ "./resources/js/user/mixins/search.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -2496,6 +2544,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+
+
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -2503,10 +2555,68 @@ __webpack_require__.r(__webpack_exports__);
     SelectDiv: _components_select__WEBPACK_IMPORTED_MODULE_0__.default,
     Checkbox: _components_checkbox__WEBPACK_IMPORTED_MODULE_1__.default
   },
-  data: function data() {
-    return {
-      data: [1, 2, 3, 4, 5]
-    };
+  mixins: [_mixins_search__WEBPACK_IMPORTED_MODULE_2__.filters],
+  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapGetters)(['filter_data', 'filter_search', 'search_request'])), {}, {
+    years: function years() {
+      var all = [{
+        name: 'all',
+        value: ''
+      }];
+      var years = this.filter_data.year.map(function (year) {
+        return {
+          name: year,
+          value: year
+        };
+      });
+      return all.concat(years);
+    }
+  }),
+  methods: {
+    checkType: function checkType(type) {
+      var filter = this.filter_search;
+
+      if (filter.types.some(function (e) {
+        return e.value == type.value;
+      })) {
+        filter.types = filter.types.filter(function (item) {
+          return item.value !== type.value;
+        });
+      } else {
+        filter.types.push(type);
+      }
+    },
+    checkLang: function checkLang(lang) {
+      var filter = this.filter_search;
+
+      if (filter.languages.some(function (e) {
+        return e == lang;
+      })) {
+        filter.languages = filter.languages.filter(function (item) {
+          return item !== lang;
+        });
+      } else {
+        filter.languages.push(lang);
+      }
+    },
+    apply: function apply() {
+      var _this = this;
+
+      this.$store.commit('setFullPageLoading', true);
+      var search = this.search_request;
+      var request = {
+        search_options: search
+      };
+      this.setFilters(request);
+      this.$http.post('media/search', request).then(function (response) {
+        _this.$store.commit('setResults', response.data.res);
+
+        _this.$store.commit('setFullPageLoading', false);
+      });
+    }
+  },
+  created: function created() {
+    console.log(this.filter_data);
+    console.log(this.filter_search);
   }
 });
 
@@ -2525,6 +2635,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _assets_icons_RightLittle__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../assets/icons/RightLittle */ "./resources/js/user/assets/icons/RightLittle.vue");
 /* harmony import */ var _assets_icons_RightLong__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../assets/icons/RightLong */ "./resources/js/user/assets/icons/RightLong.vue");
+/* harmony import */ var _mixins_search__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../mixins/search */ "./resources/js/user/mixins/search.js");
 function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -2556,161 +2667,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-// icons
+
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -2718,13 +2675,17 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     RightLittle: _assets_icons_RightLittle__WEBPACK_IMPORTED_MODULE_0__.default,
     RightLong: _assets_icons_RightLong__WEBPACK_IMPORTED_MODULE_1__.default
   },
+  mixins: [_mixins_search__WEBPACK_IMPORTED_MODULE_2__.filters],
   computed: {
     pages: function pages() {
-      var range = 5;
+      var range = this.data.last_page > 5 ? window.innerWidth > 500 ? 5 : 4 : this.data.last_page;
       return this.paginate(range);
     },
+    data: function data() {
+      return this.$store.getters.results;
+    },
     wrapperIndex: function wrapperIndex() {
-      return 3;
+      return this.$store.getters.wrapper_index;
     }
   },
   data: function data() {
@@ -2764,30 +2725,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       var _this = this;
 
       if (!(page > this.data.last_page || page < 1)) {
-        this.$store.commit('setLoading', true);
-        var filtering = this.$store.state.filtering;
-        var search = '';
-
-        if (filtering) {
-          search = 'filter';
-        } else {
-          search = this.$store.state.search_type;
-        }
-
-        this.$http.post('media/search/' + search, {
-          page: page
-        }).then(function (response) {
+        this.$store.commit('setFullPageLoading', true);
+        var search = this.$store.getters.search_request;
+        var request = {
+          search_options: search
+        };
+        this.setFilters(request);
+        request.page = page;
+        this.$http.post('media/search', request).then(function (response) {
           _this.$store.commit('setResults', response.data.res);
 
-          _this.$store.commit('setLoading', false);
+          _this.$store.commit('setFullPageLoading', false);
         });
       }
     },
     paginate: function paginate(range) {
       // found this code in internet 
       // https://codereview.stackexchange.com/questions/183417/pagination-algorithm-in-js
-      var currentPage = 0;
-      var totalPages = 12;
+      var currentPage = this.data.current_page;
+      var totalPages = this.data.last_page;
       var start = 1;
       var paging = [];
 
@@ -2835,6 +2791,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_book_card__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/book_card */ "./resources/js/user/views/Search/results/components/book_card.vue");
 /* harmony import */ var _components_pagination__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/pagination */ "./resources/js/user/views/Search/results/components/pagination.vue");
 /* harmony import */ var _components_checkbox__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../components/checkbox */ "./resources/js/user/components/checkbox.vue");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -2865,6 +2828,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 
@@ -2875,7 +2839,8 @@ __webpack_require__.r(__webpack_exports__);
     BookCard: _components_book_card__WEBPACK_IMPORTED_MODULE_1__.default,
     Pagination: _components_pagination__WEBPACK_IMPORTED_MODULE_2__.default,
     Checkbox: _components_checkbox__WEBPACK_IMPORTED_MODULE_3__.default
-  }
+  },
+  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_4__.mapGetters)(['query', 'results']))
 });
 
 /***/ }),
@@ -3158,6 +3123,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _components_select__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../../components/select */ "./resources/js/user/components/select.vue");
 /* harmony import */ var _components_autocomplete__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/autocomplete */ "./resources/js/user/views/Search/search/components/autocomplete.vue");
+/* harmony import */ var _mixins_goTo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../mixins/goTo */ "./resources/js/user/mixins/goTo.js");
 //
 //
 //
@@ -3166,6 +3132,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+// components
+
+ // mixins
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -3173,11 +3142,34 @@ __webpack_require__.r(__webpack_exports__);
     SelectDiv: _components_select__WEBPACK_IMPORTED_MODULE_0__.default,
     autocomplete: _components_autocomplete__WEBPACK_IMPORTED_MODULE_1__.default
   },
+  mixins: [_mixins_goTo__WEBPACK_IMPORTED_MODULE_2__.goTo],
+  computed: {
+    select_data: function select_data() {
+      var types = [{
+        key: 'all',
+        name: 'all_search'
+      }, {
+        key: 'title',
+        name: 'title'
+      }, {
+        key: 'author',
+        name: 'author'
+      }, {
+        key: 'publisher',
+        name: 'publisher'
+      }, {
+        key: 'isbn',
+        name: 'isbn'
+      }, {
+        key: 'call_number',
+        name: 'call_number'
+      }];
+      this.type = types[0];
+      return types;
+    }
+  },
   data: function data() {
     return {
-      select_data: [{
-        key: 'default'
-      }],
       query: '',
       type: '',
       autocomplete_results: []
@@ -3208,20 +3200,35 @@ __webpack_require__.r(__webpack_exports__);
         }
       }
     },
-    getSearchFields: function getSearchFields() {
+    search: function search() {
       var _this2 = this;
 
-      this.$http.get('media/search-fields').then(function (response) {
-        _this2.select_data = response.data.res.search_options;
-        _this2.type = _this2.select_data[0];
+      var key = this.type.key;
+      var query = this.query;
+      var options = [{
+        key: key,
+        value: query
+      }];
+      var request = {
+        search_options: options
+      };
+      this.$store.commit('setFullPageLoading', true);
+      this.$http.post('media/search', request).then(function (response) {
+        _this2.$store.dispatch('setSearches', response);
+
+        _this2.$store.commit('setQuery', '"' + _this2.$t(key) + ' : ' + query + '"');
+
+        _this2.$store.commit('setSearchRequest', options);
+
+        _this2.$store.commit('setSearchMethod', 'simple');
+
+        _this2.$store.commit('setFullPageLoading', false);
+
+        _this2.$store.commit('setSearching', true);
+
+        _this2.goTo('search');
       });
-    },
-    search: function search() {
-      this.results_shown = false;
     }
-  },
-  created: function created() {
-    this.getSearchFields();
   }
 });
 
@@ -3570,7 +3577,7 @@ __webpack_require__.r(__webpack_exports__);
     login: function login() {
       var _this = this;
 
-      this.$store.commit('setLoading', true);
+      this.$store.commit('setFullPageLoading', true);
       this.$http.post('login', this.request).then(function (response) {
         _this.$store.dispatch('login', response.data.res);
 
@@ -3580,7 +3587,7 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         _this.message_error('login', error);
       }).then(function () {
-        _this.$store.commit('setLoading', false);
+        _this.$store.commit('setFullPageLoading', false);
       });
     }
   }
@@ -3624,8 +3631,8 @@ __webpack_require__.r(__webpack_exports__);
   "Mixed materials": "Mixed materials",
   "Music": "Music",
   "SDU": "Suleyman Demirel University",
-  "SDUaddress": "Office B109, 1/1 Abylaikhana St.",
-  "SDUlibrary": " Suleyman Demirel University scientific library",
+  "SDUaddress": "Office B109, Abylaikhana St. 1/1",
+  "SDUlibrary": "SDU Scientific Library",
   "SDUphone": "{phone} (Int. 115)",
   "Visual materials": "Visual materials",
   "about": "About",
@@ -3633,7 +3640,8 @@ __webpack_require__.r(__webpack_exports__);
   "advanced_search_capital": "Advanced Search",
   "all": "All",
   "allRightsReserved": "{year}, All rights reserved",
-  "all_by": "everywhere",
+  "all_search": "Keywords",
+  "all_search_by": "by keywords",
   "and": "And",
   "apply": "Apply",
   "ask_a_librarian": "Ask a librarian",
@@ -3643,7 +3651,7 @@ __webpack_require__.r(__webpack_exports__);
   "author": "Author(s)",
   "author_by": "by author",
   "authors": "Author",
-  "availability": "available",
+  "availability": "{num }available",
   "back": "Back",
   "books&media": "General collection",
   "call_number": "Call number",
@@ -3683,6 +3691,7 @@ __webpack_require__.r(__webpack_exports__);
   "login_portal": "Login with portal",
   "login_username": "Enter your ID / Username",
   "logout": "Logout",
+  "monday-friday": "Monday - Friday: 9:00 am - 6:00 pm",
   "my_books": "My books",
   "my_reserves": "My reserves",
   "no_books": "No books yet :-(",
@@ -3700,11 +3709,11 @@ __webpack_require__.r(__webpack_exports__);
   "quick_links": {
     "title": "Quick links",
     "az": "A-Z Databases",
-    "bookpurchase": "Recommend a title",
-    "askus": "Ask a librarian",
+    "bookpurchase": "Recommend a Title",
+    "askus": "Ask a Librarian",
     "ill": "Interlibrary Loan",
-    "booking": "Book a space",
-    "appointments": "An appointment with a librarian",
+    "booking": "Book a Space",
+    "appointments": "An Appointment With a Librarian",
     "subject": "Subject Librarians",
     "digest": "Library Digest",
     "moodle": "Moodle Course"
@@ -3800,16 +3809,17 @@ __webpack_require__.r(__webpack_exports__);
   "Mixed materials": "Аралас материалдар",
   "Music": "Музыка",
   "SDU": "Сулейман Демирель атындағы Университеті",
-  "SDUaddress": "B109 кеңсе, Абылайхан көшесі, 1/1",
-  "SDUlibrary": "СДУ ғылыми кітапханасы",
+  "SDUaddress": "B109 кеңсе, Абылайхан көшесі 1/1",
+  "SDUlibrary": "СДУ Ғылыми Кітапханасы",
   "SDUphone": "{phone} (қосымша 115)",
   "Visual materials": "Көрнекі материалдар",
   "about": "Біз туралы",
   "advanced_search": "Кеңейтілген іздеу",
   "advanced_search_capital": "Кеңейтілген Іздеу",
-  "all": "Барлық",
+  "all": "Бәрі",
   "allRightsReserved": "{year}, Барлық құқықтар қорғалған",
-  "all_by": "Бүкіл жерде",
+  "all_search": "Кілт сөздер",
+  "all_search_by": "Кілт сөздер арқылы",
   "and": "Және",
   "apply": "Растау",
   "ask_a_librarian": "Кітапханашыдан сұраңыз",
@@ -3819,7 +3829,7 @@ __webpack_require__.r(__webpack_exports__);
   "author": "Авторы",
   "author_by": "Авторымен",
   "authors": "Авторы",
-  "availability": "қол жетімді",
+  "availability": "{num} қол жетімді",
   "back": "Артқа",
   "books&media": "Жалпы коллекция",
   "call_number": "Нөмірі",
@@ -3859,6 +3869,7 @@ __webpack_require__.r(__webpack_exports__);
   "login_portal": "Портал арқылы кіру",
   "login_username": "Қолданушы атын немесе ID енгізіңіз",
   "logout": "Шығу",
+  "monday-friday": "Дүйсенбі - Жұма: 9:00 - 18:00",
   "my_books": "Менің кітаптарым",
   "my_reserves": "Менің тапсырыстарым",
   "no_books": "Әлі кітап жоқ :-(",
@@ -3877,8 +3888,8 @@ __webpack_require__.r(__webpack_exports__);
     "title": "Жылдам сілтемелер",
     "az": "Деректер Қоры",
     "bookpurchase": "Кітапханаға Тапсырыс",
-    "askus": "Кітапханашыдан сұраңыз",
-    "ill": "Кітапхана аралық Абонемент",
+    "askus": "Кітапханашыдан Сұраңыз",
+    "ill": "Кітапханааралық Абонемент",
     "booking": "Бос Орын Резервтеу",
     "appointments": "Кітапханашымен Жеке Сұхбат",
     "subject": "Пәндік Кітапханашы",
@@ -3941,8 +3952,8 @@ __webpack_require__.r(__webpack_exports__);
   "Mixed materials": "Смешанные материалы",
   "Music": "Музыка",
   "SDU": "Университет имени Сулеймана Демиреля",
-  "SDUaddress": "Офис B109, улица Абылайхана, 1/1",
-  "SDUlibrary": "Научная библиотека СДУ",
+  "SDUaddress": "Офис B109, улица Абылайхана 1/1",
+  "SDUlibrary": "Научная Библиотека СДУ",
   "SDUphone": "{phone} (внутр.115)",
   "Visual materials": "Визуальные материалы",
   "about": "О нас",
@@ -3950,7 +3961,8 @@ __webpack_require__.r(__webpack_exports__);
   "advanced_search_capital": "Расширенный Поиск",
   "all": "Все",
   "allRightsReserved": "{year}, Все права защищены",
-  "all_by": "везде",
+  "all_search": "Ключевые слова",
+  "all_search_by": "по ключевым словам",
   "and": "И",
   "apply": "Подтвердить",
   "ask_a_librarian": "Спросите библиотекаря",
@@ -3960,7 +3972,7 @@ __webpack_require__.r(__webpack_exports__);
   "author": "Автор(ы)",
   "author_by": "по автору",
   "authors": "Автор",
-  "availability": "доступно",
+  "availability": "Доступно {num}",
   "back": "Назад",
   "books&media": "Общая коллекция",
   "call_number": "Номер",
@@ -4000,6 +4012,7 @@ __webpack_require__.r(__webpack_exports__);
   "login_portal": "Войти с помощью портала",
   "login_username": "Введите имя пользователя или ID",
   "logout": "Выйти",
+  "monday-friday": "Понедельник - Пятница: 9:00 - 18:00",
   "my_books": "Мои книги",
   "my_reserves": "Мои резервы",
   "no_books": "Книг пока нет :-(",
@@ -4018,7 +4031,7 @@ __webpack_require__.r(__webpack_exports__);
     "title": "Быстрые ссылки",
     "az": "Базы Данных",
     "bookpurchase": "Рекомендую Библиотеке",
-    "askus": "Спросите библиотекаря",
+    "askus": "Спросите Библиотекаря",
     "ill": "Межбиблиотечный Абонемент",
     "booking": "Резерв Места",
     "appointments": "Консультация с Библиотекарем",
@@ -4286,6 +4299,58 @@ __webpack_require__.r(__webpack_exports__);
     }
   }
 });
+
+/***/ }),
+
+/***/ "./resources/js/user/mixins/search.js":
+/*!********************************************!*\
+  !*** ./resources/js/user/mixins/search.js ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "filters": () => (/* binding */ filters)
+/* harmony export */ });
+var filters = {
+  methods: {
+    setFilters: function setFilters(request) {
+      var filter = this.$store.getters.filter_search;
+      var filters = [];
+
+      if (filter.types.length > 0) {
+        var types = [{
+          key: 'type_key',
+          value: filter.types.map(function (type) {
+            return type.value;
+          })
+        }];
+        filters = filters.concat(types);
+      }
+
+      if (filter.languages.length > 0) {
+        var languages = [{
+          key: 'language',
+          value: filter.languages
+        }];
+        filters = filters.concat(languages);
+      }
+
+      if (filter.year.value != '') {
+        var year = [{
+          key: 'year',
+          value: filter.year.value
+        }];
+        filters = filters.concat(year);
+      }
+
+      if (filters.length > 0) {
+        request.filter = filters;
+      }
+    }
+  }
+};
 
 /***/ }),
 
@@ -4566,7 +4631,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  setLoading: function setLoading(state, data) {
+  setFullPageLoading: function setFullPageLoading(state, data) {
     state.loading = data;
   }
 });
@@ -4609,6 +4674,12 @@ __webpack_require__.r(__webpack_exports__);
       languages: [],
       years: ''
     };
+  },
+  setSearches: function setSearches(_ref2, response) {
+    var commit = _ref2.commit;
+    commit('setResults', response.data.res);
+    commit('setFilter', response.data.filter);
+    commit('setAllData', response.data.all);
   }
 });
 
@@ -4652,6 +4723,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   search_method: function search_method(state) {
     return state.search_method;
+  },
+  wrapper_index: function wrapper_index(state) {
+    return state.wrapper_index;
   }
 });
 
@@ -4724,6 +4798,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   setAllData: function setAllData(state, data) {
     state.all_results = data;
+  },
+  setWrapperIndex: function setWrapperIndex(state, data) {
+    state.wrapper_index = data;
   }
 });
 
@@ -4741,19 +4818,30 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  // request to delete in autocomplete
   request: {},
+  // request u make when searching
   search_request: [],
+  // query u show u were looking for in searching page
   query: '',
+  // boolean that shows if ur searching ( in search page books appear only if ur searching)
   searching: false,
+  // actual search results
   results: {},
+  // all results u get from da search ( needed for export excel )
   all_results: [],
+  // all filter results
   filter_data: {},
+  // filters u wanna apply when search
   filter_search: {
     types: [],
     languages: [],
     year: ''
   },
-  search_method: 'simple'
+  // searching method ( simple or advanced (used for filter) )
+  search_method: 'simple',
+  // position of square in pagination 
+  wrapper_index: 0
 });
 
 /***/ }),
@@ -4852,7 +4940,7 @@ __webpack_require__.r(__webpack_exports__);
     logout: function logout() {
       var _this = this;
 
-      this.$store.commit('setLoading', true);
+      this.$store.commit('setFullPageLoading', true);
       this.$http.get('logout').then(function (response) {
         _this.$store.dispatch('logout');
 
@@ -4860,7 +4948,7 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         _this.message_error('logout', error);
       }).then(function () {
-        _this.$store.commit('setLoading', false);
+        _this.$store.commit('setFullPageLoading', false);
       });
     }
   }
@@ -14866,7 +14954,7 @@ var render = function() {
     [
       _c("search", { staticClass: "padding mt-5 py-4" }),
       _vm._v(" "),
-      _c("results", { staticClass: "mt-5 py-4" })
+      _vm.searching ? _c("results", { staticClass: "mt-5 py-4" }) : _vm._e()
     ],
     1
   )
@@ -14901,23 +14989,70 @@ var render = function() {
       [
         _c("checkbox"),
         _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "image rounded bg-grey mt-3",
-            style: "background-image: url(" + this.image + ")"
-          },
-          [_vm._v("IMAGE")]
-        )
+        _c("div", {
+          staticClass: "image rounded bg-grey mt-3",
+          style: "background-image: url(" + this.image + ")"
+        })
       ],
       1
     ),
     _vm._v(" "),
-    _vm._m(0),
+    _c("div", { staticClass: "flex-grow-1" }, [
+      _c("div", { staticClass: "d-flex text-center text-blue" }, [
+        _vm.data.type
+          ? _c("div", { staticClass: "rounded-lg bg-lightblue p-1 px-3" }, [
+              _vm._v(_vm._s(_vm.$t(_vm.data.type)))
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.data.call_number
+          ? _c(
+              "div",
+              { staticClass: "rounded-lg bg-lightblue p-1 px-3 ml-3" },
+              [_vm._v(_vm._s(_vm.data.call_number))]
+            )
+          : _vm._e()
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass:
+            "mt-3 overflow-hidden title font-weight-bold font-size-24"
+        },
+        [_vm._v(_vm._s(_vm.data.title))]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "text-grey mt-2" }, [
+        _vm.data.author
+          ? _c("div", [
+              _vm._v(_vm._s(_vm.$t("author")) + ": " + _vm._s(_vm.data.author))
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.data.publisher
+          ? _c("div", [
+              _vm._v(
+                _vm._s(_vm.$t("publisher")) + ": " + _vm._s(_vm.data.publisher)
+              )
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.data.year
+          ? _c("div", [
+              _vm._v(_vm._s(_vm.$t("year")) + ": " + _vm._s(_vm.data.year))
+            ])
+          : _vm._e()
+      ])
+    ]),
     _vm._v(" "),
     _c("div", { staticClass: "text-center col-2 px-0" }, [
       _c("div", { staticClass: "bg-lightgrey rounded-lg p-2 text-no-wrap" }, [
-        _vm._v("\n\t\t\t" + _vm._s(_vm.$t("available", { num: 0 })) + "\n\t\t")
+        _vm._v(
+          "\n\t\t\t" +
+            _vm._s(_vm.$t("availability", { num: _vm.data.availability })) +
+            "\n\t\t"
+        )
       ]),
       _vm._v(" "),
       _c(
@@ -14930,41 +15065,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "flex-grow-1" }, [
-      _c("div", { staticClass: "d-flex text-center text-blue" }, [
-        _c("div", { staticClass: "rounded-lg bg-lightblue p-1 px-3 " }, [
-          _vm._v("Type")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "rounded-lg bg-lightblue p-1 px-3 ml-3" }, [
-          _vm._v("Call number")
-        ])
-      ]),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass:
-            "mt-3 overflow-hidden title font-weight-bold font-size-24"
-        },
-        [_vm._v("titlteti kdafj l;akj f adsj fasdl;kfj a;ldk")]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "text-grey mt-2" }, [
-        _c("div", [_vm._v("Author")]),
-        _vm._v(" "),
-        _c("div", [_vm._v("Publisher")]),
-        _vm._v(" "),
-        _c("div", [_vm._v("Year")])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -14999,27 +15100,67 @@ var render = function() {
         _vm._v(_vm._s(_vm.$t("types")) + " :")
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "d-flex justify-content-between mt-1" }, [
-        _c("div", [_vm._v("Types")]),
-        _vm._v(" "),
-        _c("div", [_c("checkbox")], 1)
-      ]),
+      _vm._l(_vm.filter_data.type_key, function(type, index) {
+        return _c(
+          "div",
+          { staticClass: "d-flex justify-content-between mt-1" },
+          [
+            _c("div", [_vm._v(_vm._s(_vm.$t(type.title)))]),
+            _vm._v(" "),
+            _c(
+              "div",
+              [
+                _c("checkbox", {
+                  attrs: {
+                    checked: _vm.filter_search.types.some(function(e) {
+                      return e.value == type.value
+                    })
+                  },
+                  on: {
+                    change: function($event) {
+                      return _vm.checkType(type)
+                    }
+                  }
+                })
+              ],
+              1
+            )
+          ]
+        )
+      }),
       _vm._v(" "),
       _c("div", { staticClass: "text-grey font-size-14 mt-3" }, [
         _vm._v(_vm._s(_vm.$t("languages")) + " :")
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "d-flex justify-content-between mt-1" }, [
-        _c("div", [_vm._v("Languages")]),
-        _vm._v(" "),
-        _c("div", [_c("checkbox")], 1)
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "d-flex justify-content-between mt-1" }, [
-        _c("div", [_vm._v("Types")]),
-        _vm._v(" "),
-        _c("div", [_c("checkbox")], 1)
-      ]),
+      _vm._l(_vm.filter_data.language, function(lang, index) {
+        return _c(
+          "div",
+          { staticClass: "d-flex justify-content-between mt-1" },
+          [
+            _c("div", [_vm._v(_vm._s(_vm.$t(lang)))]),
+            _vm._v(" "),
+            _c(
+              "div",
+              [
+                _c("checkbox", {
+                  attrs: {
+                    checked: _vm.filter_search.languages.some(function(e) {
+                      return e == lang
+                    })
+                  },
+                  on: {
+                    change: function($event) {
+                      return _vm.checkLang(lang)
+                    }
+                  }
+                })
+              ],
+              1
+            )
+          ]
+        )
+      }),
       _vm._v(" "),
       _c("div", { staticClass: "text-grey font-size-14 mt-3" }, [
         _vm._v(_vm._s(_vm.$t("year")) + " :")
@@ -15031,16 +15172,33 @@ var render = function() {
         [
           _c("select-div", {
             staticClass: "p-2 bg-white",
-            attrs: { data: _vm.data }
+            attrs: { data: _vm.years, label: "name" },
+            model: {
+              value: _vm.filter_search.year,
+              callback: function($$v) {
+                _vm.$set(_vm.filter_search, "year", $$v)
+              },
+              expression: "filter_search.year"
+            }
           })
         ],
         1
       ),
       _vm._v(" "),
-      _c("button", { staticClass: "mt-3 w-100 bg-white text-orange" }, [
-        _vm._v(_vm._s(_vm.$t("apply")))
-      ])
-    ]
+      _c(
+        "button",
+        {
+          staticClass: "mt-3 w-100 bg-white text-orange",
+          on: {
+            click: function($event) {
+              return _vm.apply()
+            }
+          }
+        },
+        [_vm._v(_vm._s(_vm.$t("apply")))]
+      )
+    ],
+    2
   )
 }
 var staticRenderFns = []
@@ -15074,7 +15232,24 @@ var render = function() {
           "d-flex align-items-center bg-lightgrey rounded px-3 mr-3 mt-1"
       },
       [
-        _c("div", [_c("right-little", { staticClass: "rotate" })], 1),
+        _c(
+          "div",
+          {
+            class: { "cursor-pointer": _vm.data.current_page != 1 },
+            on: {
+              click: function($event) {
+                return _vm.movePrev()
+              }
+            }
+          },
+          [
+            _c("right-little", {
+              staticClass: "rotate",
+              class: { "color-gray": _vm.data.current_page == 1 }
+            })
+          ],
+          1
+        ),
         _vm._v(" "),
         _c(
           "div",
@@ -15086,15 +15261,45 @@ var render = function() {
             _c("div", { staticClass: "wrapper wrapperRect transition" }),
             _vm._v(" "),
             _vm._l(_vm.pages, function(page, index) {
-              return _c("div", { key: index, staticClass: "wrapper" }, [
-                _vm._v(_vm._s(page))
-              ])
+              return _c(
+                "div",
+                {
+                  key: index,
+                  staticClass: "wrapper",
+                  on: {
+                    click: function($event) {
+                      return _vm.getResults(page)
+                    }
+                  }
+                },
+                [_vm._v(_vm._s(page))]
+              )
             })
           ],
           2
         ),
         _vm._v(" "),
-        _c("div", [_c("right-little")], 1)
+        _c(
+          "div",
+          {
+            class: {
+              "cursor-pointer": _vm.data.current_page != _vm.data.last_page
+            },
+            on: {
+              click: function($event) {
+                return _vm.moveNext()
+              }
+            }
+          },
+          [
+            _c("right-little", {
+              class: {
+                "color-gray": _vm.data.current_page == _vm.data.last_page
+              }
+            })
+          ],
+          1
+        )
       ]
     ),
     _vm._v(" "),
@@ -15108,36 +15313,48 @@ var render = function() {
           _vm._v("\n\t\t\t" + _vm._s(_vm.$t("to_page")) + " :\n\t\t")
         ]),
         _vm._v(" "),
-        _c("form", { staticClass: "d-flex align-items-center ml-2" }, [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.inputPage,
-                expression: "inputPage"
-              }
-            ],
-            staticClass: "rounded border border-darkgrey text-darkgrey",
-            attrs: { type: "text" },
-            domProps: { value: _vm.inputPage },
+        _c(
+          "form",
+          {
+            staticClass: "d-flex align-items-center ml-2",
             on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.inputPage = $event.target.value
+              submit: function($event) {
+                $event.preventDefault()
+                return _vm.getResults(_vm.inputPage)
               }
             }
-          }),
-          _vm._v(" "),
-          _c(
-            "button",
-            { staticClass: "text-black ml-3", attrs: { type: "submit" } },
-            [_c("right-long")],
-            1
-          )
-        ])
+          },
+          [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.inputPage,
+                  expression: "inputPage"
+                }
+              ],
+              staticClass: "rounded border border-darkgrey text-darkgrey",
+              attrs: { type: "text" },
+              domProps: { value: _vm.inputPage },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.inputPage = $event.target.value
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c(
+              "button",
+              { staticClass: "text-black ml-3", attrs: { type: "submit" } },
+              [_c("right-long")],
+              1
+            )
+          ]
+        )
       ]
     )
   ])
@@ -15166,12 +15383,26 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("div", { staticClass: "padding font-weight-bold font-size-24" }, [
-      _vm._v("\n\t\t" + _vm._s(_vm.$t("results_for")) + "\n\t")
+    _c("div", { staticClass: "d-flex padding font-weight-bold font-size-24" }, [
+      _c("span", [_vm._v(_vm._s(_vm.$t("results_for")) + ": ")]),
+      _vm._v(" "),
+      _c("span", { staticClass: "text-orange ml-2" }, [
+        _vm._v(_vm._s(_vm.query))
+      ])
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "padding bg-lightgrey d-flex mt-3 py-3" }, [
-      _c("div", { staticClass: "filter-width" }),
+      _c("div", { staticClass: "d-flex align-items-center filter-width" }, [
+        _c("span", [
+          _vm._v(
+            _vm._s(_vm.results.total) + " " + _vm._s(_vm.$t("results")) + ","
+          )
+        ]),
+        _vm._v(" "),
+        _c("span", { staticClass: "ml-2" }, [
+          _vm._v(_vm._s(_vm.results.last_page) + " " + _vm._s(_vm.$t("pages")))
+        ])
+      ]),
       _vm._v(" "),
       _c("div", { staticClass: "d-flex justify-content-between flex-fill" }, [
         _c(
@@ -15201,19 +15432,13 @@ var render = function() {
           "div",
           { staticClass: "flex-grow-1" },
           [
-            _c("book-card"),
-            _vm._v(" "),
-            _c("book-card"),
-            _vm._v(" "),
-            _c("book-card"),
-            _vm._v(" "),
-            _c("book-card"),
-            _vm._v(" "),
-            _c("book-card"),
+            _vm._l(_vm.results.data, function(result, index) {
+              return _c("book-card", { key: index, attrs: { data: result } })
+            }),
             _vm._v(" "),
             _c("pagination")
           ],
-          1
+          2
         )
       ],
       1
@@ -15565,7 +15790,15 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "form",
-    { staticClass: "position-relative" },
+    {
+      staticClass: "position-relative",
+      on: {
+        submit: function($event) {
+          $event.preventDefault()
+          return _vm.search($event)
+        }
+      }
+    },
     [
       _c("select-div", {
         staticClass:
@@ -15589,7 +15822,7 @@ var render = function() {
         attrs: {
           input_classes: "rounded-0 border-grey",
           placeholder: _vm.$t("search_books&media", {
-            type: _vm.$t(_vm.type.key + "_by")
+            type: _vm.$t(_vm.type.name + "_by")
           }),
           results: _vm.autocomplete_results,
           submit_method: _vm.search

@@ -7,5 +7,6 @@ export default{
 	all_results:state=>state.all_results,
 	filter_data:state=>state.filter_data,
 	filter_search:state=>state.filter_search,
-	search_method:state=>state.search_method
+	search_method:state=>state.search_method,
+	wrapper_index:state=>state.wrapper_index
 }

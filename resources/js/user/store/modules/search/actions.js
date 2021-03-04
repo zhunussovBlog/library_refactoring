@@ -5,5 +5,10 @@ export default{
 			languages:[],
 			years:''
 		}
+	},
+	setSearches({commit},response){
+		commit('setResults',response.data.res);
+		commit('setFilter',response.data.filter);
+		commit('setAllData',response.data.all);
 	}
 }

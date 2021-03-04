@@ -19,12 +19,16 @@ export default{
 	},
 	setFilter(state,data){
 		state.filter_data=data;
+
 		state.filter_search={
 			types:data.type_key,
 			languages:data.language,
-		}
+		};
 	},
 	setAllData(state,data){
 		state.all_results=data;
+	},
+	setWrapperIndex(state,data){
+		state.wrapper_index=data;
 	}
 }

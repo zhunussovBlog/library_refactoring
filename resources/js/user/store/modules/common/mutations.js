@@ -1,5 +1,5 @@
 export default{
-	setLoading(state,data){
+	setFullPageLoading(state,data){
 		state.loading=data;
 	}
 }

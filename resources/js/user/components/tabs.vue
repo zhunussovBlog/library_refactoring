@@ -67,9 +67,7 @@
 					let child=this.$refs['line'];
 					child.style.left=parent.offsetLeft+'px';
 					child.style.width=parent.offsetWidth+'px';
-				}catch(error){
-					console.error(error);
-				}
+				}catch(error){}
 			},
 			setActive(index){
 				this.activeTab=index;

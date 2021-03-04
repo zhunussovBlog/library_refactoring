@@ -62,9 +62,7 @@ export default{
 		if(!this.value){
 			try{
 				this.$emit('change',this.data[0]);
-			}catch(e){
-				console.error(e);
-			}
+			}catch(e){}
 		}
 	}
 }

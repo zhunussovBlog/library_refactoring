@@ -1,10 +1,14 @@
 <template>
 	<div>
-		<div class="padding font-weight-bold font-size-24">
-			{{$t('results_for')}}
+		<div class="d-flex padding font-weight-bold font-size-24">
+			<span>{{$t('results_for')}}: </span>
+			<span class="text-orange ml-2">{{query}}</span>
 		</div>
 		<div class="padding bg-lightgrey d-flex mt-3 py-3">
-			<div class="filter-width"></div>
+			<div class="d-flex align-items-center filter-width">
+				<span>{{results.total}} {{$t('results')}},</span>
+				<span class="ml-2">{{results.last_page}} {{$t('pages')}}</span>
+			</div>
 			<div class="d-flex justify-content-between flex-fill">
 				<div class="d-flex align-items-center">
 					<checkbox />
@@ -18,11 +22,7 @@
 		<div class="padding d-flex align-items-start mt-3">
 			<filter-div	class="flex-shrink-0" />
 			<div class="flex-grow-1">
-				<book-card/>
-				<book-card/>
-				<book-card/>
-				<book-card/>
-				<book-card/>
+				<book-card :data="result" v-for="(result,index) in results.data" :key="index"/>
 				<pagination />
 			</div>
 		</div>
@@ -33,12 +33,16 @@
 	import BookCard from './components/book_card'
 	import Pagination from './components/pagination'
 	import Checkbox from '../../../components/checkbox'
+	import {mapGetters} from 'vuex'
 	export default{
 		components:{
 			FilterDiv,
 			BookCard,
 			Pagination,
 			Checkbox
-		}
+		},
+		computed:{
+			...mapGetters(['query','results'])
+		},
 	}
 </script>
