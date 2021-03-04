@@ -20,5 +20,10 @@ export default{
 		year:''
 	},
 	// position of square in pagination 
-	wrapper_index:0
+	wrapper_index:0,
+	// for export to excel
+	selected:{
+		data:[],
+		all:false
+	}
 }

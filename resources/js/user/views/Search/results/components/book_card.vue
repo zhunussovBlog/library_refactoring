@@ -1,7 +1,7 @@
 <template>
 	<div class="d-flex border-top py-3">
 		<div class="mr-5">
-			<checkbox />
+			<checkbox :checked="selected.data.includes(data.id)" @change="checkBook()"/>
 			<div class="image rounded bg-grey mt-3" :style="'background-image: url('+this.image+')'"></div>
 		</div>
 		<div class="flex-grow-1">
@@ -26,6 +26,7 @@
 </template>
 <script type="text/javascript">
 	import Checkbox from '../../../../components/checkbox'
+	import {mapGetters} from 'vuex'
 	export default{
 		components:{
 			Checkbox
@@ -37,6 +38,9 @@
 			return{
 				image:''
 			}
+		},
+		computed:{
+			...mapGetters(['selected'])
 		},
 		watch:{
 			'data'(newValue,oldValue){
@@ -63,7 +67,16 @@
 						}
 					})
 				})
-			}
+			},
+			checkBook(){
+				let id=this.data.id;
+				if(this.selected.data.includes(id)){
+					this.selected.data=this.selected.data.filter(item=>item!=id);
+				}
+				else{
+					this.selected.data.push(id);
+				}
+			},
 		},
 		created(){
 			this.getBookImage();

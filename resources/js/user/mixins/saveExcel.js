@@ -1,20 +1,11 @@
 export default{
-	computed:{
-		selected(){
-			return this.$store.getters.selected;
-		}
-	},
 	methods:{
 		saveExcel(){
 			this.$store.commit('setFullPageLoading',true);
-			let media={media:this.$store.getters.selected.data};
-			if(this.$store.getters.selected.all){
-				media.all=true;
-			}
+			let media={media:this.selected.data};
 			this.$http.post('media/save-excel', media,{
 				responseType: 'blob',
 			}).then((res) => {
-				this.$store.commit('setFullPageLoading',false);
 				const url = window.URL.createObjectURL(new Blob([res.data]));
 				const link = document.createElement('a');
 				link.href = url;
@@ -22,27 +13,31 @@ export default{
 				document.querySelector('#app').appendChild(link);
 				link.click();
 			}).catch((err) => {
-				this.$store.commit('setFullPageLoading',false);
+				let text=err.message ?? this.$t('error');
 				if(media.media.length==0){
+					text="Nothing selected. Please, select the media you want to save as data in excel file";
+				}
 					this.$fire({
 						title:this.$t("download"),
-						text:"Nothing selected. Please, select the media you want to save as data in excel file",
-						type:"error",
+						text:text,
+						type:"error"
 					});;
-				}
-				else{
-					this.$fire({
-						title:this.$t("download"),
-						text:err.message ?? this.$t('error'),
-						type:"error",
-					});;
-				}
-			});
+			}).then(()=>{
+				this.$store.commit('setFullPageLoading',false);
+			})
 
 		},
 		selectAll(){
-			this.$store.state.selected.data=[];
-			this.$store.state.selected.all=!this.$store.state.selected.all;
+			let data=this.selected;
+			let all=this.$store.getters.all_results;
+			if(data.data.length>0){
+				data.data=[]
+				data.all=false;
+			}
+			else{
+				data.data=JSON.parse(JSON.stringify(all));
+				data.all=true;
+			}
 		}
 	}
 }

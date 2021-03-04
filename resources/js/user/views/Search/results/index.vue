@@ -11,11 +11,11 @@
 			</div>
 			<div class="d-flex justify-content-between flex-fill">
 				<div class="d-flex align-items-center">
-					<checkbox />
+					<checkbox :checked="selected.all" @change="selectAll()"/>
 					<span class="ml-2">{{$t('select_all')}}</span>
 				</div>
 				<div>
-					<button>{{$t('export_all')}}</button>
+					<button @click="saveExcel()">{{$t('export_all')}}</button>
 				</div>
 			</div>
 		</div>
@@ -32,7 +32,11 @@
 	import FilterDiv from './components/filter'
 	import BookCard from './components/book_card'
 	import Pagination from './components/pagination'
+	
 	import Checkbox from '../../../components/checkbox'
+	
+	import saveExcel from '../../../mixins/saveExcel'
+	
 	import {mapGetters} from 'vuex'
 	export default{
 		components:{
@@ -41,8 +45,9 @@
 			Pagination,
 			Checkbox
 		},
+		mixins:[saveExcel],
 		computed:{
-			...mapGetters(['query','results'])
+			...mapGetters(['query','results','selected'])
 		},
 	}
 </script>
