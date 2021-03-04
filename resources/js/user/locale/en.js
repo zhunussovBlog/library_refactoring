@@ -25,7 +25,7 @@ export default {
 	"author": "Author(s)",
 	"author_by": "by author",
 	"authors": "Author",
-	"availability": "{num }available",
+	"availability": "Available",
 	"back": "Back",
 	"books&media": "General collection",
 	"call_number": "Call number",

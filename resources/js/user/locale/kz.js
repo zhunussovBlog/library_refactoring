@@ -25,7 +25,7 @@ export default {
 	"author": "Авторы",
 	"author_by": "Авторымен",
 	"authors": "Авторы",
-	"availability": "{num} қол жетімді",
+	"availability": "Қол жетімді",
 	"back": "Артқа",
 	"books&media": "Жалпы коллекция",
 	"call_number": "Нөмірі",

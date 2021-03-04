@@ -9,7 +9,7 @@
 				<div class="rounded-lg bg-lightblue p-1 px-3" v-if="data.type">{{$t(data.type)}}</div>
 				<div class="rounded-lg bg-lightblue p-1 px-3 ml-3" v-if="data.call_number">{{data.call_number}}</div>
 			</div>
-			<div class="mt-3 overflow-hidden title font-weight-bold font-size-24">{{data.title}}</div>
+			<div class="mt-3 overflow-hidden title font-weight-bold font-size-24 cursor-pointer" @click="showMore()">{{data.title}}</div>
 			<div class="text-grey mt-2">
 				<div v-if="data.author">{{$t('author')}}: {{data.author}}</div>
 				<div v-if="data.publisher">{{$t('publisher')}}: {{data.publisher}}</div>
@@ -18,19 +18,23 @@
 		</div>
 		<div class="text-center col-2 px-0">
 			<div class="bg-lightgrey rounded-lg p-2 text-no-wrap">
-				{{$t('availability',{num:data.availability})}}
+				{{data.availability}}
+				{{$t('availability')}}
 			</div>
-			<button class="bg-white border border-grey text-grey px-0 w-100 mt-4">{{$t('show_details')}}</button>
+			<button class="bg-white border border-grey text-grey px-0 w-100 mt-4" @click="showMore()">{{$t('show_details')}}</button>
 		</div>
 	</div>
 </template>
 <script type="text/javascript">
 	import Checkbox from '../../../../components/checkbox'
+	import {getBookImage} from '../../../../mixins/search'
+
 	import {mapGetters} from 'vuex'
 	export default{
 		components:{
 			Checkbox
 		},
+		mixins:[getBookImage],
 		props:{
 			data:Object
 		},
@@ -44,30 +48,10 @@
 		},
 		watch:{
 			'data'(newValue,oldValue){
-				this.getBookImage();
+				this.getBookImage({image:this.image,isbn:this.data.isbn});
 			}
 		},
 		methods:{
-			getBookImage(){
-				// we use fetch() because there's cors mistake when use this.$http
-				fetch("https://www.googleapis.com/books/v1/volumes?q=isbn:"+this.data.isbn).then(response=>{
-					response.json().then(data=>{
-						try{
-							this.image=data.items[0].volumeInfo.imageLinks.thumbnail;
-						}catch(e){
-							fetch("https://www.googleapis.com/books/v1/volumes?q=isbn:0"+this.data.isbn).then(response=>{
-								response.json().then(data=>{
-									try{
-										this.image=data.items[0].volumeInfo.imageLinks.thumbnail;
-									}catch(e){
-										this.image='';
-									}
-								})
-							})
-						}
-					})
-				})
-			},
 			checkBook(){
 				let id=this.data.id;
 				if(this.selected.data.includes(id)){
@@ -77,9 +61,12 @@
 					this.selected.data.push(id);
 				}
 			},
+			showMore(){
+				this.$router.push({ path: 'full', query: { id: this.data.id }});
+			}
 		},
 		created(){
-			this.getBookImage();
+			this.getBookImage({image:this.image,isbn:this.data.isbn});
 		}
 	}
 </script>

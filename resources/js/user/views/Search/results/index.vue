@@ -11,7 +11,7 @@
 			</div>
 			<div class="d-flex justify-content-between flex-fill">
 				<div class="d-flex align-items-center">
-					<checkbox :checked="selected.all" @change="selectAll()"/>
+					<checkbox :checked="selected.all && selected.data.length>0" @change="selectAll()"/>
 					<span class="ml-2">{{$t('select_all')}}</span>
 				</div>
 				<div>

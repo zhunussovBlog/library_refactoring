@@ -25,7 +25,7 @@ export default {
 	"author": "Автор(ы)",
 	"author_by": "по автору",
 	"authors": "Автор",
-	"availability": "Доступно {num}",
+	"availability": "доступно",
 	"back": "Назад",
 	"books&media": "Общая коллекция",
 	"call_number": "Номер",

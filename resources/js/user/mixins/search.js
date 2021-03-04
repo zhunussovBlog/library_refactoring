@@ -54,3 +54,33 @@ export const selectData={
 		}
 	}
 }
+export const getBookImage={
+	methods:{
+		getBookImage(info,description){
+			// we use fetch() because there's cors mistake when use this.$http
+			fetch("https://www.googleapis.com/books/v1/volumes?q=isbn:"+info.isbn).then(response=>{
+				response.json().then(data=>{
+					try{
+						info.image=data.items[0].volumeInfo.imageLinks.thumbnail;
+						if(description){
+							info.description=data.items[0].volumeInfo.description;
+						}
+					}catch(e){
+						fetch("https://www.googleapis.com/books/v1/volumes?q=isbn:0"+info.isbn).then(response=>{
+							response.json().then(data=>{
+								try{
+									info.image=data.items[0].volumeInfo.imageLinks.thumbnail;
+									if(description){
+										info.description=data.items[0].volumeInfo.description;
+									}
+								}catch(e){
+									info.image='';
+								}
+							})
+						})
+					}
+				})
+			})
+		}
+	}
+}

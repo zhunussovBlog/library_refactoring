@@ -2,14 +2,14 @@
 	<div id="pagination" class="d-flex">
 		<div class="d-flex align-items-center bg-lightgrey rounded px-3 mr-3 mt-1">
 			<div :class="{'cursor-pointer':data.current_page!=1}" @click="movePrev()">
-				<right-little class="rotate" :class="{'color-gray':data.current_page==1}"/>
+				<right-little class="rotate" :class="{'text-grey':data.current_page==1}"/>
 			</div>
 			<div class="position-relative d-flex align-items-center text-grey mx-2">
 				<div class="wrapper wrapperRect transition" />
 				<div class="wrapper" v-for="(page,index) in pages" @click="getResults(page);" :key="index">{{page}}</div>
 			</div>
 			<div :class="{'cursor-pointer':data.current_page!=data.last_page}" @click="moveNext()">
-				<right-little :class="{'color-gray':data.current_page==data.last_page}"/>
+				<right-little :class="{'text-grey':data.current_page==data.last_page}"/>
 			</div>
 		</div>
 		<div class="d-flex align-items-center bg-lightgrey rounded px-3 mt-1">
