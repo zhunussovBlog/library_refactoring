@@ -97,7 +97,7 @@
                         <td>{{ $item->type }}</td>
                         <td>{{ $item->issue_date }}</td>
                         <td>{{ $item->due_date }}</td>
-                        <td>{{ $item->authors }}</td>
+                        <td>{{ $item->author }}</td>
                         <td>{{ $item->title }}</td>
                         <td>{{ $item->barcode }}</td>
                     </tr>
