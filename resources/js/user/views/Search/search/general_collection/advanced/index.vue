@@ -17,8 +17,7 @@
 	import SelectDiv from '../../../../../components/select'
 	import autocomplete from '../../components/autocomplete'
 
-	import {selectData} from '../../../../../mixins/search'
-	import {goTo} from '../../../../../mixins/goTo'
+	import {selectData,performSearch} from '../../../../../mixins/search'
 	import validate from '../../../../../mixins/validate'
 	import warn from '../../../../../mixins/warn'
 	export default{
@@ -30,7 +29,7 @@
 				}
 			}
 		},
-		mixins:[selectData,goTo,validate,warn],
+		mixins:[selectData,performSearch,validate,warn],
 		components:{
 			SelectDiv,
 			autocomplete
@@ -80,15 +79,7 @@
 					search_options:options
 				};
 				if(valid<=0){
-					this.$store.commit('setFullPageLoading',true);
-					this.$http.post('media/search',request).then(response=>{
-						this.$store.dispatch('setSearches',response);
-						this.$store.commit('setQuery','"'+query+'"')
-						this.$store.commit('setSearchRequest',options);
-						this.$store.commit('setFullPageLoading',false);
-						this.$store.commit('setSearching',true)
-						this.goTo('search');
-					})
+					this.performSearch(request,query,options);
 				}
 			},
 			clear(){

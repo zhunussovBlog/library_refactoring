@@ -1,3 +1,4 @@
+import {goTo,scrollTo} from './goTo';
 export const filters={
 	methods:{
 		setFilters(request){
@@ -12,9 +13,11 @@ export const filters={
 				let languages=[{key:'language',value:filter.languages}];
 				filters=filters.concat(languages);
 			}
-			if(filter.year.value!=''){
-				let year=[{key:'year',value:filter.year.value}];
-				filters=filters.concat(year);
+			if(filter.year){
+				if(filter.year.value!=''){
+					let year=[{key:'year',value:filter.year.value}];
+					filters=filters.concat(year);
+				}
 			}
 
 			if(filters.length>0){
@@ -80,6 +83,25 @@ export const getBookImage={
 						})
 					}
 				})
+			})
+		}
+	}
+}
+export const performSearch={
+	mixins:[goTo,scrollTo],
+	methods:{
+		performSearch(request,query,options){
+			this.$store.commit('setFullPageLoading',true);
+			this.$http.post('media/search',request).then(response=>{
+				this.$store.dispatch('setSearches',response);
+				this.$store.commit('setQuery','"'+query+'"')
+				this.$store.commit('setSearchRequest',options);
+				this.$store.commit('setSearching',true)
+			}).catch(()=>{
+				this.$store.commit('setResults',{});
+			}).then(()=>{
+				this.$store.commit('setFullPageLoading',false);
+				setTimeout(()=>{this.scrollTo('results')},100);
 			})
 		}
 	}

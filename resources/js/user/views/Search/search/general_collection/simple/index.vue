@@ -11,8 +11,7 @@
 	import SelectDiv from '../../../../../components/select'
 	import autocomplete from '../../components/autocomplete'
 	// mixins
-	import {goTo} from '../../../../../mixins/goTo'
-	import {selectData} from '../../../../../mixins/search'
+	import {selectData,performSearch} from '../../../../../mixins/search'
 	import validate from '../../../../../mixins/validate'
 	import warn from '../../../../../mixins/warn'
 	export default{
@@ -20,7 +19,7 @@
 			SelectDiv,
 			autocomplete
 		},
-		mixins:[goTo,selectData,warn,validate],
+		mixins:[selectData,performSearch,warn,validate],
 		data(){
 			return{
 				query:'',
@@ -58,15 +57,10 @@
 					let request={
 						search_options:options
 					};
-					this.$store.commit('setFullPageLoading',true);
-					this.$http.post('media/search',request).then(response=>{
-						this.$store.dispatch('setSearches',response);
-						this.$store.commit('setQuery','"'+this.$t(key)+' : '+query+'"')
-						this.$store.commit('setSearchRequest',options);
-						this.$store.commit('setFullPageLoading',false);
-						this.$store.commit('setSearching',true)
-						this.goTo('search');
-					})
+
+					query=this.$t(key)+' : '+query;
+					
+					this.performSearch(request,query,options);
 				}
 				else{
 					this.warn('simple',true);

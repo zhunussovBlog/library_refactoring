@@ -2,7 +2,7 @@
 	<div class="w-100 bg-blue d-flex flex-column text-white">
 		<div class="d-flex justify-content-between padding py-5 flex-wrap">
 			<div class="text-center text-sm-left flex-grow-1 flex-sm-grow-0">
-				<div>
+				<div class="cursor-pointer" @click="scrollTo('top')">
 					<img src="images/logo.svg" class="logo">
 				</div>
 				<div class="mt-5 mb-3 font-size-14 text-lightgrey">
@@ -47,6 +47,7 @@
 </template>
 <script type="text/javascript">
 	// mixins
+	import {scrollTo} from '../../../mixins/goTo'
 	import links from '../../../mixins/links'
 	import langs from '../../../mixins/langs'
 
@@ -59,7 +60,7 @@
 	import Telegram from '../../../assets/icons/Telegram'
 	import Youtube from '../../../assets/icons/Youtube'
 	export default{
-		mixins:[links,langs],
+		mixins:[scrollTo,links,langs],
 		components:{dropdown},
 		data(){
 			return{

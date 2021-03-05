@@ -8,7 +8,7 @@
 		</div>
 		<div class="d-flex flex-wrap">
 			<div class="mt-2 mr-5">
-				<div class="image bg-grey rounded" :style="'background-image: url('+this.image+')'"/>
+				<div class="image bg-grey rounded" :style="'background-image: url('+this.info.image+')'"/>
 			</div>
 			<div class="mt-2" v-if="Object.keys(data).length>0">
 				<div class="mb-2" v-for="(value,key,index) in objectWithoutKey(objectWithoutKey(objectWithoutKey(data,'id'),'type_key'),'status')" v-if="value!=null">
@@ -21,26 +21,30 @@
 				</div>
 			</div>
 		</div>
-		<div class="mt-2" v-if="description">
+		<div class="mt-2" v-if="info.description">
 			<div class="text-grey">{{$t('description')}} :</div>
-			<div>{{description}}</div>
+			<div>{{info.description}}</div>
 		</div>
 	</div>
 </template>
 <script type="text/javascript">
 	import {goTo} from '../../../mixins/goTo'
+	import {getBookImage} from '../../../mixins/search'
 
 	import RightLittle from '../../../assets/icons/RightLittle'
 
 	export default{
-		mixins:[goTo],
+		mixins:[goTo,getBookImage],
 		components:{RightLittle},
 		data(){
 			return{
 				data:{},
 				id:'',
-				image:'',
-				description:''
+				info:{
+					image:'',
+					isbn:'',
+					description:''
+				}
 			}
 		},
 		methods:{
@@ -57,8 +61,9 @@
 				this.$store.commit('setFullPageLoading',true);
 				this.$http.get('media/show/'+(this.id)).then(response=>{
 					this.data=response.data.res;
+					this.info.isbn=this.data.isbn
 					try{
-						this.getBookImage({image:this.image,isbn:this.data.isbn,description:this.description},true);
+						this.getBookImage(this.info,true);
 					}catch(e){}
 				}).catch(error=>{
 					this.goTo('home');

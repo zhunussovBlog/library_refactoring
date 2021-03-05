@@ -60,11 +60,9 @@ export default{
 		}
 	},
 	created(){
-		if(!this.value){
-			try{
-				this.$emit('change',this.data[0]);
-			}catch(e){}
-		}
+		try{
+			this.$emit('change',this.data[0]);
+		}catch(e){}
 	}
 }
 </script>

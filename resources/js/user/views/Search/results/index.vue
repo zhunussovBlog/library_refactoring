@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div id="results">
 		<div class="d-flex padding font-weight-bold font-size-24">
 			<span>{{$t('results_for')}}: </span>
 			<span class="text-orange ml-2">{{query}}</span>

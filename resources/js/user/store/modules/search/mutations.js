@@ -19,7 +19,7 @@ export default{
 
 		state.filter_search={
 			types:data.type_key,
-			languages:data.language,
+			languages:data.language
 		};
 	},
 	setAllData(state,data){

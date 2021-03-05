@@ -11,10 +11,12 @@ export const goTo={
 export const scrollTo={
 	methods:{
 		scrollTo(link,yOffset){
-			var yLen=yOffset || 0;
-			const element = document.getElementById(link);
-			const y = element.getBoundingClientRect().top + window.pageYOffset + yLen;
-			window.scrollTo({top: y, behavior: 'smooth'});
+			try{
+				var yLen=yOffset || 0;
+				const element = document.getElementById(link);
+				const y = element.getBoundingClientRect().top + window.pageYOffset + yLen;
+				window.scrollTo({top: y, behavior: 'smooth'});
+			}catch(e){}
 		}
 	}
 }

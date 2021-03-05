@@ -1,5 +1,6 @@
 <template>
 	<div id="app" class="d-flex flex-column">
+		<div id="top"></div>
 		<navbar />		
 		<router-view />
 		<footer-div class="mt-auto" v-if="$route.meta.footer" />

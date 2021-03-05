@@ -2,7 +2,7 @@
 	<div class="d-flex border-top py-3">
 		<div class="mr-5">
 			<checkbox :checked="selected.data.includes(data.id)" @change="checkBook()"/>
-			<div class="image rounded bg-grey mt-3" :style="'background-image: url('+this.image+')'"></div>
+			<div class="image rounded bg-grey mt-3" :style="'background-image: url('+this.info.image+')'"></div>
 		</div>
 		<div class="flex-grow-1">
 			<div class="d-flex text-center text-blue">
@@ -40,15 +40,19 @@
 		},
 		data(){
 			return{
-				image:''
+				info:{
+					image:'',
+					isbn:''
+				}
 			}
 		},
 		computed:{
 			...mapGetters(['selected'])
 		},
 		watch:{
-			'data'(newValue,oldValue){
-				this.getBookImage({image:this.image,isbn:this.data.isbn});
+			data(){
+				this.info.isbn=this.data.isbn;
+				this.getBookImage(this.info);
 			}
 		},
 		methods:{
@@ -66,7 +70,8 @@
 			}
 		},
 		created(){
-			this.getBookImage({image:this.image,isbn:this.data.isbn});
+			this.info.isbn=this.data.isbn;
+			this.getBookImage(this.info);
 		}
 	}
 </script>
