@@ -16,7 +16,7 @@
 		</div>
 		<nav class="navbar navbar-expand-xl bg-blue navbar-dark padding py-2">
 			<!-- logo -->
-			<router-link :to="{name:'home'}">
+			<router-link class="cursor-pointer" :to="{name:'home'}">
 				<img class="logo" src="images/logo.svg">
 			</router-link>
 			<!-- appears only on screens smaller than xl -->

@@ -3,13 +3,14 @@ export const filters={
 	methods:{
 		setFilters(request){
 			let filter=this.$store.getters.filter_search;
+			let filter_data=this.$store.getters.filter_data;
 			let filters=[];
 
-			if(filter.types.length>0){
+			if(filter.types.length>0 && (filter_data.type_key.length!=filter.types.length)){
 				let types=[{key:'type_key',value:filter.types.map(type=>type.value)}];
 				filters=filters.concat(types);
 			}
-			if(filter.languages.length>0){
+			if(filter.languages.length>0 && (filter_data.language.length!=filter.languages.length)){
 				let languages=[{key:'language',value:filter.languages}];
 				filters=filters.concat(languages);
 			}
@@ -100,6 +101,7 @@ export const performSearch={
 			}).catch(()=>{
 				this.$store.commit('setResults',{});
 			}).then(()=>{
+				this.goTo('search');
 				this.$store.commit('setFullPageLoading',false);
 				setTimeout(()=>{this.scrollTo('results')},100);
 			})

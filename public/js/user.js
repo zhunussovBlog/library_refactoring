@@ -4524,9 +4524,10 @@ var filters = {
   methods: {
     setFilters: function setFilters(request) {
       var filter = this.$store.getters.filter_search;
+      var filter_data = this.$store.getters.filter_data;
       var filters = [];
 
-      if (filter.types.length > 0) {
+      if (filter.types.length > 0 && filter_data.type_key.length != filter.types.length) {
         var types = [{
           key: 'type_key',
           value: filter.types.map(function (type) {
@@ -4536,7 +4537,7 @@ var filters = {
         filters = filters.concat(types);
       }
 
-      if (filter.languages.length > 0) {
+      if (filter.languages.length > 0 && filter_data.language.length != filter.languages.length) {
         var languages = [{
           key: 'language',
           value: filter.languages
@@ -4635,6 +4636,8 @@ var performSearch = {
       })["catch"](function () {
         _this.$store.commit('setResults', {});
       }).then(function () {
+        _this.goTo('search');
+
         _this.$store.commit('setFullPageLoading', false);
 
         setTimeout(function () {
@@ -16939,9 +16942,16 @@ var render = function() {
         staticClass: "navbar navbar-expand-xl bg-blue navbar-dark padding py-2"
       },
       [
-        _c("router-link", { attrs: { to: { name: "home" } } }, [
-          _c("img", { staticClass: "logo", attrs: { src: "images/logo.svg" } })
-        ]),
+        _c(
+          "router-link",
+          { staticClass: "cursor-pointer", attrs: { to: { name: "home" } } },
+          [
+            _c("img", {
+              staticClass: "logo",
+              attrs: { src: "images/logo.svg" }
+            })
+          ]
+        ),
         _vm._v(" "),
         _vm._m(0),
         _vm._v(" "),
