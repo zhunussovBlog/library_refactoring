@@ -1846,14 +1846,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _views_main___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./views/__main__ */ "./resources/js/user/views/__main__/index.vue");
-/* harmony import */ var _mixins_langs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./mixins/langs */ "./resources/js/user/mixins/langs.js");
 //
 //
 //
-
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  mixins: [_mixins_langs__WEBPACK_IMPORTED_MODULE_1__.default],
   components: {
     MainBody: _views_main___WEBPACK_IMPORTED_MODULE_0__.default
   },
@@ -3816,6 +3813,7 @@ __webpack_require__.r(__webpack_exports__);
   "kaskelen": "Kaskelen, Kazakhstan",
   "kazakh": "Kazakh",
   "languages": "Languages",
+  "lib_guides": "Library Guides",
   "lib_digest": "Library digest",
   "lib_office": "Librarian office",
   "library_closed": "Library closed",
@@ -3994,6 +3992,7 @@ __webpack_require__.r(__webpack_exports__);
   "kaskelen": "Қаскелен, Қазақстан",
   "kazakh": "Қазақ",
   "languages": "Тілдер",
+  "lib_guides": "Нұсқаулық және Кеңес",
   "lib_digest": "Кітапханалық дайджест",
   "lib_office": "Кітапханалық кеңсе",
   "library_closed": "Кітапхана жабық",
@@ -4137,6 +4136,7 @@ __webpack_require__.r(__webpack_exports__);
   "kaskelen": "Каскелен, Казахстан",
   "kazakh": "Казахский",
   "languages": "Языки",
+  "lib_guides": "Инструкции и Рекомендации",
   "lib_digest": "Дайджест библиотеки",
   "lib_office": "Мой офис",
   "library_closed": "Библиотека закрыта",
@@ -4324,6 +4324,9 @@ var links = [{
       name: 'quick_links.bookpurchase',
       link: 'https://sdu-kz.libguides.com/libservices/bookpurchase'
     }, {
+      name: 'lib_guides',
+      link: 'https://sdu-kz.libguides.com/'
+    }, {
       name: 'quick_links.askus',
       link: 'https://sdu-kz.libguides.com/ask-a-librarian_page/askus'
     }, {
@@ -4348,10 +4351,10 @@ var links = [{
   }
 }, {
   name: 'research_consultations',
-  link: ''
+  link: 'https://sdu-kz.libguides.com/research_consultations'
 }, {
   name: 'instructor_support',
-  link: ''
+  link: 'https://sdu-kz.libguides.com/instructor_support'
 }];
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   computed: {
@@ -5210,12 +5213,12 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
-/* harmony import */ var vue_js_modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-js-modal */ "./node_modules/vue-js-modal/dist/index.js");
-/* harmony import */ var vue_js_modal__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_js_modal__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vue_js_modal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-js-modal */ "./node_modules/vue-js-modal/dist/index.js");
+/* harmony import */ var vue_js_modal__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_js_modal__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var vue_simple_alert__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-simple-alert */ "./node_modules/vue-simple-alert/lib/index.js");
-/* harmony import */ var _App_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./App.vue */ "./resources/js/user/App.vue");
+/* harmony import */ var _App__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./App */ "./resources/js/user/App.vue");
 /* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./router */ "./resources/js/user/router/index.js");
 /* harmony import */ var _locale__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./locale */ "./resources/js/user/locale/index.js");
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./store */ "./resources/js/user/store/index.js");
@@ -5229,18 +5232,18 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_8__.default.use((vue_js_modal__WEBPACK_IMPORTED_MODULE_0___default()), {
+vue__WEBPACK_IMPORTED_MODULE_8__.default.use((vue_js_modal__WEBPACK_IMPORTED_MODULE_1___default()), {
   dynamic: true,
   injectModalsContainer: true
 });
 vue__WEBPACK_IMPORTED_MODULE_8__.default.use(vue_simple_alert__WEBPACK_IMPORTED_MODULE_2__.default);
 vue__WEBPACK_IMPORTED_MODULE_8__.default.configs = Object.assign({}, _configs_base__WEBPACK_IMPORTED_MODULE_7__.default);
 vue__WEBPACK_IMPORTED_MODULE_8__.default.config.productionTip = false;
-(axios__WEBPACK_IMPORTED_MODULE_1___default().defaults.baseURL) = vue__WEBPACK_IMPORTED_MODULE_8__.default.configs.baseURL + vue__WEBPACK_IMPORTED_MODULE_8__.default.configs.api;
-(axios__WEBPACK_IMPORTED_MODULE_1___default().defaults.headers.common.Authorization) = 'Bearer ' + localStorage.getItem('access_token');
-(axios__WEBPACK_IMPORTED_MODULE_1___default().defaults.headers.common["Content-Type"]) = 'application/json';
-(axios__WEBPACK_IMPORTED_MODULE_1___default().defaults.headers.common["Content-Language"]) = _locale__WEBPACK_IMPORTED_MODULE_5__.default.locale;
-vue__WEBPACK_IMPORTED_MODULE_8__.default.prototype.$http = (axios__WEBPACK_IMPORTED_MODULE_1___default()); // customs
+(axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.baseURL) = vue__WEBPACK_IMPORTED_MODULE_8__.default.configs.baseURL + vue__WEBPACK_IMPORTED_MODULE_8__.default.configs.api;
+(axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.headers.common.Authorization) = 'Bearer ' + localStorage.getItem('access_token');
+(axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.headers.common["Content-Type"]) = 'application/json';
+(axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.headers.common["Content-Language"]) = _locale__WEBPACK_IMPORTED_MODULE_5__.default.locale;
+vue__WEBPACK_IMPORTED_MODULE_8__.default.prototype.$http = (axios__WEBPACK_IMPORTED_MODULE_0___default()); // customs
 
 vue__WEBPACK_IMPORTED_MODULE_8__.default.prototype.$mobileCheck = function () {
   // checks if the device is mobile
@@ -5259,7 +5262,7 @@ Number.prototype.pad = function (n) {
 
 new vue__WEBPACK_IMPORTED_MODULE_8__.default({
   render: function render(h) {
-    return h(_App_vue__WEBPACK_IMPORTED_MODULE_3__.default);
+    return h(_App__WEBPACK_IMPORTED_MODULE_3__.default);
   },
   i18n: _locale__WEBPACK_IMPORTED_MODULE_5__.default,
   router: _router__WEBPACK_IMPORTED_MODULE_4__.default,
@@ -5708,7 +5711,7 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css?family=Roboto:400,400italic,500,500italic,700,700italic,900,900italic,300italic,300,100italic,100);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "/*remove bootstrap*/\nlabel{\n\tmargin-bottom: 0;\n}\n\n/*defaults*/\n\nhtml{\n\tfont-family: 'Roboto', sans-serif;\n\tfont-style: normal;\n\tfont-weight: normal;\n\tcolor:#333;\n\toverflow-x: hidden;\n}\nhtml,body{\n\tmin-height: 100vh;\n\theight: 100%;\n}\n#app{\n\theight: 100%;\n}\n\n*{\n\tcursor: inherit;\n\t/*firefox only scrollbar*/\n\tscrollbar-color: #c5c5c5 white;\n\tscrollbar-width:thin;\n}\n\n*:focus{\n\toutline: none !important;\n}\n\n/*crossbrowser scrollbars*/\n::-webkit-scrollbar {\n\twidth: 0.3125em;\n\theight: 0.3125em;\n}\n\n::-webkit-scrollbar-thumb {\n\tbackground: #c5c5c5;\n}\n\n::-webkit-scrollbar-track {\n\tbackground: white;\n}\n\na{\n\ttext-decoration: none !important;\n}\n\ninput,button{\n\tpadding:0.625em 1.25em;\n}\n\ninput{\n\tborder: 0.125em solid #FF9D29;\n\tborder-radius: 0.3125em;\n\tcaret-color:#FF9D29;\n}\ninput[type=text]{\n\tmin-width: 12.5em;\n}\n\nbutton{\n\tborder:none;\n\tline-height: 1.3125em;\n\tcolor:white;\n\tbackground-color: #FF9D29;\n\tborder-radius: 0.3125em;\n}\n\n/*customs*/\n\n.filter-width{\n\twidth:13.8vw;\n\tmin-width: 12.5em;\n\tmargin-right:3.125em;\n}\n\n\n/*styles*/\n\n.warn{\n\tposition: absolute;\n\ttop: -35%;\n\ttransition: .3s;\n\tcolor: #aaa;\n\topacity: 0;\n}\n\n.link{\n\tcursor: pointer;\n\tcolor:inherit;\n}\n\n.link:hover{\n\tcolor:#FF8E0A !important;\n}\n\n.flex-0{\n\tflex:0 !important;\n}\n\n.rotate{\n\ttransform: rotate(180deg);\n}\n\n.transition{\n\ttransition: .3s;\n}\n\n.cursor-pointer{\n\tcursor: pointer;\n}\n\n.logo{\n\twidth: 7.5em;\n}\n\n.padding{\n\tpadding-right: 11vw;\n\tpadding-left: 11vw;\n}\n\n.no-border-right{\n\tborder-right:none !important; \n}\n\n.no-border-right-radius{\n\tborder-top-right-radius: 0 !important;\n\tborder-bottom-right-radius: 0 !important;\n}\n\n.no-border-left-radius{\n\tborder-top-left-radius: 0 !important;\n\tborder-bottom-left-radius: 0 !important;\n}\n\n.border-grey{\n\tborder-color: #DADADA !important;\n}\n\n.border-width{\n\tborder-width: 0.125em !important;\n}\n\n.bg-white{\n\tbackground-color: white !important;\n}\n\n.bg-orange{\n\tbackground-color: #FF9D29 !important;\n}\n\n.bg-blue{\n\tbackground-color: #0a306a !important; \n}\n\n.bg-lightblue{\n\tbackground-color: rgba(\t163, 200, 255,.25) !important;\n}\n\n.bg-grey{\n\tbackground-color: #9c9fa7!important;\n}\n\n.bg-lightgrey{\n\tbackground-color: #F4F4F4 !important;\n}\n\n.ellipsis{\n\twidth:90%;\n\toverflow: hidden;\n\ttext-overflow: ellipsis;\n}\n\n.text-no-wrap{\n\twhite-space: nowrap;\n}\n\n.text-black{\n\tcolor:#333;\n}\n\n.text-grey{\n\tcolor: #9C9FA7 !important;\n}\n\n.text-lightgrey{\n\tcolor: #BDC5DA !important;\n}\n\n.text-blue{\n\tcolor: #274FB6 !important;\n}\n\n.text-orange{\n\tcolor: #FF9D29 !important;\n}\n\n.font-size-32{\n\tfont-size: 2em;\n}\n\n.font-size-24{\n\tfont-size: 1.5em;\n}\n\n.font-size-20{\n\tfont-size: 1.25em;\n}\n\n.font-size-18{\n\tfont-size: 1.125em;\n}\n\n.font-size-14{\n\tfont-size: .875em;\n}\n\n.mr--5{\n\tmargin-right: -.3125em;\n}\n\n.w-20{\n\twidth: 20% !important;\n}\n\n.w-10{\n\twidth: 10% !important;\n}\n\n.w-min-120{\n\tmin-width: 8.125em;\n}\n\n.w-min-0{\n\tmin-width: 0;\n}\n\n/*icons*/\n\nsvg:not(:root).svg-inline--fa {\n\toverflow: visible;\n}\n\n.svg-inline--fa.fa-w-10 {\n\twidth: 0.625em;\n}\n\n.svg-inline--fa.fa-w-11 {\n\twidth: 0.6875em;\n}\n\n.svg-inline--fa.fa-w-14 {\n\twidth: 0.875em;\n}\n\n.svg-inline--fa.fa-w-16 {\n\twidth: 1em;\n}\n\n.svg-inline--fa.fa-w-18 {\n\twidth: 1.125em;\n}\n\n.svg-inline--fa.fa-w-24 {\n\twidth:1.5em;\n}\n\n.svg-inline--fa {\n\tdisplay: inline-block;\n\tfont-size: inherit;\n\theight: 1em;\n\toverflow: visible;\n\tvertical-align: -0.125em;\n}\n\n/*rewrite bootstrap*/\n\n.font-weight-bold{\n\tfont-weight: 500!important;\n}\n\n/*responsiveness*/\n@media screen and (max-width: 350px){\n\t.padding{\n\t\tpadding-right: 5vw;\n\t\tpadding-left: 5vw;\n\t}\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "/*remove bootstrap*/\nlabel{\n\tmargin-bottom: 0;\n}\n\n/*defaults*/\n\nhtml{\n\tfont-family: 'Roboto', sans-serif;\n\tfont-style: normal;\n\tfont-weight: normal;\n\tfont-size: 14px;\n\tcolor:#333;\n\toverflow-x: hidden;\n}\nhtml,body{\n\tmin-height: 100vh;\n\theight: 100%;\n}\n#app{\n\theight: 100%;\n}\n\n*{\n\tcursor: inherit;\n\t/*firefox only scrollbar*/\n\tscrollbar-color: #c5c5c5 white;\n\tscrollbar-width:thin;\n}\n\n*:focus{\n\toutline: none !important;\n}\n\n/*crossbrowser scrollbars*/\n::-webkit-scrollbar {\n\twidth: 0.3125em;\n\theight: 0.3125em;\n}\n\n::-webkit-scrollbar-thumb {\n\tbackground: #c5c5c5;\n}\n\n::-webkit-scrollbar-track {\n\tbackground: white;\n}\n\na{\n\ttext-decoration: none !important;\n}\n\ninput,button{\n\tpadding:0.625em 1.25em;\n}\n\ninput{\n\tborder: 0.125em solid #FF9D29;\n\tborder-radius: 0.3125em;\n\tcaret-color:#FF9D29;\n}\ninput[type=text]{\n\tmin-width: 12.5em;\n}\n\nbutton{\n\tborder:none;\n\tline-height: 1.3125em;\n\tcolor:white;\n\tbackground-color: #FF9D29;\n\tborder-radius: 0.3125em;\n}\n\n/*customs*/\n\n.filter-width{\n\twidth:13.8vw;\n\tmin-width: 12.5em;\n\tmargin-right:3.125em;\n}\n\n\n/*styles*/\n\n.warn{\n\tposition: absolute;\n\ttop: -35%;\n\ttransition: .3s;\n\tcolor: #aaa;\n\topacity: 0;\n}\n\n.link{\n\tcursor: pointer;\n\tcolor:inherit;\n}\n\n.link:hover{\n\tcolor:#FF8E0A !important;\n}\n\n.flex-0{\n\tflex:0 !important;\n}\n\n.rotate{\n\ttransform: rotate(180deg);\n}\n\n.transition{\n\ttransition: .3s;\n}\n\n.cursor-pointer{\n\tcursor: pointer;\n}\n\n.logo{\n\twidth: 7.5em;\n}\n\n.padding{\n\tpadding-right: 11vw;\n\tpadding-left: 11vw;\n\ttransition: padding .3s;\n}\n\n.no-border-right{\n\tborder-right:none !important; \n}\n\n.no-border-right-radius{\n\tborder-top-right-radius: 0 !important;\n\tborder-bottom-right-radius: 0 !important;\n}\n\n.no-border-left-radius{\n\tborder-top-left-radius: 0 !important;\n\tborder-bottom-left-radius: 0 !important;\n}\n\n.border-grey{\n\tborder-color: #DADADA !important;\n}\n\n.border-width{\n\tborder-width: 0.125em !important;\n}\n\n.bg-white{\n\tbackground-color: white !important;\n}\n\n.bg-orange{\n\tbackground-color: #FF9D29 !important;\n}\n\n.bg-blue{\n\tbackground-color: #0a306a !important; \n}\n\n.bg-lightblue{\n\tbackground-color: rgba(\t163, 200, 255,.25) !important;\n}\n\n.bg-grey{\n\tbackground-color: #9c9fa7!important;\n}\n\n.bg-lightgrey{\n\tbackground-color: #F4F4F4 !important;\n}\n\n.ellipsis{\n\twidth:90%;\n\toverflow: hidden;\n\ttext-overflow: ellipsis;\n}\n\n.text-no-wrap{\n\twhite-space: nowrap;\n}\n\n.text-black{\n\tcolor:#333;\n}\n\n.text-grey{\n\tcolor: #9C9FA7 !important;\n}\n\n.text-lightgrey{\n\tcolor: #BDC5DA !important;\n}\n\n.text-blue{\n\tcolor: #274FB6 !important;\n}\n\n.text-orange{\n\tcolor: #FF9D29 !important;\n}\n\n.font-size-32{\n\tfont-size: 2em;\n}\n\n.font-size-24{\n\tfont-size: 1.5em;\n}\n\n.font-size-20{\n\tfont-size: 1.25em;\n}\n\n.font-size-18{\n\tfont-size: 1.125em;\n}\n\n.font-size-14{\n\tfont-size: .875em;\n}\n\n.mr--5{\n\tmargin-right: -.3125em;\n}\n\n.w-20{\n\twidth: 20% !important;\n}\n\n.w-10{\n\twidth: 10% !important;\n}\n\n.w-min-120{\n\tmin-width: 8.125em;\n}\n\n.w-min-0{\n\tmin-width: 0;\n}\n\n/*icons*/\n\nsvg:not(:root).svg-inline--fa {\n\toverflow: visible;\n}\n\n.svg-inline--fa.fa-w-10 {\n\twidth: 0.625em;\n}\n\n.svg-inline--fa.fa-w-11 {\n\twidth: 0.6875em;\n}\n\n.svg-inline--fa.fa-w-14 {\n\twidth: 0.875em;\n}\n\n.svg-inline--fa.fa-w-16 {\n\twidth: 1em;\n}\n\n.svg-inline--fa.fa-w-18 {\n\twidth: 1.125em;\n}\n\n.svg-inline--fa.fa-w-24 {\n\twidth:1.5em;\n}\n\n.svg-inline--fa {\n\tdisplay: inline-block;\n\tfont-size: inherit;\n\theight: 1em;\n\toverflow: visible;\n\tvertical-align: -0.125em;\n}\n\n/*rewrite bootstrap*/\n\n.font-weight-bold{\n\tfont-weight: 500!important;\n}\n\n/*responsiveness*/\n\n@media screen and (min-width: 1440px){\n\thtml{\n\t\tfont-size: 16px;\n\t}\n}\n@media screen and (min-width: 2000px){\n\thtml{\n\t\tfont-size: 18px;\n\t}\n}\n\n@media screen and (max-width:  1300px){\n\t.padding{\n\t\tpadding-left: 4vw;\n\t\tpadding-right: 4vw;\n\t}\n}\n@media screen and (max-width: 791px){\n\t.padding{\n\t\tpadding-left: 1.25em;\n\t\tpadding-right: 1.25em;\n\t}\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -16282,15 +16285,56 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "d-flex" }, [
-    _c("input", {
-      staticClass:
-        "w-100 border-grey no-border-right no-border-right-radius mr--5",
-      attrs: { type: "text" }
-    }),
-    _vm._v(" "),
-    _c("button", [_vm._v(_vm._s(_vm.$t("search")))])
-  ])
+  return _c(
+    "form",
+    {
+      staticClass: "d-flex",
+      attrs: { action: "https://searchbox.ebsco.com/search/", target: "_blank" }
+    },
+    [
+      _c("input", {
+        attrs: { name: "schemaId", value: "search", type: "hidden" }
+      }),
+      _vm._v(" "),
+      _c("input", {
+        attrs: { name: "custid", value: "ns242285", type: "hidden" }
+      }),
+      _vm._v(" "),
+      _c("input", {
+        attrs: { name: "groupid", value: "main", type: "hidden" }
+      }),
+      _vm._v(" "),
+      _c("input", { attrs: { name: "profid", value: "eds", type: "hidden" } }),
+      _vm._v(" "),
+      _c("input", {
+        attrs: { name: "authtype", value: "ip,guest", type: "hidden" }
+      }),
+      _vm._v(" "),
+      _c("input", { attrs: { name: "scope", value: "site", type: "hidden" } }),
+      _vm._v(" "),
+      _c("input", {
+        attrs: { name: "site", value: "eds-live", type: "hidden" }
+      }),
+      _vm._v(" "),
+      _c("input", { attrs: { name: "direct", value: "true", type: "hidden" } }),
+      _vm._v(" "),
+      _c("input", {
+        staticClass:
+          "w-100 border-grey no-border-right no-border-right-radius mr--5",
+        attrs: {
+          name: "bquery",
+          type: "text",
+          placeholder: _vm.$t("search_eresources")
+        }
+      }),
+      _vm._v(" "),
+      _c(
+        "button",
+        { staticClass: "p-3 w-min-120", attrs: { type: "submit" } },
+        [_vm._v(_vm._s(_vm.$t("search")))]
+      )
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

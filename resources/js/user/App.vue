@@ -4,9 +4,7 @@
 <script type="text/javascript">
     import MainBody from './views/__main__'
 
-    import langs from './mixins/langs'
     export default{
-        mixins:[langs],
         components:{
             MainBody
         },

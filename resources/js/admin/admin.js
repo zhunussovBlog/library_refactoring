@@ -1,15 +1,14 @@
-window.Vue = require('vue');
+import Vue from 'vue'
+import Axios from "axios"
+import VModal from 'vue-js-modal'
+import VueSimpleAlert from "vue-simple-alert"
 
-import Axios from "axios";
-import App from "./App";
+import App from "./App"
 import router from './router'
-import store from './store';
-import VModal from 'vue-js-modal';
-import VueSimpleAlert from "vue-simple-alert";
-import i18n from './locales';
-import messages from "./configs/messages"
+import i18n from './locales'
+import store from './store'
 
-// settings
+import base from './configs/base'
 
 // vue modal
 Vue.use(VModal,
@@ -23,35 +22,20 @@ Vue.use(VModal,
 // vue alert ( like a modal ) - alerts successful or error messagers on load 
 Vue.use(VueSimpleAlert);
 
+Vue.configs=Object.assign({},base);
+Vue.config.productionTip = false;
+
+// setting axios defaults
+Axios.defaults.baseURL = Vue.configs.baseURL + Vue.configs.api
+Axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('access_token');
+Axios.defaults.headers.common['Content-Type'] = 'application/json';
+Axios.defaults.headers.common['Content-Language'] = i18n.locale;
+
 // turning axios into this.$http - for the usage to be simpler
 // $i18n is turned automatically while creating app, just like store 
 Vue.prototype.$http = Axios;
 
-// x-csrf token ... should be clear )
-Axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-const app = new Vue({
-  el: '#app',
-  render: h => h(App),
-  store,
-  i18n,
-  router
-});
-
-Vue.config.productionTip = false
-
 // custom
-
-// turns string date into date value for an input type date
-Date.prototype.toDateInputValue = (function() {
-  var local = new Date(this);
-  local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
-  return local.toJSON().slice(0,10);
-});
-
-// error or success messages
-window.messages=messages;
-
 // creates a fast copy of any object
 window.copy=(object)=>{
 	return JSON.parse(JSON.stringify(object));
@@ -69,3 +53,17 @@ window.objectWithoutKey = (object, key) => {
   const {[key]: deletedKey, ...otherKeys} = object;
   return otherKeys;
 }
+
+// turns string date into date value for an input type date
+Date.prototype.toDateInputValue = (function() {
+  var local = new Date(this);
+  local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+  return local.toJSON().slice(0,10);
+});
+
+new Vue({
+  render: h => h(App),
+  i18n,
+  router,
+  store
+}).$mount('#app')

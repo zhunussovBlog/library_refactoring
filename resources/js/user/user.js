@@ -1,9 +1,9 @@
 import Vue from 'vue'
-import VModal from 'vue-js-modal';
 import Axios from 'axios'
-import VueSimpleAlert from "vue-simple-alert";
+import VModal from 'vue-js-modal'
+import VueSimpleAlert from "vue-simple-alert"
 
-import App from './App.vue'
+import App from './App'
 import router from './router'
 import i18n from './locale'
 import store from './store'

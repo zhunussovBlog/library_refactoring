@@ -54,6 +54,7 @@ export default {
 	"kaskelen": "Қаскелен, Қазақстан",
 	"kazakh": "Қазақ",
 	"languages": "Тілдер",
+	"lib_guides": "Нұсқаулық және Кеңес",
 	"lib_digest":"Кітапханалық дайджест",
 	"lib_office": "Кітапханалық кеңсе",
 	"library_closed": "Кітапхана жабық",

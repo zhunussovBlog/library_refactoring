@@ -6605,16 +6605,17 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _App__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./App */ "./resources/js/admin/App.vue");
-/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./router */ "./resources/js/admin/router/index.js");
-/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./store */ "./resources/js/admin/store/index.js");
-/* harmony import */ var vue_js_modal__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue-js-modal */ "./node_modules/vue-js-modal/dist/index.js");
-/* harmony import */ var vue_js_modal__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(vue_js_modal__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var vue_simple_alert__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue-simple-alert */ "./node_modules/vue-simple-alert/lib/index.js");
-/* harmony import */ var _locales__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./locales */ "./resources/js/admin/locales/index.js");
-/* harmony import */ var _configs_messages__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./configs/messages */ "./resources/js/admin/configs/messages.js");
+/* harmony import */ var vue_js_modal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-js-modal */ "./node_modules/vue-js-modal/dist/index.js");
+/* harmony import */ var vue_js_modal__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_js_modal__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var vue_simple_alert__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-simple-alert */ "./node_modules/vue-simple-alert/lib/index.js");
+/* harmony import */ var _App__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./App */ "./resources/js/admin/App.vue");
+/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./router */ "./resources/js/admin/router/index.js");
+/* harmony import */ var _locales__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./locales */ "./resources/js/admin/locales/index.js");
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./store */ "./resources/js/admin/store/index.js");
+/* harmony import */ var _configs_base__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./configs/base */ "./resources/js/admin/configs/base.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
@@ -6625,7 +6626,6 @@ function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _ty
 
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 
-window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
 
 
 
@@ -6633,42 +6633,28 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js"
 
 
 
- // settings
-// vue modal
 
-Vue.use((vue_js_modal__WEBPACK_IMPORTED_MODULE_4___default()), {
+ // vue modal
+
+vue__WEBPACK_IMPORTED_MODULE_8__.default.use((vue_js_modal__WEBPACK_IMPORTED_MODULE_1___default()), {
   dynamic: true,
   dynamicDefaults: {
     height: 'auto'
   }
 }); // vue alert ( like a modal ) - alerts successful or error messagers on load 
 
-Vue.use(vue_simple_alert__WEBPACK_IMPORTED_MODULE_5__.default); // turning axios into this.$http - for the usage to be simpler
+vue__WEBPACK_IMPORTED_MODULE_8__.default.use(vue_simple_alert__WEBPACK_IMPORTED_MODULE_2__.default);
+vue__WEBPACK_IMPORTED_MODULE_8__.default.configs = Object.assign({}, _configs_base__WEBPACK_IMPORTED_MODULE_7__.default);
+vue__WEBPACK_IMPORTED_MODULE_8__.default.config.productionTip = false; // setting axios defaults
+
+(axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.baseURL) = vue__WEBPACK_IMPORTED_MODULE_8__.default.configs.baseURL + vue__WEBPACK_IMPORTED_MODULE_8__.default.configs.api;
+(axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.headers.common.Authorization) = 'Bearer ' + localStorage.getItem('access_token');
+(axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.headers.common["Content-Type"]) = 'application/json';
+(axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.headers.common["Content-Language"]) = _locales__WEBPACK_IMPORTED_MODULE_5__.default.locale; // turning axios into this.$http - for the usage to be simpler
 // $i18n is turned automatically while creating app, just like store 
 
-Vue.prototype.$http = (axios__WEBPACK_IMPORTED_MODULE_0___default()); // x-csrf token ... should be clear )
-
-(axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.headers.common["X-CSRF-TOKEN"]) = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-var app = new Vue({
-  el: '#app',
-  render: function render(h) {
-    return h(_App__WEBPACK_IMPORTED_MODULE_1__.default);
-  },
-  store: _store__WEBPACK_IMPORTED_MODULE_3__.default,
-  i18n: _locales__WEBPACK_IMPORTED_MODULE_6__.default,
-  router: _router__WEBPACK_IMPORTED_MODULE_2__.default
-});
-Vue.config.productionTip = false; // custom
-// turns string date into date value for an input type date
-
-Date.prototype.toDateInputValue = function () {
-  var local = new Date(this);
-  local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
-  return local.toJSON().slice(0, 10);
-}; // error or success messages
-
-
-window.messages = _configs_messages__WEBPACK_IMPORTED_MODULE_7__.default; // creates a fast copy of any object
+vue__WEBPACK_IMPORTED_MODULE_8__.default.prototype.$http = (axios__WEBPACK_IMPORTED_MODULE_0___default()); // custom
+// creates a fast copy of any object
 
 window.copy = function (object) {
   return JSON.parse(JSON.stringify(object));
@@ -6687,14 +6673,30 @@ window.objectWithoutKey = function (object, key) {
       otherKeys = _objectWithoutProperties(object, [key].map(_toPropertyKey));
 
   return otherKeys;
+}; // turns string date into date value for an input type date
+
+
+Date.prototype.toDateInputValue = function () {
+  var local = new Date(this);
+  local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+  return local.toJSON().slice(0, 10);
 };
+
+new vue__WEBPACK_IMPORTED_MODULE_8__.default({
+  render: function render(h) {
+    return h(_App__WEBPACK_IMPORTED_MODULE_3__.default);
+  },
+  i18n: _locales__WEBPACK_IMPORTED_MODULE_5__.default,
+  router: _router__WEBPACK_IMPORTED_MODULE_4__.default,
+  store: _store__WEBPACK_IMPORTED_MODULE_6__.default
+}).$mount('#app');
 
 /***/ }),
 
-/***/ "./resources/js/admin/configs/messages.js":
-/*!************************************************!*\
-  !*** ./resources/js/admin/configs/messages.js ***!
-  \************************************************/
+/***/ "./resources/js/admin/configs/base.js":
+/*!********************************************!*\
+  !*** ./resources/js/admin/configs/base.js ***!
+  \********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -6703,16 +6705,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  success: function success(response) {
-    var _response$data$res$me;
-
-    return (_response$data$res$me = response.data.res.message) !== null && _response$data$res$me !== void 0 ? _response$data$res$me : "Successful!";
-  },
-  error: function error(_error) {
-    var _error$response$data$;
-
-    return (_error$response$data$ = _error.response.data.message) !== null && _error$response$data$ !== void 0 ? _error$response$data$ : 'Uncaught problem';
-  }
+  baseURL: 'http://localhost:8000',
+  api: '/api/'
 });
 
 /***/ }),

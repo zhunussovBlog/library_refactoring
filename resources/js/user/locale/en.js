@@ -54,6 +54,7 @@ export default {
 	"kaskelen": "Kaskelen, Kazakhstan",
 	"kazakh": "Kazakh",
 	"languages": "Languages",
+	"lib_guides": "Library Guides",
 	"lib_digest": "Library digest",
 	"lib_office": "Librarian office",
 	"library_closed": "Library closed",

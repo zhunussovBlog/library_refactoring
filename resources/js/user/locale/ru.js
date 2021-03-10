@@ -54,6 +54,7 @@ export default {
 	"kaskelen": "Каскелен, Казахстан",
 	"kazakh": "Казахский",
 	"languages": "Языки",
+	"lib_guides": "Инструкции и Рекомендации",
 	"lib_digest":"Дайджест библиотеки",
 	"lib_office": "Мой офис",
 	"library_closed": "Библиотека закрыта",

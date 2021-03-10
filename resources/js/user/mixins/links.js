@@ -27,6 +27,10 @@ let links =[
 
 		},
 		{
+			name:'lib_guides',
+			link:'https://sdu-kz.libguides.com/'
+		},
+		{
 			name:'quick_links.askus',
 			link:'https://sdu-kz.libguides.com/ask-a-librarian_page/askus'
 		},
@@ -59,11 +63,11 @@ let links =[
 },
 {
 	name:'research_consultations',
-	link:''
+	link:'https://sdu-kz.libguides.com/research_consultations'
 },
 {
 	name:'instructor_support',
-	link:''
+	link:'https://sdu-kz.libguides.com/instructor_support'
 }
 ];
 export default{
