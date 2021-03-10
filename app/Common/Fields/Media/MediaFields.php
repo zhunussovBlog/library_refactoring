@@ -30,6 +30,6 @@ class MediaFields extends FieldInterface
     protected static array $filterFields = [
         ['key' => 'year', 'title_key' => 'year', 'title' => 'Year', 'method' => SearchFieldConstants::EQUALS],
         ['key' => 'type_key', 'title_key' => 'type', 'title' => 'Type', 'method' => SearchFieldConstants::IN],
-        ['key' => 'language', 'title_key' => 'language', 'title' => 'Language', 'method' => SearchFieldConstants::IN]
+        ['key' => 'language', 'title_key' => 'language', 'title' => 'Language', 'method' => SearchFieldConstants::IN],
     ];
 }

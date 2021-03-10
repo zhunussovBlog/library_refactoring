@@ -5,7 +5,9 @@
 			<span v-else>{{$t(title.link)}}</span>
 		</a>
 		<div class="dropdown-menu" :class="menu_classes">
-			<a :target="links ? '_blank':''" :href="item.link" class="dropdown-item link" v-for="(item,index) in data" :key="index" @click="item_on_click(item)">{{$t(item.name ? item.name:item)}}</a>
+			<a :target="links ? '_blank':''" :href="item.link" class="dropdown-item link" v-for="(item,index) in data" :key="index" @click="item_on_click(item)" v-if="!item.invisible">
+				{{$t(item.name ? item.name:item)}}
+			</a>
 		</div>
 	</div>
 </template>

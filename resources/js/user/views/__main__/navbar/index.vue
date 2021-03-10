@@ -10,7 +10,7 @@
 				<dropdown :data="langs" :on_click="setLang" menu_classes="dropdown-menu-right" :title="{link:$i18n.locale,uppercase:true}"/>
 				<!-- login button if ur not logged in -->
 				<div class="link bg-lightblue font-size-18 py-3 px-3 ml-3"  @click="showModal(login,{width:'300px'})" v-if="!logged">{{$t('login')}}</div>
-				<!-- name, in other cases -->
+				<!-- dropdown, in other cases -->
 				<dropdown :data="dropdown_links" class="bg-lightblue font-size-18 py-3 px-3 ml-3" :title="{link:user.name}" menu_classes="dropdown-menu-right" v-else />
 			</div>
 		</div>
