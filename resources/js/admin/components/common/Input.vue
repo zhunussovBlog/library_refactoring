@@ -1,13 +1,13 @@
 <template>
-	<div class="relative flex-1"  @submit.prevent="submitTotal" tabindex="1" @focusout="shown=false">
-		<form class="relative full-height">
+	<div class="position-relative flex-fill"  @submit.prevent="submitTotal" tabindex="1" @focusout="shown=false">
+		<form class="position-relative h-100">
 			<input type="text" class="padding-right" :class="classes" v-model="text" @input="onInput()" :placeholder="placeholder"  />
-			<span v-if="selectable.available" class="icon align-items-center cursor-pointer selectable">
+			<span v-if="selectable.available" class="d-flex align-items-center icon cursor-pointer selectable">
 				<span @click="showList()">
 					<CaretUp class="down" />
 				</span>
 			</span>
-			<span v-if="search" class="icon align-items-center cursor-pointer">
+			<span v-if="search" class="d-flex align-items-center icon cursor-pointer">
 				<span @click="reset" v-if="value">
 					<Cancel />
 				</span>

@@ -1,15 +1,15 @@
 <template>
 	<form @submit.prevent="save()">
 		<!-- it's used for both create and edit -->
-		<div class="title">{{$t((edit ?'edit':'create')+'_batches')}}</div>
+		<div class="title mt-0">{{$t((edit ?'edit':'create')+'_batches')}}</div>
 		
-		<div class="row">
-			<div class="pad full-width">
-				<input type="string" :placeholder="$t('cost')" v-model="batch.cost" required />
+		<div class="d-flex">
+			<div class="pad w-100">
+				<input type="string" v-model="batch.cost" required />
 				<!-- placeholder is needed only when it's required or we really need a placeholder -->
-				<label class="placeholder required"></label>
+				<label class="placeholder required">{{$t('cost')}}</label>
 			</div>
-			<div class="pad full-width select">
+			<div class="pad w-100 select">
 				<select v-model="batch.sup_type">
 					<option value=''>&nbsp;</option>
 					<option value="D">Donated</option>
@@ -18,54 +18,54 @@
 				<label class="placeholder">{{$t('type_of_supply')}}</label>
 			</div>
 		</div>
-		<div class="row">
-			<div class="row full-width">
-				<div class="pad full-width">
+		<div class="d-flex">
+			<div class="d-flex w-100">
+				<div class="pad w-100">
 					<input type="date" v-model="batch.inv_date" required/>
 					<label class="placeholder required">{{$t('invoice_date')}}</label>
 				</div>
 			</div>
-			<div class="row full-width">
-				<div class="pad full-width select">
+			<div class="d-flex w-100">
+				<div class="pad w-100 select">
 					<select v-model="batch.sup_id">
 						<option value=''>&nbsp;</option>
 						<option v-for="(supply,index) in suppliers" :value="supply.id">{{supply.name}}</option>
 					</select>
 					<label class="placeholder">{{$tc('suppliers',1)}}</label>
 				</div>
-				<div class="pad fifth">
+				<div class="pad col-2">
 					<button type="button" class="outline-orange" @click="showModal(CreateSupply,{afterSave:loadSuppliers})">{{$t('create')}}</button>
 				</div>
 			</div>
 		</div>
 		<div class="subtitle">{{$t('count')}}</div>
-		<div class="row">
-			<div class="pad full-width">
+		<div class="d-flex">
+			<div class="pad w-100">
 				<input type="string" :placeholder="$t('quantity_items')" v-model="batch.items_no" required/>
 				<label class="placeholder required"></label>
 			</div>
-			<div class="pad full-width">
+			<div class="pad w-100">
 				<input type="string" :placeholder="$t('quantity_titles')" v-model="batch.titles_no" required />
 				<label class="placeholder required"></label>
 			</div>
 		</div>
 		<div class="subtitle">{{$t('by_contract')}}</div>
-		<div class="row">
-			<div class="pad full-width">
+		<div class="d-flex">
+			<div class="pad w-100">
 				<input type="string" :placeholder="$t('document_number')" v-model="batch.doc_no" required />
 				<label class="placeholder required"></label>
 			</div>
-			<div class="pad full-width">
+			<div class="pad w-100">
 				<input type="string" :placeholder="$t('contract_number')" v-model="batch.contract_no"/>
 				<label class="placeholder"></label>
 			</div>
 		</div>
-		<div class="row">
-			<div class="pad full-width">
+		<div class="d-flex">
+			<div class="pad w-100">
 				<textarea :placeholder="$t('invoice_details')" v-model="batch.inv_details"/>
 				<label class="placeholder"></label>
 			</div>
-			<div class="pad full-width justify-content-end align-items-end">
+			<div class="pad w-100 d-flex justify-content-end align-items-end">
 				<div class="pad">
 					<button type="submit">{{$t('save')}}</button>
 				</div>
@@ -184,9 +184,6 @@ export default{
 }
 </script>
 <style scoped>
-.margin{
-	margin-right: 0.625em;
-}
 .button{
 	min-width: 3.125em;
 	width:10%;

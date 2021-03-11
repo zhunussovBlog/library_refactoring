@@ -10,7 +10,7 @@ export default{
 	},
 	methods:{
 		setLang(lan){
-			this.$i18n.locale=lan.lan || 'en';
+			this.$i18n.locale=lan.lan || window.configs.default_lang;
 			localStorage.setItem('lang',JSON.stringify(lan.lan));
 		}
 	}

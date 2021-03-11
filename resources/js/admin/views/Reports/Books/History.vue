@@ -1,26 +1,26 @@
 <template>
 	<form @submit.prevent="loadResults()">
-		<div class="row">
-			<div class="pad fifth">
+		<div class="d-flex">
+			<div class="pad col-2">
 				<select v-model="search.type" required>
 					<option v-for="(type,index) in types" :value="type.key">{{$t(type.key)}}</option>
 				</select>
 				<label class="placeholder required">{{$t('type')}}</label>
 			</div>
-			<div class="pad full-width">
+			<div class="pad w-100">
 				<input type="text" placeholder=" " v-model="search.query">
 				<label class="placeholder">{{$t('searching')}}</label> 
 			</div>
-			<div class="pad fifth">
+			<div class="pad col-2">
 				<button type="submit">{{$t('search')}}</button>
 			</div>
-			<div class="pad fifth">
+			<div class="pad col-2">
 				<button type="button" @click="reset(setSearch,'books')">{{$t('reset')}}</button>
 			</div>
 		</div>
-		<div class="margin-top">
+		<div class="mt-5">
 			<div v-if="searching">
-				<table-div class="margin-top" :heads="heads" :data="data.res" link="/report/book-history" commit="books_history" :sortable="false" :tableName="{countable:true,name:'books'}"/>
+				<table-div class="mt-5" :heads="heads" :data="data.res" link="/report/book-history" commit="books_history" :sortable="false" :tableName="{countable:true,name:'books'}"/>
 			</div>
 		</div>
 	</form>
@@ -60,12 +60,12 @@ export default{
 			{name:'type',link:'type'},
 			{name:'titles',link:'title',countable:true},
 			{name:'author',link:'author'},
-			{name:'borrow_date',link:'borrow_date',is_date:true},
+			{name:'bord-flex_date',link:'bord-flex_date',is_date:true},
 			{name:'due_date',link:'due_date',is_date:true},
 			{name:'delivery_date',link:'delivery_date',is_date:true},
 			{name:'status',link:'status'},
 			{name:'give_material',func:this.giveMaterial},
-			{name:'last_user_borrowed',link:'username'},
+			{name:'last_user_bord-flexed',link:'username'},
 			]
 		}
 	},

@@ -13,10 +13,10 @@ import base from './configs/base'
 Vue.use(VModal, { dynamic: true, injectModalsContainer: true });
 Vue.use(VueSimpleAlert);
 
-Vue.configs=Object.assign({},base);
+window.configs=Object.assign({},base);
 Vue.config.productionTip = false;
 
-Axios.defaults.baseURL = Vue.configs.baseURL + Vue.configs.api
+Axios.defaults.baseURL = window.configs.baseURL + window.configs.api
 Axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('access_token');
 Axios.defaults.headers.common['Content-Type'] = 'application/json';
 Axios.defaults.headers.common['Content-Language'] = i18n.locale;

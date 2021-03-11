@@ -2,70 +2,70 @@
 	<form @submit.prevent="save()">
 		<!-- this template is has 3 options in the same time : edit, create and recreate -->
 		<div class="title">{{$t((edit ?'edit':reCreate ? 'reCreate':'create')+'_items') }}</div>
-		<div class="row">
-			<div class="row full-width">
-				<div class="pad full-width">
+		<div class="d-flex">
+			<div class="d-flex w-100">
+				<div class="pad w-100">
 					<input type="text" :placeholder="$tc('titles',1)" v-model="item.title" :disabled="edit || reCreate" :required="!(edit || reCreate)">
 					<!-- it's required on create only  -->
 					<label class="placeholder" :class="{required:!(edit || reCreate)}"></label>
 				</div>
 			</div>
-			<div class="row full-width">
-				<div class="pad full-width select">
+			<div class="d-flex w-100">
+				<div class="pad w-100 select">
 					<select v-model="item.batch_id" :required="!edit" :disabled="edit">
 						<option value=''>&nbsp;</option>
 						<option v-for="(batch,index) in batches" :value="batch.id">{{batch.id}}</option>
 					</select>
 					<label class="placeholder" :class="{required:!edit}">{{$t('batches_number')}}</label>
 				</div>
-				<div class="pad fifth" v-if="!edit">
+				<div class="pad col-2" v-if="!edit">
 					<button class="outline-orange" type="button" @click="showModal(CreateBatches,{afterSave:loadBatches})">{{$t('create')}}</button>
 				</div>
 			</div>
 		</div>
-		<div class="row">
-			<div class="row full-width">
-				<div class="pad full-width">
+		<div class="d-flex">
+			<div class="d-flex w-100">
+				<div class="pad w-100">
 					<input type="text" :placeholder="$t('author')" v-model="item.author" :disabled="edit || reCreate" :required="!(edit || reCreate)"/>
 					<label class="placeholder" :class="{required:!(edit || reCreate)}"></label>
 				</div>
 			</div>
-			<div class="row full-width">
-				<div class="pad full-width">
+			<div class="d-flex w-100">
+				<div class="pad w-100">
 					<input type="text" :placeholder="$t('isbn')" v-model="item.isbn" :disabled="edit || reCreate" :required="!(edit || reCreate)">
 					<label class="placeholder" :class="{required:!(edit || reCreate)}"></label>
 				</div>
 			</div>
 		</div>
-		<div class="row">
-			<div class="row full-width">
-				<div class="pad full-width">
+		<div class="d-flex">
+			<div class="d-flex w-100">
+				<div class="pad w-100">
 					<input type="text" :placeholder="$t('pub_year')" v-model="item.pub_year" :disabled="edit" :required="!(edit )"/>
 					<label class="placeholder" :class="{required:!(edit)}"></label>
 				</div>
 			</div>
-			<div class="row full-width">
-				<div class="pad full-width select">
+			<div class="d-flex w-100">
+				<div class="pad w-100 select">
 					<select v-model="item.publisher_id" :disabled="edit" :required="!edit">
 						<option value=''>&nbsp;</option>
 						<option v-for="(publisher,index) in publishers" :value="publisher.id">{{publisher.name}}</option>
 					</select>
 					<label class="placeholder" :class="{required:!edit}">{{$tc('publishers',1)}}</label>
 				</div>
-				<div class="pad fifth" v-if="!edit">
+				<div class="pad col-2" v-if="!edit">
 					<button type="button" class="outline-orange" @click="showModal(CreatePublisher,{afterSave:loadPublishers})">{{$t('create')}}</button>
 				</div>
 			</div>
 		</div>
-		<div class="row">
-			<div class="row full-width">
-				<div class="pad full-width">
+		<div class="d-flex">
+			<div class="d-flex w-100">
+				<div class="pad w-100">
 					<input type="text" :placeholder="$t('pub_city')" v-model="item.pub_city" :disabled="edit" :required="!(edit)">
 					<label class="placeholder" :class="{required:!(edit)}"></label>
 				</div>
 			</div>
-			<div class="row full-width">
-				<div class="pad full-width select">
+			<div class="d-flex w-100">
+				<div class="pad w-100 select">
 					<select v-model="item.item_type" :required="!(edit || reCreate)" :disabled="edit || reCreate">
 						<option value=''>&nbsp;</option>
 						<option :value="item.item_type" v-if="(edit || reCreate)">{{item.item_type}}</option>
@@ -75,26 +75,26 @@
 				</div>
 			</div>
 		</div>
-		<div class="row">
-			<div class="row full-width">
-				<div class="pad full-width">
+		<div class="d-flex">
+			<div class="d-flex w-100">
+				<div class="pad w-100">
 					<input type="text" :placeholder="(edit) ? 'not editable' : $t('count')" :required="!(edit)" v-model="(edit) ? null : item.count" :disabled="edit">
 					<label class="placeholder" :class="{required:!(edit)}"></label>
 				</div>
-				<div class="pad full-width">
+				<div class="pad w-100">
 					<input type="text" :placeholder="$t('cost')" v-model="item.cost" required>
 					<label class="placeholder required"></label>
 				</div>
 			</div>
-			<div class="row full-width">
-				<div class="pad full-width select">
+			<div class="d-flex w-100">
+				<div class="pad w-100 select">
 					<select v-model="item.currency" required>
 						<option value=''>&nbsp;</option>
 						<option v-for="(currency,index) in support_data.currencies" :value="currency.currency">{{currency.currency}}</option>
 					</select>
 					<label class="placeholder required">{{$t('currency')}}</label>
 				</div>
-				<div class="pad full-width select">
+				<div class="pad w-100 select">
 					<select v-model="item.location" required>
 						<option value=''>&nbsp;</option>
 						<option v-for="(location,index) in support_data.locations" :value="location.location_key">{{location.location}}</option>
@@ -104,7 +104,7 @@
 			</div>
 		</div>
 
-		<div class="margin-top justify-content-end">
+		<div class="mt-5 justify-content-end">
 			<div class="pad">
 				<button type="submit">{{$t('save')}}</button>
 			</div>
@@ -266,6 +266,6 @@ export default{
 	margin-right: 0.625em;
 }
 .pad{
-	margin-top:1em;
+	mt-5:1em;
 }
 </style>

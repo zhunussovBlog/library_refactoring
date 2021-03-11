@@ -4,7 +4,7 @@ export default{
             let width=props ? props.width ?? '66.5%' : '66.5%';
 			this.$modal.show(component,props,{
                 width:width,
-                classes:['bigger-border-radius'],
+                classes:['bigger-rounded-lg'],
                 styles:'padding:1.5em;',
                 shiftY:0.3
             },{});

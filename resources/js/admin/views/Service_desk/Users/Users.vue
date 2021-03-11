@@ -1,23 +1,23 @@
 <template>
-	<form class="row" @submit.prevent="loadResults()">
-		<div class="bg-white mt-10 full-width pd-30-15 ">
+	<form class="d-flex" @submit.prevent="loadResults()">
+		<div class="bg-white mt-2 w-100 py-4 px-3 ">
 			<form class="align-items-center sections" @submit.prevent="loadResults()">
 				<!-- fu... luchshe sjuda ne smotret' -->
 				<label>{{$t('section')}} : &nbsp;</label>
-				<div class="border border-gray mr-1 text-center cursor-pointer" v-for="(type,index) in types" :key="index" @click="chooseType(type)" :class="[{'border-left-radius' : index==0},{'border-right-radius':index==types.length-1},{'border-orange color-orange':type.key==search.type},index==0 ? 'border-right-none' :'border-left-none']">{{$t(type.key)}}</div>
-				<div class="input ml-20">
-					<input-div classes="border-gray full-width" :search='true' :onSubmit="loadResults" v-model="search.query" :placeholder="$t(search.type=='student' ? 'user_id_user':'username_user')"/>
+				<div class="border border-grey mr-1 text-center cursor-pointer" v-for="(type,index) in types" :key="index" @click="chooseType(type)" :class="[{'border-left-radius' : index==0},{'border-right-radius':index==types.length-1},{'border-orange text-orange':type.key==search.type},index==0 ? 'border-right-none' :'border-left-none']">{{$t(type.key)}}</div>
+				<div class="input ml-4">
+					<input-div classes="border-grey w-100" :search='true' :onSubmit="loadResults" v-model="search.query" :placeholder="$t(search.type=='student' ? 'user_id_user':'username_user')"/>
 				</div>
-				<div class="ml-5 full-height">
-					<button type="submit" class="bg-orange full-height">{{$t('search')}}</button>
+				<div class="ml-5 h-100">
+					<button type="submit" class="bg-orange h-100">{{$t('search')}}</button>
 				</div>
-				<div class="ml-auto full-height align-items-center">
+				<div class="ml-auto h-100 align-items-center">
 					<Dropdown title="Choose department"/>
 				</div>
 			</form>
-			<div class="margin-top">
+			<div class="mt-5">
 				<div v-if="searching">
-					<table-div class="margin-top" :clickables="true" :heads="heads" :data="data.res" :service="service" link="/user" commit="users" :sortable="false"/>
+					<table-div class="mt-5" :clickables="true" :heads="heads" :data="data.res" :service="service" link="/user" commit="users" :sortable="false"/>
 				</div>
 			</div>
 		</div>
@@ -148,7 +148,7 @@ export default{
 	/*fu.... so bad code .... HATE IT!*/
 	border-width:0.09375em;
 	z-index: 1;
-	border-radius: 0.3125em;
+	rounded-lg: 0.3125em;
 
 	/*never use !important ... do never!!!*/
 	border-left:0.09375em solid #ff9d29 !important;

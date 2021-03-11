@@ -1,34 +1,34 @@
 <!-- THE CODE IS NOT AS DIFFICULT AS IT SEEMS -->
 <!-- BE PATIENT -->
 <template>
-	<div class="col border-radius">
-		<div class="mt-10 align-items-center" v-if="pagination">
-			<div class="align-items-center" v-if="sortable">
+	<div class="d-flex flex-column rounded-lg">
+		<div class="d-flex align-items-center mt-2" v-if="pagination">
+			<div class="d-flex align-items-center" v-if="sortable">
 				<label>{{$t('sort_by')}}</label>
-				<Dropdown class="ml-10" :items="sorting_fields.fields" :itemOnClick="changeSortingOrder" :title="sort_by.order_by" dropdownStyles="left:0;right:unset;" dropdownShownStyles="max-height:20em;"/>
-				<input class="ml-10" type="checkbox" v-model="sort_mode" @change="changeSortingMode"/>
+				<Dropdown class="ml-2" :items="sorting_fields.fields" :itemOnClick="changeSortingOrder" :title="sort_by.order_by" dropdownStyles="left:0;right:unset;" dropdownShownStyles="max-height:20em;"/>
+				<input class="ml-2" type="checkbox" v-model="sort_mode" @change="changeSortingMode"/>
 				&nbsp;
 				<label>{{$t('asc')}}</label>
 			</div>
-			<div class="align-items-center ml-auto">
+			<div class="d-flex align-items-center ml-auto">
 				<label>{{$t('per_page')}}</label>
-				<Dropdown class="ml-10" :items="per_page_list" :itemOnClick="changePerPage" :title="per_page" dropdownStyles="overflow:hidden;" dropdownShownStyles="max-height:20em;"/>
+				<Dropdown class="ml-2" :items="per_page_list" :itemOnClick="changePerPage" :title="per_page" dropdownStyles="overflow:hidden;" dropdownShownStyles="max-height:20em;"/>
 			</div>
 		</div>
-		<div class="table border-radius" :class="{'height-unset':!pagination}">
+		<div class="table rounded-lg" :class="{'height-unset':!pagination}">
 			<table class="text-choosable">
 				<thead>
-					<tr class="color-gray">
-						<th class="header text-center bg-light-gray" v-if="!selectable.available">
+					<tr class="text-grey">
+						<th class="header text-center bg-lightgrey" v-if="!selectable.available">
 							<!-- if not selectable -->
 							#
 						</th>
-						<th class="header text-center no-border-right bg-orange  color-white" v-else>
+						<th class="header text-center no-border-right bg-orange  text-white" v-else>
 							&nbsp;
 						</th>
 						<!-- if there's a status, BATCHES ONLY -->
 						<th v-if="status"
-							class="header bg-light-gray"
+							class="header bg-lightgrey"
 							:class="{'cursor-pointer' : simpleSortable}" 
 							@click="simpleSortable ? sort('status',statusReverse) : ()=>{}"
 						>
@@ -39,8 +39,8 @@
 						</th>
 						<!-- for in heads -->
 						<th v-for="(name,index) in heads" :key="index"
-							class="header bg-light-gray"
-							:class="[{'cursor-pointer':name.link!=null && simpleSortable},{'bg-orange  color-white' :selectable.available}]"
+							class="header bg-lightgrey"
+							:class="[{'cursor-pointer':name.link!=null && simpleSortable},{'bg-orange  text-white' :selectable.available}]"
 							@click="name.link!=null && simpleSortable ? sort(name.link,name.reverse,index) : ()=>{}"
 						>
 							<!-- displayed name in table header -->
@@ -51,7 +51,7 @@
 							</span>
 						</th>
 						<!-- all clickables share one table head -->
-						<th class="header bg-light-gray" v-if="clickables"></th>
+						<th class="header bg-lightgrey" v-if="clickables"></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -81,20 +81,20 @@
 						</td>
 						<!-- if there are clickable elements in table -> Show more, Edit, ReCreate, Delete or Service -->
 						<td class="text-center" v-if="clickables">
-							<div class="align-items-center justify-content-around">
+							<div class="d-flex align-items-center justify-content-around">
 								<button type="button" class="outline-green" @click="showMore.func(info)"  v-if="showMore.available">
 									{{$t(showMore.title)}}
 								</button>
-								<div class="icon" :class="{'ml-20':showMore.available}" @click="editit(info,false)"  v-if="editObj.available">
+								<div class="icon" :class="{'ml-4':showMore.available}" @click="editit(info,false)"  v-if="editObj.available">
 									<Edit class="cursor-pointer"/>
 								</div>
-								<div class="ml-10 icon" @click="editit(info,true)" v-if="editObj.reCreate">
+								<div class="ml-2 icon" @click="editit(info,true)" v-if="editObj.reCreate">
 									<Redo class="cursor-pointer"/>
 								</div>
-								<div class="ml-10 icon" @click="deleteit(info.id || info.inv_id)" v-if="deleteObj.available">
+								<div class="ml-2 icon" @click="deleteit(info.id || info.inv_id)" v-if="deleteObj.available">
 									<Delete class="cursor-pointer"/>
 								</div>
-								<button type="button" class="ml-10 outline-green" @click="service.func(info)" v-if="service.available">
+								<button type="button" class="ml-2 outline-green" @click="service.func(info)" v-if="service.available">
 									<span class="icon"><Book /></span>
 									<span>{{$t(service.title)}}</span>
 								</button>
@@ -106,8 +106,8 @@
 		</div>
 		<!-- If the table has selectable elements then there is a "select all" checkbox below the table -->
 		<!-- SELECTABLE ONLY -->
-		<div class="bg-light-gray selectable align-items-center justify-content-between" v-if="selectable.available">
-			<div class="align-items-center">
+		<div class="bg-lightgrey selectable d-flex align-items-center justify-content-between" v-if="selectable.available">
+			<div class="d-flex align-items-center">
 				<Checkbox v-model="selectedAll" @change="selectAll()"/> &nbsp; &nbsp;
 				<span>{{$t('select_all',{num:this.selected.length})}}</span>
 			</div>
@@ -118,11 +118,11 @@
 			</div>
 		</div>
 		<!-- If there's a pagination -> then, there is a pagination : ) -->
-		<div class="mt-10 justify-content-between align-items-center" v-if="pagination">
+		<div class="d-flex justify-content-between align-items-center mt-2" v-if="pagination">
 			<pagination :data="array" :link="link" :commit="commit" />
 			<div class="pad">
-				<button type="button" class="cancel-button align-items-center" @click="last(link,commit)" v-if="refreshable">
-					<span class="color-black font-size-15">
+				<button type="button" class="d-flex align-items-center cancel-button" @click="last(link,commit)" v-if="refreshable">
+					<span class="text-black font-size-24">
 						<Refresh />
 						&nbsp;
 					</span>
@@ -433,7 +433,7 @@ input{
 }
 
 .table{
-	position: relative;
+	position: position-relative;
 	max-height: max(68vh,31.25em);
 	overflow: auto;
 	border-bottom:0.0625em solid #E8E8E8;
@@ -459,7 +459,7 @@ input{
 	color: #00BB78;
 }
 
-.no-borderright{
+.no-border-right{
 	border-right:none;
 }
 

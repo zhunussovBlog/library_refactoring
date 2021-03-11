@@ -1,27 +1,27 @@
 <template>
-	<div class="full-width">
+	<div class="w-100">
 		<div class="align-items-center justify-content-between">
 			<div class="align-items-center">
-				<div class="font-weight-500 font-size-1125">Attendance statistics</div>
-				<tabs class="ml-40" :components="components" :tabOnClick="chooseTab" tabClasses="mr-30 font-size-1125" />
+				<div class="font-weight-bold font-size-18">Attendance statistics</div>
+				<tabs class="ml-40" :components="components" :tabOnClick="chooseTab" tabClasses="mr-30 font-size-18" />
 			</div>
-			<div class="row">
-				<button type="button" class="bg-middle-gray color-black ">Export to Excel ?</button>
-				<button type="button" class="bg-middle-gray color-black ml-10">Print</button>
+			<div class="d-flex">
+				<button type="button" class="bg-middle-grey text-black ">Export to Excel ?</button>
+				<button type="button" class="bg-middle-grey text-black ml-2">Print</button>
 			</div>
 		</div>
-		<div class="row mt-40">
+		<div class="d-flex mt-40">
 			<div class="width-80">
 				<line-chart :data="data" :options="withOptions(lineOptions)"/>
 			</div>
-			<div class="fifth ml-10">
-				<dropdown dropdownClasses="dropdown-left full-width" titleClasses="border border-radius border-black pd-10 justify-content-center no-hover-color" :title="'Show for ' + (weekly?'week':'month')" :items="dropdownItems" :itemOnClick="dropdownItemOnClick"/>
-				<div class="font-weight-500 mt-30">In library by {{weekly?'week':'month'}}</div>
-				<div class="justify-content-between mt-20">
+			<div class="col-2 ml-2">
+				<dropdown dropdownClasses="dropdown-left w-100" titleClasses="border rounded-lg border-black pd-10 justify-content-center no-hover-color" :title="'Show for ' + (weekly?'week':'month')" :items="dropdownItems" :itemOnClick="dropdownItemOnClick"/>
+				<div class="font-weight-bold mt-30">In library by {{weekly?'week':'month'}}</div>
+				<div class="justify-content-between mt-3">
 					<span>Students: </span>
 					<span>{{studentsNumber}}</span>
 				</div>
-				<div class="justify-content-between mt-20">
+				<div class="justify-content-between mt-3">
 					<span>Stuff: </span>
 					<span>{{stuffNumber}}</span>
 				</div>

@@ -1,20 +1,20 @@
 <template>
-	<div class="row align-items-center">
-		<div class="full-width row">
-			<div class="pad full-width">
+	<div class="d-flex align-items-center">
+		<div class="w-100 d-flex">
+			<div class="pad w-100">
 				<input type="date" 	/>
 				<label class="placeholder">From date</label>
 			</div>
-			<div class="pad full-width">
+			<div class="pad w-100">
 				<input type="date" 	/>
 				<label class="placeholder">To date</label>
 			</div>
 		</div>
-		<div class="align-items-center full-width">
-			<div class="relative pad ml-20">
+		<div class="align-items-center w-100">
+			<div class="relative pad ml-4">
 				<Dropdown title="Choose department" :items="['Enginering','Not enginering']" dropdownClasses="dropdown-left" :dropup="true"/>
 			</div>
-			<div class="relative pad ml-20">
+			<div class="relative pad ml-4">
 				<Dropdown title="Choose type" :items="['Student','Staff']" dropdownClasses="dropdown-left" :dropup="true"/>
 			</div>
 			<div class="pad ml-auto">

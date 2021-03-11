@@ -1,23 +1,23 @@
 <template>
 	<div class="text-choosable">
 		<div class="justify-content-between align-items-center">
-			<div class="font-weight-500">{{$tc(tableName.name,1)}}</div>
-			<div class="font-weight-500 cursor-pointer pd-16" @click="close"><X /></div>
+			<div class="font-weight-bold">{{$tc(tableName.name,1)}}</div>
+			<div class="font-weight-bold cursor-pointer p-3" @click="close"><X /></div>
 		</div>
-		<table class="full-width">
-			<tr class="font-size-0875" v-for="(head,index) in heads">
-				<td class="color-gray">{{$tc(head.name,1)}} :</td>
+		<table class="w-100">
+			<tr class="font-size-14" v-for="(head,index) in heads">
+				<td class="text-grey">{{$tc(head.name,1)}} :</td>
 				<td class="pl">{{data[head.link]}}</td>
 			</tr>
 		</table>
-		<div class="mt-20 row">
+		<div class="mt-3 d-flex">
 			<div class="pad ml-auto">
 				<button type="button" class="outline-black" @click="editit()">
 					<span><Edit /></span>
 					{{$t('edit')}}
 				</button>
 			</div>
-			<div class="pad ml-10">
+			<div class="pad ml-2">
 				<button type="button" class="outline-black" @click="deleteit()">
 					<span><Delete /></span>
 					{{$t('delete')}}					
@@ -85,11 +85,11 @@ export default{
 }
 </script>
 <style scoped>
-.pd-16{
+.p-3{
 	padding-right: 0;
 	padding-top: 0;
 }
-.bg-gray{
+.bg-grey{
 	background-color: #E8E8E8;
 }
 td{

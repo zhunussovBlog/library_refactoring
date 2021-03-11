@@ -1,20 +1,20 @@
 <template>
 	<div class="text-choosable">
 		<div class="justify-content-between align-items-center">
-			<div class="font-weight-500">{{$t('more_info')}}</div>
+			<div class="font-weight-bold">{{$t('more_info')}}</div>
 			<div @click="$emit('close')">
-				<span class="cursor-pointer font-size-125"><X /></span>
+				<span class="cursor-pointer font-size-20"><X /></span>
 			</div>
 		</div>
-		<div class="row align-items-start flex-wrap mt-10">
-			<div class="pd-20 border-radius bg-light-gray">
+		<div class="d-flex align-items-start flex-wrap mt-2">
+			<div class="pd-20 rounded-lg bg-lightgrey">
 				<div class="image" :style="'background-image: url('+backgroundImage+')'"/>
-				<div class="mt-10 text-center">{{user.user.student ? user.user.student : user.user.employee}}</div>
+				<div class="mt-2 text-center">{{user.user.student ? user.user.student : user.user.employee}}</div>
 
 			</div>
-			<div class="bg-light-gray border-radius pd-16 ml-10 flex-1" v-if='user.user'>
+			<div class="bg-lightgrey rounded-lg p-3 ml-2 flex-1" v-if='user.user'>
 				<div v-for="(value,key,index) in objectWithoutKey(objectWithoutKey(objectWithoutKey(user.user,'user_cid'),'student'),'employee') ">
-					<div class="color-gray">{{capitalize($t(key))}} :</div>
+					<div class="text-grey">{{capitalize($t(key))}} :</div>
 					<div>{{value}}</div>
 					&nbsp;
 				</div>

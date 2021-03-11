@@ -1,11 +1,11 @@
 <template>
 	<form class="col" @submit.prevent="loadResults()">
-		<div class="row flex-1">
-			<div class="pad full-width">
+		<div class="d-flex flex-1">
+			<div class="pad w-100">
 				<input type="text" v-model="search.from" required />
 				<label class="placeholder required">From</label>
 			</div>
-			<div class="pad full-width">
+			<div class="pad w-100">
 				<input type="text" v-model="search.count" required />
 				<label class="placeholder required">Count</label>
 			</div>
@@ -16,9 +16,9 @@
 				<button type="button">{{$t('reset')}}</button>
 			</div>
 		</div>
-		<div class="margin-top">
+		<div class="mt-5">
 			<div v-if="searching">
-				<table-div class="margin-top" :heads="heads" :data="data.res" link="/report/book-history" commit="books_inv_number" :sortable="false" :tableName="{countable:true,name:'books'}" :clickables="false"/>
+				<table-div class="mt-5" :heads="heads" :data="data.res" link="/report/book-history" commit="books_inv_number" :sortable="false" :tableName="{countable:true,name:'books'}" :clickables="false"/>
 			</div>
 		</div>
 	</form>
@@ -57,12 +57,12 @@ export default{
 			// {name:'type',link:'type'},
 			// {name:'titles',link:'title',countable:true},
 			// {name:'author',link:'author'},
-			// {name:'borrow_date',link:'borrow_date',is_date:true},
+			// {name:'bord-flex_date',link:'bord-flex_date',is_date:true},
 			// {name:'due_date',link:'due_date',is_date:true},
 			// {name:'delivery_date',link:'delivery_date',is_date:true},
 			// {name:'status',link:'status'},
 			// {name:'give_material',func:this.giveMaterial},
-			// {name:'last_user_borrowed',link:'username'},
+			// {name:'last_user_bord-flexed',link:'username'},
 			// ]
 		}
 	},

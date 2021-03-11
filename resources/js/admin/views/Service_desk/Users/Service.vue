@@ -1,13 +1,13 @@
 <template>
-	<div class="mt-10 bg-white pd-30-15">
+	<div class="mt-2 bg-white py-4 px-3">
 		<div class="align-items-center">
 			<Back />
-			<span class="ml-20 font-size-1125 color-gray">Serving: &nbsp;</span>
-			<span class="font-size-1125">{{info.name+' '+info.surname}}</span>
+			<span class="ml-4 font-size-18 text-grey">Serving: &nbsp;</span>
+			<span class="font-size-18">{{info.name+' '+info.surname}}</span>
 		</div>
-		<div class="height-1 full-width mt-20"></div>
-		<div class="mt-20">
-			<span class="font-size-125 font-weight-500">Books to be given</span>
+		<div class="height-1 w-100 mt-3"></div>
+		<div class="mt-3">
+			<span class="font-size-20 font-weight-bold">Books to be given</span>
 			<table-div :selectable="selectable" :sortable="false" :pagination="false" :clickables="false"></table-div>
 		</div>
 	</div>

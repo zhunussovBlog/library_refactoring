@@ -1,7 +1,7 @@
 <template>
 	<div class="">
-		<div class="tabs relative" :class="tabsClasses" :style="tabsStyle">
-			<div :ref="'tab-'+index" v-for="(tab,index) in tabs" @click="setActive(index,tab)" class="tab" :class="[activeTab==index ? 'color-orange '+tabActiveClasses : 'color-gray '+tabInactiveClasses,tabClasses]" :style="tabStyle">{{tab.name}}
+		<div class="tabs position-relative" :class="tabsClasses" :style="tabsStyle">
+			<div :ref="'tab-'+index" v-for="(tab,index) in tabs" @click="setActive(index,tab)" class="tab" :class="[activeTab==index ? 'text-orange '+tabActiveClasses : 'text-grey '+tabInactiveClasses,tabClasses]" :style="tabStyle">{{tab.name}}
 			</div>
 			<div ref="line" class="line" :class="lineClasses" :style="lineStyle"/>
 		</div>

@@ -1,8 +1,8 @@
 <template>
-	<div class="relative" tabindex="1" @focusout="shown=false">
-		<div class="link align-items-center pd-1-0 transition" :class="titleClasses" :style="titleStyles" @click="showDropdown()">{{$t(title)}}&nbsp;<CaretUp :class="{rotate:!dropup}"/></div>
-		<div class="dropdown dropdown-right transition border-radius bg-white color-black shadowed pl-18" :class="[dropdownClasses,{dropup:dropup}]" :style="(shown ? dropdownShownStyles : '') + dropdownStyles">
-			<div class="link border-bottom pd-1-0" v-for="(item,index) in items" :key="index" :class="itemClasses" :style="itemStyles" @click="itemOnClick(item);shown=false;">{{$t(item.name !=undefined ? item.name : item)}}</div>
+	<div class="position-relative" tabindex="1" @focusout="shown=false">
+		<div class="link d-flex align-items-center py-2 px-0 transition" :class="titleClasses" :style="titleStyles" @click="showDropdown()">{{$t(title)}}&nbsp;<CaretUp :class="{rotate:!dropup}"/></div>
+		<div class="dropdown dropdown-right transition rounded-lg bg-white text-black shadow-sm pl-3" :class="[dropdownClasses,{dropup:dropup}]" :style="(shown ? dropdownShownStyles : '') + dropdownStyles">
+			<div class="link border-bottom py-2 px-0" v-for="(item,index) in items" :key="index" :class="itemClasses" :style="itemStyles" @click="itemOnClick(item);shown=false;">{{$t(item.name !=undefined ? item.name : item)}}</div>
 		</div>
 	</div>
 </template>
@@ -72,7 +72,7 @@ div * {
 	scrollbar-color: #c5c5c5 #f4f4f4;
 }
 
-/*crossbrowser*/
+/*crossbd-flexser*/
 ::-webkit-scrollbar {
 	width: 0.5em;
 	height: 0.5em;

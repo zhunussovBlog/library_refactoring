@@ -1,6 +1,6 @@
 <template>
-	<div class="row">
-		<div class="border border-gray border-radius color-gray align-items-center cursor-pointer" @click="goBack()">
+	<div class="d-flex">
+		<div class="border border-grey rounded-lg text-grey align-items-center cursor-pointer" @click="goBack()">
 			<div class="rotate"><Right/></div>
 			&nbsp;{{$t('back')}}
 		</div>
@@ -19,7 +19,7 @@ export default{
 }
 </script>
 <style scoped>
-.border-gray{
+.border-grey{
 	padding:0.3125em 0.625em;
 }
 </style>

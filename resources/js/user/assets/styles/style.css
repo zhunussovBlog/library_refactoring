@@ -243,6 +243,10 @@ button{
 	min-width: 0;
 }
 
+.h-min-100{
+	min-height: 100%;
+}
+
 /*icons*/
 
 svg:not(:root).svg-inline--fa {

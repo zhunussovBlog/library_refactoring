@@ -1,29 +1,29 @@
 <template>
-	<div class="row">
-		<div class="bg-white mt-10 full-width pd-10">
+	<div class="d-flex">
+		<div class="bg-white mt-2 w-100 pd-10">
 			<Back />
-			<form @submit.prevent="loadResults()" class="mt-20">
-				<div class="font-size-1125 font-weight-500">Search Barcodes</div>
-				<div class="align-items-center full-width">
+			<form @submit.prevent="loadResults()" class="mt-3">
+				<div class="font-size-18 font-weight-bold">Search Barcodes</div>
+				<div class="align-items-center w-100">
 					<div class="text-no-wrap"> Choose search mode: </div>
-					<Dropdown class="ml-10" :title="search.type" :items="['barcode','author-title']" :itemOnClick="changeMode" dropdownClasses="dropdown-left"/>
-					<div class="align-items-center ml-10 full-width">
-						<div class="row full-width" v-if="search.type=='barcode'">
-							<div class="pad full-width">
+					<Dropdown class="ml-2" :title="search.type" :items="['barcode','author-title']" :itemOnClick="changeMode" dropdownClasses="dropdown-left"/>
+					<div class="align-items-center ml-2 w-100">
+						<div class="d-flex w-100" v-if="search.type=='barcode'">
+							<div class="pad w-100">
 								<input type="text" v-model="search.first_barcode"/>
 								<label class="placeholder">From</label>
 							</div>
-							<div class="pad full-width">
+							<div class="pad w-100">
 								<input type="text" v-model="search.last_barcode"/>
 								<label class="placeholder">To</label>
 							</div>
 						</div>
-						<div class="row full-width" v-else>
-							<div class="pad full-width">
+						<div class="d-flex w-100" v-else>
+							<div class="pad w-100">
 								<input type="text" v-model="search.title"/>
 								<label class="placeholder">Title</label>
 							</div>
-							<div class="pad full-width">
+							<div class="pad w-100">
 								<input type="text" v-model="search.author"/>
 								<label class="placeholder">Author</label>
 							</div>
@@ -37,9 +37,9 @@
 					</div>
 				</div>
 			</form>
-			<div class="margin-top">
+			<div class="mt-5">
 				<div v-if="searching">
-					<table-div class="margin-top" :heads="heads" :data="data.res" link="/report/barcode" commit="print_barcode" :sortable="false" :selectable="selectable" :pagination="false" :clickables="false"/>
+					<table-div class="mt-5" :heads="heads" :data="data.res" link="/report/barcode" commit="print_barcode" :sortable="false" :selectable="selectable" :pagination="false" :clickables="false"/>
 				</div>
 			</div>
 		</div>

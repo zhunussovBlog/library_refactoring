@@ -1,6 +1,6 @@
 <template>
 	<div class="col align-items-center justify-content-center">
-		<div class="font-weight-500">{{$t('confirmation')}}</div>
+		<div class="font-weight-bold">{{$t('confirmation')}}</div>
 		<div class="justify-content-between mt-5">
 			<button type="button" class="outline-red" @click="deleteIt()">{{$t('yes')}}</button>
 			<button type="button" class="outline-black ml-5" @click="$emit('close')">{{$t('no')}}</button>
@@ -40,7 +40,7 @@ export default{
 }
 </script>
 <style scoped>
-.row{
+.d-flex{
 	width:30%;
 }
 </style>

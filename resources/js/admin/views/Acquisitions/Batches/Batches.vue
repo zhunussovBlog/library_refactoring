@@ -1,11 +1,11 @@
 <template>
-	<form class="row" @submit.prevent="loadResults()">
+	<form class="d-flex" @submit.prevent="loadResults()">
 		<!-- filter -->
-		<div class="mt-10 ml-10 bg-white border-radius fifth"><filter-div /></div>
+		<div class="mt-2 ml-2 bg-white rounded-lg col-2"><filter-div /></div>
 		<!-- everything else -->
-		<div class="mt-10 ml-10 bg-white border-radius width-80 mr-10 pd-20">
-			<div class="align-items-center justify-content-between">
-				<div class="half">
+		<div class="mt-2 ml-2 bg-white rounded-lg flex-fill mr-10 p-3">
+			<div class="d-flex align-items-center justify-content-between">
+				<div class="w-50 ">
 					<input-div 
 						:placeholder="$t('search_by',{type:$t('batches_by')})"
 						:search='true'
@@ -13,21 +13,21 @@
 						v-model="batches.search.batch_id"
 					/>
 				</div>
-				<div class="align-items-center" >
+				<div class="d-flex align-items-center" >
 					<button type="button" @click="showModal(CreateBatches)">
 						<span><Plus /> &nbsp;</span>
 						<span>{{($t('add_batch'))}}</span>
 					</button>
-					<button class="ml-10" type="button" @click="loadAllData()">
+					<button class="ml-2" type="button" @click="loadAllData()">
 						<span><Download /> &nbsp;</span>
 						<span>{{$t('load_all')}}</span>
 					</button>
 				</div>
 			</div>
-			<div class="margin-top">
+			<div class="mt-5">
 				<div v-if="batches.searching">
 					<table-div 
-						class="margin-top" 
+						class="mt-5" 
 						:heads="heads"
 						:data="batches.data.res" 
 						:status='true' 

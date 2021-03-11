@@ -18,14 +18,14 @@
 </template>
 <script type="text/javascript">
 	import Navbar from './navbar'
-	import Footer from './footer'
+	import FooterDiv from './footer'
 
 	// loading indicator
 	import HalfCircleSpinner from 'epic-spinners/src/components/lib/HalfCircleSpinner'
 
 	export default{
 		components:{
-			'footer-div':Footer,
+			FooterDiv,
 			Navbar,
 			HalfCircleSpinner
 		}
@@ -33,6 +33,10 @@
 </script>
 <style scoped>
 .loader{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	
 	position: fixed;
 	top:0;
 	z-index: 2000;
@@ -41,9 +45,6 @@
 	background-color: rgba(0,0,0,0.45);
 }
 .spinner{
-	position: absolute;
 	pointer-events: none;
-	top:calc(50% - 2.5em);
-	left:calc(50% - 2.5em);
 }
 </style>

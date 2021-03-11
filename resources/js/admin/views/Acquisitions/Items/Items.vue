@@ -1,21 +1,21 @@
 <template>
-	<form class="row" @submit.prevent="loadResults()">
-		<div class="mt-10 ml-10 bg-white border-radius fifth"><filter-div /></div>
-		<div class="mt-10 ml-10 bg-white border-radius width-80 mr-10 pd-20">
+	<form class="d-flex" @submit.prevent="loadResults()">
+		<div class="mt-2 ml-2 bg-white rounded-lg col-2"><filter-div /></div>
+		<div class="mt-2 ml-2 bg-white rounded-lg width-80 mr-10 pd-20">
 			<div class="align-items-start justify-content-between">
 				<div class="align-items-start flex-1">
 					<div class="col flex-1">
-						<div class="row flex-1" :class="{'mt-10':index!=0}" v-for="(input,index) in inputs">
-							<div class="row flex-1">
-								<div class="select relative bg-white z-index-1">
-									<select class="no_border_right full-height" v-model="input.key">
+						<div class="d-flex flex-1" :class="{'mt-2':index!=0}" v-for="(input,index) in inputs">
+							<div class="d-flex flex-1">
+								<div class="select position-relative bg-white z-index-1">
+									<select class="no_border_right h-100" v-model="input.key">
 										<option v-for="(item,index) in items.search_fields" :value="item.key">{{$tc(item.key,1)}}</option>
 									</select>
 									<label class="placeholder">{{$t('type')}}</label>
 								</div>
-								<input-div class="flex-1" classes="border-gray no_border_left full-height" :search='true' :onSubmit="loadResults" v-model="input.value" :placeholder="$t('search_by',{type:$t(input.key+'_by')})"/>
+								<input-div class="flex-1" classes="border-grey no_border_left h-100" :search='true' :onSubmit="loadResults" v-model="input.value" :placeholder="$t('search_by',{type:$t(input.key+'_by')})"/>
 							</div>
-							<div class="ml-5 row">
+							<div class="ml-5 d-flex">
 								<div class="select double-width mr-10" v-if="inputs.length>1 && index<inputs.length-1">
 									<select v-model="inputs[index+1].operator">
 										<option value="and">{{$t('and')}}</option>
@@ -34,15 +34,15 @@
 						<span><Print /> &nbsp;</span>
 						<span>{{($t('print'))}}</span>
 					</button>
-					<button type="button" class="ml-10" @click="showModal(CreateItems,{lastCreated:lastCreated})">
+					<button type="button" class="ml-2" @click="showModal(CreateItems,{lastCreated:lastCreated})">
 						<span><Plus /> &nbsp;</span>
 						<span>{{($t('add_item'))}}</span>
 					</button>
 				</div>
 			</div>
-			<div class="margin-top">
+			<div class="mt-5">
 				<div v-if="items.searching">
-					<table-div class="margin-top" :heads="heads" :data="items.data.res" :pagination="pagination" :editObj="editObj" :deleteObj="deleteObj" :showMore="showMore" link="/item" commit="items"/>
+					<table-div class="mt-5" :heads="heads" :data="items.data.res" :pagination="pagination" :editObj="editObj" :deleteObj="deleteObj" :showMore="showMore" link="/item" commit="items"/>
 				</div>
 			</div>
 		</div>

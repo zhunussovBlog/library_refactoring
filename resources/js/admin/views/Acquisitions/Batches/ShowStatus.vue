@@ -20,17 +20,17 @@
 				<td>{{data.items_no == data.items_ma ? $t('yes') : $t('no')}}</td>
 			</tr>
 		</table>
-		<div class="pt-10 justify-content-between align-items-center">
-			<div class="color-red">
+		<div class="d-flex justify-content-between align-items-center pt-2">
+			<div class="text-red">
 				<div v-if="data.titles_no != data.titles_ma">
 					<span><Warning /></span>
-					<span class="ml-5">
+					<span class="ml-1">
 						{{$t('titles_no_match')}}
 					</span>
 				</div>
-				<div class="mt-5" v-if="data.items_no != data.items_ma">
+				<div class="mt-1" v-if="data.items_no != data.items_ma">
 					<span><Warning /></span>
-					<span class="ml-5">
+					<span class="ml-1">
 						{{$t('items_no_match')}}
 					</span>
 				</div>

@@ -1,18 +1,18 @@
 <template>
-	<form class="row" @submit.prevent="loadResults()">
-		<div class="bg-white mt-10 full-width pd-20 ">
+	<form class="d-flex" @submit.prevent="loadResults()">
+		<div class="bg-white mt-2 w-100 pd-20 ">
 			<div class="justify-content-between">
 				<div class="width-40">
 					<input-div :search="true" :onSubmit="loadResults" v-model="search.name" :placeholder="$t('search_by',{type:$t('name_by')})" />
 				</div>
 				<div class="align-items-center">
 					<button type="button" @click="showModal(CreatePublisher,{loadAll:getAllData})">{{$t('create_publisher')}}</button>
-					<button type="button" class="ml-10" @click="loadAllData()">{{$t('load_all')}}</button>
+					<button type="button" class="ml-2" @click="loadAllData()">{{$t('load_all')}}</button>
 				</div>
 			</div>
-			<div class="margin-top">
+			<div class="mt-5">
 				<div v-if="publishers.searching">
-					<table-div class="margin-top" :heads="heads" :data="publishers.data.res" :editObj="editObj" :deleteObj="deleteObj" link="/publisher" commit="publishers"/>
+					<table-div class="mt-5" :heads="heads" :data="publishers.data.res" :editObj="editObj" :deleteObj="deleteObj" link="/publisher" commit="publishers"/>
 				</div>
 			</div>
 		</div>

@@ -2,7 +2,7 @@
 	<form @submit.prevent="save()">
 		<div class="title">{{$t((edit ?'edit':'create')+'_supplier') }}</div>
 		
-		<div class="row">
+		<div class="d-flex">
 			<div class="pad">
 				<input type="string" :placeholder="$t('name')" v-model="supply.name" required />
 				<label class="placeholder required"></label>
@@ -11,13 +11,13 @@
 				<input type="string" :placeholder="$t('bin')" v-model="supply.bin"/>
 			</div>
 		</div>
-		<div class="row">
+		<div class="d-flex">
 			<div class="pad">
 				<input type="string" :placeholder="$t('commercial_name')" v-model="supply.com_name"/>
 			</div>
 		</div>
 		<div class="subtitle">{{$t('contact')}}</div>
-		<div class="row">
+		<div class="d-flex">
 			<div class="pad">
 				<input type="string" :placeholder="$t('address')" v-model="supply.address"/>
 			</div>
@@ -25,7 +25,7 @@
 				<input type="string" :placeholder="$t('email')" v-model="supply.email" />
 			</div>
 		</div>
-		<div class="row">
+		<div class="d-flex">
 			<div class="pad">
 				<input type="string" :placeholder="$t('phone')" v-model="supply.phone"/>
 			</div>
@@ -140,10 +140,10 @@ export default{
 }
 </script>
 <style scoped>
-.row>div{
+.d-flex>div{
 	width:100%;
 }
 .pad{
-	margin-top:1em;
+	mt-5:1em;
 }
 </style>

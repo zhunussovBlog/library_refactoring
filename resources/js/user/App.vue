@@ -10,12 +10,12 @@
         },
         methods:{
             setLanguage(){
-                this.$i18n.locale=JSON.parse(localStorage.getItem('lang')) || 'en';
+                this.$i18n.locale=JSON.parse(localStorage.getItem('lang')) || window.configs.default_lang;
             },
             checkLogin(){
                 this.$http.get('user').then(response=>{
                     this.$store.commit('setUser',response.data.res.user);
-                })
+                }).catch(e=>{});
             }
         },
         created(){

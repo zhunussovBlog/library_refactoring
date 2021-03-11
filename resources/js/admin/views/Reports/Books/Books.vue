@@ -1,20 +1,20 @@
 <template>
 	<div class="bg-white pd-20">
-		<div class="font-weight-500 font-size-15 pd-16 full-width text-center relative">
+		<div class="font-weight-bold font-size-24 p-3 w-100 text-center position-relative">
 			<div>Most read books in the history of SDU</div>
 			<!-- <div class="plus_wrapper cursor-pointer" @click="overallShown=!overallShown">
 				<div class="plus_ver transition" :class="{minus:overallShown}"></div>
 				<div class="plus_hor"></div>
 			</div> -->
 		</div>
-		<div class="row flex-wrap mt-20">
+		<div class="d-flex flex-wrap mt-3">
 			<div class="flex-1">
 				<MRBChart />
 			</div>
-			<div class="flex-1 row ml-50">
+			<div class="flex-1 d-flex ml-50">
 				<div class="col">
 					<div class="image"></div>
-					<div class="text-center mt-20">Sherlock Holmes adventures</div>
+					<div class="text-center mt-3">Sherlock Holmes adventures</div>
 				</div>
 				<div class="ml-30 col justify-content-around">
 					<div>Title</div>
@@ -28,20 +28,20 @@
 			</div>
 		</div>
 		<div>
-			<div class="pad font-weight-500 font-size-1125 mt-30 ">Search most read books</div>
-			<div class="row align-items-center mt-10">
-				<div class="full-width row">
-					<div class="pad full-width">
+			<div class="pad font-weight-bold font-size-18 mt-30 ">Search most read books</div>
+			<div class="d-flex align-items-center mt-2">
+				<div class="w-100 d-flex">
+					<div class="pad w-100">
 						<input type="date" 	/>
 						<label class="placeholder">From date</label>
 					</div>
-					<div class="pad full-width">
+					<div class="pad w-100">
 						<input type="date" 	/>
 						<label class="placeholder">To date</label>
 					</div>
 				</div>
-				<div class="align-items-center full-width">
-					<div class="relative pad ml-20">
+				<div class="align-items-center w-100">
+					<div class="relative pad ml-4">
 						<Dropdown title="Choose subject type" :items="['Any','Lorem Ipsum']" dropdownClasses="dropdown-left"/>
 					</div>
 					<div class="pad ml-auto">
@@ -50,12 +50,12 @@
 				</div>
 			</div>
 		</div>
-		<div class="pad font-weight-500 font-size-15 mt-40 text-center">Search books</div>
-		<div class="pad full-width align-items-center">
+		<div class="pad font-weight-bold font-size-24 mt-40 text-center">Search books</div>
+		<div class="pad w-100 align-items-center">
 			<div>Mode: </div>&nbsp;
 			<Dropdown :title="mode" :items="['Inventory number','history']" dropdownClasses="dropdown-left" :dropup="true" :itemOnClick="chooseMode" /> 
 		</div>
-		<div class="mt-10">
+		<div class="mt-2">
 			<div v-if="mode=='history'"><History/></div>
 			<div v-else><InventoryNumber/></div>
 		</div>
@@ -88,6 +88,6 @@ export default {
 	width: 15em;
 	height:20em;
 	background-color: #9c9fa7;
-	border-radius: 5px;
+	rounded-lg: 5px;
 }
 </style>

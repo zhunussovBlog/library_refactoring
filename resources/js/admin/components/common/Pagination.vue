@@ -1,23 +1,23 @@
 <template>
-	<form @submit.prevent='move(move_page)' class="align-items-center">
+	<form @submit.prevent='move(move_page)' class="d-flex align-items-center">
 		<div>
 			<!-- whoash! I couldn't do " data.from ?? 0 "  -->
 			{{$t('showing_pages',{total:data.total,from:data.from ? data.from : 0,to:data.to ? data.to : 0})}}
 		</div>
-		<div class="align-items-center ml-20">
-			<button type="button" class="button left_button bg-light-gray" :class="data.current_page==1 ? 'color-gray cursor-unset':'color-black cursor-pointer'" @click="move(data.current_page-1)">
+		<div class="d-flex align-items-center ml-4">
+			<button type="button" class="button left_button bg-lightgrey" :class="data.current_page==1 ? 'text-grey cursor-unset':'text-black cursor-pointer'" @click="move(data.current_page-1)">
 				<span>
 					<ArrowDown />
 				</span>
 			</button>
-			<button type="button" class="button right_button bg-light-gray ml-1" :class="data.current_page==data.last_page ? 'color-gray cursor-unset':'color-black cursor-pointer'" @click="move(data.current_page+1)">
+			<button type="button" class="button right_button bg-lightgrey ml-1" :class="data.current_page==data.last_page ? 'text-grey cursor-unset':'text-black cursor-pointer'" @click="move(data.current_page+1)">
 				<span>
 					<ArrowDown />
 				</span>
 			</button>
-			<form @submit.prevent="move(move_page)" class="align-items-center ml-20">
-				<input type="text" v-model='move_page' class="left_button forth border-gray" :placeholder="$t('page')"/>
-				<button type="submit" class="right_button width-unset border-gray bg-gray">{{$t('move_to')}}</button>
+			<form @submit.prevent="move(move_page)" class="d-flex align-items-center ml-4">
+				<input type="text" v-model='move_page' class="left_button border-grey col-3 height-unset pl-2" :placeholder="$t('page')"/>
+				<button type="submit" class="right_button width-unset border-grey bg-grey">{{$t('move_to')}}</button>
 			</form>
 		</div>
 	</form>
@@ -60,7 +60,7 @@ export default{
 }
 
 .current{
-	border:0.125em solid gray;
+	border:0.125em solid grey;
 }
 
 .button{
