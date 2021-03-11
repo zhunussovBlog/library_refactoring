@@ -1,17 +1,17 @@
 <template>
 	<form class="d-flex" @submit.prevent="loadResults()">
-		<div class="bg-white mt-2 w-100 py-4 px-3 ">
-			<form class="align-items-center sections" @submit.prevent="loadResults()">
+		<div class="bg-white mt-2 w-100 py-3 px-4">
+			<form class="d-flex align-items-center sections" @submit.prevent="loadResults()">
 				<!-- fu... luchshe sjuda ne smotret' -->
 				<label>{{$t('section')}} : &nbsp;</label>
 				<div class="border border-grey mr-1 text-center cursor-pointer" v-for="(type,index) in types" :key="index" @click="chooseType(type)" :class="[{'border-left-radius' : index==0},{'border-right-radius':index==types.length-1},{'border-orange text-orange':type.key==search.type},index==0 ? 'border-right-none' :'border-left-none']">{{$t(type.key)}}</div>
 				<div class="input ml-4">
 					<input-div classes="border-grey w-100" :search='true' :onSubmit="loadResults" v-model="search.query" :placeholder="$t(search.type=='student' ? 'user_id_user':'username_user')"/>
 				</div>
-				<div class="ml-5 h-100">
+				<div class="ml-1 h-100">
 					<button type="submit" class="bg-orange h-100">{{$t('search')}}</button>
 				</div>
-				<div class="ml-auto h-100 align-items-center">
+				<div class="ml-auto h-100 d-flex align-items-center">
 					<Dropdown title="Choose department"/>
 				</div>
 			</form>

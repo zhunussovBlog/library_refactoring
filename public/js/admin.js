@@ -64768,11 +64768,11 @@ var render = function() {
       }
     },
     [
-      _c("div", { staticClass: "bg-white mt-2 w-100 py-4 px-3 " }, [
+      _c("div", { staticClass: "bg-white mt-2 w-100 py-3 px-4" }, [
         _c(
           "form",
           {
-            staticClass: "align-items-center sections",
+            staticClass: "d-flex align-items-center sections",
             on: {
               submit: function($event) {
                 $event.preventDefault()
@@ -64835,7 +64835,7 @@ var render = function() {
               1
             ),
             _vm._v(" "),
-            _c("div", { staticClass: "ml-5 h-100" }, [
+            _c("div", { staticClass: "ml-1 h-100" }, [
               _c(
                 "button",
                 { staticClass: "bg-orange h-100", attrs: { type: "submit" } },
@@ -64845,7 +64845,7 @@ var render = function() {
             _vm._v(" "),
             _c(
               "div",
-              { staticClass: "ml-auto h-100 align-items-center" },
+              { staticClass: "ml-auto h-100 d-flex align-items-center" },
               [_c("Dropdown", { attrs: { title: "Choose department" } })],
               1
             )
