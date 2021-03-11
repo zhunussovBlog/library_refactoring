@@ -19,6 +19,7 @@ class PrintController extends Controller
             [81, 49], true, 'UTF-8', false);
         $pdf->setTitle('Barcodes');
         $pdf->setMargins(5, 5, 5);
+        $pdf->SetAutoPageBreak(false);
 
         $style = [
             'position' => '',
@@ -41,14 +42,23 @@ class PrintController extends Controller
             $title = $barcode['title'];
             $invId = $barcode['id'];
             $barcodeNo = $barcode['barcode'];
+            $author = $barcode['author'];
 
             if (strlen($title) > 30) {
                 $title = mb_substr($title, 0, 30) . '...';
             }
 
+            if (strlen($author) > 30) {
+                $author = mb_substr($author, 0, 30) . '...';
+            }
+
             $pdf->addPage();
-            $pdf->MultiCell(0, 0, $title);
-            $pdf->write1DBarcode($barcodeNo, 'C39+', 30, 10, 35, 12, 1, $style, 'N');
+            $pdf->SetFontSize(8);
+            $pdf->Cell(0, 0, $author);
+            $pdf->Ln();
+            $pdf->SetFontSize(10);
+            $pdf->Cell(0, 0, $title);
+            $pdf->write1DBarcode($barcodeNo, 'EAN8', 20, 20, 45, 15, 1, $style, 'N');
             $pdf->Cell(0, 1, $invId);
             $pdf->endPage();
         }

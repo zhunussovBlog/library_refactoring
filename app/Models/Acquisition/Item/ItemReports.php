@@ -74,14 +74,14 @@ trait ItemReports
     {
         return static::query()->select('i.barcode', 'i.inv_id as id',
             DB::raw("(case when i.book_id is not null
-                                then (select a.name||' '||a.surname
-                                        from lib_book_authors a where a.is_main = 1 and a.book_id = i.book_id)
+                                then (select listagg(a.name||a.surname, ', ') within group(order by a.name)
+                            from lib_book_authors a where a.book_id = i.book_id group by a.book_id)
                                 when i.j_issue_id is not null
-                                then (select a.name||' '||a.surname
-                                        from lib_book_authors a where a.is_main = 1 and a.j_issue_id = i.j_issue_id)
+                                then (select listagg(a.name||a.surname, ', ') within group(order by a.name)
+                            from lib_book_authors a where a.j_issue_id = i.j_issue_id group by a.j_issue_id)
                                 when i.disc_id is not null
-                                then (select a.name||' '||a.surname
-                                        from lib_book_authors a where a.is_main = 1 and a.disc_id = i.disc_id)
+                                then (select listagg(a.name||a.surname, ', ') within group(order by a.name)
+                            from lib_book_authors a where a.disc_id = i.disc_id group by a.disc_id)
                                          end) as author"),
             DB::raw("(case when i.book_id is not null
                                 then (select b.title from lib_books b where b.book_id = i.book_id)
