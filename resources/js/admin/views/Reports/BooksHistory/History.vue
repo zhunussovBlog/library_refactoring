@@ -11,17 +11,15 @@
 				<input type="text" placeholder=" " v-model="search.query">
 				<label class="placeholder">{{$t('searching')}}</label> 
 			</div>
-			<div class="pad col-2">
+			<div class="pad col-1">
 				<button type="submit">{{$t('search')}}</button>
 			</div>
-			<div class="pad col-2">
+			<div class="pad col-1">
 				<button type="button" @click="reset(setSearch,'books')">{{$t('reset')}}</button>
 			</div>
 		</div>
-		<div class="mt-5">
-			<div v-if="searching">
-				<table-div class="mt-5" :heads="heads" :data="data.res" link="/report/book-history" commit="books_history" :sortable="false" :tableName="{countable:true,name:'books'}"/>
-			</div>
+		<div v-if="searching">
+			<table-div class="mt-5" :heads="heads" :data="data.res" link="/report/book-history" commit="books_history" :sortable="false" :tableName="{countable:true,name:'books'}"/>
 		</div>
 	</form>
 </template>
@@ -29,15 +27,12 @@
 // components
 import Table from '../../../components/common/Table'
 
-// loading indicator
-import PulseLoader from 'vue-spinner/src/PulseLoader'
-
 //mixins
 import {getResults,reset} from '../../../mixins/common'
 
 export default{
 	mixins:[getResults,reset],
-	components:{'table-div':Table,PulseLoader},
+	components:{'table-div':Table},
 	computed:{
 		data(){
 			return this.$store.getters.books_history.data;
@@ -59,13 +54,12 @@ export default{
 			{name:'inventory_number',link:'inv_id'},
 			{name:'type',link:'type'},
 			{name:'titles',link:'title',countable:true},
-			{name:'author',link:'author'},
-			{name:'bord-flex_date',link:'bord-flex_date',is_date:true},
+			{name:'author',link:'authors'},
+			{name:'borrow_date',link:'borrow_date',is_date:true},
 			{name:'due_date',link:'due_date',is_date:true},
 			{name:'delivery_date',link:'delivery_date',is_date:true},
 			{name:'status',link:'status'},
-			{name:'give_material',func:this.giveMaterial},
-			{name:'last_user_bord-flexed',link:'username'},
+			{name:'last_user_borrowed',link:'username'},
 			]
 		}
 	},
@@ -75,18 +69,9 @@ export default{
 				this.types=response.data.res;
 			})
 		},
-		setLoading(bool){
-			this.loading=bool;
-		},
-		setSearch(search){	
-			this.search=search;
-		},
 		loadResults(){
 			this.$store.dispatch('setStore',{label:'books_history',data:{page:0}});
 			this.getResults('/report/book-history',this.search,'books_history');
-		},
-		giveMaterial(info){
-			alert('not available');
 		}
 	},
 	created(){
@@ -94,4 +79,3 @@ export default{
 	}
 }
 </script>
-<style scoped></style>

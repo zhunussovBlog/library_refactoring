@@ -101,6 +101,17 @@ export default {
 		per_page:10,
 		page:0,
 	},
+	most_read:{
+		data:[],
+		searching:false,
+		sort_by:{},
+		sorting_fields:{
+			fields:[],
+			modes:[]
+		},
+		per_page:10,
+		page:0,
+	},
 	
 	books_history:{
 		data:[],

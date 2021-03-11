@@ -1,32 +1,17 @@
 <template>
-	<div class="col">
+	<div>
 		<div class="d-flex">
-			<div class="ml-2 mt-2 bg-white rounded-lg width-80 p-30">
+			<div class="m-2 bg-white rounded-lg w-100 p-4">
 				<line-chart />
 			</div> 
-			<div class="ml-2 mt-2 bg-white rounded-lg col-2 mr-10">
-				<pie-chart />
-			</div>
-		</div>
-		<div class="ml-2 mt-2 bg-white rounded-lg mr-10 mb-10 p-3 flex-1">
-			<div class="font-weight-bold font-size-18">Search attendance</div>
-			<search class="mt-30" />
 		</div>
 	</div>
 </template>
 <script type="text/javascript">
-// common components
-import Tabs from '../../../components/common/Tabs'
-import Dropdown from '../../../components/common/Dropdown'
-
 // attendance components
 import LineChart from './LineChart'
-import PieChart from './PieChart'
-import Search from './Search'
 
 export default{
-	components:{Tabs,Search,LineChart,PieChart,Dropdown},
+	components:{LineChart},
 }
 </script>
-<style scoped>
-</style>

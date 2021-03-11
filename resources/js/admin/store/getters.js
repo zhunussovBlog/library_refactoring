@@ -12,6 +12,8 @@ export default {
 	publishers:state=>state.publishers,
 	
 	suppliers:state=>state.suppliers,
+
+	most_read:state=>state.most_read,
 	
 	books_history:state=>state.books_history,
 	books_inv_number:state=>state.books_inv_number,

@@ -1,13 +1,12 @@
 <template>
-	<div class="">
+	<div>
 		<div class="tabs position-relative" :class="tabsClasses" :style="tabsStyle">
-			<div :ref="'tab-'+index" v-for="(tab,index) in tabs" @click="setActive(index,tab)" class="tab" :class="[activeTab==index ? 'text-orange '+tabActiveClasses : 'text-grey '+tabInactiveClasses,tabClasses]" :style="tabStyle">{{tab.name}}
+			<div :ref="'tab-'+index" v-for="(tab,index) in tabs" @click="setActive(index,tab)" class="tab" :class="[activeTab==index ? 'text-orange '+tabActiveClasses : 'text-grey '+tabInactiveClasses,tabClasses]" :style="tabStyle">{{$t(tab.name)}}
 			</div>
 			<div ref="line" class="line" :class="lineClasses" :style="lineStyle"/>
 		</div>
-		<!-- booksandmedia & eresources -->
 		<keep-alive>
-			<component :is="tabs[activeTab].component" class="mt-40" :class="componentClasses" :style="componentStyle"/>
+			<component :is="tabs[activeTab].component" class="mt-4" :class="componentClasses" :style="componentStyle"/>
 		</keep-alive>
 	</div>
 </template>
@@ -15,7 +14,6 @@
 	export default{
 		props:{
 			components:Array,
-			componentsAvailable:Boolean,
 			tabsStyle:{type:[Array,String],default(){return ''}},
 			tabStyle:{type:[Array,String],default(){return ''}},
 			lineStyle:{type:[Array,String],default(){return ''}},
@@ -31,8 +29,15 @@
 		},
 		computed:{
 			tabs(){
+				let items = [];
+				this.components.forEach(tab=>{
+					let component={};
+					component.name=JSON.parse(JSON.stringify(this.$t(tab.name)));
+					component.component=tab.component;
+					items.push(component);
+				});
 				setTimeout(()=>{this.moveLine(this.activeTab)},50);
-				return JSON.parse(JSON.stringify(this.components));
+				return items;
 			}
 		},
 		data(){
@@ -52,7 +57,7 @@
 			setActive(index,tab){
 				try{
 					this.tabOnClick(tab);
-				}catch(e){console.log(e);}
+				}catch(e){}
 				this.activeTab=index;
 				this.moveLine(index);
 			}

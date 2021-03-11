@@ -121,7 +121,7 @@
 
 	"service_desk":"Service desk",
 	"users":"Users",
-	"books":"Books",
+	"books":"Books history",
 
 	"search_user":"Search user",
 	"type":"Type",
@@ -150,7 +150,6 @@
 	"more_info":"More details",
 	"select_all":"Select all ( {num} selected )",
 
-	"books":"Books",
 	"delivery_date":"Delivery date",
 	"due_date":"Due date",
 	"issue_date":"Issue date",
@@ -172,6 +171,7 @@
 
 	"reports":"Reports",
 	"attendance":"Attendance",
+	"mrbooks":"Most read books",
 
 	"print":"Print barcode"
 }

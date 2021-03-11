@@ -14,7 +14,8 @@ import Service from '../views/Service_desk/Users/Service'
 // no lazy load -> to use lazy load just comment out these two routes in here and in routes
 // lazy load future -- >  is good when u don't want to load a page in the beginning but only want to load when u need it
 import Attendance from '../views/Reports/Attendance/Attendance'
-import Books from '../views/Reports/Books/Books'
+import Books from '../views/Reports/BooksHistory/Books'
+import MRBooks from '../views/Reports/MostReadBooks/Books'
 
 // router
 import Router from './Router'
@@ -70,7 +71,12 @@ export default
         // component:()=>import ('../views/Reports/Attendance/Attendance')
     },
     {
-        path:'books',
+        path:'most_read_books',
+        name:'mrbooks',
+        component:MRBooks
+    },
+    {
+        path:'history_books',
         name:'books',
         component:Books
         // component:()=>import ('../views/Reports/Books/Books')

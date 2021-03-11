@@ -1,27 +1,20 @@
 <template>
 	<div class="w-100">
-		<div class="align-items-center justify-content-between">
-			<div class="align-items-center">
-				<div class="font-weight-bold font-size-18">Attendance statistics</div>
-				<tabs class="ml-40" :components="components" :tabOnClick="chooseTab" tabClasses="mr-30 font-size-18" />
-			</div>
-			<div class="d-flex">
-				<button type="button" class="bg-middle-grey text-black ">Export to Excel ?</button>
-				<button type="button" class="bg-middle-grey text-black ml-2">Print</button>
-			</div>
+		<div class="d-flex align-items-center justify-content-between">
+			<div class="font-weight-bold font-size-18">Virtual attendance statistics</div>
 		</div>
-		<div class="d-flex mt-40">
-			<div class="width-80">
+		<div class="d-flex mt-1">
+			<div class="flex-fill">
 				<line-chart :data="data" :options="withOptions(lineOptions)"/>
 			</div>
 			<div class="col-2 ml-2">
-				<dropdown dropdownClasses="dropdown-left w-100" titleClasses="border rounded-lg border-black pd-10 justify-content-center no-hover-color" :title="'Show for ' + (weekly?'week':'month')" :items="dropdownItems" :itemOnClick="dropdownItemOnClick"/>
-				<div class="font-weight-bold mt-30">In library by {{weekly?'week':'month'}}</div>
-				<div class="justify-content-between mt-3">
+				<dropdown dropdownClasses="dropdown-left w-100" titleClasses="border rounded-lg border-black p-2 d-flex justify-content-center no-hover-color" :title="'Show for ' + (weekly?'week':'month')" :items="dropdownItems" :itemOnClick="dropdownItemOnClick"/>
+				<div class="font-weight-bold mt-4">In library by {{weekly?'week':'month'}}</div>
+				<div class="d-flex justify-content-between mt-3">
 					<span>Students: </span>
 					<span>{{studentsNumber}}</span>
 				</div>
-				<div class="justify-content-between mt-3">
+				<div class="d-flex justify-content-between mt-3">
 					<span>Stuff: </span>
 					<span>{{stuffNumber}}</span>
 				</div>
@@ -33,8 +26,11 @@
 // common components
 import Tabs from '../../../components/common/Tabs'
 import Dropdown from '../../../components/common/Dropdown'
+
 // plugins / charts
 import LineChart from '../../../plugins/charts/Line'
+import PieChart from '../../../plugins/charts/Pie'
+
 // mixins
 import chartMixins from '../../../mixins/charts'
 import {lineOptions} from '../../../mixins/charts'
@@ -79,26 +75,29 @@ export default{
 	},
 	methods:{
 		changeData(){
-			this.changeLabels();
-			let num=0;
-			if(this.weekly){
-				num=7;
-			}
-			else{
-				num=12;
-			}
-			let copied={};
-			copied.datasets=this.data.datasets;
-			copied.labels=this.data.labels;
-			copied.datasets.forEach(set=>{
-				let items=[];
-				for(let i=0;i<num;i++){
-					let j=Math.floor(Math.random()*50);
-					items.push(j)
+			this.$http.get('/report/attendance').then(response=>{
+				console.log(response);
+				let copied={};
+				let data=[];
+				if(this.weekly){
+					data=response.data.res.byWeek;
 				}
-				set.data=items;
+				else{
+					data=response.data.res.byMonth;
+				}
+				copied.datasets=this.data.datasets;
+				copied.labels=this.data.labels;
+				copied.datasets.forEach(set=>{
+					if(set.label=='Students'){
+						set.data=data.students;
+					}
+					else{
+						set.data=data.employees;
+					}
+				})
+				this.data=copied;
 			})
-			this.data=copied;
+			this.changeLabels();
 		},
 		chooseTab(tab){
 			this.changeData();
@@ -128,6 +127,7 @@ export default{
 	},
 	created(){
 		this.setData();
+		this.changeData();
 	}
 }
 </script>
