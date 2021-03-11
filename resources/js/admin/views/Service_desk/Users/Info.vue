@@ -7,7 +7,7 @@
 			</div>
 		</div>
 		<div class="d-flex align-items-start flex-wrap mt-2">
-			<div class="pd-20 rounded-lg bg-lightgrey">
+			<div class="p-3 rounded-lg bg-lightgrey">
 				<div class="image" :style="'background-image: url('+backgroundImage+')'"/>
 				<div class="mt-2 text-center">{{user.user.student ? user.user.student : user.user.employee}}</div>
 

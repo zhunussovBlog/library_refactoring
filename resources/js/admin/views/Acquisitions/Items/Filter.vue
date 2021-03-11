@@ -1,6 +1,6 @@
 <template>
-	<div class="pd-20">
-		<div class="justify-content-between align-items-end">
+	<div class="p-3">
+		<div class="d-flex justify-content-between align-items-end">
 			<div class="font-weight-bold">{{$t('item_filter')}}</div>
 			<div class="text-grey cursor-pointer font-size-14" @click="$store.dispatch('resetItems')">{{$t('reset')}}</div>
 		</div>
@@ -49,11 +49,11 @@
 			</div>
 			<div class="text-grey font-size-12 font-weight-bold mt-3">{{$t('fill_date')}}:</div>
 			<div class="mt-2">
-				<div class="relative">
+				<div class="position-relative">
 					<input type="date" v-model="search.start_date">
 					<label class="placeholder">{{$t('beginning')}}</label>
 				</div>
-				<div class="relative mt-2">
+				<div class="position-relative mt-2">
 					<input type="date" v-model="search.end_date">
 					<label class="placeholder">{{$t('end')}}</label>
 				</div>

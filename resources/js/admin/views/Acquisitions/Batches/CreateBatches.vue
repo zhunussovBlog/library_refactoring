@@ -184,11 +184,7 @@ export default{
 }
 </script>
 <style scoped>
-.button{
-	min-width: 3.125em;
-	width:10%;
-}
 .subtitle,.pad{
-	margin-top:1em;
+	margin-top:0.5em;
 }
 </style>

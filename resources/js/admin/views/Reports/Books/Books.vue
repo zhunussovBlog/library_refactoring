@@ -1,5 +1,5 @@
 <template>
-	<div class="bg-white pd-20">
+	<div class="bg-white p-3">
 		<div class="font-weight-bold font-size-24 p-3 w-100 text-center position-relative">
 			<div>Most read books in the history of SDU</div>
 			<!-- <div class="plus_wrapper cursor-pointer" @click="overallShown=!overallShown">

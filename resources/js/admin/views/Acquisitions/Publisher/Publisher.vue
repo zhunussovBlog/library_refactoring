@@ -1,11 +1,11 @@
 <template>
 	<form class="d-flex" @submit.prevent="loadResults()">
-		<div class="bg-white mt-2 w-100 pd-20 ">
-			<div class="justify-content-between">
-				<div class="width-40">
+		<div class="bg-white mt-2 w-100 p-3 ">
+			<div class="d-flex justify-content-between">
+				<div class="col-6">
 					<input-div :search="true" :onSubmit="loadResults" v-model="search.name" :placeholder="$t('search_by',{type:$t('name_by')})" />
 				</div>
-				<div class="align-items-center">
+				<div class="d-flex align-items-center">
 					<button type="button" @click="showModal(CreatePublisher,{loadAll:getAllData})">{{$t('create_publisher')}}</button>
 					<button type="button" class="ml-2" @click="loadAllData()">{{$t('load_all')}}</button>
 				</div>

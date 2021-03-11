@@ -1,7 +1,7 @@
 <template>
 	<form @submit.prevent="save()">
 		<!-- this template is has 3 options in the same time : edit, create and recreate -->
-		<div class="title">{{$t((edit ?'edit':reCreate ? 'reCreate':'create')+'_items') }}</div>
+		<div class="title mt-0">{{$t((edit ?'edit':reCreate ? 'reCreate':'create')+'_items') }}</div>
 		<div class="d-flex">
 			<div class="d-flex w-100">
 				<div class="pad w-100">
@@ -104,7 +104,7 @@
 			</div>
 		</div>
 
-		<div class="mt-5 justify-content-end">
+		<div class="mt-5 d-flex justify-content-end">
 			<div class="pad">
 				<button type="submit">{{$t('save')}}</button>
 			</div>
@@ -262,10 +262,7 @@ export default{
 }
 </script>
 <style scoped>
-.margin{
-	margin-right: 0.625em;
-}
 .pad{
-	mt-5:1em;
+	margin-top: .5em;
 }
 </style>

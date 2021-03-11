@@ -3,7 +3,7 @@
 		<!-- filter -->
 		<div class="mt-2 ml-2 bg-white rounded-lg col-2"><filter-div /></div>
 		<!-- everything else -->
-		<div class="mt-2 ml-2 bg-white rounded-lg flex-fill mr-10 p-3">
+		<div class="mt-2 mx-2 bg-white rounded-lg flex-fill p-3">
 			<div class="d-flex align-items-center justify-content-between">
 				<div class="w-50 ">
 					<input-div 

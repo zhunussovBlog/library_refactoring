@@ -1,12 +1,12 @@
 <template>
 	<form class="d-flex" @submit.prevent="loadResults()">
 		<div class="mt-2 ml-2 bg-white rounded-lg col-2"><filter-div /></div>
-		<div class="mt-2 ml-2 bg-white rounded-lg width-80 mr-10 pd-20">
-			<div class="align-items-start justify-content-between">
-				<div class="align-items-start flex-1">
-					<div class="col flex-1">
-						<div class="d-flex flex-1" :class="{'mt-2':index!=0}" v-for="(input,index) in inputs">
-							<div class="d-flex flex-1">
+		<div class="mt-2 mx-2 bg-white rounded-lg flex-fill p-3">
+			<div class="d-flex align-items-start justify-content-between">
+				<div class="d-flex align-items-start flex-fill">
+					<div class="d-flex flex-column flex-fill">
+						<div class="d-flex flex-fill" :class="{'mt-2':index!=0}" v-for="(input,index) in inputs">
+							<div class="d-flex flex-fill">
 								<div class="select position-relative bg-white z-index-1">
 									<select class="no_border_right h-100" v-model="input.key">
 										<option v-for="(item,index) in items.search_fields" :value="item.key">{{$tc(item.key,1)}}</option>
@@ -15,8 +15,8 @@
 								</div>
 								<input-div class="flex-1" classes="border-grey no_border_left h-100" :search='true' :onSubmit="loadResults" v-model="input.value" :placeholder="$t('search_by',{type:$t(input.key+'_by')})"/>
 							</div>
-							<div class="ml-5 d-flex">
-								<div class="select double-width mr-10" v-if="inputs.length>1 && index<inputs.length-1">
+							<div class="ml-1 d-flex">
+								<div class="select double-width mr-2" v-if="inputs.length>1 && index<inputs.length-1">
 									<select v-model="inputs[index+1].operator">
 										<option value="and">{{$t('and')}}</option>
 										<option value="or">{{$t('or')}}</option>
@@ -29,7 +29,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="align-items-center ml-50">
+				<div class="d-flex align-items-center ml-5">
 					<button type="button" @click="$router.push({path:'print'})">
 						<span><Print /> &nbsp;</span>
 						<span>{{($t('print'))}}</span>

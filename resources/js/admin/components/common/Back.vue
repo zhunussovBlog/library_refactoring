@@ -1,6 +1,6 @@
 <template>
 	<div class="d-flex">
-		<div class="border border-grey rounded-lg text-grey align-items-center cursor-pointer" @click="goBack()">
+		<div class="border border-grey rounded-lg text-grey d-flex align-items-center cursor-pointer" @click="goBack()">
 			<div class="rotate"><Right/></div>
 			&nbsp;{{$t('back')}}
 		</div>

@@ -28,7 +28,7 @@
 				<input type="string" :placeholder="$t('fax')" v-model="publisher.fax"/>
 			</div>
 		</div>
-		<div class="justify-content-end">
+		<div class="flexible justify-content-end">
 			<div class="pad">
 				<button type="submit">{{$t('save')}}</button>
 			</div>
@@ -131,10 +131,13 @@ export default{
 }
 </script>
 <style scoped>
+.flexible{
+	display: flex;
+}
 .d-flex>div{
 	width:100%;
 }
 .pad{
-	mt-5:1em;
+	margin-top:0.5em;
 }
 </style>

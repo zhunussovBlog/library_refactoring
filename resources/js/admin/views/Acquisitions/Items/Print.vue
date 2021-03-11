@@ -1,13 +1,13 @@
 <template>
 	<div class="d-flex">
-		<div class="bg-white mt-2 w-100 pd-10">
+		<div class="bg-white mt-2 w-100 p-2 px-3">
 			<Back />
 			<form @submit.prevent="loadResults()" class="mt-3">
 				<div class="font-size-18 font-weight-bold">Search Barcodes</div>
-				<div class="align-items-center w-100">
+				<div class="d-flex align-items-center w-100">
 					<div class="text-no-wrap"> Choose search mode: </div>
 					<Dropdown class="ml-2" :title="search.type" :items="['barcode','author-title']" :itemOnClick="changeMode" dropdownClasses="dropdown-left"/>
-					<div class="align-items-center ml-2 w-100">
+					<div class="d-flex align-items-center ml-2 w-100">
 						<div class="d-flex w-100" v-if="search.type=='barcode'">
 							<div class="pad w-100">
 								<input type="text" v-model="search.first_barcode"/>

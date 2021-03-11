@@ -1,5 +1,5 @@
 <template>
-	<div class="pd-30">
+	<div class="p-30">
 		<div class="font-size-18 font-weight-bold">Overall attendance</div>
 		<pie-chart class="mt-40" :data="data" :options="options" />
 	</div>

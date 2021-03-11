@@ -25966,7 +25966,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.button[data-v-3d5736fb]{\n\tmin-width: 3.125em;\n\twidth:10%;\n}\n.subtitle[data-v-3d5736fb],.pad[data-v-3d5736fb]{\n\tmargin-top:1em;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.subtitle[data-v-3d5736fb],.pad[data-v-3d5736fb]{\n\tmargin-top:0.5em;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -26014,7 +26014,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.margin[data-v-eabe3c2a]{\n\tmargin-right: 0.625em;\n}\n.pad[data-v-eabe3c2a]{\n\tmt-5:1em;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.pad[data-v-eabe3c2a]{\n\tmargin-top: .5em;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -26086,7 +26086,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.d-flex>div[data-v-011ee1e3]{\n\twidth:100%;\n}\n.pad[data-v-011ee1e3]{\n\tmt-5:1em;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.flexible[data-v-011ee1e3]{\n\tdisplay: flex;\n}\n.d-flex>div[data-v-011ee1e3]{\n\twidth:100%;\n}\n.pad[data-v-011ee1e3]{\n\tmargin-top:0.5em;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -26110,7 +26110,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.d-flex>div[data-v-7938b981]{\n\twidth:100%;\n}\n.pad[data-v-7938b981]{\n\tmt-5:1em;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.flexible[data-v-7938b981]{\n\tdisplay: flex;\n}\n.d-flex>div[data-v-7938b981]{\n\twidth:100%;\n}\n.pad[data-v-7938b981]{\n\tmt-5:1em;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -59754,7 +59754,7 @@ var render = function() {
       "div",
       {
         staticClass:
-          "border border-grey rounded-lg text-grey align-items-center cursor-pointer",
+          "border border-grey rounded-lg text-grey d-flex align-items-center cursor-pointer",
         on: {
           click: function($event) {
             return _vm.goBack()
@@ -61035,7 +61035,7 @@ var render = function() {
       _vm._v(" "),
       _c(
         "div",
-        { staticClass: "mt-2 ml-2 bg-white rounded-lg flex-fill mr-10 p-3" },
+        { staticClass: "mt-2 mx-2 bg-white rounded-lg flex-fill p-3" },
         [
           _c(
             "div",
@@ -61927,7 +61927,7 @@ var render = function() {
       }
     },
     [
-      _c("div", { staticClass: "title" }, [
+      _c("div", { staticClass: "title mt-0" }, [
         _vm._v(
           _vm._s(
             _vm.$t(
@@ -62503,7 +62503,7 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "mt-5 justify-content-end" }, [
+      _c("div", { staticClass: "mt-5 d-flex justify-content-end" }, [
         _c("div", { staticClass: "pad" }, [
           _c("button", { attrs: { type: "submit" } }, [
             _vm._v(_vm._s(_vm.$t("save")))
@@ -62552,25 +62552,29 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "pd-20" }, [
-    _c("div", { staticClass: "justify-content-between align-items-end" }, [
-      _c("div", { staticClass: "font-weight-bold" }, [
-        _vm._v(_vm._s(_vm.$t("item_filter")))
-      ]),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass: "text-grey cursor-pointer font-size-14",
-          on: {
-            click: function($event) {
-              return _vm.$store.dispatch("resetItems")
+  return _c("div", { staticClass: "p-3" }, [
+    _c(
+      "div",
+      { staticClass: "d-flex justify-content-between align-items-end" },
+      [
+        _c("div", { staticClass: "font-weight-bold" }, [
+          _vm._v(_vm._s(_vm.$t("item_filter")))
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "text-grey cursor-pointer font-size-14",
+            on: {
+              click: function($event) {
+                return _vm.$store.dispatch("resetItems")
+              }
             }
-          }
-        },
-        [_vm._v(_vm._s(_vm.$t("reset")))]
-      )
-    ]),
+          },
+          [_vm._v(_vm._s(_vm.$t("reset")))]
+        )
+      ]
+    ),
     _vm._v(" "),
     _c(
       "div",
@@ -62882,7 +62886,7 @@ var render = function() {
         ),
         _vm._v(" "),
         _c("div", { staticClass: "mt-2" }, [
-          _c("div", { staticClass: "relative" }, [
+          _c("div", { staticClass: "position-relative" }, [
             _c("input", {
               directives: [
                 {
@@ -62909,7 +62913,7 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "relative mt-2" }, [
+          _c("div", { staticClass: "position-relative mt-2" }, [
             _c("input", {
               directives: [
                 {
@@ -63042,27 +63046,27 @@ var render = function() {
       _vm._v(" "),
       _c(
         "div",
-        { staticClass: "mt-2 ml-2 bg-white rounded-lg width-80 mr-10 pd-20" },
+        { staticClass: "mt-2 mx-2 bg-white rounded-lg flex-fill p-3" },
         [
           _c(
             "div",
-            { staticClass: "align-items-start justify-content-between" },
+            { staticClass: "d-flex align-items-start justify-content-between" },
             [
-              _c("div", { staticClass: "align-items-start flex-1" }, [
+              _c("div", { staticClass: "d-flex align-items-start flex-fill" }, [
                 _c(
                   "div",
-                  { staticClass: "col flex-1" },
+                  { staticClass: "d-flex flex-column flex-fill" },
                   _vm._l(_vm.inputs, function(input, index) {
                     return _c(
                       "div",
                       {
-                        staticClass: "d-flex flex-1",
+                        staticClass: "d-flex flex-fill",
                         class: { "mt-2": index != 0 }
                       },
                       [
                         _c(
                           "div",
-                          { staticClass: "d-flex flex-1" },
+                          { staticClass: "d-flex flex-fill" },
                           [
                             _c(
                               "div",
@@ -63147,11 +63151,11 @@ var render = function() {
                           1
                         ),
                         _vm._v(" "),
-                        _c("div", { staticClass: "ml-5 d-flex" }, [
+                        _c("div", { staticClass: "ml-1 d-flex" }, [
                           _vm.inputs.length > 1 && index < _vm.inputs.length - 1
                             ? _c(
                                 "div",
-                                { staticClass: "select double-width mr-10" },
+                                { staticClass: "select double-width mr-2" },
                                 [
                                   _c(
                                     "select",
@@ -63250,7 +63254,7 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "align-items-center ml-50" }, [
+              _c("div", { staticClass: "d-flex align-items-center ml-5" }, [
                 _c(
                   "button",
                   {
@@ -63345,7 +63349,7 @@ var render = function() {
   return _c("div", { staticClass: "d-flex" }, [
     _c(
       "div",
-      { staticClass: "bg-white mt-2 w-100 pd-10" },
+      { staticClass: "bg-white mt-2 w-100 p-2 px-3" },
       [
         _c("Back"),
         _vm._v(" "),
@@ -63367,7 +63371,7 @@ var render = function() {
             _vm._v(" "),
             _c(
               "div",
-              { staticClass: "align-items-center w-100" },
+              { staticClass: "d-flex align-items-center w-100" },
               [
                 _c("div", { staticClass: "text-no-wrap" }, [
                   _vm._v(" Choose search mode: ")
@@ -63383,143 +63387,147 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _c("div", { staticClass: "align-items-center ml-2 w-100" }, [
-                  _vm.search.type == "barcode"
-                    ? _c("div", { staticClass: "d-flex w-100" }, [
-                        _c("div", { staticClass: "pad w-100" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.search.first_barcode,
-                                expression: "search.first_barcode"
-                              }
-                            ],
-                            attrs: { type: "text" },
-                            domProps: { value: _vm.search.first_barcode },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
+                _c(
+                  "div",
+                  { staticClass: "d-flex align-items-center ml-2 w-100" },
+                  [
+                    _vm.search.type == "barcode"
+                      ? _c("div", { staticClass: "d-flex w-100" }, [
+                          _c("div", { staticClass: "pad w-100" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.search.first_barcode,
+                                  expression: "search.first_barcode"
                                 }
-                                _vm.$set(
-                                  _vm.search,
-                                  "first_barcode",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("label", { staticClass: "placeholder" }, [
-                            _vm._v("From")
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "pad w-100" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.search.last_barcode,
-                                expression: "search.last_barcode"
-                              }
-                            ],
-                            attrs: { type: "text" },
-                            domProps: { value: _vm.search.last_barcode },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
+                              ],
+                              attrs: { type: "text" },
+                              domProps: { value: _vm.search.first_barcode },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.search,
+                                    "first_barcode",
+                                    $event.target.value
+                                  )
                                 }
-                                _vm.$set(
-                                  _vm.search,
-                                  "last_barcode",
-                                  $event.target.value
-                                )
                               }
-                            }
-                          }),
+                            }),
+                            _vm._v(" "),
+                            _c("label", { staticClass: "placeholder" }, [
+                              _vm._v("From")
+                            ])
+                          ]),
                           _vm._v(" "),
-                          _c("label", { staticClass: "placeholder" }, [
-                            _vm._v("To")
+                          _c("div", { staticClass: "pad w-100" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.search.last_barcode,
+                                  expression: "search.last_barcode"
+                                }
+                              ],
+                              attrs: { type: "text" },
+                              domProps: { value: _vm.search.last_barcode },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.search,
+                                    "last_barcode",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("label", { staticClass: "placeholder" }, [
+                              _vm._v("To")
+                            ])
                           ])
                         ])
+                      : _c("div", { staticClass: "d-flex w-100" }, [
+                          _c("div", { staticClass: "pad w-100" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.search.title,
+                                  expression: "search.title"
+                                }
+                              ],
+                              attrs: { type: "text" },
+                              domProps: { value: _vm.search.title },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.search,
+                                    "title",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("label", { staticClass: "placeholder" }, [
+                              _vm._v("Title")
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "pad w-100" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.search.author,
+                                  expression: "search.author"
+                                }
+                              ],
+                              attrs: { type: "text" },
+                              domProps: { value: _vm.search.author },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.search,
+                                    "author",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("label", { staticClass: "placeholder" }, [
+                              _vm._v("Author")
+                            ])
+                          ])
+                        ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "pad" }, [
+                      _c("button", { attrs: { type: "submit" } }, [
+                        _vm._v(_vm._s(_vm.$t("search")))
                       ])
-                    : _c("div", { staticClass: "d-flex w-100" }, [
-                        _c("div", { staticClass: "pad w-100" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.search.title,
-                                expression: "search.title"
-                              }
-                            ],
-                            attrs: { type: "text" },
-                            domProps: { value: _vm.search.title },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.search,
-                                  "title",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("label", { staticClass: "placeholder" }, [
-                            _vm._v("Title")
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "pad w-100" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.search.author,
-                                expression: "search.author"
-                              }
-                            ],
-                            attrs: { type: "text" },
-                            domProps: { value: _vm.search.author },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.search,
-                                  "author",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("label", { staticClass: "placeholder" }, [
-                            _vm._v("Author")
-                          ])
-                        ])
-                      ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "pad" }, [
-                    _c("button", { attrs: { type: "submit" } }, [
-                      _vm._v(_vm._s(_vm.$t("search")))
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _vm._m(0)
-                ])
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(0)
+                  ]
+                )
               ],
               1
             )
@@ -63757,7 +63765,7 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "justify-content-end" }, [
+      _c("div", { staticClass: "flexible justify-content-end" }, [
         _c("div", { staticClass: "pad" }, [
           _c("button", { attrs: { type: "submit" } }, [
             _vm._v(_vm._s(_vm.$t("save")))
@@ -63814,11 +63822,11 @@ var render = function() {
       }
     },
     [
-      _c("div", { staticClass: "bg-white mt-2 w-100 pd-20 " }, [
-        _c("div", { staticClass: "justify-content-between" }, [
+      _c("div", { staticClass: "bg-white mt-2 w-100 p-3 " }, [
+        _c("div", { staticClass: "d-flex justify-content-between" }, [
           _c(
             "div",
-            { staticClass: "width-40" },
+            { staticClass: "col-6" },
             [
               _c("input-div", {
                 attrs: {
@@ -63838,7 +63846,7 @@ var render = function() {
             1
           ),
           _vm._v(" "),
-          _c("div", { staticClass: "align-items-center" }, [
+          _c("div", { staticClass: "d-flex align-items-center" }, [
             _c(
               "button",
               {
@@ -64112,7 +64120,7 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "justify-content-end" }, [
+      _c("div", { staticClass: "flexible justify-content-end" }, [
         _c("div", { staticClass: "pad" }, [
           _c("button", { attrs: { type: "submit" } }, [
             _vm._v(_vm._s(_vm.$t("save")))
@@ -64169,11 +64177,11 @@ var render = function() {
       }
     },
     [
-      _c("div", { staticClass: "bg-white mt-2 w-100 pd-20 " }, [
-        _c("div", { staticClass: "justify-content-between" }, [
+      _c("div", { staticClass: "bg-white mt-2 w-100 p-3" }, [
+        _c("div", { staticClass: "d-flex justify-content-between" }, [
           _c(
             "div",
-            { staticClass: "width-40" },
+            { staticClass: "col-6" },
             [
               _c("input-div", {
                 attrs: {
@@ -64193,7 +64201,7 @@ var render = function() {
             1
           ),
           _vm._v(" "),
-          _c("div", { staticClass: "align-items-center" }, [
+          _c("div", { staticClass: "d-flex align-items-center" }, [
             _c(
               "button",
               {
@@ -64277,7 +64285,7 @@ var render = function() {
     _c("div", { staticClass: "d-flex" }, [
       _c(
         "div",
-        { staticClass: "ml-2 mt-2 bg-white rounded-lg width-80 pd-30" },
+        { staticClass: "ml-2 mt-2 bg-white rounded-lg width-80 p-30" },
         [_c("line-chart")],
         1
       ),
@@ -64292,7 +64300,7 @@ var render = function() {
     _vm._v(" "),
     _c(
       "div",
-      { staticClass: "ml-2 mt-2 bg-white rounded-lg mr-10 mb-10 pd-20 flex-1" },
+      { staticClass: "ml-2 mt-2 bg-white rounded-lg mr-10 mb-10 p-3 flex-1" },
       [
         _c("div", { staticClass: "font-weight-bold font-size-18" }, [
           _vm._v("Search attendance")
@@ -64450,7 +64458,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "pd-30" },
+    { staticClass: "p-30" },
     [
       _c("div", { staticClass: "font-size-18 font-weight-bold" }, [
         _vm._v("Overall attendance")
@@ -64577,7 +64585,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "bg-white pd-20" }, [
+  return _c("div", { staticClass: "bg-white p-3" }, [
     _vm._m(0),
     _vm._v(" "),
     _c("div", { staticClass: "d-flex flex-wrap mt-3" }, [
@@ -65082,7 +65090,7 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "d-flex align-items-start flex-wrap mt-2" }, [
-      _c("div", { staticClass: "pd-20 rounded-lg bg-lightgrey" }, [
+      _c("div", { staticClass: "p-3 rounded-lg bg-lightgrey" }, [
         _c("div", {
           staticClass: "image",
           style: "background-image: url(" + _vm.backgroundImage + ")"
