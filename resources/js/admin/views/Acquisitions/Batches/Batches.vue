@@ -10,7 +10,7 @@
 						:placeholder="$t('search_by',{type:$t('batches_by')})"
 						:search='true'
 						:onSubmit="loadResults"
-						v-model="batches.search.id"
+						v-model="batches.search.add_options.id"
 					/>
 				</div>
 				<div class="d-flex align-items-center" >

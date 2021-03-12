@@ -54,6 +54,7 @@
 	"refresh":"Refresh",
 	"choose":"Choose",
 	"save_&_search":"Save and search",
+	"error": "Error !",
 
 	"batch_filter":"Batches filter",
 	"item_filter":"Items filter",

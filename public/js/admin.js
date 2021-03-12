@@ -3417,16 +3417,17 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  mixins: [_mixins_showModal__WEBPACK_IMPORTED_MODULE_0__.default, _mixins_common__WEBPACK_IMPORTED_MODULE_1__.last, _mixins_common__WEBPACK_IMPORTED_MODULE_1__.getAllData],
+  mixins: [_mixins_showModal__WEBPACK_IMPORTED_MODULE_0__.default, _mixins_common__WEBPACK_IMPORTED_MODULE_1__.last, _mixins_common__WEBPACK_IMPORTED_MODULE_1__.getAllData, _mixins_common__WEBPACK_IMPORTED_MODULE_1__.create_it, _mixins_common__WEBPACK_IMPORTED_MODULE_1__.edit_it],
   props: {
     edit: Boolean,
-    data: Object
+    data: Object,
+    afterSave: Function
   },
   data: function data() {
     return {
       CreateSupply: _Supply_CreateSupply__WEBPACK_IMPORTED_MODULE_2__.default,
       batch: {
-        invoice_date: null,
+        inv_date: null,
         items_no: null,
         titles_no: null,
         doc_no: null,
@@ -3436,7 +3437,9 @@ __webpack_require__.r(__webpack_exports__);
         inv_details: null,
         cost: null
       },
-      suppliers: []
+      suppliers: [],
+      link: '/batch',
+      commit: 'batches'
     };
   },
   methods: {
@@ -3456,45 +3459,17 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     editIt: function editIt() {
-      var _this = this;
-
-      this.$http.put('/batch/update', this.batch).then(function (response) {
-        try {
-          _this.afterSave(response.data.success.id);
-        } catch (e) {
-          _this.last('/batch', 'batches');
-        }
-
-        _this.message_success();
-
-        _this.$emit('close');
-      })["catch"](function (error) {
-        _this.message_error();
-      }).then(function () {
-        _this.$store.commit('setFullPageLoading', false);
-      });
+      this.edit_it(this.link, this.commit, this.batch, this.afterSave, this.last);
     },
     createIt: function createIt() {
-      var _this2 = this;
-
-      this.$http.post('/batch/create', this.batch).then(function (response) {
-        _this2.getAllData('/batch', 'batches', 10);
-
-        _this2.message_success();
-
-        _this2.$emit('close');
-      })["catch"](function (error) {
-        _this2.message_error();
-      }).then(function () {
-        _this2.$store.commit('setFullPageLoading', false);
-      });
+      this.create_it(this.link, this.commit, this.batch, this.getAllData, 10);
     },
     loadSuppliers: function loadSuppliers(value) {
-      var _this3 = this;
+      var _this = this;
 
       this.batch.sup_id = value;
       this.$http.get('/supplier/names').then(function (response) {
-        _this3.suppliers = response.data.res;
+        _this.suppliers = response.data.res;
       });
     }
   },
@@ -3634,7 +3609,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     addStatus: function addStatus(status) {
-      var selected = this.batches.search.status_key;
+      var selected = this.batches.search.add_options.status_key;
 
       if (selected.includes(status.status)) {
         selected.splice(selected.indexOf(status.status), 1);
@@ -4187,6 +4162,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _assets_icons_Print__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../assets/icons/Print */ "./resources/js/admin/assets/icons/Print.vue");
 /* harmony import */ var _assets_icons_Plus__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../assets/icons/Plus */ "./resources/js/admin/assets/icons/Plus.vue");
 /* harmony import */ var _assets_icons_Download__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../assets/icons/Download */ "./resources/js/admin/assets/icons/Download.vue");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -4251,6 +4233,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mixins: [_mixins_showModal__WEBPACK_IMPORTED_MODULE_0__.default, _mixins_common__WEBPACK_IMPORTED_MODULE_1__.getResults],
   components: {
@@ -4261,14 +4244,7 @@ __webpack_require__.r(__webpack_exports__);
     Download: _assets_icons_Download__WEBPACK_IMPORTED_MODULE_9__.default,
     Plus: _assets_icons_Plus__WEBPACK_IMPORTED_MODULE_8__.default
   },
-  computed: {
-    items: function items() {
-      return this.$store.getters.items;
-    },
-    inputs: function inputs() {
-      return this.$store.getters.items.search.search_options;
-    }
-  },
+  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_10__.mapGetters)(['items'])),
   data: function data() {
     return {
       loading: false,
@@ -4342,14 +4318,14 @@ __webpack_require__.r(__webpack_exports__);
           page: 0
         }
       });
-      this.getResults('/item', this.items.search, 'items');
+      this.getResults('/item', 'items');
     },
     loadSearchFields: function loadSearchFields() {
       var _this2 = this;
 
       if (this.items.search_fields.length < 1) {
         this.$http.get('/item/search-fields').then(function (response) {
-          _this2.items.search_fields = response.data.res;
+          _this2.items.search_fields = response.data.res.search_options;
         });
       }
     },
@@ -4419,10 +4395,10 @@ __webpack_require__.r(__webpack_exports__);
       this.showModal(this.More, props);
     },
     addInput: function addInput(input) {
-      this.inputs.push(input);
+      if (this.items.search.search_options.length < 5) this.items.search.search_options.push(input);
     },
     removeInput: function removeInput(input) {
-      this.inputs.splice(this.inputs.indexOf(input), 1);
+      this.items.search.search_options.splice(this.items.search.search_options.indexOf(input), 1);
     }
   },
   created: function created() {
@@ -6641,7 +6617,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   baseURL: 'http://localhost:8000',
-  api: '/api/'
+  api: '/api/',
+  default_lang: 'en'
 });
 
 /***/ }),
@@ -6756,7 +6733,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "getResults": () => (/* binding */ getResults),
 /* harmony export */   "getAllData": () => (/* binding */ getAllData),
-/* harmony export */   "last": () => (/* binding */ last)
+/* harmony export */   "last": () => (/* binding */ last),
+/* harmony export */   "create_it": () => (/* binding */ create_it),
+/* harmony export */   "edit_it": () => (/* binding */ edit_it)
 /* harmony export */ });
 /* harmony import */ var _messages__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./messages */ "./resources/js/admin/mixins/messages.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -6768,64 +6747,71 @@ var getResults = {
     getResults: function getResults(link, commit, after) {
       var _this = this;
 
-      if (!this.$store.getters.fullPageLoading) {
-        this.$store.commit('setFullPageLoading', true);
-        var search = this.$store.getters[commit].search;
-        var page = this.$store.state[commit].page == 0 ? '' : '?page=' + this.$store.state[commit].page;
-        var add_options = [];
-        var request = {}; // validating request for non null
+      this.$store.commit('setFullPageLoading', true);
+      var search = this.$store.getters[commit].search;
+      var page = this.$store.state[commit].page == 0 ? '' : '?page=' + this.$store.state[commit].page;
+      var add_options = [];
+      var search_options = [];
+      var request = {}; // validating add_options for non null
 
-        for (var key in search) {
-          var value = search[key];
-          var searching = false;
+      for (var key in search.add_options) {
+        var value = search.add_options[key];
+        var searching = false;
 
-          if (_typeof(value) == "object" && value != null) {
-            if (Object.keys(value).length > 0) {
-              searching = true;
-            }
-          } else {
-            if (value != null) {
-              searching = true;
-            }
+        if (_typeof(value) == "object" && value != null) {
+          if (Object.keys(value).length > 0) {
+            searching = true;
           }
-
-          if (searching) {
-            add_options.push({
-              key: key,
-              value: search[key]
-            });
+        } else {
+          if (value) {
+            searching = true;
           }
         }
 
-        request.per_page = this.$store.state[commit].per_page;
-        request.page = page;
-        request.add_options = add_options;
-        this.$http.post(link + '/search', request).then(function (response) {
-          _this.$store.dispatch('setStore', {
-            label: commit,
-            data: {
-              data: response.data,
-              searching: true
-            }
+        if (searching) {
+          add_options.push({
+            key: key,
+            value: value
           });
+        }
+      } //validating search_options for non null
 
-          try {
-            after();
-          } catch (e) {}
-        })["catch"](function (error) {
-          _this.$store.dispatch('setStore', {
-            label: commit,
-            data: {
-              data: {},
-              searching: false
-            }
-          });
 
-          _this.message_error();
-        }).then(function () {
-          _this.$store.commit('setFullPageLoading', false);
+      if (search.search_options != null) {
+        search_options = search.search_options.filter(function (item) {
+          return item.value != null;
         });
       }
+
+      request.per_page = this.$store.state[commit].per_page;
+      request.page = page;
+      request.add_options = add_options;
+      request.search_options = search_options;
+      this.$http.post(link + '/search', request).then(function (response) {
+        _this.$store.dispatch('setStore', {
+          label: commit,
+          data: {
+            data: response.data,
+            searching: true
+          }
+        });
+
+        try {
+          after();
+        } catch (e) {}
+      })["catch"](function (error) {
+        _this.$store.dispatch('setStore', {
+          label: commit,
+          data: {
+            data: {},
+            searching: false
+          }
+        });
+
+        _this.message_error('search', error);
+      }).then(function () {
+        _this.$store.commit('setFullPageLoading', false);
+      });
     }
   }
 };
@@ -6835,39 +6821,37 @@ var getAllData = {
     getAllData: function getAllData(link, commit, max) {
       var _this2 = this;
 
-      if (!this.$store.getters.fullPageLoading) {
-        this.$store.commit('setFullPageLoading', true);
-        var max_num = '';
+      this.$store.commit('setFullPageLoading', true);
+      var max_num = '';
 
-        if (max) {
-          max_num = '?max=' + max;
-        }
-
-        var search = max ? '&' : '?';
-        search += this.$store.state[commit].page == 0 ? '' : 'page=' + this.$store.state[commit].page;
-        search += '&per_page=' + this.$store.state[commit].per_page;
-        this.$http.get(link + '/index' + max_num + search).then(function (response) {
-          _this2.$store.dispatch('setStore', {
-            label: commit,
-            data: {
-              data: response.data,
-              searching: true
-            }
-          });
-        })["catch"](function (error) {
-          _this2.$store.dispatch('setStore', {
-            label: commit,
-            data: {
-              data: {},
-              searching: false
-            }
-          });
-
-          _this2.message_error();
-        }).then(function () {
-          _this2.$store.commit('setFullPageLoading', false);
-        });
+      if (max) {
+        max_num = '?max=' + max;
       }
+
+      var search = max ? '&' : '?';
+      search += this.$store.state[commit].page == 0 ? '' : 'page=' + this.$store.state[commit].page;
+      search += '&per_page=' + this.$store.state[commit].per_page;
+      this.$http.get(link + '/index' + max_num + search).then(function (response) {
+        _this2.$store.dispatch('setStore', {
+          label: commit,
+          data: {
+            data: response.data,
+            searching: true
+          }
+        });
+      })["catch"](function (error) {
+        _this2.$store.dispatch('setStore', {
+          label: commit,
+          data: {
+            data: {},
+            searching: false
+          }
+        });
+
+        _this2.message_error('search', error);
+      }).then(function () {
+        _this2.$store.commit('setFullPageLoading', false);
+      });
     }
   }
 };
@@ -6876,39 +6860,87 @@ var last = {
     last: function last(link, commit, page) {
       var _this3 = this;
 
-      if (!this.$store.getters.fullPageLoading) {
-        this.$store.commit('setFullPageLoading', true);
-        var store = this.$store.state[commit];
-        var changes = '?';
+      this.$store.commit('setFullPageLoading', true);
+      var store = this.$store.state[commit];
+      var changes = '?';
 
-        if (store.sort_by.order_by) {
-          changes += 'order_by=' + store.sort_by.order_by;
-        }
-
-        if (store.sort_by.order_mode) {
-          changes += '&order_mode=' + store.sort_by.order_mode;
-        }
-
-        if (store.per_page) {
-          changes += '&perPage=' + store.per_page;
-        }
-
-        if (page) {
-          changes += '&page=' + page;
-        }
-
-        this.$http.get(link + '/last' + changes).then(function (response) {
-          _this3.$store.dispatch('setStore', {
-            label: commit,
-            data: {
-              data: response.data,
-              page: page ? page : 1
-            }
-          });
-
-          _this3.$store.commit('setFullPageLoading', false);
-        });
+      if (store.sort_by.order_by) {
+        changes += 'order_by=' + store.sort_by.order_by;
       }
+
+      if (store.sort_by.order_mode) {
+        changes += '&order_mode=' + store.sort_by.order_mode;
+      }
+
+      if (store.per_page) {
+        changes += '&perPage=' + store.per_page;
+      }
+
+      if (page) {
+        changes += '&page=' + page;
+      }
+
+      this.$http.get(link + '/last' + changes).then(function (response) {
+        _this3.$store.dispatch('setStore', {
+          label: commit,
+          data: {
+            data: response.data,
+            page: page ? page : 1
+          }
+        });
+
+        _this3.$store.commit('setFullPageLoading', false);
+      });
+    }
+  }
+};
+var create_it = {
+  mixins: [_messages__WEBPACK_IMPORTED_MODULE_0__.message_error, _messages__WEBPACK_IMPORTED_MODULE_0__.message_success],
+  methods: {
+    create_it: function create_it(link, commit, request, after, afterRequest) {
+      var _this4 = this;
+
+      this.$http.post(link + '/create', request).then(function (response) {
+        try {
+          after(link, commit, afterRequest);
+        } catch (e) {
+          console.error(e);
+        }
+
+        _this4.message_success('create', response);
+
+        _this4.$emit('close');
+      })["catch"](function (error) {
+        _this4.message_error('create', error);
+      }).then(function () {
+        _this4.$store.commit('setFullPageLoading', false);
+      });
+    }
+  }
+};
+var edit_it = {
+  mixins: [_messages__WEBPACK_IMPORTED_MODULE_0__.message_error, _messages__WEBPACK_IMPORTED_MODULE_0__.message_success],
+  methods: {
+    edit_it: function edit_it(link, commit, request, after, afterCatch) {
+      var _this5 = this;
+
+      this.$http.put(link + '/update', request).then(function (response) {
+        try {
+          after(response.data.success.id);
+        } catch (e) {
+          try {
+            afterCatch(link, commit);
+          } catch (e) {}
+        }
+
+        _this5.message_success('edit', response);
+
+        _this5.$emit('close');
+      })["catch"](function (error) {
+        _this5.message_error('edit', error);
+      }).then(function () {
+        _this5.$store.commit('setFullPageLoading', false);
+      });
     }
   }
 };
@@ -6967,6 +6999,7 @@ var message_success = {
     message_success: function message_success(title, response) {
       var _response$data$res$me;
 
+      console.log(response);
       var message = response.data.res ? (_response$data$res$me = response.data.res.message) !== null && _response$data$res$me !== void 0 ? _response$data$res$me : this.$t('success') : this.$t('success');
       this.$fire({
         title: this.$t(title),
@@ -6983,6 +7016,7 @@ var message_error = {
     message_error: function message_error(title, error) {
       var _error$response$data$;
 
+      console.log(error);
       var message = error.response.data ? (_error$response$data$ = error.response.data.message) !== null && _error$response$data$ !== void 0 ? _error$response$data$ : this.$t('error') : this.$t('error');
       this.$fire({
         title: this.$t(title),
@@ -7460,13 +7494,15 @@ __webpack_require__.r(__webpack_exports__);
   // 	search 			--> what ur searching with
   batches: {
     search: {
-      id: null,
-      sup_id: null,
-      status_key: [],
-      cost: {},
-      invoice_date: {},
-      create_date: {},
-      edit_date: {}
+      add_options: {
+        id: null,
+        sup_id: null,
+        status_key: [],
+        cost: {},
+        invoice_date: {},
+        create_date: {},
+        edit_date: {}
+      }
     },
     data: [],
     searching: false,
@@ -7480,21 +7516,23 @@ __webpack_require__.r(__webpack_exports__);
   },
   items: {
     search: {
-      publisher_id: null,
-      pub_year: null,
-      pub_city: null,
-      supplier_id: null,
-      sup_type: null,
-      location: null,
-      item_type: null,
-      user_cid: null,
-      create_date: {},
-      cost: {}
+      add_options: {
+        publisher_id: null,
+        pub_year: null,
+        pub_city: null,
+        supplier_id: null,
+        sup_type: null,
+        location: null,
+        item_type: null,
+        user_cid: null,
+        create_date: {},
+        cost: {}
+      },
+      search_options: [{
+        key: 'author',
+        operator: 'and'
+      }]
     },
-    search_options: [{
-      key: 'author',
-      operator: 'and'
-    }],
     search_fields: [],
     data: [],
     searching: false,
@@ -7508,7 +7546,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   publishers: {
     search: {
-      name: null
+      add_options: {
+        name: null
+      }
     },
     data: [],
     searching: false,
@@ -7522,7 +7562,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   suppliers: {
     search: {
-      name: null
+      add_options: {
+        name: null
+      }
     },
     data: [],
     searching: false,
@@ -60833,11 +60875,11 @@ var render = function() {
                       onSubmit: _vm.loadResults
                     },
                     model: {
-                      value: _vm.batches.search.id,
+                      value: _vm.batches.search.add_options.id,
                       callback: function($$v) {
-                        _vm.$set(_vm.batches.search, "id", $$v)
+                        _vm.$set(_vm.batches.search.add_options, "id", $$v)
                       },
-                      expression: "batches.search.id"
+                      expression: "batches.search.add_options.id"
                     }
                   })
                 ],
@@ -61030,18 +61072,18 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.batch.invoice_date,
-                  expression: "batch.invoice_date"
+                  value: _vm.batch.inv_date,
+                  expression: "batch.inv_date"
                 }
               ],
               attrs: { type: "date", required: "" },
-              domProps: { value: _vm.batch.invoice_date },
+              domProps: { value: _vm.batch.inv_date },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(_vm.batch, "invoice_date", $event.target.value)
+                  _vm.$set(_vm.batch, "inv_date", $event.target.value)
                 }
               }
             }),
@@ -61374,7 +61416,7 @@ var render = function() {
               [
                 _c("Checkbox", {
                   attrs: {
-                    checked: _vm.batches.search.status_key.includes(
+                    checked: _vm.batches.search.add_options.status_key.includes(
                       status.status
                     )
                   },
@@ -61406,11 +61448,11 @@ var render = function() {
           body: "id"
         },
         model: {
-          value: _vm.batches.search.sup_id,
+          value: _vm.batches.search.add_options.sup_id,
           callback: function($$v) {
-            _vm.$set(_vm.batches.search, "sup_id", $$v)
+            _vm.$set(_vm.batches.search.add_options, "sup_id", $$v)
           },
-          expression: "batches.search.sup_id"
+          expression: "batches.search.add_options.sup_id"
         }
       }),
       _vm._v(" "),
@@ -61426,19 +61468,19 @@ var render = function() {
             {
               name: "model",
               rawName: "v-model",
-              value: _vm.batches.search.invoice_date.from,
-              expression: "batches.search.invoice_date.from"
+              value: _vm.batches.search.add_options.invoice_date.from,
+              expression: "batches.search.add_options.invoice_date.from"
             }
           ],
           attrs: { type: "date" },
-          domProps: { value: _vm.batches.search.invoice_date.from },
+          domProps: { value: _vm.batches.search.add_options.invoice_date.from },
           on: {
             input: function($event) {
               if ($event.target.composing) {
                 return
               }
               _vm.$set(
-                _vm.batches.search.invoice_date,
+                _vm.batches.search.add_options.invoice_date,
                 "from",
                 $event.target.value
               )
@@ -61457,19 +61499,19 @@ var render = function() {
             {
               name: "model",
               rawName: "v-model",
-              value: _vm.batches.search.invoice_date.to,
-              expression: "batches.search.invoice_date.to"
+              value: _vm.batches.search.add_options.invoice_date.to,
+              expression: "batches.search.add_options.invoice_date.to"
             }
           ],
           attrs: { type: "date" },
-          domProps: { value: _vm.batches.search.invoice_date.to },
+          domProps: { value: _vm.batches.search.add_options.invoice_date.to },
           on: {
             input: function($event) {
               if ($event.target.composing) {
                 return
               }
               _vm.$set(
-                _vm.batches.search.invoice_date,
+                _vm.batches.search.add_options.invoice_date,
                 "to",
                 $event.target.value
               )
@@ -61494,19 +61536,19 @@ var render = function() {
             {
               name: "model",
               rawName: "v-model",
-              value: _vm.batches.search.create_date.from,
-              expression: "batches.search.create_date.from"
+              value: _vm.batches.search.add_options.create_date.from,
+              expression: "batches.search.add_options.create_date.from"
             }
           ],
           attrs: { type: "date" },
-          domProps: { value: _vm.batches.search.create_date.from },
+          domProps: { value: _vm.batches.search.add_options.create_date.from },
           on: {
             input: function($event) {
               if ($event.target.composing) {
                 return
               }
               _vm.$set(
-                _vm.batches.search.create_date,
+                _vm.batches.search.add_options.create_date,
                 "from",
                 $event.target.value
               )
@@ -61525,19 +61567,19 @@ var render = function() {
             {
               name: "model",
               rawName: "v-model",
-              value: _vm.batches.search.create_date.to,
-              expression: "batches.search.create_date.to"
+              value: _vm.batches.search.add_options.create_date.to,
+              expression: "batches.search.add_options.create_date.to"
             }
           ],
           attrs: { type: "date" },
-          domProps: { value: _vm.batches.search.create_date.to },
+          domProps: { value: _vm.batches.search.add_options.create_date.to },
           on: {
             input: function($event) {
               if ($event.target.composing) {
                 return
               }
               _vm.$set(
-                _vm.batches.search.create_date,
+                _vm.batches.search.add_options.create_date,
                 "to",
                 $event.target.value
               )
@@ -61562,19 +61604,19 @@ var render = function() {
             {
               name: "model",
               rawName: "v-model",
-              value: _vm.batches.search.edit_date.from,
-              expression: "batches.search.edit_date.from"
+              value: _vm.batches.search.add_options.edit_date.from,
+              expression: "batches.search.add_options.edit_date.from"
             }
           ],
           attrs: { type: "date" },
-          domProps: { value: _vm.batches.search.edit_date.from },
+          domProps: { value: _vm.batches.search.add_options.edit_date.from },
           on: {
             input: function($event) {
               if ($event.target.composing) {
                 return
               }
               _vm.$set(
-                _vm.batches.search.edit_date,
+                _vm.batches.search.add_options.edit_date,
                 "from",
                 $event.target.value
               )
@@ -61593,18 +61635,22 @@ var render = function() {
             {
               name: "model",
               rawName: "v-model",
-              value: _vm.batches.search.edit_date.to,
-              expression: "batches.search.edit_date.to"
+              value: _vm.batches.search.add_options.edit_date.to,
+              expression: "batches.search.add_options.edit_date.to"
             }
           ],
           attrs: { type: "date" },
-          domProps: { value: _vm.batches.search.edit_date.to },
+          domProps: { value: _vm.batches.search.add_options.edit_date.to },
           on: {
             input: function($event) {
               if ($event.target.composing) {
                 return
               }
-              _vm.$set(_vm.batches.search.edit_date, "to", $event.target.value)
+              _vm.$set(
+                _vm.batches.search.add_options.edit_date,
+                "to",
+                $event.target.value
+              )
             }
           }
         }),
@@ -61630,18 +61676,22 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.batches.search.cost.from,
-                  expression: "batches.search.cost.from"
+                  value: _vm.batches.search.add_options.cost.from,
+                  expression: "batches.search.add_options.cost.from"
                 }
               ],
               attrs: { type: "text", placeholder: _vm.$t("from") },
-              domProps: { value: _vm.batches.search.cost.from },
+              domProps: { value: _vm.batches.search.add_options.cost.from },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(_vm.batches.search.cost, "from", $event.target.value)
+                  _vm.$set(
+                    _vm.batches.search.add_options.cost,
+                    "from",
+                    $event.target.value
+                  )
                 }
               }
             })
@@ -61653,18 +61703,22 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.batches.search.cost.to,
-                  expression: "batches.search.cost.to"
+                  value: _vm.batches.search.add_options.cost.to,
+                  expression: "batches.search.add_options.cost.to"
                 }
               ],
               attrs: { type: "text", placeholder: _vm.$t("until") },
-              domProps: { value: _vm.batches.search.cost.to },
+              domProps: { value: _vm.batches.search.add_options.cost.to },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(_vm.batches.search.cost, "to", $event.target.value)
+                  _vm.$set(
+                    _vm.batches.search.add_options.cost,
+                    "to",
+                    $event.target.value
+                  )
                 }
               }
             })
@@ -62971,7 +63025,10 @@ var render = function() {
                 _c(
                   "div",
                   { staticClass: "d-flex flex-column flex-fill" },
-                  _vm._l(_vm.inputs, function(input, index) {
+                  _vm._l(_vm.items.search.search_options, function(
+                    input,
+                    index
+                  ) {
                     return _c(
                       "div",
                       {
@@ -63067,7 +63124,8 @@ var render = function() {
                         ),
                         _vm._v(" "),
                         _c("div", { staticClass: "ml-1 d-flex" }, [
-                          _vm.inputs.length > 1 && index < _vm.inputs.length - 1
+                          _vm.items.search.search_options.length > 1 &&
+                          index < _vm.items.search.search_options.length - 1
                             ? _c(
                                 "div",
                                 { staticClass: "select double-width mr-2" },
@@ -63079,8 +63137,12 @@ var render = function() {
                                         {
                                           name: "model",
                                           rawName: "v-model",
-                                          value: _vm.inputs[index + 1].operator,
-                                          expression: "inputs[index+1].operator"
+                                          value:
+                                            _vm.items.search.search_options[
+                                              index + 1
+                                            ].operator,
+                                          expression:
+                                            "items.search.search_options[index+1].operator"
                                         }
                                       ],
                                       on: {
@@ -63100,7 +63162,9 @@ var render = function() {
                                               return val
                                             })
                                           _vm.$set(
-                                            _vm.inputs[index + 1],
+                                            _vm.items.search.search_options[
+                                              index + 1
+                                            ],
                                             "operator",
                                             $event.target.multiple
                                               ? $$selectedVal
@@ -63750,11 +63814,11 @@ var render = function() {
                   placeholder: _vm.$t("search_by", { type: _vm.$t("name_by") })
                 },
                 model: {
-                  value: _vm.publishers.search.name,
+                  value: _vm.publishers.search.add_options.name,
                   callback: function($$v) {
-                    _vm.$set(_vm.publishers.search, "name", $$v)
+                    _vm.$set(_vm.publishers.search.add_options, "name", $$v)
                   },
-                  expression: "publishers.search.name"
+                  expression: "publishers.search.add_options.name"
                 }
               })
             ],
@@ -64105,11 +64169,11 @@ var render = function() {
                   placeholder: _vm.$t("search_by", { type: _vm.$t("name_by") })
                 },
                 model: {
-                  value: _vm.suppliers.search.name,
+                  value: _vm.suppliers.search.add_options.name,
                   callback: function($$v) {
-                    _vm.$set(_vm.suppliers.search, "name", $$v)
+                    _vm.$set(_vm.suppliers.search.add_options, "name", $$v)
                   },
-                  expression: "suppliers.search.name"
+                  expression: "suppliers.search.add_options.name"
                 }
               })
             ],
@@ -82243,7 +82307,7 @@ var index = {
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse("{\"ok\":\"OK\",\"acquisitions\":\"Acquisitions\",\"batches\":\"Batch | Batches\",\"items\":\"Item | Items\",\"publishers\":\"Publisher | Publishers\",\"suppliers\":\"Supplier | Suppliers\",\"table\":\"Table\",\"logout\":\"Logout\",\"search\":\"Search\",\"searching\":\"Search\",\"reset\":\"Reset\",\"load_all\":\"Load all data\",\"create\":\"Create\",\"count\":\"Count\",\"save\":\"Save\",\"cancel\":\"Cancel\",\"cost\":\"Cost\",\"from\":\"From\",\"until\":\"Until\",\"not_found\":\"No data found\",\"create_date\":\"Form fill date\",\"edit_date\":\"Form edit date\",\"results\":\"Results\",\"results_of\":\"results\",\"yes\":\"Yes\",\"no\":\"No\",\"edit\":\"Edit\",\"delete\":\"Delete\",\"show_more\":\"Details\",\"more\":\"More ...\",\"confirmation\":\"Are you sure you want to delete?\",\"sort_by\":\"Sort by\",\"search_by\":\"Search by {type}\",\"author_by\":\"author\",\"title_by\":\"title\",\"barcode_by\":\"barcode\",\"batch_id_by\":\"batch number\",\"inv_id_by\":\"inventory number\",\"isbn_by\":\"isbn\",\"and\":\"And\",\"or\":\"Or\",\"not\":\"Not\",\"per_page\":\"Results per page\",\"apply\":\"Apply\",\"showing_pages\":\"{from} - {to} out of {total}\",\"page\":\"Page\",\"previous\":\"Prev\",\"next\":\"Next\",\"move_to\":\"Move\",\"asc\":\"Ascending\",\"desc\":\"Descending\",\"refresh\":\"Refresh\",\"choose\":\"Choose\",\"save_&_search\":\"Save and search\",\"batch_filter\":\"Batches filter\",\"item_filter\":\"Items filter\",\"search_batches\":\"Search batches\",\"search_items\":\"Search items\",\"batches_number\":\"Batch number\",\"batches_by\":\"batch number\",\"add_batch\":\"Add batch\",\"add_item\":\"Add item\",\"create_batches\":\"Create batch\",\"create_items\":\"Create item\",\"create_supplier\":\"Create supplier\",\"create_publisher\":\"Create publisher\",\"edit_batches\":\"Edit batch\",\"edit_items\":\"Edit item\",\"edit_supplier\":\"Edit supplier\",\"edit_publisher\":\"Edit publisher\",\"recreate\":\"Re-create\",\"reCreate_items\":\"Re-create item\",\"type_of_supply\":\"Type of supply\",\"type_of_item\":\"Type of item\",\"quantity_items\":\"Quantity of items\",\"quantity_titles\":\"Quantity of titles\",\"document_number\":\"Document number\",\"contract_number\":\"Contract number\",\"inventory_number\":\"Inventory number\",\"inv_id\":\"Inventory number\",\"types\":\"Types\",\"filled_in\":\"Filled in\",\"made_actually\":\"Made acutally\",\"correct\":\"Correct\",\"titles_no_match\":\"The number of titles does not match\",\"items_no_match\":\"The number of items does not match\",\"add_input\":\"Add input +\",\"status\":\"Status\",\"invoice_date\":\"Invoice date\",\"by_contract\":\"By contract\",\"invoice_details\":\"Invoice details\",\"barcode\":\"Barcode\",\"isbn\":\"ISBN\",\"created_by\":\"Form filled by\",\"edited_by\":\"Form edited by\",\"titles\":\"Title | Titles\",\"title\":\"Title\",\"author\":\"Author\",\"year\":\"Year\",\"pub_year\":\"Publisher year\",\"pub_city\":\"Publisher city\",\"location\":\"Location\",\"fill_date\":\"Form fill date\",\"beginning\":\"Start\",\"end\":\"End\",\"currency\":\"Currency\",\"name\":\"Name\",\"name_by\":\"name\",\"commercial_name\":\"Commercial name\",\"bin\":\"BIN / IIN\",\"contact\":\"Contacts\",\"address\":\"Address\",\"email\":\"E-mail\",\"phone\":\"Phone number\",\"fax\":\"Fax\",\"service_desk\":\"Service desk\",\"users\":\"Users\",\"books\":\"Books history\",\"search_user\":\"Search user\",\"type\":\"Type\",\"student\":\"Student\",\"employee\":\"Staff\",\"all\":\"All\",\"username\":\"Username\",\"user_id\":\"User ID\",\"user_id_user\":\"User ID (or name || surname)\",\"username_user\":\"Username (or name || surname)\",\"surname\":\"Surname\",\"section\":\"Section\",\"serve\":\"Book issuance\",\"check_in\":\"Check in\",\"search_material\":\"Search material\",\"user_info\":\"User information\",\"full_name\":\"Full name\",\"degree\":\"Degree\",\"class\":\"Year\",\"faculty\":\"Faculty\",\"program\":\"Program\",\"id\":\"ID\",\"mobile\":\"Phone number\",\"more_info\":\"More details\",\"select_all\":\"Select all ( {num} selected )\",\"delivery_date\":\"Delivery date\",\"due_date\":\"Due date\",\"issue_date\":\"Issue date\",\"borrow_date\":\"Borrow date\",\"last_user_borrowed\":\"Last user\",\"give_material\":\"Give material\",\"hesab_id\":\"Batch ID\",\"batch_id\":\"Batch Id\",\"items_no\":\"Quantity of items\",\"titles_no\":\"Quantity of titles\",\"receive_date\":\"Form fill date\",\"supplier_id\":\"Supplier ID\",\"supplier_name\":\"Supplier name\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"Publisher ID\",\"com_name\":\"Commercial name\",\"reports\":\"Reports\",\"attendance\":\"Attendance\",\"mrbooks\":\"Most read books\",\"print\":\"Print barcode\"}");
+module.exports = JSON.parse("{\"ok\":\"OK\",\"acquisitions\":\"Acquisitions\",\"batches\":\"Batch | Batches\",\"items\":\"Item | Items\",\"publishers\":\"Publisher | Publishers\",\"suppliers\":\"Supplier | Suppliers\",\"table\":\"Table\",\"logout\":\"Logout\",\"search\":\"Search\",\"searching\":\"Search\",\"reset\":\"Reset\",\"load_all\":\"Load all data\",\"create\":\"Create\",\"count\":\"Count\",\"save\":\"Save\",\"cancel\":\"Cancel\",\"cost\":\"Cost\",\"from\":\"From\",\"until\":\"Until\",\"not_found\":\"No data found\",\"create_date\":\"Form fill date\",\"edit_date\":\"Form edit date\",\"results\":\"Results\",\"results_of\":\"results\",\"yes\":\"Yes\",\"no\":\"No\",\"edit\":\"Edit\",\"delete\":\"Delete\",\"show_more\":\"Details\",\"more\":\"More ...\",\"confirmation\":\"Are you sure you want to delete?\",\"sort_by\":\"Sort by\",\"search_by\":\"Search by {type}\",\"author_by\":\"author\",\"title_by\":\"title\",\"barcode_by\":\"barcode\",\"batch_id_by\":\"batch number\",\"inv_id_by\":\"inventory number\",\"isbn_by\":\"isbn\",\"and\":\"And\",\"or\":\"Or\",\"not\":\"Not\",\"per_page\":\"Results per page\",\"apply\":\"Apply\",\"showing_pages\":\"{from} - {to} out of {total}\",\"page\":\"Page\",\"previous\":\"Prev\",\"next\":\"Next\",\"move_to\":\"Move\",\"asc\":\"Ascending\",\"desc\":\"Descending\",\"refresh\":\"Refresh\",\"choose\":\"Choose\",\"save_&_search\":\"Save and search\",\"error\":\"Error !\",\"batch_filter\":\"Batches filter\",\"item_filter\":\"Items filter\",\"search_batches\":\"Search batches\",\"search_items\":\"Search items\",\"batches_number\":\"Batch number\",\"batches_by\":\"batch number\",\"add_batch\":\"Add batch\",\"add_item\":\"Add item\",\"create_batches\":\"Create batch\",\"create_items\":\"Create item\",\"create_supplier\":\"Create supplier\",\"create_publisher\":\"Create publisher\",\"edit_batches\":\"Edit batch\",\"edit_items\":\"Edit item\",\"edit_supplier\":\"Edit supplier\",\"edit_publisher\":\"Edit publisher\",\"recreate\":\"Re-create\",\"reCreate_items\":\"Re-create item\",\"type_of_supply\":\"Type of supply\",\"type_of_item\":\"Type of item\",\"quantity_items\":\"Quantity of items\",\"quantity_titles\":\"Quantity of titles\",\"document_number\":\"Document number\",\"contract_number\":\"Contract number\",\"inventory_number\":\"Inventory number\",\"inv_id\":\"Inventory number\",\"types\":\"Types\",\"filled_in\":\"Filled in\",\"made_actually\":\"Made acutally\",\"correct\":\"Correct\",\"titles_no_match\":\"The number of titles does not match\",\"items_no_match\":\"The number of items does not match\",\"add_input\":\"Add input +\",\"status\":\"Status\",\"invoice_date\":\"Invoice date\",\"by_contract\":\"By contract\",\"invoice_details\":\"Invoice details\",\"barcode\":\"Barcode\",\"isbn\":\"ISBN\",\"created_by\":\"Form filled by\",\"edited_by\":\"Form edited by\",\"titles\":\"Title | Titles\",\"title\":\"Title\",\"author\":\"Author\",\"year\":\"Year\",\"pub_year\":\"Publisher year\",\"pub_city\":\"Publisher city\",\"location\":\"Location\",\"fill_date\":\"Form fill date\",\"beginning\":\"Start\",\"end\":\"End\",\"currency\":\"Currency\",\"name\":\"Name\",\"name_by\":\"name\",\"commercial_name\":\"Commercial name\",\"bin\":\"BIN / IIN\",\"contact\":\"Contacts\",\"address\":\"Address\",\"email\":\"E-mail\",\"phone\":\"Phone number\",\"fax\":\"Fax\",\"service_desk\":\"Service desk\",\"users\":\"Users\",\"books\":\"Books history\",\"search_user\":\"Search user\",\"type\":\"Type\",\"student\":\"Student\",\"employee\":\"Staff\",\"all\":\"All\",\"username\":\"Username\",\"user_id\":\"User ID\",\"user_id_user\":\"User ID (or name || surname)\",\"username_user\":\"Username (or name || surname)\",\"surname\":\"Surname\",\"section\":\"Section\",\"serve\":\"Book issuance\",\"check_in\":\"Check in\",\"search_material\":\"Search material\",\"user_info\":\"User information\",\"full_name\":\"Full name\",\"degree\":\"Degree\",\"class\":\"Year\",\"faculty\":\"Faculty\",\"program\":\"Program\",\"id\":\"ID\",\"mobile\":\"Phone number\",\"more_info\":\"More details\",\"select_all\":\"Select all ( {num} selected )\",\"delivery_date\":\"Delivery date\",\"due_date\":\"Due date\",\"issue_date\":\"Issue date\",\"borrow_date\":\"Borrow date\",\"last_user_borrowed\":\"Last user\",\"give_material\":\"Give material\",\"hesab_id\":\"Batch ID\",\"batch_id\":\"Batch Id\",\"items_no\":\"Quantity of items\",\"titles_no\":\"Quantity of titles\",\"receive_date\":\"Form fill date\",\"supplier_id\":\"Supplier ID\",\"supplier_name\":\"Supplier name\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"Publisher ID\",\"com_name\":\"Commercial name\",\"reports\":\"Reports\",\"attendance\":\"Attendance\",\"mrbooks\":\"Most read books\",\"print\":\"Print barcode\"}");
 
 /***/ }),
 
@@ -82254,7 +82318,7 @@ module.exports = JSON.parse("{\"ok\":\"OK\",\"acquisitions\":\"Acquisitions\",\"
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse("{\"ok\":\"Ну жарайд\",\"acquisitions\":\"Кітап қабылдау\",\"batches\":\"Партия | Партиялар\",\"items\":\"Дана | Даналар\",\"publishers\":\"Баспагер | Баспагерлер\",\"suppliers\":\"Жеткізуші | Жеткізушілер\",\"table\":\"Таблица\",\"logout\":\"Шығу\",\"search\":\"Іздеу\",\"searching\":\"Іздеу\",\"reset\":\"Қалпына келтіру\",\"load_all\":\"Барін көрсету\",\"create\":\"Қосу\",\"count\":\"Сандар\",\"save\":\"Сақтау\",\"cancel\":\"Бас тарту\",\"cost\":\"Бағасы\",\"from\":\"Бастап\",\"until\":\"Дейін\",\"not_found\":\"Деректер табылмады\",\"create_date\":\"Форма толтырылған күні\",\"edit_date\":\"Форма өзгертілген күні\",\"results\":\"Нәтижелер\",\"results_of\":\"нәтиже табылды\",\"yes\":\"Ия\",\"no\":\"Жоқ\",\"edit\":\"Өзгерту\",\"delete\":\"Жою\",\"show_more\":\"Көбірек\",\"more\":\"Көбірек ...\",\"confirmation\":\"Жойғыңыз келетініне сенімдісіз бе?\",\"sort_by\":\"Сұрыптау\",\"search_by\":\"{type} іздеу\",\"author_by\":\"Авторымен\",\"title_by\":\"Тақырырбымен\",\"barcode_by\":\"Баркодымен\",\"batch_id_by\":\"Партия нөмірімен\",\"inv_id_by\":\"Инвентарь нөмірімен\",\"isbn_by\":\"ISBN-мен\",\"and\":\"Және\",\"or\":\"Немесе\",\"not\":\"Емес\",\"per_page\":\"Парақтагы нәтижелер саны\",\"apply\":\"Растау\",\"showing_pages\":\"{total} нәтиженің {from} - {to} көрсетілуде\",\"page\":\"Бет\",\"previous\":\"Артқа\",\"next\":\"Келесі\",\"move_to\":\"Өту\",\"asc\":\"Өсу\",\"desc\":\"Азаю\",\"refresh\":\"Жаңарту\",\"choose\":\"Таңдаңыз\",\"save_&_search\":\"Сақтау және іздеу\",\"batch_filter\":\"Партиялық сүзгі\",\"item_filter\":\"Даналық сүзгі\",\"search_batches\":\"Партия іздеу\",\"search_items\":\"Дана іздеу\",\"batches_number\":\"Партия нөмірі\",\"batches_by\":\"Партия нөмірімен\",\"add_batch\":\"Партия қосу\",\"add_item\":\"Дана қосу\",\"create_batches\":\"Партия қосу\",\"create_items\":\"Дана қосу\",\"create_supplier\":\"Жеткізуші қосу\",\"create_publisher\":\"Баспагер қосу\",\"edit_batches\":\"Партия өзгерту\",\"edit_items\":\"Дана өзгерту\",\"edit_supplier\":\"Жеткізуші өзгерту\",\"edit_publisher\":\"Баспагер өзгерту\",\"recreate\":\"Қайта қосу\",\"reCreate_items\":\"Дана қайта қосу\",\"type_of_supply\":\"Жеткізу түрі\",\"type_of_item\":\"Дана түрі\",\"quantity_items\":\"Дана саны\",\"quantity_titles\":\"Тақырып саны\",\"document_number\":\"Документ нөмірі\",\"contract_number\":\"Контракт нөмірі\",\"inventory_number\":\"Инвентарь нөмірі\",\"inv_id\":\"Инвентарь нөмірі\",\"types\":\"Түрлер\",\"filled_in\":\"Енгізілді\",\"made_actually\":\"Негізгі саны\",\"correct\":\"Дұрыс\",\"titles_no_match\":\"Тақырыптар саны сәйкес келмейді\",\"items_no_match\":\"Даналар саны сәйкес келмейді\",\"add_input\":\"Енгізуді қосу +\",\"status\":\"Статус\",\"invoice_date\":\"Жеткізген күні\",\"by_contract\":\"Контракт арқылы\",\"invoice_details\":\"Жеткізу деректері\",\"barcode\":\"Баркод\",\"isbn\":\"ISBN\",\"created_by\":\"Толтырылды\",\"edited_by\":\"Өзгертілді\",\"titles\":\"Атау | Атаулар\",\"title\":\"Атау\",\"author\":\"Автор\",\"year\":\"Жылы\",\"pub_year\":\"Баспа жылы\",\"pub_city\":\"Баспа қаласы\",\"location\":\"Орналасқан жері\",\"fill_date\":\"Толтырылған күні\",\"beginning\":\"Бастап\",\"end\":\"Дейін\",\"currency\":\"Валютасы\",\"name\":\"Аты\",\"name_by\":\"Атымен\",\"commercial_name\":\"Коммерциялық аты\",\"bin\":\"BIN / IIN\",\"contact\":\"Байланыстар\",\"address\":\"Мекен-жайы\",\"email\":\"Электрондық поштасы\",\"phone\":\"Телефон нөмірі\",\"fax\":\"Факс\",\"service_desk\":\"Қызмет көрсету\",\"users\":\"Пайдаланушылар\",\"books\":\"Кітаптар тарихы\",\"search_user\":\"Пайдаланушы іздеу\",\"type\":\"Түрі\",\"student\":\"Студент\",\"employee\":\"Қызметкер\",\"all\":\"Бәрі\",\"username\":\"Пайдаланушы аты\",\"user_id\":\"Пайдаланушы ID\",\"user_id_user\":\"Пайдаланушы ID (немесе аты || жөні)\",\"username_user\":\"Пайдаланушы аты (немесе аты || жөні)\",\"surname\":\"Тегі\",\"section\":\"Бөлімі\",\"serve\":\"Кітап беру\",\"check_in\":\"Check in\",\"search_material\":\"Материал іздеу\",\"user_info\":\"Пайдаланушы туралы ақпарат\",\"full_name\":\"Аты - тегі\",\"degree\":\"Дәрежесі\",\"class\":\"Оқу жылы\",\"faculty\":\"Факультеті\",\"program\":\"Бағдарламасы\",\"id\":\"ID\",\"mobile\":\"Телефон нөмірі\",\"more_info\":\"Толығырақ\",\"select_all\":\"Барлығын таңдау ( {num} таңдалды )\",\"delivery_date\":\"Жеткізілім уақыты\",\"due_date\":\"Мерзімнің өту күні\",\"issue_date\":\"Берілген күні\",\"borrow_date\":\"Қарызға алу күні\",\"last_user_borrowed\":\"Соңғы пайдаланушы\",\"give_material\":\"Материал беру\",\"hesab_id\":\"Партия ID\",\"batch_id\":\"Партия ID\",\"items_no\":\"Дана саны\",\"titles_no\":\"Тақырып саны\",\"receive_date\":\"Толтырылған күні\",\"supplier_id\":\"Жеткізуші ID\",\"supplier_name\":\"Жеткізущі аты\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"Баспагер ID\",\"com_name\":\"Коммерциялық аты\",\"reports\":\"Есептер\",\"attendance\":\"Қатысу\",\"mrbooks\":\"Көпшілігі оқитын кітаптар\",\"print\":\"Баркодты басып шығару\"}");
+module.exports = JSON.parse("{\"ok\":\"Ну жарайд\",\"acquisitions\":\"Кітап қабылдау\",\"batches\":\"Партия | Партиялар\",\"items\":\"Дана | Даналар\",\"publishers\":\"Баспагер | Баспагерлер\",\"suppliers\":\"Жеткізуші | Жеткізушілер\",\"table\":\"Таблица\",\"logout\":\"Шығу\",\"search\":\"Іздеу\",\"searching\":\"Іздеу\",\"reset\":\"Қалпына келтіру\",\"load_all\":\"Барін көрсету\",\"create\":\"Қосу\",\"count\":\"Сандар\",\"save\":\"Сақтау\",\"cancel\":\"Бас тарту\",\"cost\":\"Бағасы\",\"from\":\"Бастап\",\"until\":\"Дейін\",\"not_found\":\"Деректер табылмады\",\"create_date\":\"Форма толтырылған күні\",\"edit_date\":\"Форма өзгертілген күні\",\"results\":\"Нәтижелер\",\"results_of\":\"нәтиже табылды\",\"yes\":\"Ия\",\"no\":\"Жоқ\",\"edit\":\"Өзгерту\",\"delete\":\"Жою\",\"show_more\":\"Көбірек\",\"more\":\"Көбірек ...\",\"confirmation\":\"Жойғыңыз келетініне сенімдісіз бе?\",\"sort_by\":\"Сұрыптау\",\"search_by\":\"{type} іздеу\",\"author_by\":\"Авторымен\",\"title_by\":\"Тақырырбымен\",\"barcode_by\":\"Баркодымен\",\"batch_id_by\":\"Партия нөмірімен\",\"inv_id_by\":\"Инвентарь нөмірімен\",\"isbn_by\":\"ISBN-мен\",\"and\":\"Және\",\"or\":\"Немесе\",\"not\":\"Емес\",\"per_page\":\"Парақтагы нәтижелер саны\",\"apply\":\"Растау\",\"showing_pages\":\"{total} нәтиженің {from} - {to} көрсетілуде\",\"page\":\"Бет\",\"previous\":\"Артқа\",\"next\":\"Келесі\",\"move_to\":\"Өту\",\"asc\":\"Өсу\",\"desc\":\"Азаю\",\"refresh\":\"Жаңарту\",\"choose\":\"Таңдаңыз\",\"save_&_search\":\"Сақтау және іздеу\",\"error\":\"Қате !\",\"batch_filter\":\"Партиялық сүзгі\",\"item_filter\":\"Даналық сүзгі\",\"search_batches\":\"Партия іздеу\",\"search_items\":\"Дана іздеу\",\"batches_number\":\"Партия нөмірі\",\"batches_by\":\"Партия нөмірімен\",\"add_batch\":\"Партия қосу\",\"add_item\":\"Дана қосу\",\"create_batches\":\"Партия қосу\",\"create_items\":\"Дана қосу\",\"create_supplier\":\"Жеткізуші қосу\",\"create_publisher\":\"Баспагер қосу\",\"edit_batches\":\"Партия өзгерту\",\"edit_items\":\"Дана өзгерту\",\"edit_supplier\":\"Жеткізуші өзгерту\",\"edit_publisher\":\"Баспагер өзгерту\",\"recreate\":\"Қайта қосу\",\"reCreate_items\":\"Дана қайта қосу\",\"type_of_supply\":\"Жеткізу түрі\",\"type_of_item\":\"Дана түрі\",\"quantity_items\":\"Дана саны\",\"quantity_titles\":\"Тақырып саны\",\"document_number\":\"Документ нөмірі\",\"contract_number\":\"Контракт нөмірі\",\"inventory_number\":\"Инвентарь нөмірі\",\"inv_id\":\"Инвентарь нөмірі\",\"types\":\"Түрлер\",\"filled_in\":\"Енгізілді\",\"made_actually\":\"Негізгі саны\",\"correct\":\"Дұрыс\",\"titles_no_match\":\"Тақырыптар саны сәйкес келмейді\",\"items_no_match\":\"Даналар саны сәйкес келмейді\",\"add_input\":\"Енгізуді қосу +\",\"status\":\"Статус\",\"invoice_date\":\"Жеткізген күні\",\"by_contract\":\"Контракт арқылы\",\"invoice_details\":\"Жеткізу деректері\",\"barcode\":\"Баркод\",\"isbn\":\"ISBN\",\"created_by\":\"Толтырылды\",\"edited_by\":\"Өзгертілді\",\"titles\":\"Атау | Атаулар\",\"title\":\"Атау\",\"author\":\"Автор\",\"year\":\"Жылы\",\"pub_year\":\"Баспа жылы\",\"pub_city\":\"Баспа қаласы\",\"location\":\"Орналасқан жері\",\"fill_date\":\"Толтырылған күні\",\"beginning\":\"Бастап\",\"end\":\"Дейін\",\"currency\":\"Валютасы\",\"name\":\"Аты\",\"name_by\":\"Атымен\",\"commercial_name\":\"Коммерциялық аты\",\"bin\":\"BIN / IIN\",\"contact\":\"Байланыстар\",\"address\":\"Мекен-жайы\",\"email\":\"Электрондық поштасы\",\"phone\":\"Телефон нөмірі\",\"fax\":\"Факс\",\"service_desk\":\"Қызмет көрсету\",\"users\":\"Пайдаланушылар\",\"books\":\"Кітаптар тарихы\",\"search_user\":\"Пайдаланушы іздеу\",\"type\":\"Түрі\",\"student\":\"Студент\",\"employee\":\"Қызметкер\",\"all\":\"Бәрі\",\"username\":\"Пайдаланушы аты\",\"user_id\":\"Пайдаланушы ID\",\"user_id_user\":\"Пайдаланушы ID (немесе аты || жөні)\",\"username_user\":\"Пайдаланушы аты (немесе аты || жөні)\",\"surname\":\"Тегі\",\"section\":\"Бөлімі\",\"serve\":\"Кітап беру\",\"check_in\":\"Check in\",\"search_material\":\"Материал іздеу\",\"user_info\":\"Пайдаланушы туралы ақпарат\",\"full_name\":\"Аты - тегі\",\"degree\":\"Дәрежесі\",\"class\":\"Оқу жылы\",\"faculty\":\"Факультеті\",\"program\":\"Бағдарламасы\",\"id\":\"ID\",\"mobile\":\"Телефон нөмірі\",\"more_info\":\"Толығырақ\",\"select_all\":\"Барлығын таңдау ( {num} таңдалды )\",\"delivery_date\":\"Жеткізілім уақыты\",\"due_date\":\"Мерзімнің өту күні\",\"issue_date\":\"Берілген күні\",\"borrow_date\":\"Қарызға алу күні\",\"last_user_borrowed\":\"Соңғы пайдаланушы\",\"give_material\":\"Материал беру\",\"hesab_id\":\"Партия ID\",\"batch_id\":\"Партия ID\",\"items_no\":\"Дана саны\",\"titles_no\":\"Тақырып саны\",\"receive_date\":\"Толтырылған күні\",\"supplier_id\":\"Жеткізуші ID\",\"supplier_name\":\"Жеткізущі аты\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"Баспагер ID\",\"com_name\":\"Коммерциялық аты\",\"reports\":\"Есептер\",\"attendance\":\"Қатысу\",\"mrbooks\":\"Көпшілігі оқитын кітаптар\",\"print\":\"Баркодты басып шығару\"}");
 
 /***/ }),
 
@@ -82265,7 +82329,7 @@ module.exports = JSON.parse("{\"ok\":\"Ну жарайд\",\"acquisitions\":\"К
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse("{\"ok\":\"OK\",\"acquisitions\":\"Комплектование\",\"batches\":\"Партия | Партии\",\"items\":\"Экземлпяр | Экземпляры\",\"publishers\":\"Издатель | Издатели\",\"suppliers\":\"Поставщик | Поставщики\",\"table\":\"Таблица\",\"logout\":\"Выйти\",\"search\":\"Найти\",\"searching\":\"Поиск\",\"reset\":\"Сброс\",\"load_all\":\"Загрузить все\",\"create\":\"Создать\",\"count\":\"Количество\",\"save\":\"Сохранить\",\"cancel\":\"Отменить\",\"cost\":\"Цена\",\"from\":\"От\",\"until\":\"До\",\"not_found\":\"Ничего не найдено\",\"create_date\":\"Дата заполнения формы\",\"edit_date\":\"Дата изменения формы\",\"results\":\"Результаты\",\"results_of\":\"результатов\",\"yes\":\"Да\",\"no\":\"Нет\",\"edit\":\"Изменить\",\"delete\":\"Удалить\",\"show_more\":\"Узнать больше\",\"more\":\"Больше ...\",\"confirmation\":\"Вы действительно хотите удалить?\",\"sort_by\":\"Сортировать по\",\"search_by\":\"Искать по {type}\",\"author_by\":\"автору\",\"title_by\":\"заглавию\",\"barcode_by\":\"баркоду\",\"batch_id_by\":\"номеру партии\",\"inv_id_by\":\"номеру инвентаря\",\"isbn_by\":\"ISBN\",\"and\":\"И\",\"or\":\"Или\",\"not\":\"Не\",\"per_page\":\"Результатов на странице\",\"apply\":\"Подтвердить\",\"showing_pages\":\"{from} - {to} из {total}\",\"page\":\"Стр.\",\"previous\":\"Назад\",\"next\":\"Вперед\",\"move_to\":\"Перейти\",\"asc\":\"По возрастанию\",\"desc\":\"По убыванию\",\"refresh\":\"Обновить\",\"choose\":\"Выберите\",\"save_&_search\":\"Сохранить и искать\",\"batch_filter\":\"Фильтр партий\",\"item_filter\":\"Фильтр экземпляров\",\"search_batches\":\"Искать партию\",\"search_items\":\"Искать экземпляр\",\"batches_number\":\"Номер партии\",\"batches_by\":\"по номеру партии\",\"add_batch\":\"Добавить партию\",\"add_item\":\"Добавить экземпляр\",\"create_batches\":\"Создать партию\",\"create_items\":\"Создать экземпляр\",\"create_supplier\":\"Создать поставщика\",\"create_publisher\":\"Создать издателя\",\"edit_batches\":\"Изменить партию\",\"edit_items\":\"Изменить экземпляр\",\"edit_supplier\":\"Изменить поставщика\",\"edit_publisher\":\"Изменить издателя\",\"recreate\":\"Пересоздать\",\"reCreate_items\":\"Пересоздать экземпляр\",\"type_of_supply\":\"Тип поставки\",\"type_of_item\":\"Тип экземпляра\",\"quantity_items\":\"Количество экземпляров\",\"quantity_titles\":\"Количество заглавий\",\"document_number\":\"Номер документа\",\"contract_number\":\"Контрактный номер\",\"inventory_number\":\"Номер инвентаря\",\"inv_id\":\"Номер инвентаря\",\"types\":\"Types\",\"filled_in\":\"Введено\",\"made_actually\":\"Введено фактически\",\"correct\":\"Правильно\",\"titles_no_match\":\"Количество заглавий не совпадает\",\"items_no_match\":\"Количество экземпляров не совпадает\",\"add_input\":\"Добавить входные данные +\",\"status\":\"Статус\",\"invoice_date\":\"Дата счета-фактуры\",\"by_contract\":\"По контракту\",\"invoice_details\":\"Информация о счете-фактуре\",\"barcode\":\"Баркод\",\"isbn\":\"ISBN\",\"created_by\":\"Заполнено\",\"edited_by\":\"Изменено\",\"titles\":\"Заглавие | Заглавия\",\"title\":\"Заглавие\",\"author\":\"Автор\",\"year\":\"Год\",\"pub_year\":\"Год издания\",\"pub_city\":\"Город издания\",\"location\":\"Место расположения\",\"fill_date\":\"Дата заполнения\",\"beginning\":\"От\",\"end\":\"До\",\"currency\":\"Валюта\",\"name\":\"Имя\",\"name_by\":\"по имени\",\"commercial_name\":\"Коммерческое имя\",\"bin\":\"BIN / IIN\",\"contact\":\"Контакты\",\"address\":\"Адресс\",\"email\":\"Электронная почта\",\"phone\":\"Номер телефона\",\"fax\":\"Факс\",\"service_desk\":\"Служба поддержки\",\"users\":\"Пользователи\",\"books\":\"История книг\",\"search_user\":\"Найти пользователя\",\"type\":\"Тип\",\"student\":\"Студент\",\"employee\":\"Работник\",\"all\":\"Все\",\"username\":\"Имя пользователя\",\"user_id\":\"ID пользователя\",\"user_id_user\":\"ID пользователя (или имя || фамилия)\",\"username_user\":\"Имя пользователя (или имя || фамилия)\",\"surname\":\"Фамилия\",\"section\":\"Раздел\",\"serve\":\"Выдача книг\",\"check_in\":\"Check in\",\"search_material\":\"Поиск материала\",\"user_info\":\"Информация о пользователе\",\"full_name\":\"Имя - фамилия\",\"degree\":\"Степень\",\"class\":\"Год\",\"faculty\":\"Факультет\",\"program\":\"Программа\",\"id\":\"ID\",\"mobile\":\"Номер телефона\",\"more_info\":\"Подробнее\",\"select_all\":\"Выбрать все ( {num} выбрано )\",\"delivery_date\":\"Дата доставки\",\"due_date\":\"Дата сдачи\",\"issue_date\":\"Дата выпуска\",\"borrow_date\":\"Дата заимствования\",\"last_user_borrowed\":\"Последний пользователь\",\"give_material\":\"Дать материал\",\"hesab_id\":\"ID партии\",\"batch_id\":\"ID партии\",\"items_no\":\"Количество экземпляров\",\"titles_no\":\"Количество заглавий\",\"receive_date\":\"Дата заполнения\",\"supplier_id\":\"ID поставщика\",\"supplier_name\":\"Имя поставщика\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"ID издателя\",\"com_name\":\"Коммерческое имя\",\"reports\":\"Отчеты\",\"attendance\":\"Посещаемость\",\"mrbooks\":\"Самые читаемые книги\",\"print\":\"Распечатать баркод\"}");
+module.exports = JSON.parse("{\"ok\":\"OK\",\"acquisitions\":\"Комплектование\",\"batches\":\"Партия | Партии\",\"items\":\"Экземлпяр | Экземпляры\",\"publishers\":\"Издатель | Издатели\",\"suppliers\":\"Поставщик | Поставщики\",\"table\":\"Таблица\",\"logout\":\"Выйти\",\"search\":\"Найти\",\"searching\":\"Поиск\",\"reset\":\"Сброс\",\"load_all\":\"Загрузить все\",\"create\":\"Создать\",\"count\":\"Количество\",\"save\":\"Сохранить\",\"cancel\":\"Отменить\",\"cost\":\"Цена\",\"from\":\"От\",\"until\":\"До\",\"not_found\":\"Ничего не найдено\",\"create_date\":\"Дата заполнения формы\",\"edit_date\":\"Дата изменения формы\",\"results\":\"Результаты\",\"results_of\":\"результатов\",\"yes\":\"Да\",\"no\":\"Нет\",\"edit\":\"Изменить\",\"delete\":\"Удалить\",\"show_more\":\"Узнать больше\",\"more\":\"Больше ...\",\"confirmation\":\"Вы действительно хотите удалить?\",\"sort_by\":\"Сортировать по\",\"search_by\":\"Искать по {type}\",\"author_by\":\"автору\",\"title_by\":\"заглавию\",\"barcode_by\":\"баркоду\",\"batch_id_by\":\"номеру партии\",\"inv_id_by\":\"номеру инвентаря\",\"isbn_by\":\"ISBN\",\"and\":\"И\",\"or\":\"Или\",\"not\":\"Не\",\"per_page\":\"Результатов на странице\",\"apply\":\"Подтвердить\",\"showing_pages\":\"{from} - {to} из {total}\",\"page\":\"Стр.\",\"previous\":\"Назад\",\"next\":\"Вперед\",\"move_to\":\"Перейти\",\"asc\":\"По возрастанию\",\"desc\":\"По убыванию\",\"refresh\":\"Обновить\",\"choose\":\"Выберите\",\"save_&_search\":\"Сохранить и искать\",\"error\":\"Ошибка !\",\"batch_filter\":\"Фильтр партий\",\"item_filter\":\"Фильтр экземпляров\",\"search_batches\":\"Искать партию\",\"search_items\":\"Искать экземпляр\",\"batches_number\":\"Номер партии\",\"batches_by\":\"по номеру партии\",\"add_batch\":\"Добавить партию\",\"add_item\":\"Добавить экземпляр\",\"create_batches\":\"Создать партию\",\"create_items\":\"Создать экземпляр\",\"create_supplier\":\"Создать поставщика\",\"create_publisher\":\"Создать издателя\",\"edit_batches\":\"Изменить партию\",\"edit_items\":\"Изменить экземпляр\",\"edit_supplier\":\"Изменить поставщика\",\"edit_publisher\":\"Изменить издателя\",\"recreate\":\"Пересоздать\",\"reCreate_items\":\"Пересоздать экземпляр\",\"type_of_supply\":\"Тип поставки\",\"type_of_item\":\"Тип экземпляра\",\"quantity_items\":\"Количество экземпляров\",\"quantity_titles\":\"Количество заглавий\",\"document_number\":\"Номер документа\",\"contract_number\":\"Контрактный номер\",\"inventory_number\":\"Номер инвентаря\",\"inv_id\":\"Номер инвентаря\",\"types\":\"Types\",\"filled_in\":\"Введено\",\"made_actually\":\"Введено фактически\",\"correct\":\"Правильно\",\"titles_no_match\":\"Количество заглавий не совпадает\",\"items_no_match\":\"Количество экземпляров не совпадает\",\"add_input\":\"Добавить входные данные +\",\"status\":\"Статус\",\"invoice_date\":\"Дата счета-фактуры\",\"by_contract\":\"По контракту\",\"invoice_details\":\"Информация о счете-фактуре\",\"barcode\":\"Баркод\",\"isbn\":\"ISBN\",\"created_by\":\"Заполнено\",\"edited_by\":\"Изменено\",\"titles\":\"Заглавие | Заглавия\",\"title\":\"Заглавие\",\"author\":\"Автор\",\"year\":\"Год\",\"pub_year\":\"Год издания\",\"pub_city\":\"Город издания\",\"location\":\"Место расположения\",\"fill_date\":\"Дата заполнения\",\"beginning\":\"От\",\"end\":\"До\",\"currency\":\"Валюта\",\"name\":\"Имя\",\"name_by\":\"по имени\",\"commercial_name\":\"Коммерческое имя\",\"bin\":\"BIN / IIN\",\"contact\":\"Контакты\",\"address\":\"Адресс\",\"email\":\"Электронная почта\",\"phone\":\"Номер телефона\",\"fax\":\"Факс\",\"service_desk\":\"Служба поддержки\",\"users\":\"Пользователи\",\"books\":\"История книг\",\"search_user\":\"Найти пользователя\",\"type\":\"Тип\",\"student\":\"Студент\",\"employee\":\"Работник\",\"all\":\"Все\",\"username\":\"Имя пользователя\",\"user_id\":\"ID пользователя\",\"user_id_user\":\"ID пользователя (или имя || фамилия)\",\"username_user\":\"Имя пользователя (или имя || фамилия)\",\"surname\":\"Фамилия\",\"section\":\"Раздел\",\"serve\":\"Выдача книг\",\"check_in\":\"Check in\",\"search_material\":\"Поиск материала\",\"user_info\":\"Информация о пользователе\",\"full_name\":\"Имя - фамилия\",\"degree\":\"Степень\",\"class\":\"Год\",\"faculty\":\"Факультет\",\"program\":\"Программа\",\"id\":\"ID\",\"mobile\":\"Номер телефона\",\"more_info\":\"Подробнее\",\"select_all\":\"Выбрать все ( {num} выбрано )\",\"delivery_date\":\"Дата доставки\",\"due_date\":\"Дата сдачи\",\"issue_date\":\"Дата выпуска\",\"borrow_date\":\"Дата заимствования\",\"last_user_borrowed\":\"Последний пользователь\",\"give_material\":\"Дать материал\",\"hesab_id\":\"ID партии\",\"batch_id\":\"ID партии\",\"items_no\":\"Количество экземпляров\",\"titles_no\":\"Количество заглавий\",\"receive_date\":\"Дата заполнения\",\"supplier_id\":\"ID поставщика\",\"supplier_name\":\"Имя поставщика\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"ID издателя\",\"com_name\":\"Коммерческое имя\",\"reports\":\"Отчеты\",\"attendance\":\"Посещаемость\",\"mrbooks\":\"Самые читаемые книги\",\"print\":\"Распечатать баркод\"}");
 
 /***/ })
 

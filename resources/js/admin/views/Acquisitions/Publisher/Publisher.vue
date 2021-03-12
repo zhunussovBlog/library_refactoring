@@ -3,7 +3,7 @@
 		<div class="bg-white mt-2 w-100 p-3 ">
 			<div class="d-flex justify-content-between">
 				<div class="col-6">
-					<input-div :search="true" :onSubmit="loadResults" v-model="publishers.search.name" :placeholder="$t('search_by',{type:$t('name_by')})" />
+					<input-div :search="true" :onSubmit="loadResults" v-model="publishers.search.add_options.name" :placeholder="$t('search_by',{type:$t('name_by')})" />
 				</div>
 				<div class="d-flex align-items-center">
 					<button type="button" @click="showModal(CreatePublisher,{loadAll:getAllData})">{{$t('create_publisher')}}</button>

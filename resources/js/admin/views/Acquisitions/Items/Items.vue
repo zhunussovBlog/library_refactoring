@@ -5,7 +5,7 @@
 			<div class="d-flex align-items-start justify-content-between">
 				<div class="d-flex align-items-start flex-fill">
 					<div class="d-flex flex-column flex-fill">
-						<div class="d-flex flex-fill" :class="{'mt-2':index!=0}" v-for="(input,index) in inputs">
+						<div class="d-flex flex-fill" :class="{'mt-2':index!=0}" v-for="(input,index) in items.search.search_options">
 							<div class="d-flex flex-fill">
 								<div class="select position-relative bg-white z-index-1">
 									<select class="no_border_right h-100" v-model="input.key">
@@ -16,8 +16,8 @@
 								<input-div class="flex-1" classes="border-grey no_border_left h-100" :search='true' :onSubmit="loadResults" v-model="input.value" :placeholder="$t('search_by',{type:$t(input.key+'_by')})"/>
 							</div>
 							<div class="ml-1 d-flex">
-								<div class="select double-width mr-2" v-if="inputs.length>1 && index<inputs.length-1">
-									<select v-model="inputs[index+1].operator">
+								<div class="select double-width mr-2" v-if="items.search.search_options.length>1 && index<items.search.search_options.length-1">
+									<select v-model="items.search.search_options[index+1].operator">
 										<option value="and">{{$t('and')}}</option>
 										<option value="or">{{$t('or')}}</option>
 										<option value="not">{{$t('not')}}</option>
@@ -67,6 +67,8 @@ import Print from '../../../assets/icons/Print'
 import Plus from '../../../assets/icons/Plus'
 import Download from '../../../assets/icons/Download'
 
+import {mapGetters} from 'vuex'
+
 export default{
 	mixins:[showModal,getResults],
 	components:{
@@ -78,12 +80,7 @@ export default{
 		Plus,
 	},
 	computed:{
-		items(){
-			return this.$store.getters.items;
-		},
-		inputs(){
-			return this.$store.getters.items.search.search_options;
-		}
+		...mapGetters(['items'])
 	},
 	data(){
 		return{
@@ -129,12 +126,12 @@ export default{
 		loadResults(){
 			this.pagination=true;
 			this.$store.dispatch('setStore',{label:'items',data:{page:0}});
-			this.getResults('/item',this.items.search,'items')
+			this.getResults('/item','items')
 		},
 		loadSearchFields(){
 			if(this.items.search_fields.length<1){
 				this.$http.get('/item/search-fields').then(response=>{
-					this.items.search_fields=response.data.res;
+					this.items.search_fields=response.data.res.search_options;
 				})
 			}
 		},
@@ -170,10 +167,11 @@ export default{
 			this.showModal(this.More,props);
 		},
 		addInput(input){
-			this.inputs.push(input);
+			if(this.items.search.search_options.length<5)
+			this.items.search.search_options.push(input);
 		},
 		removeInput(input){
-			this.inputs.splice(this.inputs.indexOf(input),1);
+			this.items.search.search_options.splice(this.items.search.search_options.indexOf(input),1);
 		}
 	},
 	created(){

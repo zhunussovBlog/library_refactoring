@@ -18,13 +18,15 @@ export default {
 
 	batches:{
 		search:{
-			id:null,
-			sup_id:null,
-			status_key:[],
-			cost:{},
-			invoice_date:{},
-			create_date:{},
-			edit_date:{}
+			add_options:{
+				id:null,
+				sup_id:null,
+				status_key:[],
+				cost:{},
+				invoice_date:{},
+				create_date:{},
+				edit_date:{}
+			}
 		},
 		data:[],
 		searching:false,
@@ -39,18 +41,20 @@ export default {
 	
 	items:{
 		search:{
-			publisher_id:null,
-			pub_year:null,
-			pub_city:null,
-			supplier_id:null,
-			sup_type:null,
-			location:null,
-			item_type:null,
-			user_cid:null,
-			create_date:{},
-			cost:{},
+			add_options:{
+				publisher_id:null,
+				pub_year:null,
+				pub_city:null,
+				supplier_id:null,
+				sup_type:null,
+				location:null,
+				item_type:null,
+				user_cid:null,
+				create_date:{},
+				cost:{},
+			},
+			search_options:[{key:'author',operator:'and'}],
 		},
-		search_options:[{key:'author',operator:'and'}],
 		search_fields:[],
 		data:[],
 		searching:false,
@@ -65,7 +69,9 @@ export default {
 	
 	publishers:{
 		search:{
-			name:null
+			add_options:{
+				name:null
+			}
 		},
 		data:[],
 		searching:false,
@@ -80,7 +86,9 @@ export default {
 	
 	suppliers:{
 		search:{
-			name:null
+			add_options:{
+				name:null
+			}
 		},
 		data:[],
 		searching:false,

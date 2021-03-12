@@ -1,4 +1,5 @@
 export default{
 	baseURL:'http://localhost:8000',
-	api:'/api/'
+	api:'/api/',
+	default_lang:'en'
 }

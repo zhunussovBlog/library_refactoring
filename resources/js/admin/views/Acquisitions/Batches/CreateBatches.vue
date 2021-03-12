@@ -21,7 +21,7 @@
 		<div class="d-flex">
 			<div class="d-flex w-100">
 				<div class="pad w-100">
-					<input type="date" v-model="batch.invoice_date" required/>
+					<input type="date" v-model="batch.inv_date" required/>
 					<label class="placeholder required">{{$t('invoice_date')}}</label>
 				</div>
 			</div>
@@ -79,20 +79,21 @@
 <script type="text/javascript">
 // identication in sublime text 3
 import showModal from '../../../mixins/showModal'
-import {last,getAllData} from '../../../mixins/common'
+import {last,getAllData,create_it,edit_it} from '../../../mixins/common'
 
 import CreateSupply from '../Supply/CreateSupply'
 export default{
-	mixins:[showModal,last,getAllData],
+	mixins:[showModal,last,getAllData,create_it,edit_it],
 	props:{
 		edit:Boolean,
-		data:Object
+		data:Object,
+		afterSave:Function
 	},
 	data(){
 		return{
 			CreateSupply:CreateSupply,
 			batch:{
-				invoice_date:null,
+				inv_date:null,
 				items_no:null,
 				titles_no:null,
 				doc_no:null,
@@ -102,7 +103,9 @@ export default{
 				inv_details:null,
 				cost:null
 			},
-			suppliers:[]
+			suppliers:[],
+			link:'/batch',
+			commit:'batches'
 		}
 	},
 	methods:{
@@ -122,30 +125,10 @@ export default{
 			}
 		},
 		editIt(){
-			this.$http.put('/batch/update',this.batch).then(response=>{
-				try{
-					this.afterSave(response.data.success.id);
-				}catch(e){
-					this.last('/batch','batches');
-				}
-				this.message_success();
-				this.$emit('close');
-			}).catch(error=>{
-				this.message_error();
-			}).then(()=>{
-				this.$store.commit('setFullPageLoading',false);
-			})
+			this.edit_it(this.link,this.commit,this.batch,this.afterSave,this.last);
 		},
 		createIt(){
-			this.$http.post('/batch/create',this.batch).then(response=>{
-				this.getAllData('/batch','batches',10);
-				this.message_success();
-				this.$emit('close');
-			}).catch(error=>{
-				this.message_error();
-			}).then(()=>{
-				this.$store.commit('setFullPageLoading',false);
-			});
+			this.create_it(this.link,this.commit,this.batch,this.getAllData,10);
 		},
 		loadSuppliers(value){
 			this.batch.sup_id=value;
