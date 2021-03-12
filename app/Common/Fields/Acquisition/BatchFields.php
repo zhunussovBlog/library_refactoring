@@ -20,7 +20,7 @@ class BatchFields extends FieldInterface
     protected static array $addSearchFields = [
         ['key' => 'id', 'title' => 'Batch No', 'method' => SearchFieldConstants::EQUALS],
         ['key' => 'sup_id', 'title' => 'Supplier', 'method' => SearchFieldConstants::EQUALS],
-        ['key' => 'statuses', 'title' => 'Statuses', 'method' => SearchFieldConstants::IN],
+        ['key' => 'status', 'title' => 'Statuses', 'method' => SearchFieldConstants::IN],
         ['key' => 'create_date', 'title' => 'Create date', 'method' => SearchFieldConstants::RANGE_DATE],
         ['key' => 'edit_date', 'title' => 'Edit date', 'method' => SearchFieldConstants::RANGE_DATE],
         ['key' => 'invoice_date', 'title' => 'Invoice date', 'method' => SearchFieldConstants::RANGE_DATE],
