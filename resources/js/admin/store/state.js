@@ -18,13 +18,13 @@ export default {
 
 	batches:{
 		search:{
-			batch_id:null,
+			id:null,
 			sup_id:null,
-			statuses:[],
-			from_cost:null,
-			until_cost:null,
-			start_date:null,
-			end_date:null
+			status_key:[],
+			cost:{},
+			invoice_date:{},
+			create_date:{},
+			edit_date:{}
 		},
 		data:[],
 		searching:false,
@@ -39,20 +39,18 @@ export default {
 	
 	items:{
 		search:{
-			search_options:[{key:'author',operator:'and'}],
 			publisher_id:null,
 			pub_year:null,
 			pub_city:null,
 			supplier_id:null,
 			sup_type:null,
-			from_cost:null,
-			until_cost:null,
-			start_date:null,
-			end_date:null,
+			location:null,
 			item_type:null,
 			user_cid:null,
-			location:null
+			create_date:{},
+			cost:{},
 		},
+		search_options:[{key:'author',operator:'and'}],
 		search_fields:[],
 		data:[],
 		searching:false,

@@ -34,7 +34,7 @@ import Info from './Info'
 import PulseLoader from 'vue-spinner/src/PulseLoader'
 
 //mixins
-import {getResults,reset} from '../../../mixins/common'
+import {getResults} from '../../../mixins/common'
 import {goTo} from '../../../mixins/goTo'
 import showModal from '../../../mixins/showModal'
 
@@ -42,7 +42,7 @@ import showModal from '../../../mixins/showModal'
 import Book from '../../../assets/icons/Book'
 
 export default{
-	mixins:[getResults,reset,showModal,goTo],
+	mixins:[getResults,showModal,goTo],
 	components:{'table-div':Table,PulseLoader,'input-div':Input,Dropdown},
 	computed:{
 		data(){

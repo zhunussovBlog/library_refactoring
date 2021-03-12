@@ -1,6 +1,6 @@
 <template>
 	<div class="text-choosable">
-		<div class="justify-content-between align-items-center">
+		<div class="d-flex justify-content-between align-items-center">
 			<div class="font-weight-bold">{{$tc(tableName.name,1)}}</div>
 			<div class="font-weight-bold cursor-pointer p-3" @click="close"><X /></div>
 		</div>

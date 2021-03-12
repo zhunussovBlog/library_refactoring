@@ -10,7 +10,7 @@
 						:placeholder="$t('search_by',{type:$t('batches_by')})"
 						:search='true'
 						:onSubmit="loadResults"
-						v-model="batches.search.batch_id"
+						v-model="batches.search.id"
 					/>
 				</div>
 				<div class="d-flex align-items-center" >
@@ -48,13 +48,13 @@ import showModal from '../../../mixins/showModal'
 import {getResults,getAllData} from '../../../mixins/common'
 
 // common components
-import Table from '../../../components/common/Table'
+import TableDiv from '../../../components/common/Table'
 import More from '../../../components/common/More'
-import Input from '../../../components/common/Input'
+import InputDiv from '../../../components/common/Input'
 
 // batches only components
 import CreateBatches from './CreateBatches'
-import Filter from './Filter'
+import FilterDiv from './Filter'
 
 // icons
 import Download from '../../../assets/icons/Download'
@@ -63,9 +63,9 @@ import Plus from '../../../assets/icons/Plus'
 export default{
 	mixins:[showModal,getResults,getAllData],
 	components:{
-		'table-div':Table,
-		'filter-div':Filter,
-		'input-div':Input,
+		TableDiv,
+		FilterDiv,
+		InputDiv,
 		Download,
 		Plus
 	},
@@ -108,12 +108,12 @@ export default{
 		},
 		loadResults(){
 			this.$store.dispatch('setStore',{label:'batches',data:{page:0}});
-			this.getResults('/batch',this.batches.search,'batches');
+			this.getResults('/batch','batches');
 		},
 		showit(info){
 			// show More_info modal
 			let heads=[{name:'batches_number',link:'id'},
-			{name:'invoice_date',link:'inv_date',is_date:true},
+			{name:'invoice_date',link:'invoice_date',is_date:true},
 			{name:'type_of_supply',link:'sup_type'},
 			{name:'suppliers',link:'supplier'},
 			{name:'cost',link:'cost'},
@@ -122,7 +122,7 @@ export default{
 			{name:'document_number',link:'doc_no'},
 			{name:'contract_number',link:'contract_no'},
 			{name:'invoice_details',link:'inv_details'},
-			{name:'created_by',link:'username'},
+			{name:'created_by',link:'created_by'},
 			{name:'create_date',link:'create_date',is_date:true}];
 			let props={
 				data:info,

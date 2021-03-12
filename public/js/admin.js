@@ -3190,9 +3190,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mixins: [_mixins_showModal__WEBPACK_IMPORTED_MODULE_0__.default, _mixins_common__WEBPACK_IMPORTED_MODULE_1__.getResults, _mixins_common__WEBPACK_IMPORTED_MODULE_1__.getAllData],
   components: {
-    'table-div': _components_common_Table__WEBPACK_IMPORTED_MODULE_2__.default,
-    'filter-div': _Filter__WEBPACK_IMPORTED_MODULE_6__.default,
-    'input-div': _components_common_Input__WEBPACK_IMPORTED_MODULE_4__.default,
+    TableDiv: _components_common_Table__WEBPACK_IMPORTED_MODULE_2__.default,
+    FilterDiv: _Filter__WEBPACK_IMPORTED_MODULE_6__.default,
+    InputDiv: _components_common_Input__WEBPACK_IMPORTED_MODULE_4__.default,
     Download: _assets_icons_Download__WEBPACK_IMPORTED_MODULE_7__.default,
     Plus: _assets_icons_Plus__WEBPACK_IMPORTED_MODULE_8__.default
   },
@@ -3257,7 +3257,7 @@ __webpack_require__.r(__webpack_exports__);
           page: 0
         }
       });
-      this.getResults('/batch', this.batches.search, 'batches');
+      this.getResults('/batch', 'batches');
     },
     showit: function showit(info) {
       // show More_info modal
@@ -3266,7 +3266,7 @@ __webpack_require__.r(__webpack_exports__);
         link: 'id'
       }, {
         name: 'invoice_date',
-        link: 'inv_date',
+        link: 'invoice_date',
         is_date: true
       }, {
         name: 'type_of_supply',
@@ -3294,7 +3294,7 @@ __webpack_require__.r(__webpack_exports__);
         link: 'inv_details'
       }, {
         name: 'created_by',
-        link: 'username'
+        link: 'created_by'
       }, {
         name: 'create_date',
         link: 'create_date',
@@ -3595,7 +3595,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
-    'input-div': _components_common_Input__WEBPACK_IMPORTED_MODULE_1__.default,
+    InputDiv: _components_common_Input__WEBPACK_IMPORTED_MODULE_1__.default,
     Checkbox: _components_common_Checkbox__WEBPACK_IMPORTED_MODULE_0__.default
   },
   computed: {
@@ -3625,7 +3625,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     addStatus: function addStatus(status) {
-      var selected = this.batches.search.statuses;
+      var selected = this.batches.search.status_key;
 
       if (selected.includes(status.status)) {
         selected.splice(selected.indexOf(status.status), 1);
@@ -4496,7 +4496,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  mixins: [_mixins_common__WEBPACK_IMPORTED_MODULE_4__.getResults, _mixins_common__WEBPACK_IMPORTED_MODULE_4__.reset],
+  mixins: [_mixins_common__WEBPACK_IMPORTED_MODULE_4__.getResults],
   components: {
     Back: _components_common_Back__WEBPACK_IMPORTED_MODULE_0__.default,
     Dropdown: _components_common_Dropdown__WEBPACK_IMPORTED_MODULE_1__.default,
@@ -5409,7 +5409,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  mixins: [_mixins_common__WEBPACK_IMPORTED_MODULE_1__.getResults, _mixins_common__WEBPACK_IMPORTED_MODULE_1__.reset],
+  mixins: [_mixins_common__WEBPACK_IMPORTED_MODULE_1__.getResults],
   components: {
     'table-div': _components_common_Table__WEBPACK_IMPORTED_MODULE_0__.default
   },
@@ -5539,7 +5539,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  mixins: [_mixins_common__WEBPACK_IMPORTED_MODULE_2__.getResults, _mixins_common__WEBPACK_IMPORTED_MODULE_2__.reset],
+  mixins: [_mixins_common__WEBPACK_IMPORTED_MODULE_2__.getResults],
   components: {
     'table-div': _components_common_Table__WEBPACK_IMPORTED_MODULE_0__.default,
     PulseLoader: vue_spinner_src_PulseLoader__WEBPACK_IMPORTED_MODULE_1__.default
@@ -6012,7 +6012,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  mixins: [_mixins_common__WEBPACK_IMPORTED_MODULE_5__.getResults, _mixins_common__WEBPACK_IMPORTED_MODULE_5__.reset, _mixins_showModal__WEBPACK_IMPORTED_MODULE_7__.default, _mixins_goTo__WEBPACK_IMPORTED_MODULE_6__.goTo],
+  mixins: [_mixins_common__WEBPACK_IMPORTED_MODULE_5__.getResults, _mixins_showModal__WEBPACK_IMPORTED_MODULE_7__.default, _mixins_goTo__WEBPACK_IMPORTED_MODULE_6__.goTo],
   components: {
     'table-div': _components_common_Table__WEBPACK_IMPORTED_MODULE_0__.default,
     PulseLoader: vue_spinner_src_PulseLoader__WEBPACK_IMPORTED_MODULE_4__.default,
@@ -6745,19 +6745,51 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "getResults": () => (/* binding */ getResults),
 /* harmony export */   "getAllData": () => (/* binding */ getAllData),
-/* harmony export */   "reset": () => (/* binding */ reset),
 /* harmony export */   "last": () => (/* binding */ last)
 /* harmony export */ });
+/* harmony import */ var _messages__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./messages */ "./resources/js/admin/mixins/messages.js");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+
 var getResults = {
+  mixins: [_messages__WEBPACK_IMPORTED_MODULE_0__.message_error],
   methods: {
-    getResults: function getResults(link, search, commit, after) {
+    getResults: function getResults(link, commit, after) {
       var _this = this;
 
       if (!this.$store.getters.fullPageLoading) {
         this.$store.commit('setFullPageLoading', true);
-        search.per_page = this.$store.state[commit].per_page;
+        var search = this.$store.getters[commit].search;
         var page = this.$store.state[commit].page == 0 ? '' : '?page=' + this.$store.state[commit].page;
-        this.$http.post(link + '/search' + page, search).then(function (response) {
+        var add_options = [];
+        var request = {}; // validating request for non null
+
+        for (var key in search) {
+          var value = search[key];
+          var searching = false;
+
+          if (_typeof(value) == "object" && value != null) {
+            if (Object.keys(value).length > 0) {
+              searching = true;
+            }
+          } else {
+            if (value != null) {
+              searching = true;
+            }
+          }
+
+          if (searching) {
+            add_options.push({
+              key: key,
+              value: search[key]
+            });
+          }
+        }
+
+        request.per_page = this.$store.state[commit].per_page;
+        request.page = page;
+        request.add_options = add_options;
+        this.$http.post(link + '/search', request).then(function (response) {
           _this.$store.dispatch('setStore', {
             label: commit,
             data: {
@@ -6769,8 +6801,6 @@ var getResults = {
           try {
             after();
           } catch (e) {}
-
-          _this.$store.commit('setFullPageLoading', false);
         })["catch"](function (error) {
           _this.$store.dispatch('setStore', {
             label: commit,
@@ -6780,12 +6810,8 @@ var getResults = {
             }
           });
 
-          _this.$fire({
-            title: _this.$t('search'),
-            text: messages.error(error),
-            type: "error"
-          });
-
+          _this.message_error();
+        }).then(function () {
           _this.$store.commit('setFullPageLoading', false);
         });
       }
@@ -6793,6 +6819,7 @@ var getResults = {
   }
 };
 var getAllData = {
+  mixins: [_messages__WEBPACK_IMPORTED_MODULE_0__.message_error],
   methods: {
     getAllData: function getAllData(link, commit, max) {
       var _this2 = this;
@@ -6800,10 +6827,6 @@ var getAllData = {
       if (!this.$store.getters.fullPageLoading) {
         this.$store.commit('setFullPageLoading', true);
         var max_num = '';
-
-        try {
-          load(true);
-        } catch (e) {}
 
         if (max) {
           max_num = '?max=' + max;
@@ -6820,8 +6843,6 @@ var getAllData = {
               searching: true
             }
           });
-
-          _this2.$store.commit('setFullPageLoading', false);
         })["catch"](function (error) {
           _this2.$store.dispatch('setStore', {
             label: commit,
@@ -6831,31 +6852,11 @@ var getAllData = {
             }
           });
 
-          _this2.$fire({
-            title: _this2.$t('search'),
-            text: messages.error(error),
-            type: "error"
-          });
-
+          _this2.message_error();
+        }).then(function () {
           _this2.$store.commit('setFullPageLoading', false);
         });
       }
-    }
-  }
-};
-var reset = {
-  // need to delete this part later
-  methods: {
-    reset: function reset(search, commit) {
-      // !!
-      search({});
-      this.$store.dispatch('setStore', {
-        label: commit,
-        data: {
-          data: {},
-          searching: false
-        }
-      });
     }
   }
 };
@@ -6932,6 +6933,52 @@ var goToMain = {
   methods: {
     goToMain: function goToMain() {
       window.location.replace('/');
+    }
+  }
+};
+
+/***/ }),
+
+/***/ "./resources/js/admin/mixins/messages.js":
+/*!***********************************************!*\
+  !*** ./resources/js/admin/mixins/messages.js ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "message_success": () => (/* binding */ message_success),
+/* harmony export */   "message_error": () => (/* binding */ message_error)
+/* harmony export */ });
+var message_success = {
+  methods: {
+    message_success: function message_success(title, response) {
+      var _response$data$res$me;
+
+      var message = response.data.res ? (_response$data$res$me = response.data.res.message) !== null && _response$data$res$me !== void 0 ? _response$data$res$me : this.$t('success') : this.$t('success');
+      this.$fire({
+        title: this.$t(title),
+        text: message,
+        type: "success",
+        timer: 1700
+      });
+      ;
+    }
+  }
+};
+var message_error = {
+  methods: {
+    message_error: function message_error(title, error) {
+      var _error$response$data$;
+
+      var message = error.response.data ? (_error$response$data$ = error.response.data.message) !== null && _error$response$data$ !== void 0 ? _error$response$data$ : this.$t('error') : this.$t('error');
+      this.$fire({
+        title: this.$t(title),
+        text: message,
+        type: "error"
+      });
+      ;
     }
   }
 };
@@ -7402,13 +7449,13 @@ __webpack_require__.r(__webpack_exports__);
   // 	search 			--> what ur searching with
   batches: {
     search: {
-      batch_id: null,
+      id: null,
       sup_id: null,
-      statuses: [],
-      from_cost: null,
-      until_cost: null,
-      start_date: null,
-      end_date: null
+      status_key: [],
+      cost: {},
+      invoice_date: {},
+      create_date: {},
+      edit_date: {}
     },
     data: [],
     searching: false,
@@ -7422,23 +7469,21 @@ __webpack_require__.r(__webpack_exports__);
   },
   items: {
     search: {
-      search_options: [{
-        key: 'author',
-        operator: 'and'
-      }],
       publisher_id: null,
       pub_year: null,
       pub_city: null,
       supplier_id: null,
       sup_type: null,
-      from_cost: null,
-      until_cost: null,
-      start_date: null,
-      end_date: null,
+      location: null,
       item_type: null,
       user_cid: null,
-      location: null
+      create_date: {},
+      cost: {}
     },
+    search_options: [{
+      key: 'author',
+      operator: 'and'
+    }],
     search_fields: [],
     data: [],
     searching: false,
@@ -59822,21 +59867,25 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "text-choosable" }, [
-    _c("div", { staticClass: "justify-content-between align-items-center" }, [
-      _c("div", { staticClass: "font-weight-bold" }, [
-        _vm._v(_vm._s(_vm.$tc(_vm.tableName.name, 1)))
-      ]),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass: "font-weight-bold cursor-pointer p-3",
-          on: { click: _vm.close }
-        },
-        [_c("X")],
-        1
-      )
-    ]),
+    _c(
+      "div",
+      { staticClass: "d-flex justify-content-between align-items-center" },
+      [
+        _c("div", { staticClass: "font-weight-bold" }, [
+          _vm._v(_vm._s(_vm.$tc(_vm.tableName.name, 1)))
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "font-weight-bold cursor-pointer p-3",
+            on: { click: _vm.close }
+          },
+          [_c("X")],
+          1
+        )
+      ]
+    ),
     _vm._v(" "),
     _c(
       "table",
@@ -60767,11 +60816,11 @@ var render = function() {
                       onSubmit: _vm.loadResults
                     },
                     model: {
-                      value: _vm.batches.search.batch_id,
+                      value: _vm.batches.search.id,
                       callback: function($$v) {
-                        _vm.$set(_vm.batches.search, "batch_id", $$v)
+                        _vm.$set(_vm.batches.search, "id", $$v)
                       },
-                      expression: "batches.search.batch_id"
+                      expression: "batches.search.id"
                     }
                   })
                 ],
@@ -61308,7 +61357,9 @@ var render = function() {
               [
                 _c("Checkbox", {
                   attrs: {
-                    checked: _vm.batches.search.statuses.includes(status.status)
+                    checked: _vm.batches.search.status_key.includes(
+                      status.status
+                    )
                   },
                   on: {
                     change: function($event) {
@@ -61358,18 +61409,22 @@ var render = function() {
             {
               name: "model",
               rawName: "v-model",
-              value: _vm.batches.search.start_date,
-              expression: "batches.search.start_date"
+              value: _vm.batches.search.invoice_date.from,
+              expression: "batches.search.invoice_date.from"
             }
           ],
           attrs: { type: "date" },
-          domProps: { value: _vm.batches.search.start_date },
+          domProps: { value: _vm.batches.search.invoice_date.from },
           on: {
             input: function($event) {
               if ($event.target.composing) {
                 return
               }
-              _vm.$set(_vm.batches.search, "start_date", $event.target.value)
+              _vm.$set(
+                _vm.batches.search.invoice_date,
+                "from",
+                $event.target.value
+              )
             }
           }
         }),
@@ -61385,18 +61440,22 @@ var render = function() {
             {
               name: "model",
               rawName: "v-model",
-              value: _vm.batches.search.end_date,
-              expression: "batches.search.end_date"
+              value: _vm.batches.search.invoice_date.to,
+              expression: "batches.search.invoice_date.to"
             }
           ],
           attrs: { type: "date" },
-          domProps: { value: _vm.batches.search.end_date },
+          domProps: { value: _vm.batches.search.invoice_date.to },
           on: {
             input: function($event) {
               if ($event.target.composing) {
                 return
               }
-              _vm.$set(_vm.batches.search, "end_date", $event.target.value)
+              _vm.$set(
+                _vm.batches.search.invoice_date,
+                "to",
+                $event.target.value
+              )
             }
           }
         }),
@@ -61422,18 +61481,18 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.batches.search.from_cost,
-                  expression: "batches.search.from_cost"
+                  value: _vm.batches.search.cost.from,
+                  expression: "batches.search.cost.from"
                 }
               ],
               attrs: { type: "text", placeholder: _vm.$t("from") },
-              domProps: { value: _vm.batches.search.from_cost },
+              domProps: { value: _vm.batches.search.cost.from },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(_vm.batches.search, "from_cost", $event.target.value)
+                  _vm.$set(_vm.batches.search.cost, "from", $event.target.value)
                 }
               }
             })
@@ -61445,22 +61504,18 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.batches.search.until_cost,
-                  expression: "batches.search.until_cost"
+                  value: _vm.batches.search.cost.to,
+                  expression: "batches.search.cost.to"
                 }
               ],
               attrs: { type: "text", placeholder: _vm.$t("until") },
-              domProps: { value: _vm.batches.search.until_cost },
+              domProps: { value: _vm.batches.search.cost.to },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(
-                    _vm.batches.search,
-                    "until_cost",
-                    $event.target.value
-                  )
+                  _vm.$set(_vm.batches.search.cost, "to", $event.target.value)
                 }
               }
             })
@@ -64246,18 +64301,9 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "pad col-1" }, [
-          _c(
-            "button",
-            {
-              attrs: { type: "button" },
-              on: {
-                click: function($event) {
-                  return _vm.reset(_vm.setSearch, "books")
-                }
-              }
-            },
-            [_vm._v(_vm._s(_vm.$t("reset")))]
-          )
+          _c("button", { attrs: { type: "button" } }, [
+            _vm._v(_vm._s(_vm.$t("reset")))
+          ])
         ])
       ]),
       _vm._v(" "),

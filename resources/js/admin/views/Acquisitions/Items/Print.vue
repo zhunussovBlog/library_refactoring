@@ -57,10 +57,10 @@ import Table from '../../../components/common/Table'
 import PulseLoader from 'vue-spinner/src/PulseLoader'
 
 //mixins
-import {getResults,reset} from '../../../mixins/common'
+import {getResults} from '../../../mixins/common'
 
 export default{
-	mixins:[getResults,reset],
+	mixins:[getResults],
 	components:{Back,Dropdown,'table-div':Table,PulseLoader},
 	computed:{
 		data(){

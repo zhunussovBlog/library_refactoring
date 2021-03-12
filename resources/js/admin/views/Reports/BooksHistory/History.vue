@@ -15,7 +15,7 @@
 				<button type="submit">{{$t('search')}}</button>
 			</div>
 			<div class="pad col-1">
-				<button type="button" @click="reset(setSearch,'books')">{{$t('reset')}}</button>
+				<button type="button">{{$t('reset')}}</button>
 			</div>
 		</div>
 		<div v-if="searching">
@@ -28,10 +28,10 @@
 import Table from '../../../components/common/Table'
 
 //mixins
-import {getResults,reset} from '../../../mixins/common'
+import {getResults} from '../../../mixins/common'
 
 export default{
-	mixins:[getResults,reset],
+	mixins:[getResults],
 	components:{'table-div':Table},
 	computed:{
 		data(){
