@@ -64,6 +64,9 @@ export default {
 	},
 	
 	publishers:{
+		search:{
+			name:null
+		},
 		data:[],
 		searching:false,
 		sort_by:{},
@@ -76,6 +79,9 @@ export default {
 	},
 	
 	suppliers:{
+		search:{
+			name:null
+		},
 		data:[],
 		searching:false,
 		sort_by:{},

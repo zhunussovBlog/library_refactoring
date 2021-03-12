@@ -60,6 +60,8 @@ import FilterDiv from './Filter'
 import Download from '../../../assets/icons/Download'
 import Plus from '../../../assets/icons/Plus'
 
+import {mapGetters} from 'vuex'
+
 export default{
 	mixins:[showModal,getResults,getAllData],
 	components:{
@@ -70,9 +72,7 @@ export default{
 		Plus
 	},
 	computed:{
-		batches(){
-			return this.$store.getters.batches;
-		}
+		...mapGetters(['batches'])
 	},
 	data(){
 		return{

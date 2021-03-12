@@ -31,6 +31,32 @@
 				{{$t('until')}}
 			</label>
 		</div>
+		<div class="text-grey font-size-12 font-weight-bold mt-3">{{$t('create_date')}}:</div>
+		<div class="mt-2 position-relative">
+			<input type="date" v-model="batches.search.create_date.from"/>
+			<label class="placeholder text-grey">
+				{{$t('from')}}
+			</label>
+		</div>
+		<div class="mt-2 position-relative">
+			<input type="date" v-model="batches.search.create_date.to"/>
+			<label class="placeholder text-grey">
+				{{$t('until')}}
+			</label>
+		</div>
+		<div class="text-grey font-size-12 font-weight-bold mt-3">{{$t('edit_date')}}:</div>
+		<div class="mt-2 position-relative">
+			<input type="date" v-model="batches.search.edit_date.from"/>
+			<label class="placeholder text-grey">
+				{{$t('from')}}
+			</label>
+		</div>
+		<div class="mt-2 position-relative">
+			<input type="date" v-model="batches.search.edit_date.to"/>
+			<label class="placeholder text-grey">
+				{{$t('until')}}
+			</label>
+		</div>
 		<div class="text-grey font-size-12 font-weight-bold mt-3">{{$t('cost')}}:</div>
 		<div class="d-flex align-items-center justify-content-between">
 			<div>

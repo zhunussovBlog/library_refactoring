@@ -3,7 +3,7 @@
 		<div class="bg-white mt-2 w-100 p-3">
 			<div class="d-flex justify-content-between">
 				<div class="col-6">
-					<input-div :search="true" :onSubmit="loadResults" v-model="search.name" :placeholder="$t('search_by',{type:$t('name_by')})" />
+					<input-div :search="true" :onSubmit="loadResults" v-model="suppliers.search.name" :placeholder="$t('search_by',{type:$t('name_by')})" />
 				</div>
 				<div class="d-flex align-items-center">
 					<button type="button" @click="showModal(CreateSupply,{loadAll:getAllData})">{{$t('create_supplier')}}</button>
@@ -28,6 +28,8 @@ import CreateSupply from './CreateSupply'
 import table from '../../../components/common/Table'
 import input from '../../../components/common/Input'
 
+import {mapGetters} from 'vuex'
+
 export default{
 	mixins:[showModal,getResults,getAllData],
 	components:{
@@ -35,9 +37,7 @@ export default{
 		'input-div':input
 	},
 	computed:{
-		suppliers(){
-			return this.$store.getters.suppliers;
-		}
+		...mapGetters(['suppliers'])
 	},
 	data(){
 		return{
@@ -58,16 +58,13 @@ export default{
 			deleteObj:{
 				available:true,
 				link:'/supplier/delete',
-			},
-			search:{
-				name:null
 			}
 		}
 	},
 	methods:{
 		loadResults(){
 			this.$store.dispatch('setStore',{label:'suppliers',data:{page:0}});
-			this.getResults('/supplier',this.search,'suppliers')
+			this.getResults('/supplier','suppliers')
 		},
 		loadAllData(){
 			this.$store.dispatch('setStore',{label:'suppliers',data:{page:0}});

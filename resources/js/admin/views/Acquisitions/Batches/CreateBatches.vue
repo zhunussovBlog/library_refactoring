@@ -21,7 +21,7 @@
 		<div class="d-flex">
 			<div class="d-flex w-100">
 				<div class="pad w-100">
-					<input type="date" v-model="batch.inv_date" required/>
+					<input type="date" v-model="batch.invoice_date" required/>
 					<label class="placeholder required">{{$t('invoice_date')}}</label>
 				</div>
 			</div>
@@ -92,14 +92,15 @@ export default{
 		return{
 			CreateSupply:CreateSupply,
 			batch:{
-				inv_date:null,
+				invoice_date:null,
 				items_no:null,
 				titles_no:null,
 				doc_no:null,
 				sup_type:null,
 				sup_id:null,
 				contract_no:null,
-				inv_details:null
+				inv_details:null,
+				cost:null
 			},
 			suppliers:[]
 		}
@@ -122,47 +123,29 @@ export default{
 		},
 		editIt(){
 			this.$http.put('/batch/update',this.batch).then(response=>{
-				this.$store.commit('setFullPageLoading',false);
 				try{
 					this.afterSave(response.data.success.id);
 				}catch(e){
 					this.last('/batch','batches');
 				}
-				this.$fire({
-					title:"Edit",
-					text:messages.success(response),
-					type:"success",
-					timer:1700
-				});
+				this.message_success();
 				this.$emit('close');
 			}).catch(error=>{
+				this.message_error();
+			}).then(()=>{
 				this.$store.commit('setFullPageLoading',false);
-				this.$fire({
-					title:"Edit",
-					text:messages.error(error),
-					type:"error",
-				});
-			});
+			})
 		},
 		createIt(){
 			this.$http.post('/batch/create',this.batch).then(response=>{
-				this.$store.commit('setFullPageLoading',false);
 				this.getAllData('/batch','batches',10);
-				this.$fire({
-					title:"Save",
-					text:messages.success(response),
-					type:"success",
-					timer:1700
-				});
+				this.message_success();
 				this.$emit('close');
 			}).catch(error=>{
+				this.message_error();
+			}).then(()=>{
 				this.$store.commit('setFullPageLoading',false);
-				this.$fire({
-					title:"Create",
-					text:messages.error(error),
-					type:"error",
-				});
-			});	
+			});
 		},
 		loadSuppliers(value){
 			this.batch.sup_id=value;
@@ -176,8 +159,8 @@ export default{
 		if(this.edit){
 			this.batch=copy(this.data);
 			this.batch.sup_type=copy(this.batch.sup_key);
-			if(this.batch.inv_date){
-				this.batch.inv_date=new Date(this.batch.inv_date).toDateInputValue();
+			if(this.batch.invoice_date){
+				this.batch.invoice_date=new Date(this.batch.invoice_date).toDateInputValue();
 			}
 		}
 	}
