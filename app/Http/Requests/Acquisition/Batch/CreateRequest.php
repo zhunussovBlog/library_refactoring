@@ -30,7 +30,7 @@ class CreateRequest extends FormRequest
             'doc_no' => 'required|integer',
             'sup_type' => 'nullable|alpha',
             'sup_id' => 'nullable|integer',
-            'contract_no' => 'nullable|string',
+            'contract_no' => 'nullable|integer',
             'inv_details' => 'nullable|string',
             'cost' => 'required|integer',
         ];

@@ -26,14 +26,14 @@ class ManageController extends Controller
     {
         return [
             'invoice_date' => $validated['inv_date'],
-            'create_date' => Carbon::now(),
+            'create_date' => Carbon::now()->toDateString(),
             'items_no' => $validated['items_no'],
             'titles_no' => $validated['titles_no'],
             'doc_no' => $validated['doc_no'],
             'supply_type' => $validated['sup_type'] ?? null,
             'supplier_id' => $validated['sup_id'] ?? null,
-            'contract_no' => trim($validated['contract_no'] ?? ''),
-            'invoice_details' => trim($validated['inv_details'] ?? ''),
+            'contract_no' => trim($validated['contract_no'] ?? '') ?: null,
+            'invoice_details' => trim($validated['inv_details'] ?? '') ?: null,
             'cost' => $validated['cost'],
             'user_id' => $user->user_cid,
         ];
