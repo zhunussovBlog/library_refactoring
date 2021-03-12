@@ -139,6 +139,16 @@ Route::middleware(['auth:api-student,api-employee'])->group(function () {
             Route::get('virtual', 'Api\Report\Attendance\AttendanceController@getVirtualAttendance');
             Route::get('departments', 'Api\Report\Attendance\AttendanceController@getDepartments');
         });
+
+        Route::group(['prefix' => 'barcode'], function () {
+            Route::get('sort-fields', 'Api\Report\Barcode\ShowController@sortFields');
+            Route::get('search-fields', 'Api\Report\Barcode\ShowController@searchFields');
+            Route::get('filter-fields', 'Api\Report\Barcode\ShowController@filterFields');
+
+            Route::post('search', 'Api\Report\Barcode\SearchController');
+
+            Route::post('print', 'Api\Report\Barcode\PrintController');
+        });
     });
 });
 
