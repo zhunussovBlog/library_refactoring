@@ -2,50 +2,30 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
-use App\Common\Helpers\Query\OracleProcedure;
+use App\Common\Helpers\Controller\AuthProcedure;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserLoginRequest;
-use App\Models\User\Employee;
-use App\Models\User\Student;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
-use PDO;
 
 class LoginController extends Controller
 {
     public function __invoke(UserLoginRequest $request): JsonResponse
     {
         $validated = $request->validated();
-        $procedure = new OracleProcedure('AuthenticateUser', [
-            'pUname' => ['value' => $validated['username']],
-            'pPSW' => ['value' => $validated['password']],
-            'pUserIP' => ['value' => $request->server('REMOTE_ADDR')],
-            'pDeviceInfo' => ['value' => $request->server('HTTP_USER_AGENT')],
-            'pIsVerified' => ['value' => 0, 'isOut' => true, 'type' => PDO::PARAM_INT],
-            'pRes' => ['value' => 0, 'isOut' => true, 'type' => PDO::PARAM_INT],
-        ]);
-        $procedure->call();
-        $result = $procedure->getOutputParams();
+        $server = [
+            'REMOTE_ADDR' => $request->server('REMOTE_ADDR'),
+            'HTTP_USER_AGENT' => $request->server('HTTP_USER_AGENT')
+        ];
 
-        $user = Student::find($validated['username']);
-
-        if (empty($user)) {
-            $user = Employee::where("hname", $validated['username'])->first();
-        }
-
-        if ($result['pIsVerified']['value'] != 1 || empty($user)) {
-            throw ValidationException::withMessages([
-                'user' => ['The provided credentials are incorrect']
-            ]);
-        }
+        $user = AuthProcedure::auth($validated, $server);
 
         Auth::login($user);
 
         $user = Auth::user();
 
-        $token = $user->createToken('Auth Token');
+        $token = $user->createToken(config('auth.token'));
 
         return response()->json(['res' => [
             'access_token' => $token->accessToken,

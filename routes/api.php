@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('login', 'Api\Auth\LoginController')->name('login');
+Route::post('cgi-bin/check.cgi', 'Api\Auth\ProxyAuthController')->name('cgi-login');
 
 Route::middleware(['auth:api-student,api-employee'])->group(function () {
     Route::post('logout', 'Api\Auth\LogoutController')->name('logout');
