@@ -35,7 +35,7 @@ class ManageController extends Controller
             'contract_no' => trim($validated['contract_no'] ?? '') ?: null,
             'invoice_details' => trim($validated['inv_details'] ?? '') ?: null,
             'cost' => $validated['cost'],
-            'user_id' => $user->user_cid,
+            'user_id' => $user->id,
         ];
     }
 
