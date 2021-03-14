@@ -19,6 +19,7 @@ class WebLog extends Model
     public static function byWeek(): Builder
     {
         return static::query()->select(DB::raw("trim(to_char(wl.log_date, 'day')) as name"))
+            ->leftJoin('lib_user_cards as uc', 'wl.user_id', '=', 'uc.user_cid')
             ->groupBy(DB::raw("to_char(wl.log_date, 'day')"));
     }
 

@@ -60,7 +60,7 @@ class AttendanceController extends Controller
     {
         $result = array_pad([], sizeof($source), 0);
         foreach ($data as $item) {
-            $result[array_search($item->name, $source)] = (int)$item->count;
+            $result[array_search($item['name'], $source)] = (int)$item['count'];
         }
 
         return $result;
