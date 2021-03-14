@@ -13,7 +13,7 @@ class UpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,14 +25,14 @@ class UpdateRequest extends FormRequest
     {
         return [
             'batch_id' => 'required|integer',
-            'inv_date' => 'required|date',
+            'invoice_date' => 'required|date',
             'items_no' => 'required|integer',
             'titles_no' => 'required|integer',
             'doc_no' => 'required|integer',
             'sup_type' => 'nullable|alpha',
             'sup_id' => 'nullable|integer',
             'contract_no' => 'nullable|string',
-            'inv_details' => 'nullable|string',
+            'invoice_details' => 'nullable|string',
             'cost' => 'required|integer',
         ];
     }

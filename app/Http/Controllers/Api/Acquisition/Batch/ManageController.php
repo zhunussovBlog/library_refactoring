@@ -25,7 +25,7 @@ class ManageController extends Controller
     static function createInputs(array $validated, $user): array
     {
         return [
-            'invoice_date' => $validated['inv_date'],
+            'invoice_date' => $validated['invoice_date'],
             'create_date' => Carbon::now()->toDateString(),
             'items_no' => $validated['items_no'],
             'titles_no' => $validated['titles_no'],
@@ -33,7 +33,7 @@ class ManageController extends Controller
             'supply_type' => $validated['sup_type'] ?? null,
             'supplier_id' => $validated['sup_id'] ?? null,
             'contract_no' => trim($validated['contract_no'] ?? '') ?: null,
-            'invoice_details' => trim($validated['inv_details'] ?? '') ?: null,
+            'invoice_details' => trim($validated['invoice_details'] ?? '') ?: null,
             'cost' => $validated['cost'],
             'user_id' => $user->id,
         ];
@@ -51,14 +51,14 @@ class ManageController extends Controller
     static function updateInputs(array $validated, $user): array
     {
         return [
-            'invoice_date' => $validated['inv_date'],
+            'invoice_date' => $validated['invoice_date'],
             'items_no' => $validated['items_no'],
             'titles_no' => $validated['titles_no'],
             'doc_no' => $validated['doc_no'],
             'supply_type' => $validated['sup_type'],
             'supplier_id' => $validated['sup_id'],
             'contract_no' => trim($validated['contract_no']),
-            'invoice_details' => trim($validated['inv_details']),
+            'invoice_details' => trim($validated['invoice_details']),
             'cost' => $validated['cost'],
             'edited_by' => $user->user_cid,
             'edit_date' => Carbon::now()

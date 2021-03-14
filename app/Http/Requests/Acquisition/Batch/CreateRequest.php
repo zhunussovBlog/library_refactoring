@@ -24,14 +24,14 @@ class CreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'inv_date' => 'required|date',
+            'invoice_date' => 'required|date',
             'items_no' => 'required|integer',
             'titles_no' => 'required|integer',
             'doc_no' => 'required|integer',
             'sup_type' => 'nullable|alpha',
             'sup_id' => 'nullable|integer',
             'contract_no' => 'nullable|integer',
-            'inv_details' => 'nullable|string',
+            'invoice_details' => 'nullable|string',
             'cost' => 'required|integer',
         ];
     }

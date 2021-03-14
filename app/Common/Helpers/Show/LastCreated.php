@@ -10,6 +10,6 @@ class LastCreated
 {
     public static function lastCreated(DefaultQueryInterface $query): array
     {
-        return $query::defaultQuery()->orderBy('id', 'desc')->first()->toArray();
+        return [$query::defaultQuery()->orderBy('id', 'desc')->first()->toArray()];
     }
 }
