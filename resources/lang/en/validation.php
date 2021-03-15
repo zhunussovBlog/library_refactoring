@@ -148,14 +148,14 @@ return [
     */
 
     'attributes' => [
-        'inv_date' => 'Invoice date',
+        'invoice_date' => 'Invoice date',
         'items_no' => 'Quantity of items',
         'titles_no' => 'Quantity of titles',
         'doc_no' => 'Document number',
         'sup_type' => 'Supply type',
         'sup_id' => 'Supplier',
         'contract_no' => 'Contract number',
-        'inv_details' => 'Invoice details',
+        'invoice_details' => 'Invoice details',
         'cost' => 'Cost',
         'batch_id' => 'Batch ID',
         'title' => 'Title',
