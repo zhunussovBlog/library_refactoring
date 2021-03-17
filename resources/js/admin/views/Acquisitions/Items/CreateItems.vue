@@ -68,8 +68,8 @@
 				<div class="pad w-100 select">
 					<select v-model="item.item_type" :required="!(edit || reCreate)" :disabled="edit || reCreate">
 						<option value=''>&nbsp;</option>
-						<option :value="item.item_type" v-if="(edit || reCreate)">{{item.item_type}}</option>
-						<option v-for="(type,index) in support_data.types" :value="type.item_type_key">{{type.item_type}}</option>
+						<option :value="item.type" v-if="(edit || reCreate)">{{item.type}}</option>
+						<option v-for="(type,index) in support_data.types" :value="type.type_key">{{type.type}}</option>
 					</select>
 					<label class="placeholder" :class="{required:!(edit || reCreate)}">{{$t('type_of_item')}}</label>
 				</div>
@@ -117,17 +117,17 @@
 <script type="text/javascript">
 // identication in sublime text 3
 import showModal from '../../../mixins/showModal'
-import {last} from '../../../mixins/common'
+import {last,last_created,create_it,edit_it} from '../../../mixins/common'
 
 import CreateBatches from '../Batches/CreateBatches'
 import CreatePublisher from '../Publisher/CreatePublisher'
 export default{
-	mixins:[showModal,last],
+	mixins:[showModal,last,last_created,create_it,edit_it],
 	props:{
 		edit:Boolean,
-		reCreate:Boolean,
 		data:Object,
-		lastCreated:Function
+		afterSave:Function,
+		reCreate:Boolean,
 	},
 	data(){
 		return{
@@ -143,11 +143,13 @@ export default{
 				user_cid:null,
 				count:null,
 				location:null,
-				currency:null
+				curredatancy:null
 			},
 			support_data:[],
 			batches:[],
-			publishers:[]
+			publishers:[],
+			link:'/item',
+			commit:'items'
 		}
 	},
 	methods:{
@@ -174,25 +176,7 @@ export default{
 				location:this.item.location,
 				currency:this.item.currency
 			};
-			this.$http.put('/item/update',item).then(response=>{
-				this.$store.commit('setFullPageLoading',false);
-				this.last('/item','items');
-				this.$fire({
-					title:"Edit",
-					text:messages.success(response),
-					type:"success",
-					timer:1700
-				});
-				this.$emit('close');	
-			}).catch(error=>{
-				let message = error.response ? error.response.data.error.message : 'Uncaught problem';	
-				this.$store.commit('setFullPageLoading',false);
-				this.$fire({
-					title:"Edit",
-					text:messages.error(error),
-					type:"error",
-				});
-			});
+			this.edit_it(this.link,this.commit,item,this.afterSave,this.last);
 		},
 		createIt(){
 			let item={
@@ -210,26 +194,7 @@ export default{
 				pub_city:this.item.pub_city,
 				pub_year:this.item.pub_year
 			};
-			this.$http.post('/item/create',item).then(response=>{
-				this.$store.commit('setFullPageLoading',false);
-				try{
-					this.lastCreated();
-				}catch(e){}
-				this.$fire({
-					title:"Save",
-					text:messages.success(response),
-					type:"success",
-					timer:1700
-				});
-				this.$emit('close');	
-			}).catch(error=>{
-				this.$store.commit('setFullPageLoading',false);
-				this.$fire({
-					title:"Create",
-					text:messages.error(error),
-					type:"error",
-				});
-			});
+			this.create_it(this.link,this.commit,item,this.afterSave,this.last_created);
 		},
 		loadBatches(value){
 			this.item.batch_id=value;
@@ -242,15 +207,18 @@ export default{
 			this.$http.get('/publisher/names').then(response=>{
 				this.publishers=response.data.res;
 			});
+		},
+		loadSupportData(){
+			this.$http.get(this.link+'/create-data').then(response=>{
+				this.support_data=response.data.res;
+				this.item.currency='KZT';
+			});
 		}
 	},
 	created(){
 		this.loadBatches();
 		this.loadPublishers();
-		this.$http.get('/item/create-data').then(response=>{
-			this.support_data=response.data.res;
-			this.item.currency='KZT';
-		});
+		this.loadSupportData();
 
 		if(this.edit || this.reCreate){
 			this.item=copy(this.data);

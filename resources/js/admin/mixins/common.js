@@ -130,7 +130,7 @@ export const last_created={
 			this.$store.commit('setFullPageLoading',true);
 			this.$http.get(link+'/last-created').then(response=>{
 				let s_request={
-					link:'last-created',
+					link:'/last-created',
 					mode:'get'
 				}
 				this.$store.dispatch('setStore',{label:commit,data:{data:response.data,pagination:false,searching:true,request:s_request}});

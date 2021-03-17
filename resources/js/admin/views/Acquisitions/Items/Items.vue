@@ -42,17 +42,13 @@
 			</div>
 			<div class="mt-5">
 				<div v-if="items.searching">
-					<table-div class="mt-5" :heads="heads" :data="items.data.res" :pagination="pagination" :editObj="editObj" :deleteObj="deleteObj" :showMore="showMore" link="/item" commit="items"/>
+					<table-div class="mt-5" :heads="heads" :data="items.data.res" :pagination="items.pagination" :editObj="editObj" :deleteObj="deleteObj" :showMore="showMore" :link="link" :commit="commit"/>
 				</div>
 			</div>
 		</div>
 	</form>
 </template>
 <script type="text/javascript">
-// mixins
-import showModal from '../../../mixins/showModal'
-import {getResults} from '../../../mixins/common'
-
 // common components
 import Table from '../../../components/common/Table'
 import More from '../../../components/common/More'
@@ -66,6 +62,10 @@ import Filter from './Filter'
 import Print from '../../../assets/icons/Print'
 import Plus from '../../../assets/icons/Plus'
 import Download from '../../../assets/icons/Download'
+
+// mixins
+import showModal from '../../../mixins/showModal'
+import {getResults} from '../../../mixins/common'
 
 import {mapGetters} from 'vuex'
 
@@ -106,31 +106,29 @@ export default{
 			},
 			deleteObj:{
 				available:true,
-				link:'/item/delete',
 			},
 			showMore:{
 				available:true,
 				title:'show_more',
 				func:this.showit
 			},
-			pagination:true
+			link:'/item',
+			commit:'items'
 		}
 	},
 	methods:{
 		lastCreated(){
-			this.pagination=false;
-			this.$http.get('/item/last-created').then(response=>{
-				this.$store.dispatch('setStore',{label:'items',data:{data:response.data,searching:true}});
+			this.$http.get(this.link+'/last-created').then(response=>{
+				this.$store.dispatch('setStore',{label:this.commit,data:{data:response.data,searching:true}});
 			})
 		},
 		loadResults(){
-			this.pagination=true;
-			this.$store.dispatch('setStore',{label:'items',data:{page:0}});
-			this.getResults('/item','items')
+			this.$store.dispatch('setStore',{label:this.commit,data:{page:0}});
+			this.getResults(this.link,this.commit)
 		},
 		loadSearchFields(){
 			if(this.items.search_fields.length<1){
-				this.$http.get('/item/search-fields').then(response=>{
+				this.$http.get(this.link+'/search-fields').then(response=>{
 					this.items.search_fields=response.data.res.search_options;
 				})
 			}
@@ -161,8 +159,8 @@ export default{
 				width:'35%',
 				editObj:this.editObj,
 				deleteObj:this.deleteObj,
-				link:'/item',
-				commit:'items'
+				link:this.link,
+				commit:this.commit
 			};
 			this.showModal(this.More,props);
 		},

@@ -79,11 +79,11 @@
 <script type="text/javascript">
 // identication in sublime text 3
 import showModal from '../../../mixins/showModal'
-import {last,last_created,getAllData,create_it,edit_it} from '../../../mixins/common'
+import {last,last_created,create_it,edit_it} from '../../../mixins/common'
 
 import CreateSupply from '../Supply/CreateSupply'
 export default{
-	mixins:[showModal,last,last_created,getAllData,create_it,edit_it],
+	mixins:[showModal,last,last_created,create_it,edit_it],
 	props:{
 		edit:Boolean,
 		data:Object,

@@ -3410,7 +3410,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  mixins: [_mixins_showModal__WEBPACK_IMPORTED_MODULE_0__.default, _mixins_common__WEBPACK_IMPORTED_MODULE_1__.last, _mixins_common__WEBPACK_IMPORTED_MODULE_1__.last_created, _mixins_common__WEBPACK_IMPORTED_MODULE_1__.getAllData, _mixins_common__WEBPACK_IMPORTED_MODULE_1__.create_it, _mixins_common__WEBPACK_IMPORTED_MODULE_1__.edit_it],
+  mixins: [_mixins_showModal__WEBPACK_IMPORTED_MODULE_0__.default, _mixins_common__WEBPACK_IMPORTED_MODULE_1__.last, _mixins_common__WEBPACK_IMPORTED_MODULE_1__.last_created, _mixins_common__WEBPACK_IMPORTED_MODULE_1__.create_it, _mixins_common__WEBPACK_IMPORTED_MODULE_1__.edit_it],
   props: {
     edit: Boolean,
     data: Object,
@@ -3841,12 +3841,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  mixins: [_mixins_showModal__WEBPACK_IMPORTED_MODULE_0__.default, _mixins_common__WEBPACK_IMPORTED_MODULE_1__.last],
+  mixins: [_mixins_showModal__WEBPACK_IMPORTED_MODULE_0__.default, _mixins_common__WEBPACK_IMPORTED_MODULE_1__.last, _mixins_common__WEBPACK_IMPORTED_MODULE_1__.last_created, _mixins_common__WEBPACK_IMPORTED_MODULE_1__.create_it, _mixins_common__WEBPACK_IMPORTED_MODULE_1__.edit_it],
   props: {
     edit: Boolean,
-    reCreate: Boolean,
     data: Object,
-    lastCreated: Function
+    afterSave: Function,
+    reCreate: Boolean
   },
   data: function data() {
     return {
@@ -3862,11 +3862,13 @@ __webpack_require__.r(__webpack_exports__);
         user_cid: null,
         count: null,
         location: null,
-        currency: null
+        curredatancy: null
       },
       support_data: [],
       batches: [],
-      publishers: []
+      publishers: [],
+      link: '/item',
+      commit: 'items'
     };
   },
   methods: {
@@ -3887,8 +3889,6 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     editIt: function editIt() {
-      var _this = this;
-
       var item = {
         inv_id: this.item.id,
         cost: this.item.cost,
@@ -3896,34 +3896,9 @@ __webpack_require__.r(__webpack_exports__);
         location: this.item.location,
         currency: this.item.currency
       };
-      this.$http.put('/item/update', item).then(function (response) {
-        _this.$store.commit('setFullPageLoading', false);
-
-        _this.last('/item', 'items');
-
-        _this.$fire({
-          title: "Edit",
-          text: messages.success(response),
-          type: "success",
-          timer: 1700
-        });
-
-        _this.$emit('close');
-      })["catch"](function (error) {
-        var message = error.response ? error.response.data.error.message : 'Uncaught problem';
-
-        _this.$store.commit('setFullPageLoading', false);
-
-        _this.$fire({
-          title: "Edit",
-          text: messages.error(error),
-          type: "error"
-        });
-      });
+      this.edit_it(this.link, this.commit, item, this.afterSave, this.last);
     },
     createIt: function createIt() {
-      var _this2 = this;
-
       var item = {
         title: this.item.title,
         author: this.item.author,
@@ -3939,57 +3914,37 @@ __webpack_require__.r(__webpack_exports__);
         pub_city: this.item.pub_city,
         pub_year: this.item.pub_year
       };
-      this.$http.post('/item/create', item).then(function (response) {
-        _this2.$store.commit('setFullPageLoading', false);
-
-        try {
-          _this2.lastCreated();
-        } catch (e) {}
-
-        _this2.$fire({
-          title: "Save",
-          text: messages.success(response),
-          type: "success",
-          timer: 1700
-        });
-
-        _this2.$emit('close');
-      })["catch"](function (error) {
-        _this2.$store.commit('setFullPageLoading', false);
-
-        _this2.$fire({
-          title: "Create",
-          text: messages.error(error),
-          type: "error"
-        });
-      });
+      this.create_it(this.link, this.commit, item, this.afterSave, this.last_created);
     },
     loadBatches: function loadBatches(value) {
-      var _this3 = this;
+      var _this = this;
 
       this.item.batch_id = value;
       this.$http.get('/batch/numbers').then(function (response) {
-        _this3.batches = response.data.res;
+        _this.batches = response.data.res;
       });
     },
     loadPublishers: function loadPublishers(value) {
-      var _this4 = this;
+      var _this2 = this;
 
       this.item.publisher_id = value;
       this.$http.get('/publisher/names').then(function (response) {
-        _this4.publishers = response.data.res;
+        _this2.publishers = response.data.res;
+      });
+    },
+    loadSupportData: function loadSupportData() {
+      var _this3 = this;
+
+      this.$http.get(this.link + '/create-data').then(function (response) {
+        _this3.support_data = response.data.res;
+        _this3.item.currency = 'KZT';
       });
     }
   },
   created: function created() {
-    var _this5 = this;
-
     this.loadBatches();
     this.loadPublishers();
-    this.$http.get('/item/create-data').then(function (response) {
-      _this5.support_data = response.data.res;
-      _this5.item.currency = 'KZT';
-    });
+    this.loadSupportData();
 
     if (this.edit || this.reCreate) {
       this.item = copy(this.data);
@@ -4145,16 +4100,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _mixins_showModal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../mixins/showModal */ "./resources/js/admin/mixins/showModal.js");
-/* harmony import */ var _mixins_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../mixins/common */ "./resources/js/admin/mixins/common.js");
-/* harmony import */ var _components_common_Table__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../components/common/Table */ "./resources/js/admin/components/common/Table.vue");
-/* harmony import */ var _components_common_More__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../components/common/More */ "./resources/js/admin/components/common/More.vue");
-/* harmony import */ var _components_common_Input__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../components/common/Input */ "./resources/js/admin/components/common/Input.vue");
-/* harmony import */ var _CreateItems__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./CreateItems */ "./resources/js/admin/views/Acquisitions/Items/CreateItems.vue");
-/* harmony import */ var _Filter__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Filter */ "./resources/js/admin/views/Acquisitions/Items/Filter.vue");
-/* harmony import */ var _assets_icons_Print__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../assets/icons/Print */ "./resources/js/admin/assets/icons/Print.vue");
-/* harmony import */ var _assets_icons_Plus__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../assets/icons/Plus */ "./resources/js/admin/assets/icons/Plus.vue");
-/* harmony import */ var _assets_icons_Download__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../assets/icons/Download */ "./resources/js/admin/assets/icons/Download.vue");
+/* harmony import */ var _components_common_Table__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../components/common/Table */ "./resources/js/admin/components/common/Table.vue");
+/* harmony import */ var _components_common_More__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../components/common/More */ "./resources/js/admin/components/common/More.vue");
+/* harmony import */ var _components_common_Input__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../components/common/Input */ "./resources/js/admin/components/common/Input.vue");
+/* harmony import */ var _CreateItems__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./CreateItems */ "./resources/js/admin/views/Acquisitions/Items/CreateItems.vue");
+/* harmony import */ var _Filter__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Filter */ "./resources/js/admin/views/Acquisitions/Items/Filter.vue");
+/* harmony import */ var _assets_icons_Print__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../assets/icons/Print */ "./resources/js/admin/assets/icons/Print.vue");
+/* harmony import */ var _assets_icons_Plus__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../assets/icons/Plus */ "./resources/js/admin/assets/icons/Plus.vue");
+/* harmony import */ var _assets_icons_Download__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../assets/icons/Download */ "./resources/js/admin/assets/icons/Download.vue");
+/* harmony import */ var _mixins_showModal__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../mixins/showModal */ "./resources/js/admin/mixins/showModal.js");
+/* harmony import */ var _mixins_common__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../mixins/common */ "./resources/js/admin/mixins/common.js");
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -4212,10 +4167,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-// mixins
-
- // common components
-
+// common components
 
 
  // item components
@@ -4225,24 +4177,27 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+ // mixins
+
+
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  mixins: [_mixins_showModal__WEBPACK_IMPORTED_MODULE_0__.default, _mixins_common__WEBPACK_IMPORTED_MODULE_1__.getResults],
+  mixins: [_mixins_showModal__WEBPACK_IMPORTED_MODULE_8__.default, _mixins_common__WEBPACK_IMPORTED_MODULE_9__.getResults],
   components: {
-    'table-div': _components_common_Table__WEBPACK_IMPORTED_MODULE_2__.default,
-    'filter-div': _Filter__WEBPACK_IMPORTED_MODULE_6__.default,
-    'input-div': _components_common_Input__WEBPACK_IMPORTED_MODULE_4__.default,
-    Print: _assets_icons_Print__WEBPACK_IMPORTED_MODULE_7__.default,
-    Download: _assets_icons_Download__WEBPACK_IMPORTED_MODULE_9__.default,
-    Plus: _assets_icons_Plus__WEBPACK_IMPORTED_MODULE_8__.default
+    'table-div': _components_common_Table__WEBPACK_IMPORTED_MODULE_0__.default,
+    'filter-div': _Filter__WEBPACK_IMPORTED_MODULE_4__.default,
+    'input-div': _components_common_Input__WEBPACK_IMPORTED_MODULE_2__.default,
+    Print: _assets_icons_Print__WEBPACK_IMPORTED_MODULE_5__.default,
+    Download: _assets_icons_Download__WEBPACK_IMPORTED_MODULE_7__.default,
+    Plus: _assets_icons_Plus__WEBPACK_IMPORTED_MODULE_6__.default
   },
   computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_10__.mapGetters)(['items'])),
   data: function data() {
     return {
       loading: false,
-      CreateItems: _CreateItems__WEBPACK_IMPORTED_MODULE_5__.default,
-      More: _components_common_More__WEBPACK_IMPORTED_MODULE_3__.default,
+      CreateItems: _CreateItems__WEBPACK_IMPORTED_MODULE_3__.default,
+      More: _components_common_More__WEBPACK_IMPORTED_MODULE_1__.default,
       heads: [{
         name: 'barcode',
         link: 'barcode'
@@ -4274,28 +4229,27 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         available: true,
         reCreate: true,
         lastCreated: this.lastCreated,
-        component: _CreateItems__WEBPACK_IMPORTED_MODULE_5__.default
+        component: _CreateItems__WEBPACK_IMPORTED_MODULE_3__.default
       },
       deleteObj: {
-        available: true,
-        link: '/item/delete'
+        available: true
       },
       showMore: {
         available: true,
         title: 'show_more',
         func: this.showit
       },
-      pagination: true
+      link: '/item',
+      commit: 'items'
     };
   },
   methods: {
     lastCreated: function lastCreated() {
       var _this = this;
 
-      this.pagination = false;
-      this.$http.get('/item/last-created').then(function (response) {
+      this.$http.get(this.link + '/last-created').then(function (response) {
         _this.$store.dispatch('setStore', {
-          label: 'items',
+          label: _this.commit,
           data: {
             data: response.data,
             searching: true
@@ -4304,20 +4258,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     },
     loadResults: function loadResults() {
-      this.pagination = true;
       this.$store.dispatch('setStore', {
-        label: 'items',
+        label: this.commit,
         data: {
           page: 0
         }
       });
-      this.getResults('/item', 'items');
+      this.getResults(this.link, this.commit);
     },
     loadSearchFields: function loadSearchFields() {
       var _this2 = this;
 
       if (this.items.search_fields.length < 1) {
-        this.$http.get('/item/search-fields').then(function (response) {
+        this.$http.get(this.link + '/search-fields').then(function (response) {
           _this2.items.search_fields = response.data.res.search_options;
         });
       }
@@ -4382,8 +4335,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         width: '35%',
         editObj: this.editObj,
         deleteObj: this.deleteObj,
-        link: '/item',
-        commit: 'items'
+        link: this.link,
+        commit: this.commit
       };
       this.showModal(this.More, props);
     },
@@ -6919,7 +6872,7 @@ var last_created = {
       this.$store.commit('setFullPageLoading', true);
       this.$http.get(link + '/last-created').then(function (response) {
         var s_request = {
-          link: 'last-created',
+          link: '/last-created',
           mode: 'get'
         };
 
@@ -62265,17 +62218,15 @@ var render = function() {
                 _c("option", { attrs: { value: "" } }, [_vm._v(" ")]),
                 _vm._v(" "),
                 _vm.edit || _vm.reCreate
-                  ? _c("option", { domProps: { value: _vm.item.item_type } }, [
-                      _vm._v(_vm._s(_vm.item.item_type))
+                  ? _c("option", { domProps: { value: _vm.item.type } }, [
+                      _vm._v(_vm._s(_vm.item.type))
                     ])
                   : _vm._e(),
                 _vm._v(" "),
                 _vm._l(_vm.support_data.types, function(type, index) {
-                  return _c(
-                    "option",
-                    { domProps: { value: type.item_type_key } },
-                    [_vm._v(_vm._s(type.item_type))]
-                  )
+                  return _c("option", { domProps: { value: type.type_key } }, [
+                    _vm._v(_vm._s(type.type))
+                  ])
                 })
               ],
               2
@@ -62554,8 +62505,8 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.search.user_cid,
-                  expression: "search.user_cid"
+                  value: _vm.search.add_options.user_cid,
+                  expression: "search.add_options.user_cid"
                 }
               ],
               on: {
@@ -62569,7 +62520,7 @@ var render = function() {
                       return val
                     })
                   _vm.$set(
-                    _vm.search,
+                    _vm.search.add_options,
                     "user_cid",
                     $event.target.multiple ? $$selectedVal : $$selectedVal[0]
                   )
@@ -62604,11 +62555,11 @@ var render = function() {
             autocomplete: { available: true, data: _vm.suppliers }
           },
           model: {
-            value: _vm.search.supplier_id,
+            value: _vm.search.add_options.supplier_id,
             callback: function($$v) {
-              _vm.$set(_vm.search, "supplier_id", $$v)
+              _vm.$set(_vm.search.add_options, "supplier_id", $$v)
             },
-            expression: "search.supplier_id"
+            expression: "search.add_options.supplier_id"
           }
         }),
         _vm._v(" "),
@@ -62626,8 +62577,8 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.search.sup_type,
-                  expression: "search.sup_type"
+                  value: _vm.search.add_options.sup_type,
+                  expression: "search.add_options.sup_type"
                 }
               ],
               on: {
@@ -62641,7 +62592,7 @@ var render = function() {
                       return val
                     })
                   _vm.$set(
-                    _vm.search,
+                    _vm.search.add_options,
                     "sup_type",
                     $event.target.multiple ? $$selectedVal : $$selectedVal[0]
                   )
@@ -62672,8 +62623,8 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.search.item_type,
-                  expression: "search.item_type"
+                  value: _vm.search.add_options.item_type,
+                  expression: "search.add_options.item_type"
                 }
               ],
               on: {
@@ -62687,7 +62638,7 @@ var render = function() {
                       return val
                     })
                   _vm.$set(
-                    _vm.search,
+                    _vm.search.add_options,
                     "item_type",
                     $event.target.multiple ? $$selectedVal : $$selectedVal[0]
                   )
@@ -62723,8 +62674,8 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.search.location,
-                  expression: "search.location"
+                  value: _vm.search.add_options.location,
+                  expression: "search.add_options.location"
                 }
               ],
               on: {
@@ -62738,7 +62689,7 @@ var render = function() {
                       return val
                     })
                   _vm.$set(
-                    _vm.search,
+                    _vm.search.add_options,
                     "location",
                     $event.target.multiple ? $$selectedVal : $$selectedVal[0]
                   )
@@ -62775,11 +62726,11 @@ var render = function() {
             autocomplete: { available: true, data: _vm.publishers }
           },
           model: {
-            value: _vm.search.publisher_id,
+            value: _vm.search.add_options.publisher_id,
             callback: function($$v) {
-              _vm.$set(_vm.search, "publisher_id", $$v)
+              _vm.$set(_vm.search.add_options, "publisher_id", $$v)
             },
-            expression: "search.publisher_id"
+            expression: "search.add_options.publisher_id"
           }
         }),
         _vm._v(" "),
@@ -62795,18 +62746,22 @@ var render = function() {
               {
                 name: "model",
                 rawName: "v-model",
-                value: _vm.search.pub_year,
-                expression: "search.pub_year"
+                value: _vm.search.add_options.pub_year,
+                expression: "search.add_options.pub_year"
               }
             ],
             attrs: { type: "text" },
-            domProps: { value: _vm.search.pub_year },
+            domProps: { value: _vm.search.add_options.pub_year },
             on: {
               input: function($event) {
                 if ($event.target.composing) {
                   return
                 }
-                _vm.$set(_vm.search, "pub_year", $event.target.value)
+                _vm.$set(
+                  _vm.search.add_options,
+                  "pub_year",
+                  $event.target.value
+                )
               }
             }
           })
@@ -62824,18 +62779,22 @@ var render = function() {
               {
                 name: "model",
                 rawName: "v-model",
-                value: _vm.search.pub_city,
-                expression: "search.pub_city"
+                value: _vm.search.add_options.pub_city,
+                expression: "search.add_options.pub_city"
               }
             ],
             attrs: { type: "text" },
-            domProps: { value: _vm.search.pub_city },
+            domProps: { value: _vm.search.add_options.pub_city },
             on: {
               input: function($event) {
                 if ($event.target.composing) {
                   return
                 }
-                _vm.$set(_vm.search, "pub_city", $event.target.value)
+                _vm.$set(
+                  _vm.search.add_options,
+                  "pub_city",
+                  $event.target.value
+                )
               }
             }
           })
@@ -62854,18 +62813,22 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.search.start_date,
-                  expression: "search.start_date"
+                  value: _vm.search.add_options.start_date,
+                  expression: "search.add_options.start_date"
                 }
               ],
               attrs: { type: "date" },
-              domProps: { value: _vm.search.start_date },
+              domProps: { value: _vm.search.add_options.start_date },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(_vm.search, "start_date", $event.target.value)
+                  _vm.$set(
+                    _vm.search.add_options,
+                    "start_date",
+                    $event.target.value
+                  )
                 }
               }
             }),
@@ -62881,18 +62844,22 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.search.end_date,
-                  expression: "search.end_date"
+                  value: _vm.search.add_options.end_date,
+                  expression: "search.add_options.end_date"
                 }
               ],
               attrs: { type: "date" },
-              domProps: { value: _vm.search.end_date },
+              domProps: { value: _vm.search.add_options.end_date },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(_vm.search, "end_date", $event.target.value)
+                  _vm.$set(
+                    _vm.search.add_options,
+                    "end_date",
+                    $event.target.value
+                  )
                 }
               }
             }),
@@ -62915,18 +62882,22 @@ var render = function() {
               {
                 name: "model",
                 rawName: "v-model",
-                value: _vm.search.from_cost,
-                expression: "search.from_cost"
+                value: _vm.search.add_options.from_cost,
+                expression: "search.add_options.from_cost"
               }
             ],
             attrs: { type: "text", placeholder: _vm.$t("from") },
-            domProps: { value: _vm.search.from_cost },
+            domProps: { value: _vm.search.add_options.from_cost },
             on: {
               input: function($event) {
                 if ($event.target.composing) {
                   return
                 }
-                _vm.$set(_vm.search, "from_cost", $event.target.value)
+                _vm.$set(
+                  _vm.search.add_options,
+                  "from_cost",
+                  $event.target.value
+                )
               }
             }
           }),
@@ -62936,19 +62907,23 @@ var render = function() {
               {
                 name: "model",
                 rawName: "v-model",
-                value: _vm.search.until_cost,
-                expression: "search.until_cost"
+                value: _vm.search.add_options.until_cost,
+                expression: "search.add_options.until_cost"
               }
             ],
             staticClass: "mt-2",
             attrs: { type: "text", placeholder: _vm.$t("until") },
-            domProps: { value: _vm.search.until_cost },
+            domProps: { value: _vm.search.add_options.until_cost },
             on: {
               input: function($event) {
                 if ($event.target.composing) {
                   return
                 }
-                _vm.$set(_vm.search, "until_cost", $event.target.value)
+                _vm.$set(
+                  _vm.search.add_options,
+                  "until_cost",
+                  $event.target.value
+                )
               }
             }
           })
@@ -63277,12 +63252,12 @@ var render = function() {
                       attrs: {
                         heads: _vm.heads,
                         data: _vm.items.data.res,
-                        pagination: _vm.pagination,
+                        pagination: _vm.items.pagination,
                         editObj: _vm.editObj,
                         deleteObj: _vm.deleteObj,
                         showMore: _vm.showMore,
-                        link: "/item",
-                        commit: "items"
+                        link: _vm.link,
+                        commit: _vm.commit
                       }
                     })
                   ],
