@@ -1,18 +1,19 @@
 <template>
-	<div class="col align-items-center justify-content-center">
+	<div class="d-flex flex-column align-items-center justify-content-center">
 		<div class="font-weight-bold">{{$t('confirmation')}}</div>
-		<div class="justify-content-between mt-5">
+		<div class="d-flex justify-content-between mt-1">
 			<button type="button" class="outline-red" @click="deleteIt()">{{$t('yes')}}</button>
-			<button type="button" class="outline-black ml-5" @click="$emit('close')">{{$t('no')}}</button>
+			<button type="button" class="outline-black ml-1" @click="$emit('close')">{{$t('no')}}</button>
 		</div>
 	</div>
 </template>
 <script type="text/javascript">
 // identication in sublime text3
 import {last} from '../../mixins/common'
+import {message_success,message_error} from '../../mixins/messages'
 export default{
 	props:{link:String,commit:String,id:String,afterDelete:Function},
-	mixins:[last],
+	mixins:[last,message_success,message_error],
 	methods:{
 		deleteIt(){
 			this.$http.delete(this.link+'/delete/'+this.id).then(response=>{
@@ -20,27 +21,13 @@ export default{
 				try{
 					this.afterDelete();
 				}catch(e){}
-				this.$fire({
-					title:"Delete",
-					text:messages.success(response),
-					type:"success",
-					timer:1700
-				});
-				this.$emit('close');
+				this.message_success('delete',response)
 			}).catch(error=>{
-				this.$fire({
-					title:"Delete",
-					text:messages.error(error),
-					type:"error"
-				});
+				this.message_error('delete',error)
+			}).then(()=>{
 				this.$emit('close');
 			})
 		}
 	}
 }
 </script>
-<style scoped>
-.d-flex{
-	width:30%;
-}
-</style>

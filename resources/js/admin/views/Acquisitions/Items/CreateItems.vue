@@ -254,8 +254,8 @@ export default{
 
 		if(this.edit || this.reCreate){
 			this.item=copy(this.data);
-			if(this.item.inv_date){
-				this.item.inv_date=new Date(this.item.inv_date).toDateInputValue();
+			if(this.item.invoice_date){
+				this.item.invoice_date=new Date(this.item.invoice_date).toDateInputValue();
 			}
 		}
 	}

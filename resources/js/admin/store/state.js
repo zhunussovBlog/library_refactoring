@@ -36,7 +36,9 @@ export default {
 			modes:[]
 		},
 		per_page:10,
-		page:0
+		page:0,
+		request:{},
+		pagination:true
 	},
 	
 	items:{
@@ -65,6 +67,7 @@ export default {
 		},
 		per_page:10,
 		page:0,
+		pagination:true
 	},
 	
 	publishers:{
@@ -82,6 +85,7 @@ export default {
 		},
 		per_page:10,
 		page:0,
+		pagination:true
 	},
 	
 	suppliers:{
@@ -99,6 +103,7 @@ export default {
 		},
 		per_page:10,
 		page:0,
+		pagination:true
 	},
 	
 	users:{
@@ -112,6 +117,7 @@ export default {
 		},
 		per_page:10,
 		page:0,
+		pagination:true
 	},
 	most_read:{
 		data:[],
@@ -123,6 +129,7 @@ export default {
 		},
 		per_page:10,
 		page:0,
+		pagination:true
 	},
 	
 	books_history:{
@@ -135,6 +142,7 @@ export default {
 		},
 		per_page:10,
 		page:0,
+		pagination:true
 	},
 	books_inv_number:{
 		data:[],
@@ -146,6 +154,7 @@ export default {
 		},
 		per_page:10,
 		page:0,
+		pagination:true
 	},
 	print_barcode:{
 		data:[],
@@ -157,5 +166,6 @@ export default {
 		},
 		per_page:10,
 		page:0,
+		pagination:true
 	}
 }

@@ -21,7 +21,7 @@
 		<div class="d-flex">
 			<div class="d-flex w-100">
 				<div class="pad w-100">
-					<input type="date" v-model="batch.inv_date" required/>
+					<input type="date" v-model="batch.invoice_date" required/>
 					<label class="placeholder required">{{$t('invoice_date')}}</label>
 				</div>
 			</div>
@@ -62,7 +62,7 @@
 		</div>
 		<div class="d-flex">
 			<div class="pad w-100">
-				<textarea :placeholder="$t('invoice_details')" v-model="batch.inv_details"/>
+				<textarea :placeholder="$t('invoice_details')" v-model="batch.invoice_details"/>
 				<label class="placeholder"></label>
 			</div>
 			<div class="pad w-100 d-flex justify-content-end align-items-end">
@@ -79,11 +79,11 @@
 <script type="text/javascript">
 // identication in sublime text 3
 import showModal from '../../../mixins/showModal'
-import {last,getAllData,create_it,edit_it} from '../../../mixins/common'
+import {last,last_created,getAllData,create_it,edit_it} from '../../../mixins/common'
 
 import CreateSupply from '../Supply/CreateSupply'
 export default{
-	mixins:[showModal,last,getAllData,create_it,edit_it],
+	mixins:[showModal,last,last_created,getAllData,create_it,edit_it],
 	props:{
 		edit:Boolean,
 		data:Object,
@@ -93,14 +93,14 @@ export default{
 		return{
 			CreateSupply:CreateSupply,
 			batch:{
-				inv_date:null,
+				invoice_date:null,
 				items_no:null,
 				titles_no:null,
 				doc_no:null,
 				sup_type:null,
 				sup_id:null,
 				contract_no:null,
-				inv_details:null,
+				invoice_details:null,
 				cost:null
 			},
 			suppliers:[],
@@ -128,7 +128,7 @@ export default{
 			this.edit_it(this.link,this.commit,this.batch,this.afterSave,this.last);
 		},
 		createIt(){
-			this.create_it(this.link,this.commit,this.batch,this.getAllData,10);
+			this.create_it(this.link,this.commit,this.batch,this.afterSave,this.last_created);
 		},
 		loadSuppliers(value){
 			this.batch.sup_id=value;

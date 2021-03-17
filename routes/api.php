@@ -21,8 +21,8 @@ Route::middleware(['auth:api-student,api-employee'])->group(function () {
     Route::get('user', 'Api\Auth\UserController')->name('user');
 
     // Admin routes
-    Route::middleware(['api-admin'])->group(function () {
-//    Route::group([], function () {
+    // Route::middleware(['api-admin'])->group(function () {
+   Route::group([], function () {
         // Acquisition routes
 
         // Batch routes

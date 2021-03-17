@@ -7,10 +7,10 @@
 			<div class="d-flex align-items-center justify-content-between">
 				<div class="w-50 ">
 					<input-div 
-						:placeholder="$t('search_by',{type:$t('batches_by')})"
-						:search='true'
-						:onSubmit="loadResults"
-						v-model="batches.search.add_options.id"
+					:placeholder="$t('search_by',{type:$t('batches_by')})"
+					:search='true'
+					:onSubmit="loadResults"
+					v-model="batches.search.add_options.id"
 					/>
 				</div>
 				<div class="d-flex align-items-center" >
@@ -27,15 +27,16 @@
 			<div class="mt-5">
 				<div v-if="batches.searching">
 					<table-div 
-						class="mt-5" 
-						:heads="heads"
-						:data="batches.data.res" 
-						:status='true' 
-						:editObj="editObj" 
-						:deleteObj="deleteObj" 
-						:showMore="showMore" 
-						link="/batch" 
-						commit="batches"
+					class="mt-5" 
+					:heads="heads"
+					:data="batches.data.res" 
+					:status='true' 
+					:editObj="editObj" 
+					:deleteObj="deleteObj" 
+					:showMore="showMore" 
+					:link="link" 
+					:commit="commit"
+					:pagination="batches.pagination"
 					/>
 				</div>
 			</div>
@@ -92,23 +93,24 @@ export default{
 			},
 			deleteObj:{
 				available:true,
-				link:'/batch/delete',
 			},
 			showMore:{
 				available:true,
 				title:'show_more',
 				func:this.showit
-			}
+			},
+			link:'/batch',
+			commit:'batches'
 		}
 	},
 	methods:{
 		loadAllData(){
-			this.$store.dispatch('setStore',{label:'batches',data:{page:0}});
-			this.getAllData('/batch','batches');
+			this.$store.dispatch('setStore',{label:this.commit,data:{page:0}});
+			this.getAllData(this.link,this.commit);
 		},
 		loadResults(){
-			this.$store.dispatch('setStore',{label:'batches',data:{page:0}});
-			this.getResults('/batch','batches');
+			this.$store.dispatch('setStore',{label:this.commit,data:{page:0}});
+			this.getResults(this.link,this.commit);
 		},
 		showit(info){
 			// show More_info modal
@@ -121,7 +123,7 @@ export default{
 			{name:'quantity_items',link:'items_no'},
 			{name:'document_number',link:'doc_no'},
 			{name:'contract_number',link:'contract_no'},
-			{name:'invoice_details',link:'inv_details'},
+			{name:'invoice_details',link:'invoice_details'},
 			{name:'created_by',link:'created_by'},
 			{name:'create_date',link:'create_date',is_date:true}];
 			let props={
@@ -130,8 +132,8 @@ export default{
 				width:'35%',
 				editObj:this.editObj,
 				deleteObj:this.deleteObj,
-				link:'/batch',
-				commit:'batches'
+				link:this.link,
+				commit:this.commit
 			};
 			this.showModal(this.More,props);
 		}
