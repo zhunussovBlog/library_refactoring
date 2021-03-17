@@ -1,31 +1,36 @@
 <template>
 	<form @submit.prevent="save()">
-		<div class="title">{{$t((edit ?'edit':'create')+'_publisher') }}</div>
+		<div class="title">{{$t((edit ?'edit':'create')+'_supplier') }}</div>
 		
 		<div class="d-flex">
 			<div class="pad">
-				<input type="string" :placeholder="$t('name')" v-model="publisher.name" required />
+				<input type="string" :placeholder="$t('name')" v-model="supplier.name" required />
 				<label class="placeholder required"></label>
 			</div>
 			<div class="pad">
-				<input type="string" :placeholder="$t('commercial_name')" v-model="publisher.com_name"/>
+				<input type="string" :placeholder="$t('bin')" v-model="supplier.bin"/>
+			</div>
+		</div>
+		<div class="d-flex">
+			<div class="pad">
+				<input type="string" :placeholder="$t('commercial_name')" v-model="supplier.com_name"/>
 			</div>
 		</div>
 		<div class="subtitle">{{$t('contact')}}</div>
 		<div class="d-flex">
 			<div class="pad">
-				<input type="string" :placeholder="$t('address')" v-model="publisher.address"/>
+				<input type="string" :placeholder="$t('address')" v-model="supplier.address"/>
 			</div>
 			<div class="pad">
-				<input type="string" :placeholder="$t('email')" v-model="publisher.email"/>
+				<input type="string" :placeholder="$t('email')" v-model="supplier.email" />
 			</div>
 		</div>
 		<div class="d-flex">
 			<div class="pad">
-				<input type="string" :placeholder="$t('phone')" v-model="publisher.phone"/>
+				<input type="string" :placeholder="$t('phone')" v-model="supplier.phone"/>
 			</div>
 			<div class="pad">
-				<input type="string" :placeholder="$t('fax')" v-model="publisher.fax"/>
+				<input type="string" :placeholder="$t('fax')" v-model="supplier.fax"/>
 			</div>
 		</div>
 		<div class="flexible justify-content-end">
@@ -41,7 +46,6 @@
 <script type="text/javascript">
 // mixins
 import {last,last_created,create_it,edit_it} from '../../../mixins/common'
-
 export default{
 	mixins:[last,last_created,create_it,edit_it],
 	props:{
@@ -51,25 +55,26 @@ export default{
 	},
 	data(){
 		return{
-			publisher:{
+			supplier:{
 				name:null,
+				bin:null,
 				com_name:null,
 				address:null,
 				email:null,
 				phone:null,
 				fax:null
 			},
-			link:'/publisher',
-			commit:'publishers'
+			link:'/supplier',
+			commit:'suppliers'
 		}
 	},
 	methods:{
 		save(){
 			if(!this.$store.state.fullPageLoading){
-				this.publisher.pub_name=this.publisher.name;
 				this.$store.commit('setFullPageLoading',true);
+				this.supplier.sup_name=this.supplier.name;
 				if(this.edit){
-					this.publisher.pub_id=this.data.id;
+					this.supplier.sup_id=this.data.id;
 					this.editIt();
 				}
 				else{
@@ -81,15 +86,15 @@ export default{
 			this.$emit('close');
 		},
 		editIt(){
-			this.edit_it(this.link,this.commit,this.publisher,this.afterSave,this.last);
+			this.edit_it(this.link,this.commit,this.supplier,this.afterSave,this.last);
 		},
 		createIt(){
-			this.create_it(this.link,this.commit,this.publisher,this.afterSave,this.last_created);
+			this.create_it(this.link,this.commit,this.supplier,this.afterSave,this.last_created);
 		}
 	},
 	created(){
 		if(this.edit){
-			this.publisher=copy(this.data);
+			this.supplier=copy(this.data);
 		}
 	}
 }
@@ -102,6 +107,6 @@ export default{
 	width:100%;
 }
 .pad{
-	margin-top:0.5em;
+	mt-5:1em;
 }
 </style>

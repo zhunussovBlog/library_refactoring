@@ -133,8 +133,10 @@ export const last_created={
 					link:'/last-created',
 					mode:'get'
 				}
+				console.log(response)
 				this.$store.dispatch('setStore',{label:commit,data:{data:response.data,pagination:false,searching:true,request:s_request}});
 				this.$store.commit('setFullPageLoading',false);
+				console.log(this.$store.getters[commit]);
 			})
 		}
 	}

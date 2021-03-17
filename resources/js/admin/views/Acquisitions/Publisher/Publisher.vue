@@ -12,7 +12,16 @@
 			</div>
 			<div class="mt-5">
 				<div v-if="publishers.searching">
-					<table-div class="mt-5" :heads="heads" :data="publishers.data.res" :editObj="editObj" :deleteObj="deleteObj" link="/publisher" commit="publishers"/>
+					<table-div 
+					class="mt-5"
+					:heads="heads"
+					:data="publishers.data.res"
+					:editObj="editObj"
+					:deleteObj="deleteObj"
+					:link="link"
+					:commit="commit"
+					:pagination="publishers.pagination"
+					/>
 				</div>
 			</div>
 		</div>
@@ -56,18 +65,19 @@ export default{
 			},
 			deleteObj:{
 				available:true,
-				link:'/publisher/delete',
-			}
+			},
+			link:'/publisher',
+			commit:'publishers'
 		}
 	},
 	methods:{
 		loadResults(){
-			this.$store.dispatch('setStore',{label:'publishers',data:{page:0}});
-			this.getResults('/publisher','publishers')
+			this.$store.dispatch('setStore',{label:this.commit,data:{page:0}});
+			this.getResults(this.link,this.commit)
 		},
 		loadAllData(){
-			this.$store.dispatch('setStore',{label:'publishers',data:{page:0}});
-			this.getAllData('/publisher','publishers');
+			this.$store.dispatch('setStore',{label:this.commit,data:{page:0}});
+			this.getAllData(this.link,this.commit);
 		},
 	}
 }

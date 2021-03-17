@@ -34,7 +34,7 @@
 					<label class="placeholder">{{$tc('suppliers',1)}}</label>
 				</div>
 				<div class="pad col-2">
-					<button type="button" class="outline-orange" @click="showModal(CreateSupply,{afterSave:loadSuppliers})">{{$t('create')}}</button>
+					<button type="button" class="outline-orange" @click="showModal(CreateSupplier,{afterSave:loadSuppliers})">{{$t('create')}}</button>
 				</div>
 			</div>
 		</div>
@@ -81,7 +81,7 @@
 import showModal from '../../../mixins/showModal'
 import {last,last_created,create_it,edit_it} from '../../../mixins/common'
 
-import CreateSupply from '../Supply/CreateSupply'
+import CreateSupplier from '../Supplier/CreateSupplier'
 export default{
 	mixins:[showModal,last,last_created,create_it,edit_it],
 	props:{
@@ -91,7 +91,7 @@ export default{
 	},
 	data(){
 		return{
-			CreateSupply:CreateSupply,
+			CreateSupplier:CreateSupplier,
 			batch:{
 				invoice_date:null,
 				items_no:null,

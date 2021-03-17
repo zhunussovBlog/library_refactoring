@@ -1,6 +1,6 @@
 // acquisitions
 import Batches from '../views/Acquisitions/Batches/Batches'
-import Supply from '../views/Acquisitions/Supply/Supply'
+import Supplier from '../views/Acquisitions/Supplier/Supplier'
 import Items from '../views/Acquisitions/Items/Items'
 import Print from '../views/Acquisitions/Items/Print'
 import Publisher from '../views/Acquisitions/Publisher/Publisher'
@@ -44,7 +44,7 @@ export default
     {
         path:'suppliers',
         name:'suppliers',
-        component:Supply
+        component:Supplier
     },
     {
         path:'publishers',

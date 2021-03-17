@@ -42,7 +42,16 @@
 			</div>
 			<div class="mt-5">
 				<div v-if="items.searching">
-					<table-div class="mt-5" :heads="heads" :data="items.data.res" :pagination="items.pagination" :editObj="editObj" :deleteObj="deleteObj" :showMore="showMore" :link="link" :commit="commit"/>
+					<table-div class="mt-5"
+					:heads="heads"
+					:data="items.data.res"
+					:editObj="editObj"
+					:deleteObj="deleteObj"
+					:showMore="showMore"
+					:link="link"
+					:commit="commit"
+					:pagination="items.pagination"
+					/>
 				</div>
 			</div>
 		</div>
