@@ -5131,8 +5131,7 @@ __webpack_require__.r(__webpack_exports__);
     changeData: function changeData() {
       var _this = this;
 
-      this.$http.get('/report/attendance').then(function (response) {
-        console.log(response);
+      this.$http.get('/attendance/virtual').then(function (response) {
         var copied = {};
         var data = [];
 

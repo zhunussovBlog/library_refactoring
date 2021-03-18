@@ -75,8 +75,7 @@ export default{
 	},
 	methods:{
 		changeData(){
-			this.$http.get('/report/attendance').then(response=>{
-				console.log(response);
+			this.$http.get('/attendance/virtual').then(response=>{
 				let copied={};
 				let data=[];
 				if(this.weekly){
