@@ -20,7 +20,7 @@ class Index
         $data = $query::defaultQuery();
 
         if (!empty($orderBy)) {
-            if (!in_array($orderBy, $sortFields)) {
+            if (array_search($orderBy, array_column($sortFields, 'key')) === false) {
                 throw new ReturnResponseException('Incorrect sort field', 400);
             }
 
