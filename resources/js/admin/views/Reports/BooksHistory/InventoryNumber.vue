@@ -1,12 +1,12 @@
 <template>
-	<div class="d-flex flex-folumn">
+	<div class="d-flex flex-column">
 		<form class="d-flex flex-fill" @submit.prevent="loadResults()">
 			<div class="pad flex-fill">
-				<input type="text" v-model="search.from" required />
+				<input type="text" v-model="books_inv_number.search.add_options.inventory_no" required />
 				<label class="placeholder required">From</label>
 			</div>
 			<div class="pad flex-fill">
-				<input type="text" v-model="search.count" required />
+				<input type="text" v-model="books_inv_number.search.add_options.rownum" required />
 				<label class="placeholder required">Count</label>
 			</div>
 			<div class="pad col-1">
@@ -16,8 +16,17 @@
 				<button type="button">{{$t('reset')}}</button>
 			</div>
 		</form>
-		<div v-if="searching">
-			<table-div class="mt-5" :heads="heads" :data="data.res" link="/report/inv-book" commit="books_inv_number" :sortable="false" :tableName="{countable:true,name:'books'}" :clickables="false" :pagination="false"/>
+		<div v-if="books_inv_number.searching">
+			<table-div
+			class="mt-5"
+			:heads="heads"
+			:data="books_inv_number.data.res"
+			:link="link"
+			:commit="commit"
+			:sortable="false"
+			:clickables="false"
+			:pagination="books_inv_number.pagination"
+			/>
 			<div class="d-flex mt-4">
 				<button class="width-unset mr-4" @click="print()">{{$t('print')}}</button>
 				<button class="width-unset" @click="exportToExcel()">{{$t('export')}}</button>
@@ -35,24 +44,16 @@ import PulseLoader from 'vue-spinner/src/PulseLoader'
 //mixins
 import {getResults,download_file} from '../../../mixins/common'
 
+import {mapGetters} from 'vuex'
 export default{
 	mixins:[getResults,download_file],
 	components:{'table-div':Table,PulseLoader},
 	computed:{
-		data(){
-			return this.$store.getters.books_inv_number.data;
-		},
-		searching(){
-			return this.$store.getters.books_inv_number.searching;
-		}
+		...mapGetters(['books_inv_number'])
 	},
 	data(){
 		return{
 			loading:false,
-			search:{
-				from:'',
-				count:''
-			},
 			heads:[
 			{name:'author_title',link:'author_title'},
 			{name:'year_city',link:'year_city'},
@@ -64,24 +65,26 @@ export default{
 			{name:'batch_id',link:'batch_id'},
 			{name:'inventory_number',link:'inventory_no'},
 			{name:'create_date',link:'create_date',is_date:true},
-			]
+			],
+			link:'/inventory-books',
+			commit:'books_inv_number'
 		}
 	},
 	methods:{
 		loadResults(){
-			this.$store.dispatch('setStore',{label:'books_inv_number',data:{page:0}});
-			this.getResults('/report/inv-book',this.search,'books_inv_number');
+			this.$store.dispatch('setStore',{label:this.commit,data:{page:0}});
+			this.getResults(this.link,this.commit);
 		},
 		print(){
 			this.$store.commit('setFullPageLoading',true);	
-			this.$http.get('/report/inv-book/print/'+this.$i18n.locale,{responseType:'blob'}).then(response=>{
+			this.$http.post(this.link+'/print',{inventories:this.books_inv_number.all},{responseType:'blob'}).then(response=>{
 				this.download_file(response,'media.pdf');
 				this.$store.commit('setFullPageLoading',false);	
 			})
 		},
 		exportToExcel(){
 			this.$store.commit('setFullPageLoading',true);	
-			this.$http.get('/report/inv-book/export/'+this.$i18n.locale,{responseType:'blob'}).then(response=>{
+			this.$http.post(this.link+'/export',{inventories:this.books_inv_number.all},{responseType:'blob'}).then(response=>{
 				this.download_file(response,'media.xlsx');
 				this.$store.commit('setFullPageLoading',false);	
 			})

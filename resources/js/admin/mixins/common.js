@@ -6,8 +6,9 @@ export const getResults={
 			this.$store.commit('setFullPageLoading',true);
 
 			
+			let store=this.$store.getters[commit];
 			let search=this.$store.getters[commit].search;
-			let page= this.$store.state[commit].page == 0 ? '' :'?page='+this.$store.state[commit].page;
+			let page= store.page == 0 ? '' :'?page='+store.page;
 			
 			let add_options=[];
 			let search_options=[];
@@ -51,7 +52,7 @@ export const getResults={
 				});
 			}
 			
-			request.per_page=this.$store.state[commit].per_page;
+			request.per_page=store.per_page;
 			request.page=page;
 			request.add_options=add_options;
 			request.search_options=search_options;
@@ -62,7 +63,11 @@ export const getResults={
 					body:request,
 					mode:'post'
 				}
-				this.$store.dispatch('setStore',{label:commit,data:{data:response.data,searching:true,request:s_request}});
+				let data={data:response.data,searching:true,request:s_request};
+				if(store.all){
+					data.all=response.data.all
+				};
+				this.$store.dispatch('setStore',{label:commit,data:data});
 				try{
 					after();
 				}catch(e){}

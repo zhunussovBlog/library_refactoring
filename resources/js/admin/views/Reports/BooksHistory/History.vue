@@ -1,16 +1,26 @@
 <template>
 	<form @submit.prevent="loadResults()">
 		<div class="d-flex">
-			<div class="pad col-2">
-				<select v-model="search.type" required>
-					<option v-for="(type,index) in types" :value="type.key">{{$t(type.key)}}</option>
-				</select>
-				<label class="placeholder required">{{$t('type')}}</label>
+			<div class="pad w-100">
+				<input type="text" placeholder=" " v-model="books_history.search.add_options.barcode">
+				<label class="placeholder">{{$t('barcode')}}</label> 
 			</div>
 			<div class="pad w-100">
-				<input type="text" placeholder=" " v-model="search.query">
-				<label class="placeholder">{{$t('searching')}}</label> 
+				<input type="text" placeholder=" " v-model="books_history.search.add_options.id">
+				<label class="placeholder">{{$t('inventory_number')}}</label> 
 			</div>
+		</div>
+		<div class="d-flex mt-2">
+			<div class="pad w-100">
+				<input type="text" placeholder=" " v-model="books_history.search.add_options.author">
+				<label class="placeholder">{{$t('author')}}</label> 
+			</div>
+			<div class="pad w-100">
+				<input type="text" placeholder=" " v-model="books_history.search.add_options.title">
+				<label class="placeholder">{{$t('title')}}</label> 
+			</div>
+		</div>
+		<div class="d-flex justify-content-end">
 			<div class="pad col-1">
 				<button type="submit">{{$t('search')}}</button>
 			</div>
@@ -18,8 +28,15 @@
 				<button type="button">{{$t('reset')}}</button>
 			</div>
 		</div>
-		<div v-if="searching">
-			<table-div class="mt-5" :heads="heads" :data="data.res" link="/report/book-history" commit="books_history" :sortable="false" :tableName="{countable:true,name:'books'}"/>
+		<div v-if="books_history.searching">
+			<table-div 
+			class="mt-5"
+			:heads="heads"
+			:data="books_history.data.res"
+			:link="link"
+			:commit="commit"
+			:sortable="false"
+			/>
 		</div>
 	</form>
 </template>
@@ -30,52 +47,50 @@ import Table from '../../../components/common/Table'
 //mixins
 import {getResults} from '../../../mixins/common'
 
+import {mapGetters} from 'vuex'
+
 export default{
 	mixins:[getResults],
 	components:{'table-div':Table},
 	computed:{
-		data(){
-			return this.$store.getters.books_history.data;
-		},
-		searching(){
-			return this.$store.getters.books_history.searching;
-		}
+		...mapGetters(['books_history'])
 	},
 	data(){
 		return{
-			loading:false,
 			types:[],
-			search:{
-				type:'',
-				query:''
-			},
 			heads:[
 			{name:'barcode',link:'barcode'},
-			{name:'inventory_number',link:'inv_id'},
+			{name:'inventory_number',link:'id'},
 			{name:'type',link:'type'},
 			{name:'titles',link:'title',countable:true},
-			{name:'author',link:'authors'},
+			{name:'author',link:'author'},
 			{name:'borrow_date',link:'borrow_date',is_date:true},
 			{name:'due_date',link:'due_date',is_date:true},
 			{name:'delivery_date',link:'delivery_date',is_date:true},
 			{name:'status',link:'status'},
 			{name:'last_user_borrowed',link:'username'},
-			]
+			],
+			link:'/book-history',
+			commit:'books_history'
 		}
 	},
 	methods:{
 		getTypes(){
-			this.$http.get('/report/book-history/types').then(response=>{
+			this.$http.get(this.link+'/types').then(response=>{
 				this.types=response.data.res;
 			})
 		},
 		loadResults(){
-			this.$store.dispatch('setStore',{label:'books_history',data:{page:0}});
-			this.getResults('/report/book-history',this.search,'books_history');
+			this.$store.dispatch('setStore',{label:this.commit,data:{page:0}});
+			this.getResults(this.link,this.commit);
+		},
+		getSearchFields(){
+			this.$http.get(this.link+'/search-fields');
 		}
 	},
 	created(){
 		this.getTypes();
+		this.getSearchFields();
 	}
 }
 </script>

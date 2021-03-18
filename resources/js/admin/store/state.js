@@ -134,6 +134,14 @@ export default {
 	},
 	
 	books_history:{
+		search:{
+			add_options:{
+				barcode:null,
+				id:null,
+				author:null,
+				title:null
+			},
+		},
 		data:[],
 		searching:false,
 		sort_by:{},
@@ -146,6 +154,13 @@ export default {
 		pagination:true
 	},
 	books_inv_number:{
+		search:{
+			add_options:{
+				inventory_no:null,
+				rownum:null
+			}
+		},
+		all:[],
 		data:[],
 		searching:false,
 		sort_by:{},

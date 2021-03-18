@@ -5243,6 +5243,30 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _components_common_Table__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../components/common/Table */ "./resources/js/admin/components/common/Table.vue");
 /* harmony import */ var _mixins_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../mixins/common */ "./resources/js/admin/mixins/common.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5272,33 +5296,22 @@ __webpack_require__.r(__webpack_exports__);
  //mixins
 
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mixins: [_mixins_common__WEBPACK_IMPORTED_MODULE_1__.getResults],
   components: {
     'table-div': _components_common_Table__WEBPACK_IMPORTED_MODULE_0__.default
   },
-  computed: {
-    data: function data() {
-      return this.$store.getters.books_history.data;
-    },
-    searching: function searching() {
-      return this.$store.getters.books_history.searching;
-    }
-  },
+  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_2__.mapGetters)(['books_history'])),
   data: function data() {
     return {
-      loading: false,
       types: [],
-      search: {
-        type: '',
-        query: ''
-      },
       heads: [{
         name: 'barcode',
         link: 'barcode'
       }, {
         name: 'inventory_number',
-        link: 'inv_id'
+        link: 'id'
       }, {
         name: 'type',
         link: 'type'
@@ -5308,7 +5321,7 @@ __webpack_require__.r(__webpack_exports__);
         countable: true
       }, {
         name: 'author',
-        link: 'authors'
+        link: 'author'
       }, {
         name: 'borrow_date',
         link: 'borrow_date',
@@ -5327,29 +5340,35 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         name: 'last_user_borrowed',
         link: 'username'
-      }]
+      }],
+      link: '/book-history',
+      commit: 'books_history'
     };
   },
   methods: {
     getTypes: function getTypes() {
       var _this = this;
 
-      this.$http.get('/report/book-history/types').then(function (response) {
+      this.$http.get(this.link + '/types').then(function (response) {
         _this.types = response.data.res;
       });
     },
     loadResults: function loadResults() {
       this.$store.dispatch('setStore', {
-        label: 'books_history',
+        label: this.commit,
         data: {
           page: 0
         }
       });
-      this.getResults('/report/book-history', this.search, 'books_history');
+      this.getResults(this.link, this.commit);
+    },
+    getSearchFields: function getSearchFields() {
+      this.$http.get(this.link + '/search-fields');
     }
   },
   created: function created() {
     this.getTypes();
+    this.getSearchFields();
   }
 });
 
@@ -5369,6 +5388,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_common_Table__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../components/common/Table */ "./resources/js/admin/components/common/Table.vue");
 /* harmony import */ var vue_spinner_src_PulseLoader__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-spinner/src/PulseLoader */ "./node_modules/vue-spinner/src/PulseLoader.vue");
 /* harmony import */ var _mixins_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../mixins/common */ "./resources/js/admin/mixins/common.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5402,27 +5437,17 @@ __webpack_require__.r(__webpack_exports__);
  //mixins
 
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mixins: [_mixins_common__WEBPACK_IMPORTED_MODULE_2__.getResults, _mixins_common__WEBPACK_IMPORTED_MODULE_2__.download_file],
   components: {
     'table-div': _components_common_Table__WEBPACK_IMPORTED_MODULE_0__.default,
     PulseLoader: vue_spinner_src_PulseLoader__WEBPACK_IMPORTED_MODULE_1__.default
   },
-  computed: {
-    data: function data() {
-      return this.$store.getters.books_inv_number.data;
-    },
-    searching: function searching() {
-      return this.$store.getters.books_inv_number.searching;
-    }
-  },
+  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapGetters)(['books_inv_number'])),
   data: function data() {
     return {
       loading: false,
-      search: {
-        from: '',
-        count: ''
-      },
       heads: [{
         name: 'author_title',
         link: 'author_title'
@@ -5454,24 +5479,28 @@ __webpack_require__.r(__webpack_exports__);
         name: 'create_date',
         link: 'create_date',
         is_date: true
-      }]
+      }],
+      link: '/inventory-books',
+      commit: 'books_inv_number'
     };
   },
   methods: {
     loadResults: function loadResults() {
       this.$store.dispatch('setStore', {
-        label: 'books_inv_number',
+        label: this.commit,
         data: {
           page: 0
         }
       });
-      this.getResults('/report/inv-book', this.search, 'books_inv_number');
+      this.getResults(this.link, this.commit);
     },
     print: function print() {
       var _this = this;
 
       this.$store.commit('setFullPageLoading', true);
-      this.$http.get('/report/inv-book/print/' + this.$i18n.locale, {
+      this.$http.post(this.link + '/print', {
+        inventories: this.books_inv_number.all
+      }, {
         responseType: 'blob'
       }).then(function (response) {
         _this.download_file(response, 'media.pdf');
@@ -5483,7 +5512,9 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       this.$store.commit('setFullPageLoading', true);
-      this.$http.get('/report/inv-book/export/' + this.$i18n.locale, {
+      this.$http.post(this.link + '/export', {
+        inventories: this.books_inv_number.all
+      }, {
         responseType: 'blob'
       }).then(function (response) {
         _this2.download_file(response, 'media.xlsx');
@@ -6615,8 +6646,9 @@ var getResults = {
       var _this = this;
 
       this.$store.commit('setFullPageLoading', true);
+      var store = this.$store.getters[commit];
       var search = this.$store.getters[commit].search;
-      var page = this.$store.state[commit].page == 0 ? '' : '?page=' + this.$store.state[commit].page;
+      var page = store.page == 0 ? '' : '?page=' + store.page;
       var add_options = [];
       var search_options = [];
       var request = {}; // validating add_options for non null
@@ -6663,7 +6695,7 @@ var getResults = {
         });
       }
 
-      request.per_page = this.$store.state[commit].per_page;
+      request.per_page = store.per_page;
       request.page = page;
       request.add_options = add_options;
       request.search_options = search_options;
@@ -6673,14 +6705,21 @@ var getResults = {
           body: request,
           mode: 'post'
         };
+        var data = {
+          data: response.data,
+          searching: true,
+          request: s_request
+        };
+
+        if (store.all) {
+          data.all = response.data.all;
+        }
+
+        ;
 
         _this.$store.dispatch('setStore', {
           label: commit,
-          data: {
-            data: response.data,
-            searching: true,
-            request: s_request
-          }
+          data: data
         });
 
         try {
@@ -7015,6 +7054,7 @@ var setLocale = {
   methods: {
     setLocale: function setLocale(locale) {
       this.$i18n.locale = locale;
+      this.$http.defaults.headers.common['Content-Language'] = this.$i18n.locale;
       localStorage.setItem('lang', JSON.stringify(locale));
     }
   }
@@ -7549,6 +7589,14 @@ __webpack_require__.r(__webpack_exports__);
     pagination: true
   },
   books_history: {
+    search: {
+      add_options: {
+        barcode: null,
+        id: null,
+        author: null,
+        title: null
+      }
+    },
     data: [],
     searching: false,
     sort_by: {},
@@ -7561,6 +7609,13 @@ __webpack_require__.r(__webpack_exports__);
     pagination: true
   },
   books_inv_number: {
+    search: {
+      add_options: {
+        inventory_no: null,
+        rownum: null
+      }
+    },
+    all: [],
     data: [],
     searching: false,
     sort_by: {},
@@ -64368,47 +64423,34 @@ var render = function() {
     },
     [
       _c("div", { staticClass: "d-flex" }, [
-        _c("div", { staticClass: "pad col-2" }, [
-          _c(
-            "select",
-            {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.search.type,
-                  expression: "search.type"
-                }
-              ],
-              attrs: { required: "" },
-              on: {
-                change: function($event) {
-                  var $$selectedVal = Array.prototype.filter
-                    .call($event.target.options, function(o) {
-                      return o.selected
-                    })
-                    .map(function(o) {
-                      var val = "_value" in o ? o._value : o.value
-                      return val
-                    })
-                  _vm.$set(
-                    _vm.search,
-                    "type",
-                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                  )
-                }
+        _c("div", { staticClass: "pad w-100" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.books_history.search.add_options.barcode,
+                expression: "books_history.search.add_options.barcode"
               }
-            },
-            _vm._l(_vm.types, function(type, index) {
-              return _c("option", { domProps: { value: type.key } }, [
-                _vm._v(_vm._s(_vm.$t(type.key)))
-              ])
-            }),
-            0
-          ),
+            ],
+            attrs: { type: "text", placeholder: " " },
+            domProps: { value: _vm.books_history.search.add_options.barcode },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(
+                  _vm.books_history.search.add_options,
+                  "barcode",
+                  $event.target.value
+                )
+              }
+            }
+          }),
           _vm._v(" "),
-          _c("label", { staticClass: "placeholder required" }, [
-            _vm._v(_vm._s(_vm.$t("type")))
+          _c("label", { staticClass: "placeholder" }, [
+            _vm._v(_vm._s(_vm.$t("barcode")))
           ])
         ]),
         _vm._v(" "),
@@ -64418,27 +64460,97 @@ var render = function() {
               {
                 name: "model",
                 rawName: "v-model",
-                value: _vm.search.query,
-                expression: "search.query"
+                value: _vm.books_history.search.add_options.id,
+                expression: "books_history.search.add_options.id"
               }
             ],
             attrs: { type: "text", placeholder: " " },
-            domProps: { value: _vm.search.query },
+            domProps: { value: _vm.books_history.search.add_options.id },
             on: {
               input: function($event) {
                 if ($event.target.composing) {
                   return
                 }
-                _vm.$set(_vm.search, "query", $event.target.value)
+                _vm.$set(
+                  _vm.books_history.search.add_options,
+                  "id",
+                  $event.target.value
+                )
               }
             }
           }),
           _vm._v(" "),
           _c("label", { staticClass: "placeholder" }, [
-            _vm._v(_vm._s(_vm.$t("searching")))
+            _vm._v(_vm._s(_vm.$t("inventory_number")))
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "d-flex mt-2" }, [
+        _c("div", { staticClass: "pad w-100" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.books_history.search.add_options.author,
+                expression: "books_history.search.add_options.author"
+              }
+            ],
+            attrs: { type: "text", placeholder: " " },
+            domProps: { value: _vm.books_history.search.add_options.author },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(
+                  _vm.books_history.search.add_options,
+                  "author",
+                  $event.target.value
+                )
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("label", { staticClass: "placeholder" }, [
+            _vm._v(_vm._s(_vm.$t("author")))
           ])
         ]),
         _vm._v(" "),
+        _c("div", { staticClass: "pad w-100" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.books_history.search.add_options.title,
+                expression: "books_history.search.add_options.title"
+              }
+            ],
+            attrs: { type: "text", placeholder: " " },
+            domProps: { value: _vm.books_history.search.add_options.title },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(
+                  _vm.books_history.search.add_options,
+                  "title",
+                  $event.target.value
+                )
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("label", { staticClass: "placeholder" }, [
+            _vm._v(_vm._s(_vm.$t("title")))
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "d-flex justify-content-end" }, [
         _c("div", { staticClass: "pad col-1" }, [
           _c("button", { attrs: { type: "submit" } }, [
             _vm._v(_vm._s(_vm.$t("search")))
@@ -64452,7 +64564,7 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _vm.searching
+      _vm.books_history.searching
         ? _c(
             "div",
             [
@@ -64460,11 +64572,10 @@ var render = function() {
                 staticClass: "mt-5",
                 attrs: {
                   heads: _vm.heads,
-                  data: _vm.data.res,
-                  link: "/report/book-history",
-                  commit: "books_history",
-                  sortable: false,
-                  tableName: { countable: true, name: "books" }
+                  data: _vm.books_history.data.res,
+                  link: _vm.link,
+                  commit: _vm.commit,
+                  sortable: false
                 }
               })
             ],
@@ -64497,7 +64608,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "d-flex flex-folumn" }, [
+  return _c("div", { staticClass: "d-flex flex-column" }, [
     _c(
       "form",
       {
@@ -64516,18 +64627,24 @@ var render = function() {
               {
                 name: "model",
                 rawName: "v-model",
-                value: _vm.search.from,
-                expression: "search.from"
+                value: _vm.books_inv_number.search.add_options.inventory_no,
+                expression: "books_inv_number.search.add_options.inventory_no"
               }
             ],
             attrs: { type: "text", required: "" },
-            domProps: { value: _vm.search.from },
+            domProps: {
+              value: _vm.books_inv_number.search.add_options.inventory_no
+            },
             on: {
               input: function($event) {
                 if ($event.target.composing) {
                   return
                 }
-                _vm.$set(_vm.search, "from", $event.target.value)
+                _vm.$set(
+                  _vm.books_inv_number.search.add_options,
+                  "inventory_no",
+                  $event.target.value
+                )
               }
             }
           }),
@@ -64541,18 +64658,22 @@ var render = function() {
               {
                 name: "model",
                 rawName: "v-model",
-                value: _vm.search.count,
-                expression: "search.count"
+                value: _vm.books_inv_number.search.add_options.rownum,
+                expression: "books_inv_number.search.add_options.rownum"
               }
             ],
             attrs: { type: "text", required: "" },
-            domProps: { value: _vm.search.count },
+            domProps: { value: _vm.books_inv_number.search.add_options.rownum },
             on: {
               input: function($event) {
                 if ($event.target.composing) {
                   return
                 }
-                _vm.$set(_vm.search, "count", $event.target.value)
+                _vm.$set(
+                  _vm.books_inv_number.search.add_options,
+                  "rownum",
+                  $event.target.value
+                )
               }
             }
           }),
@@ -64576,7 +64697,7 @@ var render = function() {
       ]
     ),
     _vm._v(" "),
-    _vm.searching
+    _vm.books_inv_number.searching
       ? _c(
           "div",
           [
@@ -64584,13 +64705,12 @@ var render = function() {
               staticClass: "mt-5",
               attrs: {
                 heads: _vm.heads,
-                data: _vm.data.res,
-                link: "/report/inv-book",
-                commit: "books_inv_number",
+                data: _vm.books_inv_number.data.res,
+                link: _vm.link,
+                commit: _vm.commit,
                 sortable: false,
-                tableName: { countable: true, name: "books" },
                 clickables: false,
-                pagination: false
+                pagination: _vm.books_inv_number.pagination
               }
             }),
             _vm._v(" "),
