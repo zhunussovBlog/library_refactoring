@@ -18,7 +18,7 @@ class ShowController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $data = Index::index($request, new Item());
+        $data = Index::index($request, new Item(), ItemFields::getSortFields());
         return response()->json([
             'res' => $data
         ]);
