@@ -16,7 +16,7 @@ class Index
     {
         $perPage = $request->get('per_page') ?? 10;
         $orderBy = $request->get('order_by');
-        $orderMode = $request->get('order_mode');
+        $orderMode = $request->get('order_mode') ?? 'desc';
         $data = $query::defaultQuery();
 
         if (!empty($orderBy)) {
