@@ -121,6 +121,11 @@ export default {
 		pagination:true
 	},
 	most_read:{
+		search:{
+			add_options:{
+				borrow_date:{}
+			}
+		},
 		data:[],
 		searching:false,
 		sort_by:{},

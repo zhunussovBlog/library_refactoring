@@ -5540,6 +5540,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _components_common_Table__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../components/common/Table */ "./resources/js/admin/components/common/Table.vue");
 /* harmony import */ var _mixins_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../mixins/common */ "./resources/js/admin/mixins/common.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -5578,16 +5585,13 @@ __webpack_require__.r(__webpack_exports__);
  // mixins
 
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
     TableDiv: _components_common_Table__WEBPACK_IMPORTED_MODULE_0__.default
   },
   mixins: [_mixins_common__WEBPACK_IMPORTED_MODULE_1__.getResults],
-  computed: {
-    most_read: function most_read() {
-      return this.$store.getters.most_read;
-    }
-  },
+  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_2__.mapGetters)(['most_read'])),
   data: function data() {
     return {
       heads: [{
@@ -5606,36 +5610,31 @@ __webpack_require__.r(__webpack_exports__);
         name: 'count_issue',
         link: 'count_issue'
       }],
-      most_read_data: {},
-      request: {
-        from_date: '',
-        to_date: ''
-      }
+      link: 'most-read',
+      commit: 'most_read'
     };
   },
   methods: {
     search: function search() {
       this.$store.dispatch('setStore', {
-        label: 'most_read',
+        label: this.commit,
         data: {
           page: 0
         }
       });
-      this.getResults('/report/most-read', this.request, 'most_read');
+      this.getResults(this.link, this.commit);
     },
     getInitData: function getInitData() {
-      var _this = this;
-
       var request = {};
       var now = new Date();
-      request.from_date = '01.08.2020';
-      request.to_date = now.getDate() + '.' + now.getMonth() + '.' + now.getFullYear();
-      this.$http.post('/report/most-read/search', request).then(function (response) {
-        _this.most_read_data = response.data.res;
-      });
+      this.search();
+    },
+    getSearchFields: function getSearchFields() {
+      this.$http.get(this.link + '/search-fields');
     }
   },
   created: function created() {
+    this.getSearchFields();
     this.getInitData();
   }
 });
@@ -7577,6 +7576,11 @@ __webpack_require__.r(__webpack_exports__);
     pagination: true
   },
   most_read: {
+    search: {
+      add_options: {
+        borrow_date: {}
+      }
+    },
     data: [],
     searching: false,
     sort_by: {},
@@ -64795,18 +64799,24 @@ var render = function() {
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.request.from_date,
-                    expression: "request.from_date"
+                    value: _vm.most_read.search.add_options.borrow_date.from,
+                    expression: "most_read.search.add_options.borrow_date.from"
                   }
                 ],
                 attrs: { type: "date" },
-                domProps: { value: _vm.request.from_date },
+                domProps: {
+                  value: _vm.most_read.search.add_options.borrow_date.from
+                },
                 on: {
                   input: function($event) {
                     if ($event.target.composing) {
                       return
                     }
-                    _vm.$set(_vm.request, "from_date", $event.target.value)
+                    _vm.$set(
+                      _vm.most_read.search.add_options.borrow_date,
+                      "from",
+                      $event.target.value
+                    )
                   }
                 }
               }),
@@ -64820,18 +64830,24 @@ var render = function() {
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.request.to_date,
-                    expression: "request.to_date"
+                    value: _vm.most_read.search.add_options.borrow_date.to,
+                    expression: "most_read.search.add_options.borrow_date.to"
                   }
                 ],
                 attrs: { type: "date" },
-                domProps: { value: _vm.request.to_date },
+                domProps: {
+                  value: _vm.most_read.search.add_options.borrow_date.to
+                },
                 on: {
                   input: function($event) {
                     if ($event.target.composing) {
                       return
                     }
-                    _vm.$set(_vm.request, "to_date", $event.target.value)
+                    _vm.$set(
+                      _vm.most_read.search.add_options.borrow_date,
+                      "to",
+                      $event.target.value
+                    )
                   }
                 }
               }),
@@ -64872,8 +64888,8 @@ var render = function() {
                   attrs: {
                     heads: _vm.heads,
                     data: _vm.most_read.data.res,
-                    link: "/report/most-read",
-                    commit: "most_read"
+                    link: _vm.link,
+                    commit: _vm.commit
                   }
                 })
               ],

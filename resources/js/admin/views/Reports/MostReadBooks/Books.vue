@@ -5,11 +5,11 @@
 			<div class="d-flex align-items-center mt-2">
 				<div class="d-flex flex-fill">
 					<div class="pad flex-fill">
-						<input type="date"  v-model="request.from_date"/>
+						<input type="date"  v-model="most_read.search.add_options.borrow_date.from"/>
 						<label class="placeholder">From date</label>
 					</div>
 					<div class="pad flex-fill">
-						<input type="date" 	v-model="request.to_date"/>
+						<input type="date" 	v-model="most_read.search.add_options.borrow_date.to"/>
 						<label class="placeholder">To date</label>
 					</div>
 				</div>
@@ -25,8 +25,8 @@
 				class="margin-top" 
 				:heads="heads"
 				:data="most_read.data.res" 
-				link="/report/most-read" 
-				commit="most_read"
+				:link="link" 
+				:commit="commit"
 				/>
 			</div>
 		</form>
@@ -38,15 +38,15 @@ import TableDiv from '../../../components/common/Table'
 
 // mixins
 import {getResults} from '../../../mixins/common'
+
+import {mapGetters} from 'vuex'
 export default {
 	components:{
 		TableDiv
 	},
 	mixins:[getResults],
 	computed:{
-		most_read(){
-			return this.$store.getters.most_read;
-		}
+		...mapGetters(['most_read'])
 	},
 	data(){
 		return{
@@ -57,29 +57,27 @@ export default {
 			{name:'isbn',link:'isbn'},
 			{name:'count_issue',link:'count_issue'},
 			],
-			most_read_data:{},
-			request:{
-				from_date:'',
-				to_date:''
-			}
+			link:'most-read',
+			commit:'most_read'
 		}
 	},
 	methods:{
 		search(){
-			this.$store.dispatch('setStore',{label:'most_read',data:{page:0}});
-			this.getResults('/report/most-read',this.request,'most_read');
+			this.$store.dispatch('setStore',{label:this.commit,data:{page:0}});
+			this.getResults(this.link,this.commit);
 		},
 		getInitData(){
 			let request={};
 			let now=new Date();
-			request.from_date='01.08.2020';
-			request.to_date=now.getDate()+'.'+now.getMonth()+'.'+now.getFullYear();
-			this.$http.post('/report/most-read/search',request).then(response=>{
-				this.most_read_data=response.data.res;
-			})
+			this.search();
+			
+		},
+		getSearchFields(){
+			this.$http.get(this.link+'/search-fields');
 		}
 	},
 	created(){
+		this.getSearchFields();
 		this.getInitData();
 	}
 }		
