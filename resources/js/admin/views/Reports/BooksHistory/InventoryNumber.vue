@@ -33,10 +33,10 @@ import Table from '../../../components/common/Table'
 import PulseLoader from 'vue-spinner/src/PulseLoader'
 
 //mixins
-import {getResults} from '../../../mixins/common'
+import {getResults,download_file} from '../../../mixins/common'
 
 export default{
-	mixins:[getResults],
+	mixins:[getResults,download_file],
 	components:{'table-div':Table,PulseLoader},
 	computed:{
 		data(){
@@ -75,25 +75,15 @@ export default{
 		print(){
 			this.$store.commit('setFullPageLoading',true);	
 			this.$http.get('/report/inv-book/print/'+this.$i18n.locale,{responseType:'blob'}).then(response=>{
-				const url = window.URL.createObjectURL(new Blob([response.data]));
-				const link = document.createElement('a');
-				link.href = url;
-				link.setAttribute('download', 'media.pdf');
-				document.querySelector('#app').appendChild(link);
+				this.download_file(response,'media.pdf');
 				this.$store.commit('setFullPageLoading',false);	
-				link.click();
 			})
 		},
 		exportToExcel(){
 			this.$store.commit('setFullPageLoading',true);	
 			this.$http.get('/report/inv-book/export/'+this.$i18n.locale,{responseType:'blob'}).then(response=>{
-				const url = window.URL.createObjectURL(new Blob([response.data]));
-				const link = document.createElement('a');
-				link.href = url;
-				link.setAttribute('download', 'media.xlsx');
-				document.querySelector('#app').appendChild(link);
+				this.download_file(response,'media.xlsx');
 				this.$store.commit('setFullPageLoading',false);	
-				link.click()
 			})
 		}
 	}

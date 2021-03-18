@@ -53,6 +53,7 @@
 	"desc":"Descending",
 	"refresh":"Refresh",
 	"choose":"Choose",
+	"choose_search_mode":"Choose search mode",
 	"save_&_search":"Save and search",
 	"error": "Error !",
 
@@ -60,6 +61,7 @@
 	"item_filter":"Items filter",
 	"search_batches":"Search batches",
 	"search_items":"Search items",
+	"search_barcodes":"Search barcodes",
 	"batches_number":"Batch number",
 	"batches_by":"batch number",
 	"add_batch":"Add batch",
@@ -110,6 +112,7 @@
 	"beginning":"Start",
 	"end":"End",
 	"currency":"Currency",
+	"author-title":"Author - title",
 
 	"name":"Name",
 	"name_by":"name",

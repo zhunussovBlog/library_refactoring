@@ -34,7 +34,21 @@ export const getResults={
 
 			//validating search_options for non null
 			if(search.search_options != null){
-				search_options=search.search_options.filter(item=>item.value!=null);
+				search_options=search.search_options.filter(item=>{
+					let searching=false;
+					let value=item.value;
+					if(typeof value == "object" && value!=null){
+						if(Object.keys(value).length>0){
+							searching = true;
+						}
+					}
+					else{
+						if(value){
+							searching=true
+						}
+					}
+					return searching
+				});
 			}
 			
 			request.per_page=this.$store.state[commit].per_page;
@@ -65,7 +79,7 @@ export const getAllData={
 	mixins:[message_error],
 	methods:{
 		getAllData(link,commit,max){
-			this.$store.commit('setFullPageLoading',true);	
+			this.$store.commit('setFullPageLoading',true);
 			
 			let max_num='';
 			if(max){
@@ -97,29 +111,51 @@ export const last={
 			this.$store.commit('setFullPageLoading',true);
 
 			let store=this.$store.state[commit]
-			let changes='?';
-			
-			if(store.sort_by.order_by){
-				changes+='order_by='+store.sort_by.order_by;
-			}
-			if(store.sort_by.order_mode){
-				changes+='&order_mode='+store.sort_by.order_mode;
-			}
-			if(store.per_page){
-				changes+='&perPage='+store.per_page;
-			}
-			if(page){
-				changes+='&page='+ page;
-			}
-			let func=(response)=>{
-				this.$store.dispatch('setStore',{label:commit,data:{data:response.data,page:page ? page : 1}});
-				this.$store.commit('setFullPageLoading',false);
-			}
-			if(store.request.mode=="get"){
-				this.$http.get(link+store.request.link+changes).then(response=>{func(response)})
+			let changes='';
+
+			if(store.request.mode=="post"){
+				changes=store.request.body
+				if(store.sort_by.order_by){
+					changes.order_by=store.sort_by.order_by;
+				}
+				if(store.sort_by.order_mode){
+					changes.order_mode=store.sort_by.order_mode;
+				}
+				if(store.per_page){
+					changes.per_page=store.per_page;
+				}
+				if(page){
+					changes.page=page;
+				}
+
+				this.$http.post(link+store.request.link,changes).then(response=>{
+					this.$store.dispatch('setStore',{label:commit,data:{data:response.data,page:page ? page : 1}});
+				}).then(()=>{
+					this.$store.commit('setFullPageLoading',false);
+				});
 			}
 			else{
-				this.$http.post(link+store.request.link+changes,store.request.body).then(response=>{func(response)})
+				changes='?'
+
+				if(store.sort_by.order_by){
+					changes+='order_by='+store.sort_by.order_by;
+				}
+				if(store.sort_by.order_mode){
+					changes+='&order_mode='+store.sort_by.order_mode;
+				}
+				if(store.per_page){
+					changes+='&perPage='+store.per_page;
+				}
+				if(page){
+					changes+='&page='+ page;
+				}
+
+				this.$http.get(link+store.request.link+changes).then(response=>{
+					this.$store.dispatch('setStore',{label:commit,data:{data:response.data,page:page ? page : 1}});
+				}).catch((error)=>{
+				}).then(()=>{
+					this.$store.commit('setFullPageLoading',false);
+				});
 			}
 		}
 	}
@@ -133,10 +169,10 @@ export const last_created={
 					link:'/last-created',
 					mode:'get'
 				}
-				console.log(response)
 				this.$store.dispatch('setStore',{label:commit,data:{data:response.data,pagination:false,searching:true,request:s_request}});
+			}).catch((error)=>{
+			}).then(()=>{
 				this.$store.commit('setFullPageLoading',false);
-				console.log(this.$store.getters[commit]);
 			})
 		}
 	}
@@ -184,6 +220,18 @@ export const edit_it={
 			}).then(()=>{
 				this.$store.commit('setFullPageLoading',false);
 			})
+		}
+	}
+}
+export const download_file={
+	methods:{
+		download_file(response,name){
+			const url = window.URL.createObjectURL(new Blob([response.data]));
+			const link = document.createElement('a');
+			link.href = url;
+			link.setAttribute('download', name);
+			document.querySelector('#app').appendChild(link);
+			link.click();
 		}
 	}
 }

@@ -4379,6 +4379,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_common_Table__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../components/common/Table */ "./resources/js/admin/components/common/Table.vue");
 /* harmony import */ var vue_spinner_src_PulseLoader__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-spinner/src/PulseLoader */ "./node_modules/vue-spinner/src/PulseLoader.vue");
 /* harmony import */ var _mixins_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../mixins/common */ "./resources/js/admin/mixins/common.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -4435,35 +4448,26 @@ __webpack_require__.r(__webpack_exports__);
  //mixins
 
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  mixins: [_mixins_common__WEBPACK_IMPORTED_MODULE_4__.getResults],
+  mixins: [_mixins_common__WEBPACK_IMPORTED_MODULE_4__.getResults, _mixins_common__WEBPACK_IMPORTED_MODULE_4__.download_file],
   components: {
     Back: _components_common_Back__WEBPACK_IMPORTED_MODULE_0__.default,
     Dropdown: _components_common_Dropdown__WEBPACK_IMPORTED_MODULE_1__.default,
     'table-div': _components_common_Table__WEBPACK_IMPORTED_MODULE_2__.default,
     PulseLoader: vue_spinner_src_PulseLoader__WEBPACK_IMPORTED_MODULE_3__.default
   },
-  computed: {
-    data: function data() {
-      return this.$store.getters.print_barcode.data;
-    },
-    searching: function searching() {
-      return this.$store.getters.print_barcode.searching;
-    }
-  },
+  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_5__.mapGetters)(['print_barcode'])),
   data: function data() {
     return {
-      loading: false,
       types: [],
-      search: {
-        type: 'barcode'
-      },
+      type: 'barcode',
       heads: [{
         name: 'barcode',
         link: 'barcode'
       }, {
         name: 'inventory_number',
-        link: 'inv_id'
+        link: 'id'
       }, {
         name: 'titles',
         link: 'title'
@@ -4476,36 +4480,39 @@ __webpack_require__.r(__webpack_exports__);
         button_title: 'print',
         func: this.printIt
       },
+      link: '/barcode',
+      commit: 'print_barcode',
       barcodes: []
     };
   },
   methods: {
     changeMode: function changeMode(mode) {
-      this.search.type = mode;
-    },
-    setLoading: function setLoading(bool) {
-      this.loading = bool;
-    },
-    setSearch: function setSearch(search) {
-      this.search = search;
+      this.type = mode;
     },
     loadResults: function loadResults() {
       this.$store.dispatch('setStore', {
-        label: 'print_barcode',
+        label: this.commit,
         data: {
           page: 0
         }
       });
-      this.getResults(this.loading, this.setLoading, '/report/barcode', this.search, 'print_barcode');
+      this.getResults(this.link, this.commit);
     },
     printIt: function printIt(barcodes) {
-      console.log(barcodes); // this.$http.post('/report/barcode/print',{barcodes:barcodes}).then(response=>{
-      // 	console.log(response);
-      // simple pirnt implementation 
-      // let w=window.open("www.url.com/pdf"); 
-      // w.print(); 
-      // w.close();
-      // })
+      var _this = this;
+
+      var inventories = barcodes.map(function (barcode) {
+        return barcode.id;
+      });
+      this.$http.post(this.link + '/print', {
+        inventories: inventories
+      }, {
+        responseType: 'blob'
+      }).then(function (response) {
+        _this.download_file(response, 'media.pdf');
+
+        _this.$store.commit('setFullPageLoading', false);
+      });
     }
   }
 });
@@ -5397,7 +5404,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  mixins: [_mixins_common__WEBPACK_IMPORTED_MODULE_2__.getResults],
+  mixins: [_mixins_common__WEBPACK_IMPORTED_MODULE_2__.getResults, _mixins_common__WEBPACK_IMPORTED_MODULE_2__.download_file],
   components: {
     'table-div': _components_common_Table__WEBPACK_IMPORTED_MODULE_0__.default,
     PulseLoader: vue_spinner_src_PulseLoader__WEBPACK_IMPORTED_MODULE_1__.default
@@ -5468,15 +5475,9 @@ __webpack_require__.r(__webpack_exports__);
       this.$http.get('/report/inv-book/print/' + this.$i18n.locale, {
         responseType: 'blob'
       }).then(function (response) {
-        var url = window.URL.createObjectURL(new Blob([response.data]));
-        var link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'media.pdf');
-        document.querySelector('#app').appendChild(link);
+        _this.download_file(response, 'media.pdf');
 
         _this.$store.commit('setFullPageLoading', false);
-
-        link.click();
       });
     },
     exportToExcel: function exportToExcel() {
@@ -5486,15 +5487,9 @@ __webpack_require__.r(__webpack_exports__);
       this.$http.get('/report/inv-book/export/' + this.$i18n.locale, {
         responseType: 'blob'
       }).then(function (response) {
-        var url = window.URL.createObjectURL(new Blob([response.data]));
-        var link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'media.xlsx');
-        document.querySelector('#app').appendChild(link);
+        _this2.download_file(response, 'media.xlsx');
 
         _this2.$store.commit('setFullPageLoading', false);
-
-        link.click();
       });
     }
   }
@@ -6607,7 +6602,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "last": () => (/* binding */ last),
 /* harmony export */   "last_created": () => (/* binding */ last_created),
 /* harmony export */   "create_it": () => (/* binding */ create_it),
-/* harmony export */   "edit_it": () => (/* binding */ edit_it)
+/* harmony export */   "edit_it": () => (/* binding */ edit_it),
+/* harmony export */   "download_file": () => (/* binding */ download_file)
 /* harmony export */ });
 /* harmony import */ var _messages__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./messages */ "./resources/js/admin/mixins/messages.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -6651,7 +6647,20 @@ var getResults = {
 
       if (search.search_options != null) {
         search_options = search.search_options.filter(function (item) {
-          return item.value != null;
+          var searching = false;
+          var value = item.value;
+
+          if (_typeof(value) == "object" && value != null) {
+            if (Object.keys(value).length > 0) {
+              searching = true;
+            }
+          } else {
+            if (value) {
+              searching = true;
+            }
+          }
+
+          return searching;
         });
       }
 
@@ -6747,43 +6756,67 @@ var last = {
 
       this.$store.commit('setFullPageLoading', true);
       var store = this.$store.state[commit];
-      var changes = '?';
+      var changes = '';
 
-      if (store.sort_by.order_by) {
-        changes += 'order_by=' + store.sort_by.order_by;
-      }
+      if (store.request.mode == "post") {
+        changes = store.request.body;
 
-      if (store.sort_by.order_mode) {
-        changes += '&order_mode=' + store.sort_by.order_mode;
-      }
+        if (store.sort_by.order_by) {
+          changes.order_by = store.sort_by.order_by;
+        }
 
-      if (store.per_page) {
-        changes += '&perPage=' + store.per_page;
-      }
+        if (store.sort_by.order_mode) {
+          changes.order_mode = store.sort_by.order_mode;
+        }
 
-      if (page) {
-        changes += '&page=' + page;
-      }
+        if (store.per_page) {
+          changes.per_page = store.per_page;
+        }
 
-      var func = function func(response) {
-        _this3.$store.dispatch('setStore', {
-          label: commit,
-          data: {
-            data: response.data,
-            page: page ? page : 1
-          }
-        });
+        if (page) {
+          changes.page = page;
+        }
 
-        _this3.$store.commit('setFullPageLoading', false);
-      };
-
-      if (store.request.mode == "get") {
-        this.$http.get(link + store.request.link + changes).then(function (response) {
-          func(response);
+        this.$http.post(link + store.request.link, changes).then(function (response) {
+          _this3.$store.dispatch('setStore', {
+            label: commit,
+            data: {
+              data: response.data,
+              page: page ? page : 1
+            }
+          });
+        }).then(function () {
+          _this3.$store.commit('setFullPageLoading', false);
         });
       } else {
-        this.$http.post(link + store.request.link + changes, store.request.body).then(function (response) {
-          func(response);
+        changes = '?';
+
+        if (store.sort_by.order_by) {
+          changes += 'order_by=' + store.sort_by.order_by;
+        }
+
+        if (store.sort_by.order_mode) {
+          changes += '&order_mode=' + store.sort_by.order_mode;
+        }
+
+        if (store.per_page) {
+          changes += '&perPage=' + store.per_page;
+        }
+
+        if (page) {
+          changes += '&page=' + page;
+        }
+
+        this.$http.get(link + store.request.link + changes).then(function (response) {
+          _this3.$store.dispatch('setStore', {
+            label: commit,
+            data: {
+              data: response.data,
+              page: page ? page : 1
+            }
+          });
+        })["catch"](function (error) {}).then(function () {
+          _this3.$store.commit('setFullPageLoading', false);
         });
       }
     }
@@ -6800,7 +6833,6 @@ var last_created = {
           link: '/last-created',
           mode: 'get'
         };
-        console.log(response);
 
         _this4.$store.dispatch('setStore', {
           label: commit,
@@ -6811,10 +6843,8 @@ var last_created = {
             request: s_request
           }
         });
-
+      })["catch"](function (error) {}).then(function () {
         _this4.$store.commit('setFullPageLoading', false);
-
-        console.log(_this4.$store.getters[commit]);
       });
     }
   }
@@ -6872,6 +6902,18 @@ var edit_it = {
       }).then(function () {
         _this6.$store.commit('setFullPageLoading', false);
       });
+    }
+  }
+};
+var download_file = {
+  methods: {
+    download_file: function download_file(response, name) {
+      var url = window.URL.createObjectURL(new Blob([response.data]));
+      var link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', name);
+      document.querySelector('#app').appendChild(link);
+      link.click();
     }
   }
 };
@@ -7253,38 +7295,6 @@ __webpack_require__.r(__webpack_exports__);
     for (var key in data.data) {
       store.state[data.label][key] = data.data[key];
     }
-  },
-  resetBatches: function resetBatches(store) {
-    store.state.batches.search = {
-      batch_id: null,
-      sup_id: null,
-      status: null,
-      statuses: [],
-      until_cost: null,
-      from_cost: null,
-      start_date: null,
-      end_date: null
-    };
-  },
-  resetItems: function resetItems(store) {
-    store.state.items.search = {
-      search_options: [{
-        key: 'author',
-        operator: 'and'
-      }],
-      publisher_id: null,
-      pub_year: null,
-      pub_city: null,
-      supplier_id: null,
-      sup_type: null,
-      until_cost: null,
-      from_cost: null,
-      start_date: null,
-      end_date: null,
-      item_type: null,
-      user_cid: null,
-      location: null
-    };
   }
 });
 
@@ -7464,6 +7474,10 @@ __webpack_require__.r(__webpack_exports__);
         operator: 'and'
       }]
     },
+    search_default: [{
+      key: 'author',
+      operator: 'and'
+    }],
     search_fields: [],
     data: [],
     searching: false,
@@ -7560,6 +7574,24 @@ __webpack_require__.r(__webpack_exports__);
     pagination: true
   },
   print_barcode: {
+    search: {
+      search_options: [{
+        key: 'barcode',
+        value: {}
+      }, {
+        key: 'title'
+      }, {
+        key: 'author'
+      }]
+    },
+    search_default: [{
+      key: 'barcode',
+      value: {}
+    }, {
+      key: 'title'
+    }, {
+      key: 'author'
+    }],
     data: [],
     searching: false,
     sort_by: {},
@@ -63224,7 +63256,7 @@ var render = function() {
   return _c("div", { staticClass: "d-flex" }, [
     _c(
       "div",
-      { staticClass: "bg-white mt-2 w-100 p-2 px-3" },
+      { staticClass: "bg-white mt-2 flex-fill p-2 px-3" },
       [
         _c("Back"),
         _vm._v(" "),
@@ -63241,176 +63273,190 @@ var render = function() {
           },
           [
             _c("div", { staticClass: "font-size-18 font-weight-bold" }, [
-              _vm._v("Search Barcodes")
+              _vm._v(_vm._s(_vm.$t("search_barcodes")))
             ]),
             _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "d-flex align-items-center w-100" },
-              [
-                _c("div", { staticClass: "text-no-wrap" }, [
-                  _vm._v(" Choose search mode: ")
+            _c("div", { staticClass: "d-flex align-items-center flex-fill" }, [
+              _c("div", { staticClass: "d-flex flex-column flex-fill" }, [
+                _c("span", { staticClass: "font-weight-bold mt-3" }, [
+                  _vm._v(_vm._s(_vm.$t("barcode")))
                 ]),
                 _vm._v(" "),
-                _c("Dropdown", {
-                  staticClass: "ml-2",
-                  attrs: {
-                    title: _vm.search.type,
-                    items: ["barcode", "author-title"],
-                    itemOnClick: _vm.changeMode,
-                    dropdownClasses: "dropdown-left"
-                  }
-                }),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "d-flex align-items-center ml-2 w-100" },
-                  [
-                    _vm.search.type == "barcode"
-                      ? _c("div", { staticClass: "d-flex w-100" }, [
-                          _c("div", { staticClass: "pad w-100" }, [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.search.first_barcode,
-                                  expression: "search.first_barcode"
-                                }
-                              ],
-                              attrs: { type: "text" },
-                              domProps: { value: _vm.search.first_barcode },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.search,
-                                    "first_barcode",
-                                    $event.target.value
-                                  )
-                                }
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("label", { staticClass: "placeholder" }, [
-                              _vm._v("From")
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "pad w-100" }, [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.search.last_barcode,
-                                  expression: "search.last_barcode"
-                                }
-                              ],
-                              attrs: { type: "text" },
-                              domProps: { value: _vm.search.last_barcode },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.search,
-                                    "last_barcode",
-                                    $event.target.value
-                                  )
-                                }
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("label", { staticClass: "placeholder" }, [
-                              _vm._v("To")
-                            ])
-                          ])
-                        ])
-                      : _c("div", { staticClass: "d-flex w-100" }, [
-                          _c("div", { staticClass: "pad w-100" }, [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.search.title,
-                                  expression: "search.title"
-                                }
-                              ],
-                              attrs: { type: "text" },
-                              domProps: { value: _vm.search.title },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.search,
-                                    "title",
-                                    $event.target.value
-                                  )
-                                }
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("label", { staticClass: "placeholder" }, [
-                              _vm._v("Title")
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "pad w-100" }, [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.search.author,
-                                  expression: "search.author"
-                                }
-                              ],
-                              attrs: { type: "text" },
-                              domProps: { value: _vm.search.author },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.search,
-                                    "author",
-                                    $event.target.value
-                                  )
-                                }
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("label", { staticClass: "placeholder" }, [
-                              _vm._v("Author")
-                            ])
-                          ])
-                        ]),
+                _c("div", { staticClass: "d-flex flex-fill mt-2" }, [
+                  _c("div", { staticClass: "position-relative flex-fill" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value:
+                            _vm.print_barcode.search.search_options[0].value
+                              .from,
+                          expression:
+                            "print_barcode.search.search_options[0].value.from"
+                        }
+                      ],
+                      attrs: { type: "text" },
+                      domProps: {
+                        value:
+                          _vm.print_barcode.search.search_options[0].value.from
+                      },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.print_barcode.search.search_options[0].value,
+                            "from",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    }),
                     _vm._v(" "),
-                    _c("div", { staticClass: "pad" }, [
-                      _c("button", { attrs: { type: "submit" } }, [
-                        _vm._v(_vm._s(_vm.$t("search")))
+                    _c("label", { staticClass: "placeholder" }, [
+                      _vm._v(_vm._s(_vm.$t("from")))
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "position-relative  ml-2 flex-fill" },
+                    [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value:
+                              _vm.print_barcode.search.search_options[0].value
+                                .to,
+                            expression:
+                              "print_barcode.search.search_options[0].value.to"
+                          }
+                        ],
+                        attrs: { type: "text" },
+                        domProps: {
+                          value:
+                            _vm.print_barcode.search.search_options[0].value.to
+                        },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.print_barcode.search.search_options[0].value,
+                              "to",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { staticClass: "placeholder" }, [
+                        _vm._v(_vm._s(_vm.$t("until")))
                       ])
-                    ]),
+                    ]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("span", { staticClass: "font-weight-bold mt-3" }, [
+                  _vm._v(_vm._s(_vm.$t("author-title")))
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "d-flex flex-fill mt-2" }, [
+                  _c("div", { staticClass: "position-relative flex-fill" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value:
+                            _vm.print_barcode.search.search_options[1].value,
+                          expression:
+                            "print_barcode.search.search_options[1].value"
+                        }
+                      ],
+                      attrs: { type: "text" },
+                      domProps: {
+                        value: _vm.print_barcode.search.search_options[1].value
+                      },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.print_barcode.search.search_options[1],
+                            "value",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    }),
                     _vm._v(" "),
-                    _vm._m(0)
-                  ]
-                )
-              ],
-              1
-            )
+                    _c("label", { staticClass: "placeholder" }, [
+                      _vm._v(_vm._s(_vm.$t("title", 1)))
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "position-relative ml-2 flex-fill" },
+                    [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value:
+                              _vm.print_barcode.search.search_options[2].value,
+                            expression:
+                              "print_barcode.search.search_options[2].value"
+                          }
+                        ],
+                        attrs: { type: "text" },
+                        domProps: {
+                          value:
+                            _vm.print_barcode.search.search_options[2].value
+                        },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.print_barcode.search.search_options[2],
+                              "value",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { staticClass: "placeholder" }, [
+                        _vm._v(_vm._s(_vm.$t("author")))
+                      ])
+                    ]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "mt-2 d-flex justify-content-end" }, [
+                  _c(
+                    "button",
+                    { staticClass: "width-unset", attrs: { type: "submit" } },
+                    [_vm._v(_vm._s(_vm.$t("search")))]
+                  )
+                ])
+              ])
+            ])
           ]
         ),
         _vm._v(" "),
         _c("div", { staticClass: "mt-5" }, [
-          _vm.searching
+          _vm.print_barcode.searching
             ? _c(
                 "div",
                 [
@@ -63418,13 +63464,13 @@ var render = function() {
                     staticClass: "mt-5",
                     attrs: {
                       heads: _vm.heads,
-                      data: _vm.data.res,
-                      link: "/report/barcode",
-                      commit: "print_barcode",
-                      sortable: false,
+                      data: _vm.print_barcode.data.res,
                       selectable: _vm.selectable,
-                      pagination: false,
-                      clickables: false
+                      link: _vm.link,
+                      commit: _vm.commit,
+                      pagination: _vm.print_barcode.pagination,
+                      clickables: false,
+                      sortable: false
                     }
                   })
                 ],
@@ -63437,18 +63483,7 @@ var render = function() {
     )
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "pad" }, [
-      _c("button", { attrs: { type: "button" } }, [
-        _vm._v("Load all unprinted")
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -82205,7 +82240,7 @@ var index = {
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse("{\"ok\":\"OK\",\"acquisitions\":\"Acquisitions\",\"batches\":\"Batch | Batches\",\"items\":\"Item | Items\",\"publishers\":\"Publisher | Publishers\",\"suppliers\":\"Supplier | Suppliers\",\"table\":\"Table\",\"logout\":\"Logout\",\"search\":\"Search\",\"searching\":\"Search\",\"reset\":\"Reset\",\"load_all\":\"Load all data\",\"create\":\"Create\",\"count\":\"Count\",\"save\":\"Save\",\"cancel\":\"Cancel\",\"cost\":\"Cost\",\"from\":\"From\",\"until\":\"Until\",\"not_found\":\"No data found\",\"create_date\":\"Form fill date\",\"edit_date\":\"Form edit date\",\"results\":\"Results\",\"results_of\":\"results\",\"yes\":\"Yes\",\"no\":\"No\",\"edit\":\"Edit\",\"delete\":\"Delete\",\"show_more\":\"Details\",\"more\":\"More ...\",\"confirmation\":\"Are you sure you want to delete?\",\"sort_by\":\"Sort by\",\"search_by\":\"Search by {type}\",\"author_by\":\"author\",\"title_by\":\"title\",\"barcode_by\":\"barcode\",\"batch_id_by\":\"batch number\",\"inv_id_by\":\"inventory number\",\"isbn_by\":\"isbn\",\"and\":\"And\",\"or\":\"Or\",\"not\":\"Not\",\"per_page\":\"Results per page\",\"apply\":\"Apply\",\"showing_pages\":\"{from} - {to} out of {total}\",\"page\":\"Page\",\"previous\":\"Prev\",\"next\":\"Next\",\"move_to\":\"Move\",\"asc\":\"Ascending\",\"desc\":\"Descending\",\"refresh\":\"Refresh\",\"choose\":\"Choose\",\"save_&_search\":\"Save and search\",\"error\":\"Error !\",\"batch_filter\":\"Batches filter\",\"item_filter\":\"Items filter\",\"search_batches\":\"Search batches\",\"search_items\":\"Search items\",\"batches_number\":\"Batch number\",\"batches_by\":\"batch number\",\"add_batch\":\"Add batch\",\"add_item\":\"Add item\",\"create_batches\":\"Create batch\",\"create_items\":\"Create item\",\"create_supplier\":\"Create supplier\",\"create_publisher\":\"Create publisher\",\"edit_batches\":\"Edit batch\",\"edit_items\":\"Edit item\",\"edit_supplier\":\"Edit supplier\",\"edit_publisher\":\"Edit publisher\",\"recreate\":\"Re-create\",\"reCreate_items\":\"Re-create item\",\"type_of_supply\":\"Type of supply\",\"type_of_item\":\"Type of item\",\"quantity_items\":\"Quantity of items\",\"quantity_titles\":\"Quantity of titles\",\"document_number\":\"Document number\",\"contract_number\":\"Contract number\",\"inventory_number\":\"Inventory number\",\"inv_id\":\"Inventory number\",\"types\":\"Types\",\"filled_in\":\"Filled in\",\"made_actually\":\"Made acutally\",\"correct\":\"Correct\",\"titles_no_match\":\"The number of titles does not match\",\"items_no_match\":\"The number of items does not match\",\"add_input\":\"Add input +\",\"status\":\"Status\",\"invoice_date\":\"Invoice date\",\"by_contract\":\"By contract\",\"invoice_details\":\"Invoice details\",\"barcode\":\"Barcode\",\"isbn\":\"ISBN\",\"created_by\":\"Form filled by\",\"edited_by\":\"Form edited by\",\"titles\":\"Title | Titles\",\"title\":\"Title\",\"author\":\"Author\",\"year\":\"Year\",\"pub_year\":\"Publisher year\",\"pub_city\":\"Publisher city\",\"location\":\"Location\",\"fill_date\":\"Form fill date\",\"beginning\":\"Start\",\"end\":\"End\",\"currency\":\"Currency\",\"name\":\"Name\",\"name_by\":\"name\",\"commercial_name\":\"Commercial name\",\"bin\":\"BIN / IIN\",\"contact\":\"Contacts\",\"address\":\"Address\",\"email\":\"E-mail\",\"phone\":\"Phone number\",\"fax\":\"Fax\",\"service_desk\":\"Service desk\",\"users\":\"Users\",\"books\":\"Books history\",\"search_user\":\"Search user\",\"type\":\"Type\",\"student\":\"Student\",\"employee\":\"Staff\",\"all\":\"All\",\"username\":\"Username\",\"user_id\":\"User ID\",\"user_id_user\":\"User ID (or name || surname)\",\"username_user\":\"Username (or name || surname)\",\"surname\":\"Surname\",\"section\":\"Section\",\"serve\":\"Book issuance\",\"check_in\":\"Check in\",\"search_material\":\"Search material\",\"user_info\":\"User information\",\"full_name\":\"Full name\",\"degree\":\"Degree\",\"class\":\"Year\",\"faculty\":\"Faculty\",\"program\":\"Program\",\"id\":\"ID\",\"mobile\":\"Phone number\",\"more_info\":\"More details\",\"select_all\":\"Select all ( {num} selected )\",\"delivery_date\":\"Delivery date\",\"due_date\":\"Due date\",\"issue_date\":\"Issue date\",\"borrow_date\":\"Borrow date\",\"last_user_borrowed\":\"Last user\",\"give_material\":\"Give material\",\"hesab_id\":\"Batch ID\",\"batch_id\":\"Batch Id\",\"items_no\":\"Quantity of items\",\"titles_no\":\"Quantity of titles\",\"receive_date\":\"Form fill date\",\"supplier_id\":\"Supplier ID\",\"supplier_name\":\"Supplier name\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"Publisher ID\",\"com_name\":\"Commercial name\",\"reports\":\"Reports\",\"attendance\":\"Attendance\",\"mrbooks\":\"Most read books\",\"print\":\"Print barcode\"}");
+module.exports = JSON.parse("{\"ok\":\"OK\",\"acquisitions\":\"Acquisitions\",\"batches\":\"Batch | Batches\",\"items\":\"Item | Items\",\"publishers\":\"Publisher | Publishers\",\"suppliers\":\"Supplier | Suppliers\",\"table\":\"Table\",\"logout\":\"Logout\",\"search\":\"Search\",\"searching\":\"Search\",\"reset\":\"Reset\",\"load_all\":\"Load all data\",\"create\":\"Create\",\"count\":\"Count\",\"save\":\"Save\",\"cancel\":\"Cancel\",\"cost\":\"Cost\",\"from\":\"From\",\"until\":\"Until\",\"not_found\":\"No data found\",\"create_date\":\"Form fill date\",\"edit_date\":\"Form edit date\",\"results\":\"Results\",\"results_of\":\"results\",\"yes\":\"Yes\",\"no\":\"No\",\"edit\":\"Edit\",\"delete\":\"Delete\",\"show_more\":\"Details\",\"more\":\"More ...\",\"confirmation\":\"Are you sure you want to delete?\",\"sort_by\":\"Sort by\",\"search_by\":\"Search by {type}\",\"author_by\":\"author\",\"title_by\":\"title\",\"barcode_by\":\"barcode\",\"batch_id_by\":\"batch number\",\"inv_id_by\":\"inventory number\",\"isbn_by\":\"isbn\",\"and\":\"And\",\"or\":\"Or\",\"not\":\"Not\",\"per_page\":\"Results per page\",\"apply\":\"Apply\",\"showing_pages\":\"{from} - {to} out of {total}\",\"page\":\"Page\",\"previous\":\"Prev\",\"next\":\"Next\",\"move_to\":\"Move\",\"asc\":\"Ascending\",\"desc\":\"Descending\",\"refresh\":\"Refresh\",\"choose\":\"Choose\",\"choose_search_mode\":\"Choose search mode\",\"save_&_search\":\"Save and search\",\"error\":\"Error !\",\"batch_filter\":\"Batches filter\",\"item_filter\":\"Items filter\",\"search_batches\":\"Search batches\",\"search_items\":\"Search items\",\"search_barcodes\":\"Search barcodes\",\"batches_number\":\"Batch number\",\"batches_by\":\"batch number\",\"add_batch\":\"Add batch\",\"add_item\":\"Add item\",\"create_batches\":\"Create batch\",\"create_items\":\"Create item\",\"create_supplier\":\"Create supplier\",\"create_publisher\":\"Create publisher\",\"edit_batches\":\"Edit batch\",\"edit_items\":\"Edit item\",\"edit_supplier\":\"Edit supplier\",\"edit_publisher\":\"Edit publisher\",\"recreate\":\"Re-create\",\"reCreate_items\":\"Re-create item\",\"type_of_supply\":\"Type of supply\",\"type_of_item\":\"Type of item\",\"quantity_items\":\"Quantity of items\",\"quantity_titles\":\"Quantity of titles\",\"document_number\":\"Document number\",\"contract_number\":\"Contract number\",\"inventory_number\":\"Inventory number\",\"inv_id\":\"Inventory number\",\"types\":\"Types\",\"filled_in\":\"Filled in\",\"made_actually\":\"Made acutally\",\"correct\":\"Correct\",\"titles_no_match\":\"The number of titles does not match\",\"items_no_match\":\"The number of items does not match\",\"add_input\":\"Add input +\",\"status\":\"Status\",\"invoice_date\":\"Invoice date\",\"by_contract\":\"By contract\",\"invoice_details\":\"Invoice details\",\"barcode\":\"Barcode\",\"isbn\":\"ISBN\",\"created_by\":\"Form filled by\",\"edited_by\":\"Form edited by\",\"titles\":\"Title | Titles\",\"title\":\"Title\",\"author\":\"Author\",\"year\":\"Year\",\"pub_year\":\"Publisher year\",\"pub_city\":\"Publisher city\",\"location\":\"Location\",\"fill_date\":\"Form fill date\",\"beginning\":\"Start\",\"end\":\"End\",\"currency\":\"Currency\",\"author-title\":\"Author - title\",\"name\":\"Name\",\"name_by\":\"name\",\"commercial_name\":\"Commercial name\",\"bin\":\"BIN / IIN\",\"contact\":\"Contacts\",\"address\":\"Address\",\"email\":\"E-mail\",\"phone\":\"Phone number\",\"fax\":\"Fax\",\"service_desk\":\"Service desk\",\"users\":\"Users\",\"books\":\"Books history\",\"search_user\":\"Search user\",\"type\":\"Type\",\"student\":\"Student\",\"employee\":\"Staff\",\"all\":\"All\",\"username\":\"Username\",\"user_id\":\"User ID\",\"user_id_user\":\"User ID (or name || surname)\",\"username_user\":\"Username (or name || surname)\",\"surname\":\"Surname\",\"section\":\"Section\",\"serve\":\"Book issuance\",\"check_in\":\"Check in\",\"search_material\":\"Search material\",\"user_info\":\"User information\",\"full_name\":\"Full name\",\"degree\":\"Degree\",\"class\":\"Year\",\"faculty\":\"Faculty\",\"program\":\"Program\",\"id\":\"ID\",\"mobile\":\"Phone number\",\"more_info\":\"More details\",\"select_all\":\"Select all ( {num} selected )\",\"delivery_date\":\"Delivery date\",\"due_date\":\"Due date\",\"issue_date\":\"Issue date\",\"borrow_date\":\"Borrow date\",\"last_user_borrowed\":\"Last user\",\"give_material\":\"Give material\",\"hesab_id\":\"Batch ID\",\"batch_id\":\"Batch Id\",\"items_no\":\"Quantity of items\",\"titles_no\":\"Quantity of titles\",\"receive_date\":\"Form fill date\",\"supplier_id\":\"Supplier ID\",\"supplier_name\":\"Supplier name\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"Publisher ID\",\"com_name\":\"Commercial name\",\"reports\":\"Reports\",\"attendance\":\"Attendance\",\"mrbooks\":\"Most read books\",\"print\":\"Print barcode\"}");
 
 /***/ }),
 
@@ -82216,7 +82251,7 @@ module.exports = JSON.parse("{\"ok\":\"OK\",\"acquisitions\":\"Acquisitions\",\"
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse("{\"ok\":\"Ну жарайд\",\"acquisitions\":\"Кітап қабылдау\",\"batches\":\"Партия | Партиялар\",\"items\":\"Дана | Даналар\",\"publishers\":\"Баспагер | Баспагерлер\",\"suppliers\":\"Жеткізуші | Жеткізушілер\",\"table\":\"Таблица\",\"logout\":\"Шығу\",\"search\":\"Іздеу\",\"searching\":\"Іздеу\",\"reset\":\"Қалпына келтіру\",\"load_all\":\"Барін көрсету\",\"create\":\"Қосу\",\"count\":\"Сандар\",\"save\":\"Сақтау\",\"cancel\":\"Бас тарту\",\"cost\":\"Бағасы\",\"from\":\"Бастап\",\"until\":\"Дейін\",\"not_found\":\"Деректер табылмады\",\"create_date\":\"Форма толтырылған күні\",\"edit_date\":\"Форма өзгертілген күні\",\"results\":\"Нәтижелер\",\"results_of\":\"нәтиже табылды\",\"yes\":\"Ия\",\"no\":\"Жоқ\",\"edit\":\"Өзгерту\",\"delete\":\"Жою\",\"show_more\":\"Көбірек\",\"more\":\"Көбірек ...\",\"confirmation\":\"Жойғыңыз келетініне сенімдісіз бе?\",\"sort_by\":\"Сұрыптау\",\"search_by\":\"{type} іздеу\",\"author_by\":\"Авторымен\",\"title_by\":\"Тақырырбымен\",\"barcode_by\":\"Баркодымен\",\"batch_id_by\":\"Партия нөмірімен\",\"inv_id_by\":\"Инвентарь нөмірімен\",\"isbn_by\":\"ISBN-мен\",\"and\":\"Және\",\"or\":\"Немесе\",\"not\":\"Емес\",\"per_page\":\"Парақтагы нәтижелер саны\",\"apply\":\"Растау\",\"showing_pages\":\"{total} нәтиженің {from} - {to} көрсетілуде\",\"page\":\"Бет\",\"previous\":\"Артқа\",\"next\":\"Келесі\",\"move_to\":\"Өту\",\"asc\":\"Өсу\",\"desc\":\"Азаю\",\"refresh\":\"Жаңарту\",\"choose\":\"Таңдаңыз\",\"save_&_search\":\"Сақтау және іздеу\",\"error\":\"Қате !\",\"batch_filter\":\"Партиялық сүзгі\",\"item_filter\":\"Даналық сүзгі\",\"search_batches\":\"Партия іздеу\",\"search_items\":\"Дана іздеу\",\"batches_number\":\"Партия нөмірі\",\"batches_by\":\"Партия нөмірімен\",\"add_batch\":\"Партия қосу\",\"add_item\":\"Дана қосу\",\"create_batches\":\"Партия қосу\",\"create_items\":\"Дана қосу\",\"create_supplier\":\"Жеткізуші қосу\",\"create_publisher\":\"Баспагер қосу\",\"edit_batches\":\"Партия өзгерту\",\"edit_items\":\"Дана өзгерту\",\"edit_supplier\":\"Жеткізуші өзгерту\",\"edit_publisher\":\"Баспагер өзгерту\",\"recreate\":\"Қайта қосу\",\"reCreate_items\":\"Дана қайта қосу\",\"type_of_supply\":\"Жеткізу түрі\",\"type_of_item\":\"Дана түрі\",\"quantity_items\":\"Дана саны\",\"quantity_titles\":\"Тақырып саны\",\"document_number\":\"Документ нөмірі\",\"contract_number\":\"Контракт нөмірі\",\"inventory_number\":\"Инвентарь нөмірі\",\"inv_id\":\"Инвентарь нөмірі\",\"types\":\"Түрлер\",\"filled_in\":\"Енгізілді\",\"made_actually\":\"Негізгі саны\",\"correct\":\"Дұрыс\",\"titles_no_match\":\"Тақырыптар саны сәйкес келмейді\",\"items_no_match\":\"Даналар саны сәйкес келмейді\",\"add_input\":\"Енгізуді қосу +\",\"status\":\"Статус\",\"invoice_date\":\"Жеткізген күні\",\"by_contract\":\"Контракт арқылы\",\"invoice_details\":\"Жеткізу деректері\",\"barcode\":\"Баркод\",\"isbn\":\"ISBN\",\"created_by\":\"Толтырылды\",\"edited_by\":\"Өзгертілді\",\"titles\":\"Атау | Атаулар\",\"title\":\"Атау\",\"author\":\"Автор\",\"year\":\"Жылы\",\"pub_year\":\"Баспа жылы\",\"pub_city\":\"Баспа қаласы\",\"location\":\"Орналасқан жері\",\"fill_date\":\"Толтырылған күні\",\"beginning\":\"Бастап\",\"end\":\"Дейін\",\"currency\":\"Валютасы\",\"name\":\"Аты\",\"name_by\":\"Атымен\",\"commercial_name\":\"Коммерциялық аты\",\"bin\":\"BIN / IIN\",\"contact\":\"Байланыстар\",\"address\":\"Мекен-жайы\",\"email\":\"Электрондық поштасы\",\"phone\":\"Телефон нөмірі\",\"fax\":\"Факс\",\"service_desk\":\"Қызмет көрсету\",\"users\":\"Пайдаланушылар\",\"books\":\"Кітаптар тарихы\",\"search_user\":\"Пайдаланушы іздеу\",\"type\":\"Түрі\",\"student\":\"Студент\",\"employee\":\"Қызметкер\",\"all\":\"Бәрі\",\"username\":\"Пайдаланушы аты\",\"user_id\":\"Пайдаланушы ID\",\"user_id_user\":\"Пайдаланушы ID (немесе аты || жөні)\",\"username_user\":\"Пайдаланушы аты (немесе аты || жөні)\",\"surname\":\"Тегі\",\"section\":\"Бөлімі\",\"serve\":\"Кітап беру\",\"check_in\":\"Check in\",\"search_material\":\"Материал іздеу\",\"user_info\":\"Пайдаланушы туралы ақпарат\",\"full_name\":\"Аты - тегі\",\"degree\":\"Дәрежесі\",\"class\":\"Оқу жылы\",\"faculty\":\"Факультеті\",\"program\":\"Бағдарламасы\",\"id\":\"ID\",\"mobile\":\"Телефон нөмірі\",\"more_info\":\"Толығырақ\",\"select_all\":\"Барлығын таңдау ( {num} таңдалды )\",\"delivery_date\":\"Жеткізілім уақыты\",\"due_date\":\"Мерзімнің өту күні\",\"issue_date\":\"Берілген күні\",\"borrow_date\":\"Қарызға алу күні\",\"last_user_borrowed\":\"Соңғы пайдаланушы\",\"give_material\":\"Материал беру\",\"hesab_id\":\"Партия ID\",\"batch_id\":\"Партия ID\",\"items_no\":\"Дана саны\",\"titles_no\":\"Тақырып саны\",\"receive_date\":\"Толтырылған күні\",\"supplier_id\":\"Жеткізуші ID\",\"supplier_name\":\"Жеткізущі аты\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"Баспагер ID\",\"com_name\":\"Коммерциялық аты\",\"reports\":\"Есептер\",\"attendance\":\"Қатысу\",\"mrbooks\":\"Көпшілігі оқитын кітаптар\",\"print\":\"Баркодты басып шығару\"}");
+module.exports = JSON.parse("{\"ok\":\"Ну жарайд\",\"acquisitions\":\"Кітап қабылдау\",\"batches\":\"Партия | Партиялар\",\"items\":\"Дана | Даналар\",\"publishers\":\"Баспагер | Баспагерлер\",\"suppliers\":\"Жеткізуші | Жеткізушілер\",\"table\":\"Таблица\",\"logout\":\"Шығу\",\"search\":\"Іздеу\",\"searching\":\"Іздеу\",\"reset\":\"Қалпына келтіру\",\"load_all\":\"Барін көрсету\",\"create\":\"Қосу\",\"count\":\"Сандар\",\"save\":\"Сақтау\",\"cancel\":\"Бас тарту\",\"cost\":\"Бағасы\",\"from\":\"Бастап\",\"until\":\"Дейін\",\"not_found\":\"Деректер табылмады\",\"create_date\":\"Форма толтырылған күні\",\"edit_date\":\"Форма өзгертілген күні\",\"results\":\"Нәтижелер\",\"results_of\":\"нәтиже табылды\",\"yes\":\"Ия\",\"no\":\"Жоқ\",\"edit\":\"Өзгерту\",\"delete\":\"Жою\",\"show_more\":\"Көбірек\",\"more\":\"Көбірек ...\",\"confirmation\":\"Жойғыңыз келетініне сенімдісіз бе?\",\"sort_by\":\"Сұрыптау\",\"search_by\":\"{type} іздеу\",\"author_by\":\"Авторымен\",\"title_by\":\"Тақырырбымен\",\"barcode_by\":\"Баркодымен\",\"batch_id_by\":\"Партия нөмірімен\",\"inv_id_by\":\"Инвентарь нөмірімен\",\"isbn_by\":\"ISBN-мен\",\"and\":\"Және\",\"or\":\"Немесе\",\"not\":\"Емес\",\"per_page\":\"Парақтагы нәтижелер саны\",\"apply\":\"Растау\",\"showing_pages\":\"{total} нәтиженің {from} - {to} көрсетілуде\",\"page\":\"Бет\",\"previous\":\"Артқа\",\"next\":\"Келесі\",\"move_to\":\"Өту\",\"asc\":\"Өсу\",\"desc\":\"Азаю\",\"refresh\":\"Жаңарту\",\"choose\":\"Таңдаңыз\",\"choose_search_mode\":\"Іздеу режимін таңдаңыз\",\"save_&_search\":\"Сақтау және іздеу\",\"error\":\"Қате !\",\"batch_filter\":\"Партиялық сүзгі\",\"item_filter\":\"Даналық сүзгі\",\"search_batches\":\"Партия іздеу\",\"search_items\":\"Дана іздеу\",\"search_barcodes\":\"Баркод іздеу\",\"batches_number\":\"Партия нөмірі\",\"batches_by\":\"Партия нөмірімен\",\"add_batch\":\"Партия қосу\",\"add_item\":\"Дана қосу\",\"create_batches\":\"Партия қосу\",\"create_items\":\"Дана қосу\",\"create_supplier\":\"Жеткізуші қосу\",\"create_publisher\":\"Баспагер қосу\",\"edit_batches\":\"Партия өзгерту\",\"edit_items\":\"Дана өзгерту\",\"edit_supplier\":\"Жеткізуші өзгерту\",\"edit_publisher\":\"Баспагер өзгерту\",\"recreate\":\"Қайта қосу\",\"reCreate_items\":\"Дана қайта қосу\",\"type_of_supply\":\"Жеткізу түрі\",\"type_of_item\":\"Дана түрі\",\"quantity_items\":\"Дана саны\",\"quantity_titles\":\"Тақырып саны\",\"document_number\":\"Документ нөмірі\",\"contract_number\":\"Контракт нөмірі\",\"inventory_number\":\"Инвентарь нөмірі\",\"inv_id\":\"Инвентарь нөмірі\",\"types\":\"Түрлер\",\"filled_in\":\"Енгізілді\",\"made_actually\":\"Негізгі саны\",\"correct\":\"Дұрыс\",\"titles_no_match\":\"Тақырыптар саны сәйкес келмейді\",\"items_no_match\":\"Даналар саны сәйкес келмейді\",\"add_input\":\"Енгізуді қосу +\",\"status\":\"Статус\",\"invoice_date\":\"Жеткізген күні\",\"by_contract\":\"Контракт арқылы\",\"invoice_details\":\"Жеткізу деректері\",\"barcode\":\"Баркод\",\"isbn\":\"ISBN\",\"created_by\":\"Толтырылды\",\"edited_by\":\"Өзгертілді\",\"titles\":\"Атау | Атаулар\",\"title\":\"Атау\",\"author\":\"Автор\",\"year\":\"Жылы\",\"pub_year\":\"Баспа жылы\",\"pub_city\":\"Баспа қаласы\",\"location\":\"Орналасқан жері\",\"fill_date\":\"Толтырылған күні\",\"beginning\":\"Бастап\",\"end\":\"Дейін\",\"currency\":\"Валютасы\",\"author-title\":\"Автор - атауы\",\"name\":\"Аты\",\"name_by\":\"Атымен\",\"commercial_name\":\"Коммерциялық аты\",\"bin\":\"BIN / IIN\",\"contact\":\"Байланыстар\",\"address\":\"Мекен-жайы\",\"email\":\"Электрондық поштасы\",\"phone\":\"Телефон нөмірі\",\"fax\":\"Факс\",\"service_desk\":\"Қызмет көрсету\",\"users\":\"Пайдаланушылар\",\"books\":\"Кітаптар тарихы\",\"search_user\":\"Пайдаланушы іздеу\",\"type\":\"Түрі\",\"student\":\"Студент\",\"employee\":\"Қызметкер\",\"all\":\"Бәрі\",\"username\":\"Пайдаланушы аты\",\"user_id\":\"Пайдаланушы ID\",\"user_id_user\":\"Пайдаланушы ID (немесе аты || жөні)\",\"username_user\":\"Пайдаланушы аты (немесе аты || жөні)\",\"surname\":\"Тегі\",\"section\":\"Бөлімі\",\"serve\":\"Кітап беру\",\"check_in\":\"Check in\",\"search_material\":\"Материал іздеу\",\"user_info\":\"Пайдаланушы туралы ақпарат\",\"full_name\":\"Аты - тегі\",\"degree\":\"Дәрежесі\",\"class\":\"Оқу жылы\",\"faculty\":\"Факультеті\",\"program\":\"Бағдарламасы\",\"id\":\"ID\",\"mobile\":\"Телефон нөмірі\",\"more_info\":\"Толығырақ\",\"select_all\":\"Барлығын таңдау ( {num} таңдалды )\",\"delivery_date\":\"Жеткізілім уақыты\",\"due_date\":\"Мерзімнің өту күні\",\"issue_date\":\"Берілген күні\",\"borrow_date\":\"Қарызға алу күні\",\"last_user_borrowed\":\"Соңғы пайдаланушы\",\"give_material\":\"Материал беру\",\"hesab_id\":\"Партия ID\",\"batch_id\":\"Партия ID\",\"items_no\":\"Дана саны\",\"titles_no\":\"Тақырып саны\",\"receive_date\":\"Толтырылған күні\",\"supplier_id\":\"Жеткізуші ID\",\"supplier_name\":\"Жеткізущі аты\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"Баспагер ID\",\"com_name\":\"Коммерциялық аты\",\"reports\":\"Есептер\",\"attendance\":\"Қатысу\",\"mrbooks\":\"Көпшілігі оқитын кітаптар\",\"print\":\"Баркодты басып шығару\"}");
 
 /***/ }),
 
@@ -82227,7 +82262,7 @@ module.exports = JSON.parse("{\"ok\":\"Ну жарайд\",\"acquisitions\":\"К
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse("{\"ok\":\"OK\",\"acquisitions\":\"Комплектование\",\"batches\":\"Партия | Партии\",\"items\":\"Экземлпяр | Экземпляры\",\"publishers\":\"Издатель | Издатели\",\"suppliers\":\"Поставщик | Поставщики\",\"table\":\"Таблица\",\"logout\":\"Выйти\",\"search\":\"Найти\",\"searching\":\"Поиск\",\"reset\":\"Сброс\",\"load_all\":\"Загрузить все\",\"create\":\"Создать\",\"count\":\"Количество\",\"save\":\"Сохранить\",\"cancel\":\"Отменить\",\"cost\":\"Цена\",\"from\":\"От\",\"until\":\"До\",\"not_found\":\"Ничего не найдено\",\"create_date\":\"Дата заполнения формы\",\"edit_date\":\"Дата изменения формы\",\"results\":\"Результаты\",\"results_of\":\"результатов\",\"yes\":\"Да\",\"no\":\"Нет\",\"edit\":\"Изменить\",\"delete\":\"Удалить\",\"show_more\":\"Узнать больше\",\"more\":\"Больше ...\",\"confirmation\":\"Вы действительно хотите удалить?\",\"sort_by\":\"Сортировать по\",\"search_by\":\"Искать по {type}\",\"author_by\":\"автору\",\"title_by\":\"заглавию\",\"barcode_by\":\"баркоду\",\"batch_id_by\":\"номеру партии\",\"inv_id_by\":\"номеру инвентаря\",\"isbn_by\":\"ISBN\",\"and\":\"И\",\"or\":\"Или\",\"not\":\"Не\",\"per_page\":\"Результатов на странице\",\"apply\":\"Подтвердить\",\"showing_pages\":\"{from} - {to} из {total}\",\"page\":\"Стр.\",\"previous\":\"Назад\",\"next\":\"Вперед\",\"move_to\":\"Перейти\",\"asc\":\"По возрастанию\",\"desc\":\"По убыванию\",\"refresh\":\"Обновить\",\"choose\":\"Выберите\",\"save_&_search\":\"Сохранить и искать\",\"error\":\"Ошибка !\",\"batch_filter\":\"Фильтр партий\",\"item_filter\":\"Фильтр экземпляров\",\"search_batches\":\"Искать партию\",\"search_items\":\"Искать экземпляр\",\"batches_number\":\"Номер партии\",\"batches_by\":\"по номеру партии\",\"add_batch\":\"Добавить партию\",\"add_item\":\"Добавить экземпляр\",\"create_batches\":\"Создать партию\",\"create_items\":\"Создать экземпляр\",\"create_supplier\":\"Создать поставщика\",\"create_publisher\":\"Создать издателя\",\"edit_batches\":\"Изменить партию\",\"edit_items\":\"Изменить экземпляр\",\"edit_supplier\":\"Изменить поставщика\",\"edit_publisher\":\"Изменить издателя\",\"recreate\":\"Пересоздать\",\"reCreate_items\":\"Пересоздать экземпляр\",\"type_of_supply\":\"Тип поставки\",\"type_of_item\":\"Тип экземпляра\",\"quantity_items\":\"Количество экземпляров\",\"quantity_titles\":\"Количество заглавий\",\"document_number\":\"Номер документа\",\"contract_number\":\"Контрактный номер\",\"inventory_number\":\"Номер инвентаря\",\"inv_id\":\"Номер инвентаря\",\"types\":\"Types\",\"filled_in\":\"Введено\",\"made_actually\":\"Введено фактически\",\"correct\":\"Правильно\",\"titles_no_match\":\"Количество заглавий не совпадает\",\"items_no_match\":\"Количество экземпляров не совпадает\",\"add_input\":\"Добавить входные данные +\",\"status\":\"Статус\",\"invoice_date\":\"Дата счета-фактуры\",\"by_contract\":\"По контракту\",\"invoice_details\":\"Информация о счете-фактуре\",\"barcode\":\"Баркод\",\"isbn\":\"ISBN\",\"created_by\":\"Заполнено\",\"edited_by\":\"Изменено\",\"titles\":\"Заглавие | Заглавия\",\"title\":\"Заглавие\",\"author\":\"Автор\",\"year\":\"Год\",\"pub_year\":\"Год издания\",\"pub_city\":\"Город издания\",\"location\":\"Место расположения\",\"fill_date\":\"Дата заполнения\",\"beginning\":\"От\",\"end\":\"До\",\"currency\":\"Валюта\",\"name\":\"Имя\",\"name_by\":\"по имени\",\"commercial_name\":\"Коммерческое имя\",\"bin\":\"BIN / IIN\",\"contact\":\"Контакты\",\"address\":\"Адресс\",\"email\":\"Электронная почта\",\"phone\":\"Номер телефона\",\"fax\":\"Факс\",\"service_desk\":\"Служба поддержки\",\"users\":\"Пользователи\",\"books\":\"История книг\",\"search_user\":\"Найти пользователя\",\"type\":\"Тип\",\"student\":\"Студент\",\"employee\":\"Работник\",\"all\":\"Все\",\"username\":\"Имя пользователя\",\"user_id\":\"ID пользователя\",\"user_id_user\":\"ID пользователя (или имя || фамилия)\",\"username_user\":\"Имя пользователя (или имя || фамилия)\",\"surname\":\"Фамилия\",\"section\":\"Раздел\",\"serve\":\"Выдача книг\",\"check_in\":\"Check in\",\"search_material\":\"Поиск материала\",\"user_info\":\"Информация о пользователе\",\"full_name\":\"Имя - фамилия\",\"degree\":\"Степень\",\"class\":\"Год\",\"faculty\":\"Факультет\",\"program\":\"Программа\",\"id\":\"ID\",\"mobile\":\"Номер телефона\",\"more_info\":\"Подробнее\",\"select_all\":\"Выбрать все ( {num} выбрано )\",\"delivery_date\":\"Дата доставки\",\"due_date\":\"Дата сдачи\",\"issue_date\":\"Дата выпуска\",\"borrow_date\":\"Дата заимствования\",\"last_user_borrowed\":\"Последний пользователь\",\"give_material\":\"Дать материал\",\"hesab_id\":\"ID партии\",\"batch_id\":\"ID партии\",\"items_no\":\"Количество экземпляров\",\"titles_no\":\"Количество заглавий\",\"receive_date\":\"Дата заполнения\",\"supplier_id\":\"ID поставщика\",\"supplier_name\":\"Имя поставщика\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"ID издателя\",\"com_name\":\"Коммерческое имя\",\"reports\":\"Отчеты\",\"attendance\":\"Посещаемость\",\"mrbooks\":\"Самые читаемые книги\",\"print\":\"Распечатать баркод\"}");
+module.exports = JSON.parse("{\"ok\":\"OK\",\"acquisitions\":\"Комплектование\",\"batches\":\"Партия | Партии\",\"items\":\"Экземлпяр | Экземпляры\",\"publishers\":\"Издатель | Издатели\",\"suppliers\":\"Поставщик | Поставщики\",\"table\":\"Таблица\",\"logout\":\"Выйти\",\"search\":\"Найти\",\"searching\":\"Поиск\",\"reset\":\"Сброс\",\"load_all\":\"Загрузить все\",\"create\":\"Создать\",\"count\":\"Количество\",\"save\":\"Сохранить\",\"cancel\":\"Отменить\",\"cost\":\"Цена\",\"from\":\"От\",\"until\":\"До\",\"not_found\":\"Ничего не найдено\",\"create_date\":\"Дата заполнения формы\",\"edit_date\":\"Дата изменения формы\",\"results\":\"Результаты\",\"results_of\":\"результатов\",\"yes\":\"Да\",\"no\":\"Нет\",\"edit\":\"Изменить\",\"delete\":\"Удалить\",\"show_more\":\"Узнать больше\",\"more\":\"Больше ...\",\"confirmation\":\"Вы действительно хотите удалить?\",\"sort_by\":\"Сортировать по\",\"search_by\":\"Искать по {type}\",\"author_by\":\"автору\",\"title_by\":\"заглавию\",\"barcode_by\":\"баркоду\",\"batch_id_by\":\"номеру партии\",\"inv_id_by\":\"номеру инвентаря\",\"isbn_by\":\"ISBN\",\"and\":\"И\",\"or\":\"Или\",\"not\":\"Не\",\"per_page\":\"Результатов на странице\",\"apply\":\"Подтвердить\",\"showing_pages\":\"{from} - {to} из {total}\",\"page\":\"Стр.\",\"previous\":\"Назад\",\"next\":\"Вперед\",\"move_to\":\"Перейти\",\"asc\":\"По возрастанию\",\"desc\":\"По убыванию\",\"refresh\":\"Обновить\",\"choose\":\"Выберите\",\"choose_search_mode\":\"Выберите режим поиска\",\"save_&_search\":\"Сохранить и искать\",\"error\":\"Ошибка !\",\"batch_filter\":\"Фильтр партий\",\"item_filter\":\"Фильтр экземпляров\",\"search_batches\":\"Искать партию\",\"search_items\":\"Искать экземпляр\",\"search_barcodes\":\"Искать баркоды\",\"batches_number\":\"Номер партии\",\"batches_by\":\"по номеру партии\",\"add_batch\":\"Добавить партию\",\"add_item\":\"Добавить экземпляр\",\"create_batches\":\"Создать партию\",\"create_items\":\"Создать экземпляр\",\"create_supplier\":\"Создать поставщика\",\"create_publisher\":\"Создать издателя\",\"edit_batches\":\"Изменить партию\",\"edit_items\":\"Изменить экземпляр\",\"edit_supplier\":\"Изменить поставщика\",\"edit_publisher\":\"Изменить издателя\",\"recreate\":\"Пересоздать\",\"reCreate_items\":\"Пересоздать экземпляр\",\"type_of_supply\":\"Тип поставки\",\"type_of_item\":\"Тип экземпляра\",\"quantity_items\":\"Количество экземпляров\",\"quantity_titles\":\"Количество заглавий\",\"document_number\":\"Номер документа\",\"contract_number\":\"Контрактный номер\",\"inventory_number\":\"Номер инвентаря\",\"inv_id\":\"Номер инвентаря\",\"types\":\"Types\",\"filled_in\":\"Введено\",\"made_actually\":\"Введено фактически\",\"correct\":\"Правильно\",\"titles_no_match\":\"Количество заглавий не совпадает\",\"items_no_match\":\"Количество экземпляров не совпадает\",\"add_input\":\"Добавить входные данные +\",\"status\":\"Статус\",\"invoice_date\":\"Дата счета-фактуры\",\"by_contract\":\"По контракту\",\"invoice_details\":\"Информация о счете-фактуре\",\"barcode\":\"Баркод\",\"isbn\":\"ISBN\",\"created_by\":\"Заполнено\",\"edited_by\":\"Изменено\",\"titles\":\"Заглавие | Заглавия\",\"title\":\"Заглавие\",\"author\":\"Автор\",\"year\":\"Год\",\"pub_year\":\"Год издания\",\"pub_city\":\"Город издания\",\"location\":\"Место расположения\",\"fill_date\":\"Дата заполнения\",\"beginning\":\"От\",\"end\":\"До\",\"currency\":\"Валюта\",\"author-title\":\"Автор - заглавие\",\"name\":\"Имя\",\"name_by\":\"по имени\",\"commercial_name\":\"Коммерческое имя\",\"bin\":\"BIN / IIN\",\"contact\":\"Контакты\",\"address\":\"Адресс\",\"email\":\"Электронная почта\",\"phone\":\"Номер телефона\",\"fax\":\"Факс\",\"service_desk\":\"Служба поддержки\",\"users\":\"Пользователи\",\"books\":\"История книг\",\"search_user\":\"Найти пользователя\",\"type\":\"Тип\",\"student\":\"Студент\",\"employee\":\"Работник\",\"all\":\"Все\",\"username\":\"Имя пользователя\",\"user_id\":\"ID пользователя\",\"user_id_user\":\"ID пользователя (или имя || фамилия)\",\"username_user\":\"Имя пользователя (или имя || фамилия)\",\"surname\":\"Фамилия\",\"section\":\"Раздел\",\"serve\":\"Выдача книг\",\"check_in\":\"Check in\",\"search_material\":\"Поиск материала\",\"user_info\":\"Информация о пользователе\",\"full_name\":\"Имя - фамилия\",\"degree\":\"Степень\",\"class\":\"Год\",\"faculty\":\"Факультет\",\"program\":\"Программа\",\"id\":\"ID\",\"mobile\":\"Номер телефона\",\"more_info\":\"Подробнее\",\"select_all\":\"Выбрать все ( {num} выбрано )\",\"delivery_date\":\"Дата доставки\",\"due_date\":\"Дата сдачи\",\"issue_date\":\"Дата выпуска\",\"borrow_date\":\"Дата заимствования\",\"last_user_borrowed\":\"Последний пользователь\",\"give_material\":\"Дать материал\",\"hesab_id\":\"ID партии\",\"batch_id\":\"ID партии\",\"items_no\":\"Количество экземпляров\",\"titles_no\":\"Количество заглавий\",\"receive_date\":\"Дата заполнения\",\"supplier_id\":\"ID поставщика\",\"supplier_name\":\"Имя поставщика\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"ID издателя\",\"com_name\":\"Коммерческое имя\",\"reports\":\"Отчеты\",\"attendance\":\"Посещаемость\",\"mrbooks\":\"Самые читаемые книги\",\"print\":\"Распечатать баркод\"}");
 
 /***/ })
 

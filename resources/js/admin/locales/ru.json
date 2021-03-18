@@ -53,6 +53,7 @@
 	"desc":"По убыванию",
 	"refresh":"Обновить",
 	"choose":"Выберите",
+	"choose_search_mode":"Выберите режим поиска",
 	"save_&_search":"Сохранить и искать",
 	"error": "Ошибка !",
 
@@ -60,6 +61,7 @@
 	"item_filter":"Фильтр экземпляров",
 	"search_batches":"Искать партию",
 	"search_items":"Искать экземпляр",
+	"search_barcodes":"Искать баркоды",
 	"batches_number":"Номер партии",
 	"batches_by":"по номеру партии",
 	"add_batch":"Добавить партию",
@@ -110,6 +112,7 @@
 	"beginning":"От",
 	"end":"До",
 	"currency":"Валюта",
+	"author-title":"Автор - заглавие",
 
 	"name":"Имя",
 	"name_by":"по имени",

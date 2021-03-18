@@ -57,6 +57,7 @@ export default {
 			},
 			search_options:[{key:'author',operator:'and'}],
 		},
+		search_default:[{key:'author',operator:'and'}],
 		search_fields:[],
 		data:[],
 		searching:false,
@@ -157,6 +158,18 @@ export default {
 		pagination:true
 	},
 	print_barcode:{
+		search:{
+			search_options:[
+			{key:'barcode',value:{}},
+			{key:'title'},
+			{key:'author'}
+			]
+		},
+		search_default:[
+		{key:'barcode',value:{}},
+		{key:'title'},
+		{key:'author'}
+		],
 		data:[],
 		searching:false,
 		sort_by:{},

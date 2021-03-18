@@ -3,34 +3,5 @@ export default {
 		for( let key in data.data){
 			store.state[data.label][key]=data.data[key];
 		}
-	},
-	resetBatches(store){
-		store.state.batches.search={
-			batch_id:null,
-			sup_id:null,
-			status:null,
-			statuses:[],
-			until_cost:null,
-			from_cost:null,
-			start_date:null,
-			end_date:null,
-		};
-	},
-	resetItems(store){
-		store.state.items.search={
-			search_options:[{key:'author',operator:'and'}],
-			publisher_id:null,
-			pub_year:null,
-			pub_city:null,
-			supplier_id:null,
-			sup_type:null,
-			until_cost:null,
-			from_cost:null,
-			start_date:null,
-			end_date:null,
-			item_type:null,
-			user_cid:null,
-			location:null
-		};
 	}
 }

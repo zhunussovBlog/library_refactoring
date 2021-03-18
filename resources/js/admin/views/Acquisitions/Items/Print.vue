@@ -1,45 +1,51 @@
 <template>
 	<div class="d-flex">
-		<div class="bg-white mt-2 w-100 p-2 px-3">
+		<div class="bg-white mt-2 flex-fill p-2 px-3">
 			<Back />
 			<form @submit.prevent="loadResults()" class="mt-3">
-				<div class="font-size-18 font-weight-bold">Search Barcodes</div>
-				<div class="d-flex align-items-center w-100">
-					<div class="text-no-wrap"> Choose search mode: </div>
-					<Dropdown class="ml-2" :title="search.type" :items="['barcode','author-title']" :itemOnClick="changeMode" dropdownClasses="dropdown-left"/>
-					<div class="d-flex align-items-center ml-2 w-100">
-						<div class="d-flex w-100" v-if="search.type=='barcode'">
-							<div class="pad w-100">
-								<input type="text" v-model="search.first_barcode"/>
-								<label class="placeholder">From</label>
+				<div class="font-size-18 font-weight-bold">{{$t('search_barcodes')}}</div>
+				<div class="d-flex align-items-center flex-fill">
+					<div class="d-flex flex-column flex-fill">
+						<span class="font-weight-bold mt-3">{{$t('barcode')}}</span>
+						<div class="d-flex flex-fill mt-2">
+							<div class="position-relative flex-fill">
+								<input type="text" v-model="print_barcode.search.search_options[0].value.from"/>
+								<label class="placeholder">{{$t('from')}}</label>
 							</div>
-							<div class="pad w-100">
-								<input type="text" v-model="search.last_barcode"/>
-								<label class="placeholder">To</label>
-							</div>
-						</div>
-						<div class="d-flex w-100" v-else>
-							<div class="pad w-100">
-								<input type="text" v-model="search.title"/>
-								<label class="placeholder">Title</label>
-							</div>
-							<div class="pad w-100">
-								<input type="text" v-model="search.author"/>
-								<label class="placeholder">Author</label>
+							<div class="position-relative  ml-2 flex-fill">
+								<input type="text" v-model="print_barcode.search.search_options[0].value.to"/>
+								<label class="placeholder">{{$t('until')}}</label>
 							</div>
 						</div>
-						<div class="pad">
-							<button type="submit">{{$t('search')}}</button>
+						<span class="font-weight-bold mt-3">{{$t('author-title')}}</span>
+						<div class="d-flex flex-fill mt-2">
+							<div class="position-relative flex-fill">
+								<input type="text" v-model="print_barcode.search.search_options[1].value"/>
+								<label class="placeholder">{{$t('title',1)}}</label>
+							</div>
+							<div class="position-relative ml-2 flex-fill">
+								<input type="text" v-model="print_barcode.search.search_options[2].value"/>
+								<label class="placeholder">{{$t('author')}}</label>
+							</div>
 						</div>
-						<div class="pad">
-							<button type="button">Load all unprinted</button>
+						<div class="mt-2 d-flex justify-content-end">
+							<button class="width-unset" type="submit">{{$t('search')}}</button>
 						</div>
 					</div>
 				</div>
 			</form>
 			<div class="mt-5">
-				<div v-if="searching">
-					<table-div class="mt-5" :heads="heads" :data="data.res" link="/report/barcode" commit="print_barcode" :sortable="false" :selectable="selectable" :pagination="false" :clickables="false"/>
+				<div v-if="print_barcode.searching">
+					<table-div class="mt-5"
+					:heads="heads"
+					:data="print_barcode.data.res"
+					:selectable="selectable"
+					:link="link"
+					:commit="commit"
+					:pagination="print_barcode.pagination"
+					:clickables="false"
+					:sortable="false"
+					/>
 				</div>
 			</div>
 		</div>
@@ -57,29 +63,22 @@ import Table from '../../../components/common/Table'
 import PulseLoader from 'vue-spinner/src/PulseLoader'
 
 //mixins
-import {getResults} from '../../../mixins/common'
+import {getResults,download_file} from '../../../mixins/common'
 
+import {mapGetters} from 'vuex'
 export default{
-	mixins:[getResults],
+	mixins:[getResults,download_file],
 	components:{Back,Dropdown,'table-div':Table,PulseLoader},
 	computed:{
-		data(){
-			return this.$store.getters.print_barcode.data;
-		},
-		searching(){
-			return this.$store.getters.print_barcode.searching;
-		}
+		...mapGetters(['print_barcode'])
 	},
 	data(){
 		return{
-			loading:false,
 			types:[],
-			search:{
-				type:'barcode',
-			},
+			type:'barcode',
 			heads:[
 			{name:'barcode',link:'barcode'},
-			{name:'inventory_number',link:'inv_id'},
+			{name:'inventory_number',link:'id'},
 			{name:'titles',link:'title'},
 			{name:'author',link:'author'},
 			],
@@ -88,34 +87,25 @@ export default{
 				button_title:'print',
 				func:this.printIt
 			},
+			link:'/barcode',
+			commit:'print_barcode',
 			barcodes:[]
 		}
 	},
 	methods:{
 		changeMode(mode){
-			this.search.type=mode;
-		},
-		setLoading(bool){
-			this.loading=bool;
-		},
-		setSearch(search){	
-			this.search=search;
+			this.type=mode;
 		},
 		loadResults(){
-			this.$store.dispatch('setStore',{label:'print_barcode',data:{page:0}});
-			this.getResults(this.loading,this.setLoading,'/report/barcode',this.search,'print_barcode');
+			this.$store.dispatch('setStore',{label:this.commit,data:{page:0}});
+			this.getResults(this.link,this.commit);
 		},
 		printIt(barcodes){
-			console.log(barcodes);
-			// this.$http.post('/report/barcode/print',{barcodes:barcodes}).then(response=>{
-			// 	console.log(response);
-
-				// simple pirnt implementation 
-
-				// let w=window.open("www.url.com/pdf"); 
-				// w.print(); 
-				// w.close();
-			// })
+			let inventories=barcodes.map(barcode=>barcode.id);
+			this.$http.post(this.link+'/print',{inventories:inventories},{responseType:'blob'}).then(response=>{
+				this.download_file(response,'media.pdf');
+				this.$store.commit('setFullPageLoading',false);	
+			})
 		}
 	}
 }

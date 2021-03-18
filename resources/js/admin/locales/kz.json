@@ -53,6 +53,7 @@
 	"desc":"Азаю",
 	"refresh":"Жаңарту",
 	"choose":"Таңдаңыз",
+	"choose_search_mode":"Іздеу режимін таңдаңыз",
 	"save_&_search":"Сақтау және іздеу",
 	"error": "Қате !",
 
@@ -60,6 +61,7 @@
 	"item_filter":"Даналық сүзгі",
 	"search_batches":"Партия іздеу",
 	"search_items":"Дана іздеу",
+	"search_barcodes":"Баркод іздеу",
 	"batches_number":"Партия нөмірі",
 	"batches_by":"Партия нөмірімен",
 	"add_batch":"Партия қосу",
@@ -110,6 +112,7 @@
 	"beginning":"Бастап",
 	"end":"Дейін",
 	"currency":"Валютасы",
+	"author-title":"Автор - атауы",
 
 	"name":"Аты",
 	"name_by":"Атымен",
