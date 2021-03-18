@@ -19,7 +19,7 @@ trait ItemReports
             DB::raw("(select b.pub_city||', '||b.pub_year from lib_books b where b.book_id = i.book_id) as year_city"),
             DB::raw("(select listagg(xt.extract('//Cell[7]/text()').getStringVal(), ' ')
                                         within group (order by null)
-                                from lib_bibliographic_info bi, XMLTABLE('//Nodes/Node' PASSING XMLTYPE(bi.XML_DATA)) xt
+                                from lib_bibliographic_info bi, XMLTABLE('//Nodes/Node' PASSING bi.XML_DATA) xt
                                 where bi.book_id = i.book_id and xt.extract('//Cell[1]/text()').getStringVal() in ('010.a')) as call_number"),
             'i.price as cost', 'i.currency', 'i.barcode', 'h.doc_no')
             ->leftJoin('lib_hesab_mats as hm', 'i.book_id', '=', 'hm.book_id')
