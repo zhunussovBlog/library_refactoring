@@ -16,7 +16,7 @@ class ManageController extends Controller
 {
     public function create(CreateRequest $request): JsonResponse
     {
-        $response = Create::create(new Item(), self::createInputs($request->validated(), $request->user()));
+        $response = Create::create(new Item(), self::createInputs($request->validated(), $request->user()), false);
         return response()->json([
             'res' => $response
         ], 201);
