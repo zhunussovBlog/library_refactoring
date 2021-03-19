@@ -13,7 +13,7 @@ class QueryResponseException extends QueryException
     public function render($request)
     {
         if (config('app.debug')) {
-            $response['error'] = [
+            $response['errors'] = [
                 'code' => $this->getCode(),
                 'message' => $this->getMessage(),
                 'sql' => $this->getSql(),
