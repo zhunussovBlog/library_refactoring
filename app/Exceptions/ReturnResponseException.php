@@ -23,7 +23,7 @@ class ReturnResponseException extends Exception
 
     public function render($request): JsonResponse
     {
-        $response['error'] = [
+        $response['errors'] = [
             'message' => $this->getMessage(),
         ];
 
