@@ -27,13 +27,6 @@ export const lineOptions={
 	data(){
 		return{
 			lineOptions:{
-				// scales: {
-				// 	yAxes: [{
-				// 		ticks: {
-				// 			beginAtZero: true
-				// 		}
-				// 	}]
-				// },
 				plugins:{
 					datalabels: {
 						anchor: 'end',

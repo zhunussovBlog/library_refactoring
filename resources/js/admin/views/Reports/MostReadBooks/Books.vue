@@ -1,16 +1,16 @@
 <template>
 	<div class="p-2">
 		<form class="bg-white p-3 rounded-lg" @submit.prevent="search()">
-			<div class="pad font-weight-bold font-size-20">Search most read books</div>
+			<div class="pad font-weight-bold font-size-20">{{$t('mrbooks')}}</div>
 			<div class="d-flex align-items-center mt-2">
 				<div class="d-flex flex-fill">
 					<div class="pad flex-fill">
 						<input type="date"  v-model="most_read.search.add_options.borrow_date.from"/>
-						<label class="placeholder">From date</label>
+						<label class="placeholder">{{$t('from')}}</label>
 					</div>
 					<div class="pad flex-fill">
 						<input type="date" 	v-model="most_read.search.add_options.borrow_date.to"/>
-						<label class="placeholder">To date</label>
+						<label class="placeholder">{{$t('until')}}</label>
 					</div>
 				</div>
 				<div class="d-flex align-items-center flex-fill">
@@ -55,7 +55,7 @@ export default {
 			{name:'title',link:'title'},
 			{name:'language',link:'language'},
 			{name:'isbn',link:'isbn'},
-			{name:'count_issue',link:'count_issue'},
+			{name:'count',link:'count_issue'},
 			],
 			link:'most-read',
 			commit:'most_read'

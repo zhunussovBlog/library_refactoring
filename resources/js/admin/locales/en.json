@@ -178,5 +178,12 @@
 	"attendance":"Attendance",
 	"mrbooks":"Most read books",
 
-	"print":"Print barcode"
+	"attendance_statistics":"Virtual attendance statistics",
+	"show_for_week":"Show for week",
+	"show_for_month":"Show for month",
+	"in_lib_by_week":"In library by week",
+	"in_lib_by_month":"In library by month",
+
+	"print":"Print barcode",
+	"language":"Language"
 }

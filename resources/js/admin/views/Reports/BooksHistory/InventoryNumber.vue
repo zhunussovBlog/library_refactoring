@@ -4,11 +4,11 @@
 		<form class="d-flex flex-fill mt-2" @submit.prevent="loadResults()">
 			<div class="pad flex-fill">
 				<input type="text" v-model="books_inv_number.search.add_options.inventory_no" required />
-				<label class="placeholder required">From</label>
+				<label class="placeholder required">{{$t('from')}}</label>
 			</div>
 			<div class="pad flex-fill">
 				<input type="text" v-model="books_inv_number.search.add_options.rownum" required />
-				<label class="placeholder required">Count</label>
+				<label class="placeholder required">{{$t('count')}}</label>
 			</div>
 			<div class="pad col-1">
 				<button type="submit">{{$t('search')}}</button>

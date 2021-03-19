@@ -1,21 +1,21 @@
 <template>
 	<div class="w-100">
 		<div class="d-flex align-items-center justify-content-between">
-			<div class="font-weight-bold font-size-18">Virtual attendance statistics</div>
+			<div class="font-weight-bold font-size-18">{{$t('attendance_statistics')}}</div>
 		</div>
 		<div class="d-flex mt-1">
 			<div class="flex-fill">
 				<line-chart :data="data" :options="withOptions(lineOptions)"/>
 			</div>
 			<div class="col-2 ml-2">
-				<dropdown dropdownClasses="dropdown-left w-100" titleClasses="border rounded-lg border-black p-2 d-flex justify-content-center no-hover-color" :title="'Show for ' + (weekly?'week':'month')" :items="dropdownItems" :itemOnClick="dropdownItemOnClick"/>
-				<div class="font-weight-bold mt-4">In library by {{weekly?'week':'month'}}</div>
+				<dropdown dropdownClasses="dropdown-left w-100" titleClasses="border rounded-lg border-black p-2 d-flex justify-content-center no-hover-color" :title="$t('show_for_' + ( weekly ? 'week' : 'month' ))" :items="dropdownItems" :itemOnClick="dropdownItemOnClick"/>
+				<div class="font-weight-bold mt-4">{{$t('in_lib_by_' + (weekly ? 'week':'month'))}}</div>
 				<div class="d-flex justify-content-between mt-3">
-					<span>Students: </span>
+					<span>{{$t('student')}}: </span>
 					<span>{{studentsNumber}}</span>
 				</div>
 				<div class="d-flex justify-content-between mt-3">
-					<span>Stuff: </span>
+					<span>{{$t('employee')}}: </span>
 					<span>{{stuffNumber}}</span>
 				</div>
 			</div>
