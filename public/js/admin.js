@@ -7108,10 +7108,10 @@ var message_success = {
 var message_error = {
   methods: {
     message_error: function message_error(title, error) {
-      var _error$response$data$;
+      var _ref, _error$response$data$;
 
       console.log(error.response);
-      var message = error.response.data ? (_error$response$data$ = error.response.data.message) !== null && _error$response$data$ !== void 0 ? _error$response$data$ : this.$t('error') : this.$t('error');
+      var message = error.response.data ? (_ref = (_error$response$data$ = error.response.data.message) !== null && _error$response$data$ !== void 0 ? _error$response$data$ : error.response.data.errors.message) !== null && _ref !== void 0 ? _ref : this.$t('error') : this.$t('error');
       this.$fire({
         title: this.$t(title),
         text: message,

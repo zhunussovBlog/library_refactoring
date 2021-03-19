@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['prefix' => 'admin', 'middleware' => ['web', 'isAdmin']], static function () {
+Route::group(['prefix' => 'admin', 'middleware' => ['web', 'web-admin']], static function () {
     Route::get('{any?}', static function () {
         return view('admin');
     })->where('any', '.*')->name('admin');
