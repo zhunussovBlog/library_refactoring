@@ -2,7 +2,7 @@
 	<div class="p-3">
 		<div class="d-flex justify-content-between align-items-end">
 			<div class="font-weight-bold">{{$t('item_filter')}}</div>
-			<div class="text-grey cursor-pointer font-size-14" @click="$store.dispatch('resetItems')">{{$t('reset')}}</div>
+			<div class="text-grey cursor-pointer font-size-14" @click="reset('items')">{{$t('reset')}}</div>
 		</div>
 		<div class="overflow-scroll mt-3">
 			<div class="text-grey font-size-12 font-weight-bold">{{$t('created_by')}}:</div>
@@ -69,10 +69,14 @@
 </template>
 <script type="text/javascript">
 // components
-import Input from '../../../components/common/Input'
+import InputDiv from '../../../components/common/Input'
+//mixins 
+import {reset} from '../../../mixins/common'
+
 export default{
+	mixins:[reset],
 	components:{
-		'input-div':Input
+		InputDiv
 	},
 	computed:{
 		search(){

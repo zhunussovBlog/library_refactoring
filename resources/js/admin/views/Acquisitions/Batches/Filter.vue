@@ -2,10 +2,10 @@
 	<div class="p-3">
 		<div class="d-flex justify-content-between align-items-center">
 			<div class="font-weight-bold">{{$t('batch_filter')}}</div>
-			<div class="text-grey cursor-pointer font-size-14" @click="$store.dispatch('resetBatches')">{{$t('reset')}}</div>
+			<div class="text-grey cursor-pointer font-size-14" @click="reset(commit)">{{$t('reset')}}</div>
 		</div>
 		<div class="text-grey font-size-12 font-weight-bold mt-3">{{$t("status")}}:</div>
-		<div v-for="(status,index) in statuses" class="d-flex justify-content-between align-items-center mt-2">
+		<div v-for="(status,index) in batches.statuses" class="d-flex justify-content-between align-items-center mt-2">
 			<div class="font-size-14">{{status.status_title}}</div>
 			<div><Checkbox :checked="batches.search.add_options.status_key.includes(status.status)" @change="addStatus(status)"/></div>
 		</div>
@@ -75,20 +75,25 @@
 import Checkbox from '../../../components/common/Checkbox'
 import InputDiv from '../../../components/common/Input'
 
+// mixins
+import {reset} from '../../../mixins/common'
+
+import {mapGetters} from 'vuex'
 export default {
+	mixins:[reset],
 	components:{
 		InputDiv,
 		Checkbox
 	},
 	computed:{
-		batches(){
-			return this.$store.state.batches;
-		}
+		...mapGetters(['batches'])
 	},
 	data(){
 		return{
 			statuses:[],
 			suppliers:[],
+			commit:'batches',
+			link:'/batch'
 		}
 	},
 	methods:{
@@ -98,9 +103,11 @@ export default {
 			})
 		},
 		getStatuses(){
-			this.$http.get('/batch/statuses').then(response=>{
-				this.statuses=response.data.res;
-			})
+			if(this.batches.statuses.length<=0){
+				this.$http.get(this.link+'/statuses').then(response=>{
+					this.$store.dispatch('setStore',{label:this.commit,data:{statuses:response.data.res}});
+				})
+			}
 		},
 		addStatus(status){
 			let selected = this.batches.search.add_options.status_key;

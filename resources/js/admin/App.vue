@@ -3,10 +3,12 @@
 </template>
 <script>
 import MainBody from './views/__main__'
+import setLocale from './mixins/setLocale'
 export default {
     components:{
         MainBody
     },
+    mixins:[setLocale],
     methods:{
         getAuth(){
             // checks if the user is logined
@@ -15,7 +17,7 @@ export default {
             }).catch(e=>{});
         },
         setGlobalLocale(){
-            this.$i18n.locale=JSON.parse(localStorage.getItem('lang')) ?? window.configs.default_lang;
+            this.setLocale(JSON.parse(localStorage.getItem('lang')));
         }
     },
     created () {

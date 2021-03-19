@@ -35,6 +35,7 @@ export default {
 			fields:[],
 			modes:[]
 		},
+		statuses:[],
 		per_page:10,
 		page:0,
 		request:{},

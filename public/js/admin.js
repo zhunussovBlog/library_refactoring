@@ -1,6 +1,17 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./node_modules/@babel/runtime/regenerator/index.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/@babel/runtime/regenerator/index.js ***!
+  \**********************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! regenerator-runtime */ "./node_modules/regenerator-runtime/runtime.js");
+
+
+/***/ }),
+
 /***/ "./node_modules/axios/index.js":
 /*!*************************************!*\
   !*** ./node_modules/axios/index.js ***!
@@ -1846,14 +1857,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _views_main___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./views/__main__ */ "./resources/js/admin/views/__main__/index.vue");
+/* harmony import */ var _mixins_setLocale__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./mixins/setLocale */ "./resources/js/admin/mixins/setLocale.js");
 //
 //
 //
+
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
     MainBody: _views_main___WEBPACK_IMPORTED_MODULE_0__.default
   },
+  mixins: [_mixins_setLocale__WEBPACK_IMPORTED_MODULE_1__.default],
   methods: {
     getAuth: function getAuth() {
       var _this = this;
@@ -1864,9 +1878,7 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (e) {});
     },
     setGlobalLocale: function setGlobalLocale() {
-      var _JSON$parse;
-
-      this.$i18n.locale = (_JSON$parse = JSON.parse(localStorage.getItem('lang'))) !== null && _JSON$parse !== void 0 ? _JSON$parse : window.configs.default_lang;
+      this.setLocale(JSON.parse(localStorage.getItem('lang')));
     }
   },
   created: function created() {
@@ -2439,8 +2451,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _mixins_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../mixins/common */ "./resources/js/admin/mixins/common.js");
-/* harmony import */ var _assets_icons_ArrowDown__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../assets//icons/ArrowDown */ "./resources/js/admin/assets/icons/ArrowDown.vue");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _mixins_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../mixins/common */ "./resources/js/admin/mixins/common.js");
+/* harmony import */ var _assets_icons_ArrowDown__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../assets//icons/ArrowDown */ "./resources/js/admin/assets/icons/ArrowDown.vue");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 //
 //
 //
@@ -2470,13 +2490,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  mixins: [_mixins_common__WEBPACK_IMPORTED_MODULE_0__.last],
+  mixins: [_mixins_common__WEBPACK_IMPORTED_MODULE_1__.last],
   props: {
     link: String,
     commit: String
   },
   components: {
-    ArrowDown: _assets_icons_ArrowDown__WEBPACK_IMPORTED_MODULE_1__.default
+    ArrowDown: _assets_icons_ArrowDown__WEBPACK_IMPORTED_MODULE_2__.default
   },
   computed: {
     data: function data() {
@@ -2490,11 +2510,39 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     move: function move(num) {
-      if (num > 0 && num <= this.data.last_page) {
-        this.last(this.link, this.commit, num);
-      }
+      var _this = this;
 
-      ;
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (!(num > 0 && num <= _this.data.last_page)) {
+                  _context.next = 4;
+                  break;
+                }
+
+                _context.next = 3;
+                return _this.$store.dispatch('setStore', {
+                  label: _this.commit,
+                  data: {
+                    page: num
+                  }
+                });
+
+              case 3:
+                _this.last(_this.link, _this.commit);
+
+              case 4:
+                ;
+
+              case 5:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }))();
     }
   }
 });
@@ -3495,6 +3543,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _components_common_Checkbox__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../components/common/Checkbox */ "./resources/js/admin/components/common/Checkbox.vue");
 /* harmony import */ var _components_common_Input__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../components/common/Input */ "./resources/js/admin/components/common/Input.vue");
+/* harmony import */ var _mixins_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../mixins/common */ "./resources/js/admin/mixins/common.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -3569,21 +3625,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 // components
 
+ // mixins
+
+
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  mixins: [_mixins_common__WEBPACK_IMPORTED_MODULE_2__.reset],
   components: {
     InputDiv: _components_common_Input__WEBPACK_IMPORTED_MODULE_1__.default,
     Checkbox: _components_common_Checkbox__WEBPACK_IMPORTED_MODULE_0__.default
   },
-  computed: {
-    batches: function batches() {
-      return this.$store.state.batches;
-    }
-  },
+  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapGetters)(['batches'])),
   data: function data() {
     return {
       statuses: [],
-      suppliers: []
+      suppliers: [],
+      commit: 'batches',
+      link: '/batch'
     };
   },
   methods: {
@@ -3597,9 +3655,16 @@ __webpack_require__.r(__webpack_exports__);
     getStatuses: function getStatuses() {
       var _this2 = this;
 
-      this.$http.get('/batch/statuses').then(function (response) {
-        _this2.statuses = response.data.res;
-      });
+      if (this.batches.statuses.length <= 0) {
+        this.$http.get(this.link + '/statuses').then(function (response) {
+          _this2.$store.dispatch('setStore', {
+            label: _this2.commit,
+            data: {
+              statuses: response.data.res
+            }
+          });
+        });
+      }
     },
     addStatus: function addStatus(status) {
       var selected = this.batches.search.add_options.status_key;
@@ -3970,6 +4035,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _components_common_Input__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../components/common/Input */ "./resources/js/admin/components/common/Input.vue");
+/* harmony import */ var _mixins_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../mixins/common */ "./resources/js/admin/mixins/common.js");
 //
 //
 //
@@ -4040,10 +4106,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 // components
+ //mixins 
+
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  mixins: [_mixins_common__WEBPACK_IMPORTED_MODULE_1__.reset],
   components: {
-    'input-div': _components_common_Input__WEBPACK_IMPORTED_MODULE_0__.default
+    InputDiv: _components_common_Input__WEBPACK_IMPORTED_MODULE_0__.default
   },
   computed: {
     search: function search() {
@@ -4571,6 +4640,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 // mixins
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -4763,6 +4837,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _mixins_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../mixins/common */ "./resources/js/admin/mixins/common.js");
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5298,7 +5378,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  mixins: [_mixins_common__WEBPACK_IMPORTED_MODULE_1__.getResults],
+  mixins: [_mixins_common__WEBPACK_IMPORTED_MODULE_1__.getResults, _mixins_common__WEBPACK_IMPORTED_MODULE_1__.reset],
   components: {
     'table-div': _components_common_Table__WEBPACK_IMPORTED_MODULE_0__.default
   },
@@ -5361,14 +5441,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       });
       this.getResults(this.link, this.commit);
-    },
-    getSearchFields: function getSearchFields() {
-      this.$http.get(this.link + '/search-fields');
     }
   },
   created: function created() {
     this.getTypes();
-    this.getSearchFields();
   }
 });
 
@@ -5431,6 +5507,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 // components
  // loading indicator
 
@@ -5439,7 +5516,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  mixins: [_mixins_common__WEBPACK_IMPORTED_MODULE_2__.getResults, _mixins_common__WEBPACK_IMPORTED_MODULE_2__.download_file],
+  mixins: [_mixins_common__WEBPACK_IMPORTED_MODULE_2__.getResults, _mixins_common__WEBPACK_IMPORTED_MODULE_2__.download_file, _mixins_common__WEBPACK_IMPORTED_MODULE_2__.reset],
   components: {
     'table-div': _components_common_Table__WEBPACK_IMPORTED_MODULE_0__.default,
     PulseLoader: vue_spinner_src_PulseLoader__WEBPACK_IMPORTED_MODULE_1__.default
@@ -5590,7 +5667,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   components: {
     TableDiv: _components_common_Table__WEBPACK_IMPORTED_MODULE_0__.default
   },
-  mixins: [_mixins_common__WEBPACK_IMPORTED_MODULE_1__.getResults],
+  mixins: [_mixins_common__WEBPACK_IMPORTED_MODULE_1__.getResults, _mixins_common__WEBPACK_IMPORTED_MODULE_1__.reset],
   computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_2__.mapGetters)(['most_read'])),
   data: function data() {
     return {
@@ -5625,16 +5702,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.getResults(this.link, this.commit);
     },
     getInitData: function getInitData() {
-      var request = {};
-      var now = new Date();
       this.search();
-    },
-    getSearchFields: function getSearchFields() {
-      this.$http.get(this.link + '/search-fields');
     }
   },
   created: function created() {
-    this.getSearchFields();
     this.getInitData();
   }
 });
@@ -6632,7 +6703,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "last_created": () => (/* binding */ last_created),
 /* harmony export */   "create_it": () => (/* binding */ create_it),
 /* harmony export */   "edit_it": () => (/* binding */ edit_it),
-/* harmony export */   "download_file": () => (/* binding */ download_file)
+/* harmony export */   "download_file": () => (/* binding */ download_file),
+/* harmony export */   "reset": () => (/* binding */ reset)
 /* harmony export */ });
 /* harmony import */ var _messages__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./messages */ "./resources/js/admin/mixins/messages.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -6647,7 +6719,6 @@ var getResults = {
       this.$store.commit('setFullPageLoading', true);
       var store = this.$store.getters[commit];
       var search = this.$store.getters[commit].search;
-      var page = store.page == 0 ? '' : '?page=' + store.page;
       var add_options = [];
       var search_options = [];
       var request = {}; // validating add_options for non null
@@ -6695,7 +6766,7 @@ var getResults = {
       }
 
       request.per_page = store.per_page;
-      request.page = page;
+      request.page = store.page;
       request.add_options = add_options;
       request.search_options = search_options;
       this.$http.post(link + '/search', request).then(function (response) {
@@ -6788,7 +6859,7 @@ var getAllData = {
 };
 var last = {
   methods: {
-    last: function last(link, commit, page) {
+    last: function last(link, commit) {
       var _this3 = this;
 
       this.$store.commit('setFullPageLoading', true);
@@ -6810,16 +6881,15 @@ var last = {
           changes.per_page = store.per_page;
         }
 
-        if (page) {
-          changes.page = page;
+        if (store.page) {
+          changes.page = store.page;
         }
 
         this.$http.post(link + store.request.link, changes).then(function (response) {
           _this3.$store.dispatch('setStore', {
             label: commit,
             data: {
-              data: response.data,
-              page: page ? page : 1
+              data: response.data
             }
           });
         }).then(function () {
@@ -6837,19 +6907,18 @@ var last = {
         }
 
         if (store.per_page) {
-          changes += '&perPage=' + store.per_page;
+          changes += '&per_page=' + store.per_page;
         }
 
-        if (page) {
-          changes += '&page=' + page;
+        if (store.page) {
+          changes += '&page=' + store.page;
         }
 
         this.$http.get(link + store.request.link + changes).then(function (response) {
           _this3.$store.dispatch('setStore', {
             label: commit,
             data: {
-              data: response.data,
-              page: page ? page : 1
+              data: response.data
             }
           });
         })["catch"](function (error) {}).then(function () {
@@ -6954,6 +7023,29 @@ var download_file = {
     }
   }
 };
+var reset = {
+  methods: {
+    reset: function reset(commit) {
+      var store = this.$store.getters[commit];
+
+      for (var key in store.search.add_options) {
+        var value = store.search.add_options[key];
+
+        if (Array.isArray(value)) {
+          store.search.add_options[key] = [];
+        } else if (_typeof(value) == 'object' && value !== null) {
+          store.search.add_options[key] = {};
+        } else {
+          store.search.add_options[key] = null;
+        }
+      }
+
+      if (store.search.search_options) {
+        store.search.search_options = store.search_default;
+      }
+    }
+  }
+};
 
 /***/ }),
 
@@ -7025,6 +7117,7 @@ var message_error = {
     message_error: function message_error(title, error) {
       var _error$response$data$;
 
+      console.log(error.response);
       var message = error.response.data ? (_error$response$data$ = error.response.data.message) !== null && _error$response$data$ !== void 0 ? _error$response$data$ : this.$t('error') : this.$t('error');
       this.$fire({
         title: this.$t(title),
@@ -7052,8 +7145,12 @@ __webpack_require__.r(__webpack_exports__);
 var setLocale = {
   methods: {
     setLocale: function setLocale(locale) {
+      var _locale;
+
+      locale = (_locale = locale) !== null && _locale !== void 0 ? _locale : window.configs.default_lang;
       this.$i18n.locale = locale;
-      this.$http.defaults.headers.common['Content-Language'] = this.$i18n.locale;
+      this.$http.defaults.headers.common['Content-Language'] = locale;
+      this.$http.get('/locale/' + locale);
       localStorage.setItem('lang', JSON.stringify(locale));
     }
   }
@@ -7488,6 +7585,7 @@ __webpack_require__.r(__webpack_exports__);
       fields: [],
       modes: []
     },
+    statuses: [],
     per_page: 10,
     page: 0,
     request: {},
@@ -26144,7 +26242,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.flexible[data-v-1f176de1]{\n\tdisplay: flex;\n}\n.d-flex>div[data-v-1f176de1]{\n\twidth:100%;\n}\n.pad[data-v-1f176de1]{\n\tmt-5:1em;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.flexible[data-v-1f176de1]{\n\tdisplay: flex;\n}\n.d-flex>div[data-v-1f176de1]{\n\twidth:100%;\n}\n.pad[data-v-1f176de1]{\n\tmargin-top:0.5em;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -48048,6 +48146,764 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
+/***/ "./node_modules/regenerator-runtime/runtime.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/regenerator-runtime/runtime.js ***!
+  \*****************************************************/
+/***/ ((module) => {
+
+/**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+var runtime = (function (exports) {
+  "use strict";
+
+  var Op = Object.prototype;
+  var hasOwn = Op.hasOwnProperty;
+  var undefined; // More compressible than void 0.
+  var $Symbol = typeof Symbol === "function" ? Symbol : {};
+  var iteratorSymbol = $Symbol.iterator || "@@iterator";
+  var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
+  var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
+
+  function define(obj, key, value) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+    return obj[key];
+  }
+  try {
+    // IE 8 has a broken Object.defineProperty that only works on DOM objects.
+    define({}, "");
+  } catch (err) {
+    define = function(obj, key, value) {
+      return obj[key] = value;
+    };
+  }
+
+  function wrap(innerFn, outerFn, self, tryLocsList) {
+    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
+    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
+    var generator = Object.create(protoGenerator.prototype);
+    var context = new Context(tryLocsList || []);
+
+    // The ._invoke method unifies the implementations of the .next,
+    // .throw, and .return methods.
+    generator._invoke = makeInvokeMethod(innerFn, self, context);
+
+    return generator;
+  }
+  exports.wrap = wrap;
+
+  // Try/catch helper to minimize deoptimizations. Returns a completion
+  // record like context.tryEntries[i].completion. This interface could
+  // have been (and was previously) designed to take a closure to be
+  // invoked without arguments, but in all the cases we care about we
+  // already have an existing method we want to call, so there's no need
+  // to create a new function object. We can even get away with assuming
+  // the method takes exactly one argument, since that happens to be true
+  // in every case, so we don't have to touch the arguments object. The
+  // only additional allocation required is the completion record, which
+  // has a stable shape and so hopefully should be cheap to allocate.
+  function tryCatch(fn, obj, arg) {
+    try {
+      return { type: "normal", arg: fn.call(obj, arg) };
+    } catch (err) {
+      return { type: "throw", arg: err };
+    }
+  }
+
+  var GenStateSuspendedStart = "suspendedStart";
+  var GenStateSuspendedYield = "suspendedYield";
+  var GenStateExecuting = "executing";
+  var GenStateCompleted = "completed";
+
+  // Returning this object from the innerFn has the same effect as
+  // breaking out of the dispatch switch statement.
+  var ContinueSentinel = {};
+
+  // Dummy constructor functions that we use as the .constructor and
+  // .constructor.prototype properties for functions that return Generator
+  // objects. For full spec compliance, you may wish to configure your
+  // minifier not to mangle the names of these two functions.
+  function Generator() {}
+  function GeneratorFunction() {}
+  function GeneratorFunctionPrototype() {}
+
+  // This is a polyfill for %IteratorPrototype% for environments that
+  // don't natively support it.
+  var IteratorPrototype = {};
+  IteratorPrototype[iteratorSymbol] = function () {
+    return this;
+  };
+
+  var getProto = Object.getPrototypeOf;
+  var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
+  if (NativeIteratorPrototype &&
+      NativeIteratorPrototype !== Op &&
+      hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
+    // This environment has a native %IteratorPrototype%; use it instead
+    // of the polyfill.
+    IteratorPrototype = NativeIteratorPrototype;
+  }
+
+  var Gp = GeneratorFunctionPrototype.prototype =
+    Generator.prototype = Object.create(IteratorPrototype);
+  GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype;
+  GeneratorFunctionPrototype.constructor = GeneratorFunction;
+  GeneratorFunction.displayName = define(
+    GeneratorFunctionPrototype,
+    toStringTagSymbol,
+    "GeneratorFunction"
+  );
+
+  // Helper for defining the .next, .throw, and .return methods of the
+  // Iterator interface in terms of a single ._invoke method.
+  function defineIteratorMethods(prototype) {
+    ["next", "throw", "return"].forEach(function(method) {
+      define(prototype, method, function(arg) {
+        return this._invoke(method, arg);
+      });
+    });
+  }
+
+  exports.isGeneratorFunction = function(genFun) {
+    var ctor = typeof genFun === "function" && genFun.constructor;
+    return ctor
+      ? ctor === GeneratorFunction ||
+        // For the native GeneratorFunction constructor, the best we can
+        // do is to check its .name property.
+        (ctor.displayName || ctor.name) === "GeneratorFunction"
+      : false;
+  };
+
+  exports.mark = function(genFun) {
+    if (Object.setPrototypeOf) {
+      Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
+    } else {
+      genFun.__proto__ = GeneratorFunctionPrototype;
+      define(genFun, toStringTagSymbol, "GeneratorFunction");
+    }
+    genFun.prototype = Object.create(Gp);
+    return genFun;
+  };
+
+  // Within the body of any async function, `await x` is transformed to
+  // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
+  // `hasOwn.call(value, "__await")` to determine if the yielded value is
+  // meant to be awaited.
+  exports.awrap = function(arg) {
+    return { __await: arg };
+  };
+
+  function AsyncIterator(generator, PromiseImpl) {
+    function invoke(method, arg, resolve, reject) {
+      var record = tryCatch(generator[method], generator, arg);
+      if (record.type === "throw") {
+        reject(record.arg);
+      } else {
+        var result = record.arg;
+        var value = result.value;
+        if (value &&
+            typeof value === "object" &&
+            hasOwn.call(value, "__await")) {
+          return PromiseImpl.resolve(value.__await).then(function(value) {
+            invoke("next", value, resolve, reject);
+          }, function(err) {
+            invoke("throw", err, resolve, reject);
+          });
+        }
+
+        return PromiseImpl.resolve(value).then(function(unwrapped) {
+          // When a yielded Promise is resolved, its final value becomes
+          // the .value of the Promise<{value,done}> result for the
+          // current iteration.
+          result.value = unwrapped;
+          resolve(result);
+        }, function(error) {
+          // If a rejected Promise was yielded, throw the rejection back
+          // into the async generator function so it can be handled there.
+          return invoke("throw", error, resolve, reject);
+        });
+      }
+    }
+
+    var previousPromise;
+
+    function enqueue(method, arg) {
+      function callInvokeWithMethodAndArg() {
+        return new PromiseImpl(function(resolve, reject) {
+          invoke(method, arg, resolve, reject);
+        });
+      }
+
+      return previousPromise =
+        // If enqueue has been called before, then we want to wait until
+        // all previous Promises have been resolved before calling invoke,
+        // so that results are always delivered in the correct order. If
+        // enqueue has not been called before, then it is important to
+        // call invoke immediately, without waiting on a callback to fire,
+        // so that the async generator function has the opportunity to do
+        // any necessary setup in a predictable way. This predictability
+        // is why the Promise constructor synchronously invokes its
+        // executor callback, and why async functions synchronously
+        // execute code before the first await. Since we implement simple
+        // async functions in terms of async generators, it is especially
+        // important to get this right, even though it requires care.
+        previousPromise ? previousPromise.then(
+          callInvokeWithMethodAndArg,
+          // Avoid propagating failures to Promises returned by later
+          // invocations of the iterator.
+          callInvokeWithMethodAndArg
+        ) : callInvokeWithMethodAndArg();
+    }
+
+    // Define the unified helper method that is used to implement .next,
+    // .throw, and .return (see defineIteratorMethods).
+    this._invoke = enqueue;
+  }
+
+  defineIteratorMethods(AsyncIterator.prototype);
+  AsyncIterator.prototype[asyncIteratorSymbol] = function () {
+    return this;
+  };
+  exports.AsyncIterator = AsyncIterator;
+
+  // Note that simple async functions are implemented on top of
+  // AsyncIterator objects; they just return a Promise for the value of
+  // the final result produced by the iterator.
+  exports.async = function(innerFn, outerFn, self, tryLocsList, PromiseImpl) {
+    if (PromiseImpl === void 0) PromiseImpl = Promise;
+
+    var iter = new AsyncIterator(
+      wrap(innerFn, outerFn, self, tryLocsList),
+      PromiseImpl
+    );
+
+    return exports.isGeneratorFunction(outerFn)
+      ? iter // If outerFn is a generator, return the full iterator.
+      : iter.next().then(function(result) {
+          return result.done ? result.value : iter.next();
+        });
+  };
+
+  function makeInvokeMethod(innerFn, self, context) {
+    var state = GenStateSuspendedStart;
+
+    return function invoke(method, arg) {
+      if (state === GenStateExecuting) {
+        throw new Error("Generator is already running");
+      }
+
+      if (state === GenStateCompleted) {
+        if (method === "throw") {
+          throw arg;
+        }
+
+        // Be forgiving, per 25.3.3.3.3 of the spec:
+        // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
+        return doneResult();
+      }
+
+      context.method = method;
+      context.arg = arg;
+
+      while (true) {
+        var delegate = context.delegate;
+        if (delegate) {
+          var delegateResult = maybeInvokeDelegate(delegate, context);
+          if (delegateResult) {
+            if (delegateResult === ContinueSentinel) continue;
+            return delegateResult;
+          }
+        }
+
+        if (context.method === "next") {
+          // Setting context._sent for legacy support of Babel's
+          // function.sent implementation.
+          context.sent = context._sent = context.arg;
+
+        } else if (context.method === "throw") {
+          if (state === GenStateSuspendedStart) {
+            state = GenStateCompleted;
+            throw context.arg;
+          }
+
+          context.dispatchException(context.arg);
+
+        } else if (context.method === "return") {
+          context.abrupt("return", context.arg);
+        }
+
+        state = GenStateExecuting;
+
+        var record = tryCatch(innerFn, self, context);
+        if (record.type === "normal") {
+          // If an exception is thrown from innerFn, we leave state ===
+          // GenStateExecuting and loop back for another invocation.
+          state = context.done
+            ? GenStateCompleted
+            : GenStateSuspendedYield;
+
+          if (record.arg === ContinueSentinel) {
+            continue;
+          }
+
+          return {
+            value: record.arg,
+            done: context.done
+          };
+
+        } else if (record.type === "throw") {
+          state = GenStateCompleted;
+          // Dispatch the exception by looping back around to the
+          // context.dispatchException(context.arg) call above.
+          context.method = "throw";
+          context.arg = record.arg;
+        }
+      }
+    };
+  }
+
+  // Call delegate.iterator[context.method](context.arg) and handle the
+  // result, either by returning a { value, done } result from the
+  // delegate iterator, or by modifying context.method and context.arg,
+  // setting context.delegate to null, and returning the ContinueSentinel.
+  function maybeInvokeDelegate(delegate, context) {
+    var method = delegate.iterator[context.method];
+    if (method === undefined) {
+      // A .throw or .return when the delegate iterator has no .throw
+      // method always terminates the yield* loop.
+      context.delegate = null;
+
+      if (context.method === "throw") {
+        // Note: ["return"] must be used for ES3 parsing compatibility.
+        if (delegate.iterator["return"]) {
+          // If the delegate iterator has a return method, give it a
+          // chance to clean up.
+          context.method = "return";
+          context.arg = undefined;
+          maybeInvokeDelegate(delegate, context);
+
+          if (context.method === "throw") {
+            // If maybeInvokeDelegate(context) changed context.method from
+            // "return" to "throw", let that override the TypeError below.
+            return ContinueSentinel;
+          }
+        }
+
+        context.method = "throw";
+        context.arg = new TypeError(
+          "The iterator does not provide a 'throw' method");
+      }
+
+      return ContinueSentinel;
+    }
+
+    var record = tryCatch(method, delegate.iterator, context.arg);
+
+    if (record.type === "throw") {
+      context.method = "throw";
+      context.arg = record.arg;
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    var info = record.arg;
+
+    if (! info) {
+      context.method = "throw";
+      context.arg = new TypeError("iterator result is not an object");
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    if (info.done) {
+      // Assign the result of the finished delegate to the temporary
+      // variable specified by delegate.resultName (see delegateYield).
+      context[delegate.resultName] = info.value;
+
+      // Resume execution at the desired location (see delegateYield).
+      context.next = delegate.nextLoc;
+
+      // If context.method was "throw" but the delegate handled the
+      // exception, let the outer generator proceed normally. If
+      // context.method was "next", forget context.arg since it has been
+      // "consumed" by the delegate iterator. If context.method was
+      // "return", allow the original .return call to continue in the
+      // outer generator.
+      if (context.method !== "return") {
+        context.method = "next";
+        context.arg = undefined;
+      }
+
+    } else {
+      // Re-yield the result returned by the delegate method.
+      return info;
+    }
+
+    // The delegate iterator is finished, so forget it and continue with
+    // the outer generator.
+    context.delegate = null;
+    return ContinueSentinel;
+  }
+
+  // Define Generator.prototype.{next,throw,return} in terms of the
+  // unified ._invoke helper method.
+  defineIteratorMethods(Gp);
+
+  define(Gp, toStringTagSymbol, "Generator");
+
+  // A Generator should always return itself as the iterator object when the
+  // @@iterator function is called on it. Some browsers' implementations of the
+  // iterator prototype chain incorrectly implement this, causing the Generator
+  // object to not be returned from this call. This ensures that doesn't happen.
+  // See https://github.com/facebook/regenerator/issues/274 for more details.
+  Gp[iteratorSymbol] = function() {
+    return this;
+  };
+
+  Gp.toString = function() {
+    return "[object Generator]";
+  };
+
+  function pushTryEntry(locs) {
+    var entry = { tryLoc: locs[0] };
+
+    if (1 in locs) {
+      entry.catchLoc = locs[1];
+    }
+
+    if (2 in locs) {
+      entry.finallyLoc = locs[2];
+      entry.afterLoc = locs[3];
+    }
+
+    this.tryEntries.push(entry);
+  }
+
+  function resetTryEntry(entry) {
+    var record = entry.completion || {};
+    record.type = "normal";
+    delete record.arg;
+    entry.completion = record;
+  }
+
+  function Context(tryLocsList) {
+    // The root entry object (effectively a try statement without a catch
+    // or a finally block) gives us a place to store values thrown from
+    // locations where there is no enclosing try statement.
+    this.tryEntries = [{ tryLoc: "root" }];
+    tryLocsList.forEach(pushTryEntry, this);
+    this.reset(true);
+  }
+
+  exports.keys = function(object) {
+    var keys = [];
+    for (var key in object) {
+      keys.push(key);
+    }
+    keys.reverse();
+
+    // Rather than returning an object with a next method, we keep
+    // things simple and return the next function itself.
+    return function next() {
+      while (keys.length) {
+        var key = keys.pop();
+        if (key in object) {
+          next.value = key;
+          next.done = false;
+          return next;
+        }
+      }
+
+      // To avoid creating an additional object, we just hang the .value
+      // and .done properties off the next function object itself. This
+      // also ensures that the minifier will not anonymize the function.
+      next.done = true;
+      return next;
+    };
+  };
+
+  function values(iterable) {
+    if (iterable) {
+      var iteratorMethod = iterable[iteratorSymbol];
+      if (iteratorMethod) {
+        return iteratorMethod.call(iterable);
+      }
+
+      if (typeof iterable.next === "function") {
+        return iterable;
+      }
+
+      if (!isNaN(iterable.length)) {
+        var i = -1, next = function next() {
+          while (++i < iterable.length) {
+            if (hasOwn.call(iterable, i)) {
+              next.value = iterable[i];
+              next.done = false;
+              return next;
+            }
+          }
+
+          next.value = undefined;
+          next.done = true;
+
+          return next;
+        };
+
+        return next.next = next;
+      }
+    }
+
+    // Return an iterator with no values.
+    return { next: doneResult };
+  }
+  exports.values = values;
+
+  function doneResult() {
+    return { value: undefined, done: true };
+  }
+
+  Context.prototype = {
+    constructor: Context,
+
+    reset: function(skipTempReset) {
+      this.prev = 0;
+      this.next = 0;
+      // Resetting context._sent for legacy support of Babel's
+      // function.sent implementation.
+      this.sent = this._sent = undefined;
+      this.done = false;
+      this.delegate = null;
+
+      this.method = "next";
+      this.arg = undefined;
+
+      this.tryEntries.forEach(resetTryEntry);
+
+      if (!skipTempReset) {
+        for (var name in this) {
+          // Not sure about the optimal order of these conditions:
+          if (name.charAt(0) === "t" &&
+              hasOwn.call(this, name) &&
+              !isNaN(+name.slice(1))) {
+            this[name] = undefined;
+          }
+        }
+      }
+    },
+
+    stop: function() {
+      this.done = true;
+
+      var rootEntry = this.tryEntries[0];
+      var rootRecord = rootEntry.completion;
+      if (rootRecord.type === "throw") {
+        throw rootRecord.arg;
+      }
+
+      return this.rval;
+    },
+
+    dispatchException: function(exception) {
+      if (this.done) {
+        throw exception;
+      }
+
+      var context = this;
+      function handle(loc, caught) {
+        record.type = "throw";
+        record.arg = exception;
+        context.next = loc;
+
+        if (caught) {
+          // If the dispatched exception was caught by a catch block,
+          // then let that catch block handle the exception normally.
+          context.method = "next";
+          context.arg = undefined;
+        }
+
+        return !! caught;
+      }
+
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        var record = entry.completion;
+
+        if (entry.tryLoc === "root") {
+          // Exception thrown outside of any try block that could handle
+          // it, so set the completion value of the entire function to
+          // throw the exception.
+          return handle("end");
+        }
+
+        if (entry.tryLoc <= this.prev) {
+          var hasCatch = hasOwn.call(entry, "catchLoc");
+          var hasFinally = hasOwn.call(entry, "finallyLoc");
+
+          if (hasCatch && hasFinally) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            } else if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+
+          } else if (hasCatch) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            }
+
+          } else if (hasFinally) {
+            if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+
+          } else {
+            throw new Error("try statement without catch or finally");
+          }
+        }
+      }
+    },
+
+    abrupt: function(type, arg) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc <= this.prev &&
+            hasOwn.call(entry, "finallyLoc") &&
+            this.prev < entry.finallyLoc) {
+          var finallyEntry = entry;
+          break;
+        }
+      }
+
+      if (finallyEntry &&
+          (type === "break" ||
+           type === "continue") &&
+          finallyEntry.tryLoc <= arg &&
+          arg <= finallyEntry.finallyLoc) {
+        // Ignore the finally entry if control is not jumping to a
+        // location outside the try/catch block.
+        finallyEntry = null;
+      }
+
+      var record = finallyEntry ? finallyEntry.completion : {};
+      record.type = type;
+      record.arg = arg;
+
+      if (finallyEntry) {
+        this.method = "next";
+        this.next = finallyEntry.finallyLoc;
+        return ContinueSentinel;
+      }
+
+      return this.complete(record);
+    },
+
+    complete: function(record, afterLoc) {
+      if (record.type === "throw") {
+        throw record.arg;
+      }
+
+      if (record.type === "break" ||
+          record.type === "continue") {
+        this.next = record.arg;
+      } else if (record.type === "return") {
+        this.rval = this.arg = record.arg;
+        this.method = "return";
+        this.next = "end";
+      } else if (record.type === "normal" && afterLoc) {
+        this.next = afterLoc;
+      }
+
+      return ContinueSentinel;
+    },
+
+    finish: function(finallyLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.finallyLoc === finallyLoc) {
+          this.complete(entry.completion, entry.afterLoc);
+          resetTryEntry(entry);
+          return ContinueSentinel;
+        }
+      }
+    },
+
+    "catch": function(tryLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc === tryLoc) {
+          var record = entry.completion;
+          if (record.type === "throw") {
+            var thrown = record.arg;
+            resetTryEntry(entry);
+          }
+          return thrown;
+        }
+      }
+
+      // The context.catch method must only be called with a location
+      // argument that corresponds to a known catch block.
+      throw new Error("illegal catch attempt");
+    },
+
+    delegateYield: function(iterable, resultName, nextLoc) {
+      this.delegate = {
+        iterator: values(iterable),
+        resultName: resultName,
+        nextLoc: nextLoc
+      };
+
+      if (this.method === "next") {
+        // Deliberately forget the last sent value so that we don't
+        // accidentally pass it on to the delegate.
+        this.arg = undefined;
+      }
+
+      return ContinueSentinel;
+    }
+  };
+
+  // Regardless of whether this script is executing as a CommonJS module
+  // or not, return the runtime object so that we can declare the variable
+  // regeneratorRuntime in the outer scope, which allows this module to be
+  // injected easily by `bin/regenerator --include-runtime script.js`.
+  return exports;
+
+}(
+  // If this script is executing as a CommonJS module, use module.exports
+  // as the regeneratorRuntime namespace. Otherwise create a new empty
+  // object. Either way, the resulting object will be used to initialize
+  // the regeneratorRuntime variable at the top of this file.
+   true ? module.exports : 0
+));
+
+try {
+  regeneratorRuntime = runtime;
+} catch (accidentalStrictMode) {
+  // This module should not be running in strict mode, so the above
+  // assignment should always work unless something is misconfigured. Just
+  // in case runtime.js accidentally runs in strict mode, we can escape
+  // strict mode using a global Function call. This could conceivably fail
+  // if a Content Security Policy forbids using Function, but in that case
+  // the proper solution is to fix the accidental strict mode problem. If
+  // you've misconfigured your bundler to force strict mode and applied a
+  // CSP to forbid Function, and you're not willing to fix either of those
+  // problems, please detail your unique predicament in a GitHub issue.
+  Function("r", "regeneratorRuntime = r")(runtime);
+}
+
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./node_modules/vue-spinner/src/ClipLoader.vue?vue&type=style&index=0&lang=css&":
 /*!**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./node_modules/vue-spinner/src/ClipLoader.vue?vue&type=style&index=0&lang=css& ***!
@@ -61139,11 +61995,7 @@ var render = function() {
                 expression: "batch.items_no"
               }
             ],
-            attrs: {
-              type: "string",
-              placeholder: _vm.$t("quantity_items"),
-              required: ""
-            },
+            attrs: { type: "string", required: "" },
             domProps: { value: _vm.batch.items_no },
             on: {
               input: function($event) {
@@ -61155,7 +62007,9 @@ var render = function() {
             }
           }),
           _vm._v(" "),
-          _c("label", { staticClass: "placeholder required" })
+          _c("label", { staticClass: "placeholder required" }, [
+            _vm._v(_vm._s(_vm.$t("quantity_items")))
+          ])
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "pad w-100" }, [
@@ -61168,11 +62022,7 @@ var render = function() {
                 expression: "batch.titles_no"
               }
             ],
-            attrs: {
-              type: "string",
-              placeholder: _vm.$t("quantity_titles"),
-              required: ""
-            },
+            attrs: { type: "string", required: "" },
             domProps: { value: _vm.batch.titles_no },
             on: {
               input: function($event) {
@@ -61184,7 +62034,9 @@ var render = function() {
             }
           }),
           _vm._v(" "),
-          _c("label", { staticClass: "placeholder required" })
+          _c("label", { staticClass: "placeholder required" }, [
+            _vm._v(_vm._s(_vm.$t("quantity_titles")))
+          ])
         ])
       ]),
       _vm._v(" "),
@@ -61203,11 +62055,7 @@ var render = function() {
                 expression: "batch.doc_no"
               }
             ],
-            attrs: {
-              type: "string",
-              placeholder: _vm.$t("document_number"),
-              required: ""
-            },
+            attrs: { type: "string", required: "" },
             domProps: { value: _vm.batch.doc_no },
             on: {
               input: function($event) {
@@ -61219,7 +62067,9 @@ var render = function() {
             }
           }),
           _vm._v(" "),
-          _c("label", { staticClass: "placeholder required" })
+          _c("label", { staticClass: "placeholder required" }, [
+            _vm._v(_vm._s(_vm.$t("document_number")))
+          ])
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "pad w-100" }, [
@@ -61232,7 +62082,7 @@ var render = function() {
                 expression: "batch.contract_no"
               }
             ],
-            attrs: { type: "string", placeholder: _vm.$t("contract_number") },
+            attrs: { type: "string" },
             domProps: { value: _vm.batch.contract_no },
             on: {
               input: function($event) {
@@ -61244,7 +62094,9 @@ var render = function() {
             }
           }),
           _vm._v(" "),
-          _c("label", { staticClass: "placeholder" })
+          _c("label", { staticClass: "placeholder" }, [
+            _vm._v(_vm._s(_vm.$t("contract_number")))
+          ])
         ])
       ]),
       _vm._v(" "),
@@ -61259,7 +62111,6 @@ var render = function() {
                 expression: "batch.invoice_details"
               }
             ],
-            attrs: { placeholder: _vm.$t("invoice_details") },
             domProps: { value: _vm.batch.invoice_details },
             on: {
               input: function($event) {
@@ -61271,7 +62122,9 @@ var render = function() {
             }
           }),
           _vm._v(" "),
-          _c("label", { staticClass: "placeholder" })
+          _c("label", { staticClass: "placeholder" }, [
+            _vm._v(_vm._s(_vm.$t("invoice_details")))
+          ])
         ]),
         _vm._v(" "),
         _c(
@@ -61348,7 +62201,7 @@ var render = function() {
               staticClass: "text-grey cursor-pointer font-size-14",
               on: {
                 click: function($event) {
-                  return _vm.$store.dispatch("resetBatches")
+                  return _vm.reset(_vm.commit)
                 }
               }
             },
@@ -61363,7 +62216,7 @@ var render = function() {
         [_vm._v(_vm._s(_vm.$t("status")) + ":")]
       ),
       _vm._v(" "),
-      _vm._l(_vm.statuses, function(status, index) {
+      _vm._l(_vm.batches.statuses, function(status, index) {
         return _c(
           "div",
           {
@@ -61885,7 +62738,6 @@ var render = function() {
               ],
               attrs: {
                 type: "text",
-                placeholder: _vm.$tc("titles", 1),
                 disabled: _vm.edit || _vm.reCreate,
                 required: !(_vm.edit || _vm.reCreate)
               },
@@ -61900,10 +62752,14 @@ var render = function() {
               }
             }),
             _vm._v(" "),
-            _c("label", {
-              staticClass: "placeholder",
-              class: { required: !(_vm.edit || _vm.reCreate) }
-            })
+            _c(
+              "label",
+              {
+                staticClass: "placeholder",
+                class: { required: !(_vm.edit || _vm.reCreate) }
+              },
+              [_vm._v(_vm._s(_vm.$tc("titles", 1)))]
+            )
           ])
         ]),
         _vm._v(" "),
@@ -61994,7 +62850,6 @@ var render = function() {
               ],
               attrs: {
                 type: "text",
-                placeholder: _vm.$t("author"),
                 disabled: _vm.edit || _vm.reCreate,
                 required: !(_vm.edit || _vm.reCreate)
               },
@@ -62009,10 +62864,14 @@ var render = function() {
               }
             }),
             _vm._v(" "),
-            _c("label", {
-              staticClass: "placeholder",
-              class: { required: !(_vm.edit || _vm.reCreate) }
-            })
+            _c(
+              "label",
+              {
+                staticClass: "placeholder",
+                class: { required: !(_vm.edit || _vm.reCreate) }
+              },
+              [_vm._v(_vm._s(_vm.$t("author")))]
+            )
           ])
         ]),
         _vm._v(" "),
@@ -62029,7 +62888,6 @@ var render = function() {
               ],
               attrs: {
                 type: "text",
-                placeholder: _vm.$t("isbn"),
                 disabled: _vm.edit || _vm.reCreate,
                 required: !(_vm.edit || _vm.reCreate)
               },
@@ -62044,10 +62902,14 @@ var render = function() {
               }
             }),
             _vm._v(" "),
-            _c("label", {
-              staticClass: "placeholder",
-              class: { required: !(_vm.edit || _vm.reCreate) }
-            })
+            _c(
+              "label",
+              {
+                staticClass: "placeholder",
+                class: { required: !(_vm.edit || _vm.reCreate) }
+              },
+              [_vm._v(_vm._s(_vm.$t("isbn")))]
+            )
           ])
         ])
       ]),
@@ -62064,12 +62926,7 @@ var render = function() {
                   expression: "item.pub_year"
                 }
               ],
-              attrs: {
-                type: "text",
-                placeholder: _vm.$t("pub_year"),
-                disabled: _vm.edit,
-                required: !_vm.edit
-              },
+              attrs: { type: "text", disabled: _vm.edit, required: !_vm.edit },
               domProps: { value: _vm.item.pub_year },
               on: {
                 input: function($event) {
@@ -62081,10 +62938,11 @@ var render = function() {
               }
             }),
             _vm._v(" "),
-            _c("label", {
-              staticClass: "placeholder",
-              class: { required: !_vm.edit }
-            })
+            _c(
+              "label",
+              { staticClass: "placeholder", class: { required: !_vm.edit } },
+              [_vm._v(_vm._s(_vm.$t("pub_year")))]
+            )
           ])
         ]),
         _vm._v(" "),
@@ -62173,12 +63031,7 @@ var render = function() {
                   expression: "item.pub_city"
                 }
               ],
-              attrs: {
-                type: "text",
-                placeholder: _vm.$t("pub_city"),
-                disabled: _vm.edit,
-                required: !_vm.edit
-              },
+              attrs: { type: "text", disabled: _vm.edit, required: !_vm.edit },
               domProps: { value: _vm.item.pub_city },
               on: {
                 input: function($event) {
@@ -62190,10 +63043,11 @@ var render = function() {
               }
             }),
             _vm._v(" "),
-            _c("label", {
-              staticClass: "placeholder",
-              class: { required: !_vm.edit }
-            })
+            _c(
+              "label",
+              { staticClass: "placeholder", class: { required: !_vm.edit } },
+              [_vm._v(_vm._s(_vm.$t("pub_city")))]
+            )
           ])
         ]),
         _vm._v(" "),
@@ -62274,12 +63128,7 @@ var render = function() {
                   expression: "(edit) ? null : item.count"
                 }
               ],
-              attrs: {
-                type: "text",
-                placeholder: _vm.edit ? "not editable" : _vm.$t("count"),
-                required: !_vm.edit,
-                disabled: _vm.edit
-              },
+              attrs: { type: "text", required: !_vm.edit, disabled: _vm.edit },
               domProps: { value: _vm.edit ? null : _vm.item.count },
               on: {
                 input: function($event) {
@@ -62295,10 +63144,11 @@ var render = function() {
               }
             }),
             _vm._v(" "),
-            _c("label", {
-              staticClass: "placeholder",
-              class: { required: !_vm.edit }
-            })
+            _c(
+              "label",
+              { staticClass: "placeholder", class: { required: !_vm.edit } },
+              [_vm._v(_vm._s(_vm.$t("count")))]
+            )
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "pad w-100" }, [
@@ -62311,11 +63161,7 @@ var render = function() {
                   expression: "item.cost"
                 }
               ],
-              attrs: {
-                type: "text",
-                placeholder: _vm.$t("cost"),
-                required: ""
-              },
+              attrs: { type: "text", required: "" },
               domProps: { value: _vm.item.cost },
               on: {
                 input: function($event) {
@@ -62327,7 +63173,9 @@ var render = function() {
               }
             }),
             _vm._v(" "),
-            _c("label", { staticClass: "placeholder required" })
+            _c("label", { staticClass: "placeholder required" }, [
+              _vm._v(_vm._s(_vm.$t("cost")))
+            ])
           ])
         ]),
         _vm._v(" "),
@@ -62498,7 +63346,7 @@ var render = function() {
             staticClass: "text-grey cursor-pointer font-size-14",
             on: {
               click: function($event) {
-                return _vm.$store.dispatch("resetItems")
+                return _vm.reset("items")
               }
             }
           },
@@ -63590,11 +64438,7 @@ var render = function() {
                 expression: "publisher.name"
               }
             ],
-            attrs: {
-              type: "string",
-              placeholder: _vm.$t("name"),
-              required: ""
-            },
+            attrs: { type: "string", required: "" },
             domProps: { value: _vm.publisher.name },
             on: {
               input: function($event) {
@@ -63606,7 +64450,9 @@ var render = function() {
             }
           }),
           _vm._v(" "),
-          _c("label", { staticClass: "placeholder required" })
+          _c("label", { staticClass: "placeholder required" }, [
+            _vm._v(_vm._s(_vm.$t("name")))
+          ])
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "pad" }, [
@@ -63619,7 +64465,7 @@ var render = function() {
                 expression: "publisher.com_name"
               }
             ],
-            attrs: { type: "string", placeholder: _vm.$t("commercial_name") },
+            attrs: { type: "string" },
             domProps: { value: _vm.publisher.com_name },
             on: {
               input: function($event) {
@@ -63629,7 +64475,11 @@ var render = function() {
                 _vm.$set(_vm.publisher, "com_name", $event.target.value)
               }
             }
-          })
+          }),
+          _vm._v(" "),
+          _c("label", { staticClass: "placeholder required" }, [
+            _vm._v(_vm._s(_vm.$t("commercial_name")))
+          ])
         ])
       ]),
       _vm._v(" "),
@@ -63648,7 +64498,7 @@ var render = function() {
                 expression: "publisher.address"
               }
             ],
-            attrs: { type: "string", placeholder: _vm.$t("address") },
+            attrs: { type: "string" },
             domProps: { value: _vm.publisher.address },
             on: {
               input: function($event) {
@@ -63658,7 +64508,11 @@ var render = function() {
                 _vm.$set(_vm.publisher, "address", $event.target.value)
               }
             }
-          })
+          }),
+          _vm._v(" "),
+          _c("label", { staticClass: "placeholder required" }, [
+            _vm._v(_vm._s(_vm.$t("address")))
+          ])
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "pad" }, [
@@ -63671,7 +64525,7 @@ var render = function() {
                 expression: "publisher.email"
               }
             ],
-            attrs: { type: "string", placeholder: _vm.$t("email") },
+            attrs: { type: "string" },
             domProps: { value: _vm.publisher.email },
             on: {
               input: function($event) {
@@ -63681,7 +64535,11 @@ var render = function() {
                 _vm.$set(_vm.publisher, "email", $event.target.value)
               }
             }
-          })
+          }),
+          _vm._v(" "),
+          _c("label", { staticClass: "placeholder required" }, [
+            _vm._v(_vm._s(_vm.$t("email")))
+          ])
         ])
       ]),
       _vm._v(" "),
@@ -63696,7 +64554,7 @@ var render = function() {
                 expression: "publisher.phone"
               }
             ],
-            attrs: { type: "string", placeholder: _vm.$t("phone") },
+            attrs: { type: "string" },
             domProps: { value: _vm.publisher.phone },
             on: {
               input: function($event) {
@@ -63706,7 +64564,11 @@ var render = function() {
                 _vm.$set(_vm.publisher, "phone", $event.target.value)
               }
             }
-          })
+          }),
+          _vm._v(" "),
+          _c("label", { staticClass: "placeholder required" }, [
+            _vm._v(_vm._s(_vm.$t("phone")))
+          ])
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "pad" }, [
@@ -63719,7 +64581,7 @@ var render = function() {
                 expression: "publisher.fax"
               }
             ],
-            attrs: { type: "string", placeholder: _vm.$t("fax") },
+            attrs: { type: "string" },
             domProps: { value: _vm.publisher.fax },
             on: {
               input: function($event) {
@@ -63729,7 +64591,11 @@ var render = function() {
                 _vm.$set(_vm.publisher, "fax", $event.target.value)
               }
             }
-          })
+          }),
+          _vm._v(" "),
+          _c("label", { staticClass: "placeholder required" }, [
+            _vm._v(_vm._s(_vm.$t("fax")))
+          ])
         ])
       ]),
       _vm._v(" "),
@@ -63921,11 +64787,7 @@ var render = function() {
                 expression: "supplier.name"
               }
             ],
-            attrs: {
-              type: "string",
-              placeholder: _vm.$t("name"),
-              required: ""
-            },
+            attrs: { type: "string", required: "" },
             domProps: { value: _vm.supplier.name },
             on: {
               input: function($event) {
@@ -63937,7 +64799,9 @@ var render = function() {
             }
           }),
           _vm._v(" "),
-          _c("label", { staticClass: "placeholder required" })
+          _c("label", { staticClass: "placeholder required" }, [
+            _vm._v(_vm._s(_vm.$t("name")))
+          ])
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "pad" }, [
@@ -63950,7 +64814,7 @@ var render = function() {
                 expression: "supplier.bin"
               }
             ],
-            attrs: { type: "string", placeholder: _vm.$t("bin") },
+            attrs: { type: "string" },
             domProps: { value: _vm.supplier.bin },
             on: {
               input: function($event) {
@@ -63960,7 +64824,11 @@ var render = function() {
                 _vm.$set(_vm.supplier, "bin", $event.target.value)
               }
             }
-          })
+          }),
+          _vm._v(" "),
+          _c("label", { staticClass: "placeholder required" }, [
+            _vm._v(_vm._s(_vm.$t("bin")))
+          ])
         ])
       ]),
       _vm._v(" "),
@@ -63975,7 +64843,7 @@ var render = function() {
                 expression: "supplier.com_name"
               }
             ],
-            attrs: { type: "string", placeholder: _vm.$t("commercial_name") },
+            attrs: { type: "string" },
             domProps: { value: _vm.supplier.com_name },
             on: {
               input: function($event) {
@@ -63985,7 +64853,11 @@ var render = function() {
                 _vm.$set(_vm.supplier, "com_name", $event.target.value)
               }
             }
-          })
+          }),
+          _vm._v(" "),
+          _c("label", { staticClass: "placeholder required" }, [
+            _vm._v(_vm._s(_vm.$t("commercial_name")))
+          ])
         ])
       ]),
       _vm._v(" "),
@@ -64004,7 +64876,7 @@ var render = function() {
                 expression: "supplier.address"
               }
             ],
-            attrs: { type: "string", placeholder: _vm.$t("address") },
+            attrs: { type: "string" },
             domProps: { value: _vm.supplier.address },
             on: {
               input: function($event) {
@@ -64014,7 +64886,11 @@ var render = function() {
                 _vm.$set(_vm.supplier, "address", $event.target.value)
               }
             }
-          })
+          }),
+          _vm._v(" "),
+          _c("label", { staticClass: "placeholder required" }, [
+            _vm._v(_vm._s(_vm.$t("address")))
+          ])
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "pad" }, [
@@ -64027,7 +64903,7 @@ var render = function() {
                 expression: "supplier.email"
               }
             ],
-            attrs: { type: "string", placeholder: _vm.$t("email") },
+            attrs: { type: "string" },
             domProps: { value: _vm.supplier.email },
             on: {
               input: function($event) {
@@ -64037,7 +64913,11 @@ var render = function() {
                 _vm.$set(_vm.supplier, "email", $event.target.value)
               }
             }
-          })
+          }),
+          _vm._v(" "),
+          _c("label", { staticClass: "placeholder required" }, [
+            _vm._v(_vm._s(_vm.$t("email")))
+          ])
         ])
       ]),
       _vm._v(" "),
@@ -64052,7 +64932,7 @@ var render = function() {
                 expression: "supplier.phone"
               }
             ],
-            attrs: { type: "string", placeholder: _vm.$t("phone") },
+            attrs: { type: "string" },
             domProps: { value: _vm.supplier.phone },
             on: {
               input: function($event) {
@@ -64062,7 +64942,11 @@ var render = function() {
                 _vm.$set(_vm.supplier, "phone", $event.target.value)
               }
             }
-          })
+          }),
+          _vm._v(" "),
+          _c("label", { staticClass: "placeholder required" }, [
+            _vm._v(_vm._s(_vm.$t("phone")))
+          ])
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "pad" }, [
@@ -64075,7 +64959,7 @@ var render = function() {
                 expression: "supplier.fax"
               }
             ],
-            attrs: { type: "string", placeholder: _vm.$t("fax") },
+            attrs: { type: "string" },
             domProps: { value: _vm.supplier.fax },
             on: {
               input: function($event) {
@@ -64085,7 +64969,11 @@ var render = function() {
                 _vm.$set(_vm.supplier, "fax", $event.target.value)
               }
             }
-          })
+          }),
+          _vm._v(" "),
+          _c("label", { staticClass: "placeholder required" }, [
+            _vm._v(_vm._s(_vm.$t("fax")))
+          ])
         ])
       ]),
       _vm._v(" "),
@@ -64562,9 +65450,18 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "pad col-1" }, [
-          _c("button", { attrs: { type: "button" } }, [
-            _vm._v(_vm._s(_vm.$t("reset")))
-          ])
+          _c(
+            "button",
+            {
+              attrs: { type: "button" },
+              on: {
+                click: function($event) {
+                  return _vm.reset(_vm.commit)
+                }
+              }
+            },
+            [_vm._v(_vm._s(_vm.$t("reset")))]
+          )
         ])
       ]),
       _vm._v(" "),
@@ -64613,10 +65510,14 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "d-flex flex-column" }, [
+    _c("label", { staticClass: "pad font-size-18 font-weight-bold" }, [
+      _vm._v(_vm._s(_vm.$t("inventory_number")))
+    ]),
+    _vm._v(" "),
     _c(
       "form",
       {
-        staticClass: "d-flex flex-fill",
+        staticClass: "d-flex flex-fill mt-2",
         on: {
           submit: function($event) {
             $event.preventDefault()
@@ -64694,9 +65595,18 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "pad col-1" }, [
-          _c("button", { attrs: { type: "button" } }, [
-            _vm._v(_vm._s(_vm.$t("reset")))
-          ])
+          _c(
+            "button",
+            {
+              attrs: { type: "button" },
+              on: {
+                click: function($event) {
+                  return _vm.reset(_vm.commit)
+                }
+              }
+            },
+            [_vm._v(_vm._s(_vm.$t("reset")))]
+          )
         ])
       ]
     ),
@@ -64869,7 +65779,7 @@ var render = function() {
                   attrs: { type: "button" },
                   on: {
                     click: function($event) {
-                      return _vm.reset()
+                      return _vm.reset(_vm.commit)
                     }
                   }
                 },

@@ -8,7 +8,6 @@ export const getResults={
 			
 			let store=this.$store.getters[commit];
 			let search=this.$store.getters[commit].search;
-			let page= store.page == 0 ? '' :'?page='+store.page;
 			
 			let add_options=[];
 			let search_options=[];
@@ -53,7 +52,7 @@ export const getResults={
 			}
 			
 			request.per_page=store.per_page;
-			request.page=page;
+			request.page=store.page;
 			request.add_options=add_options;
 			request.search_options=search_options;
 
@@ -112,7 +111,7 @@ export const getAllData={
 }
 export const last={
 	methods:{
-		last(link,commit,page){
+		last(link,commit){
 			this.$store.commit('setFullPageLoading',true);
 
 			let store=this.$store.state[commit]
@@ -129,12 +128,12 @@ export const last={
 				if(store.per_page){
 					changes.per_page=store.per_page;
 				}
-				if(page){
-					changes.page=page;
+				if(store.page){
+					changes.page=store.page;
 				}
 
 				this.$http.post(link+store.request.link,changes).then(response=>{
-					this.$store.dispatch('setStore',{label:commit,data:{data:response.data,page:page ? page : 1}});
+					this.$store.dispatch('setStore',{label:commit,data:{data:response.data}});
 				}).then(()=>{
 					this.$store.commit('setFullPageLoading',false);
 				});
@@ -149,14 +148,14 @@ export const last={
 					changes+='&order_mode='+store.sort_by.order_mode;
 				}
 				if(store.per_page){
-					changes+='&perPage='+store.per_page;
+					changes+='&per_page='+store.per_page;
 				}
-				if(page){
-					changes+='&page='+ page;
+				if(store.page){
+					changes+='&page='+ store.page;
 				}
 
 				this.$http.get(link+store.request.link+changes).then(response=>{
-					this.$store.dispatch('setStore',{label:commit,data:{data:response.data,page:page ? page : 1}});
+					this.$store.dispatch('setStore',{label:commit,data:{data:response.data}});
 				}).catch((error)=>{
 				}).then(()=>{
 					this.$store.commit('setFullPageLoading',false);
@@ -237,6 +236,28 @@ export const download_file={
 			link.setAttribute('download', name);
 			document.querySelector('#app').appendChild(link);
 			link.click();
+		}
+	}
+}
+export const reset = {
+	methods:{
+		reset(commit){
+			let store =this.$store.getters[commit];
+			for(let key in store.search.add_options){
+				let value=store.search.add_options[key];
+				if(Array.isArray(value)){
+					store.search.add_options[key]=[]
+				}
+				else if(typeof value == 'object' && value !== null){
+					store.search.add_options[key] = {}
+				}
+				else{
+					store.search.add_options[key]=null
+				}
+			}
+			if(store.search.search_options){
+				store.search.search_options=store.search_default;
+			}
 		}
 	}
 }

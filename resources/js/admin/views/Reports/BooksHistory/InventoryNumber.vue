@@ -1,6 +1,7 @@
 <template>
 	<div class="d-flex flex-column">
-		<form class="d-flex flex-fill" @submit.prevent="loadResults()">
+		<label class="pad font-size-18 font-weight-bold">{{$t('inventory_number')}}</label>
+		<form class="d-flex flex-fill mt-2" @submit.prevent="loadResults()">
 			<div class="pad flex-fill">
 				<input type="text" v-model="books_inv_number.search.add_options.inventory_no" required />
 				<label class="placeholder required">From</label>
@@ -13,7 +14,7 @@
 				<button type="submit">{{$t('search')}}</button>
 			</div>
 			<div class="pad col-1">
-				<button type="button">{{$t('reset')}}</button>
+				<button type="button" @click="reset(commit)">{{$t('reset')}}</button>
 			</div>
 		</form>
 		<div v-if="books_inv_number.searching">
@@ -42,11 +43,11 @@ import Table from '../../../components/common/Table'
 import PulseLoader from 'vue-spinner/src/PulseLoader'
 
 //mixins
-import {getResults,download_file} from '../../../mixins/common'
+import {getResults,download_file,reset} from '../../../mixins/common'
 
 import {mapGetters} from 'vuex'
 export default{
-	mixins:[getResults,download_file],
+	mixins:[getResults,download_file,reset],
 	components:{'table-div':Table,PulseLoader},
 	computed:{
 		...mapGetters(['books_inv_number'])

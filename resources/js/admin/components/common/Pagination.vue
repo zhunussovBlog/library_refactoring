@@ -46,9 +46,10 @@ export default{
 		}
 	},
 	methods:{
-		move(num){
+		async move(num){
 			if(num>0 && num<=this.data.last_page){
-				this.last(this.link,this.commit,num);
+				await this.$store.dispatch('setStore',{label:this.commit,data:{page:num}});
+				this.last(this.link,this.commit);
 			};
 		}
 	}

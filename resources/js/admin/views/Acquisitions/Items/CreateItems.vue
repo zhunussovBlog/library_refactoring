@@ -5,9 +5,9 @@
 		<div class="d-flex">
 			<div class="d-flex w-100">
 				<div class="pad w-100">
-					<input type="text" :placeholder="$tc('titles',1)" v-model="item.title" :disabled="edit || reCreate" :required="!(edit || reCreate)">
+					<input type="text" v-model="item.title" :disabled="edit || reCreate" :required="!(edit || reCreate)">
 					<!-- it's required on create only  -->
-					<label class="placeholder" :class="{required:!(edit || reCreate)}"></label>
+					<label class="placeholder" :class="{required:!(edit || reCreate)}">{{$tc('titles',1)}}</label>
 				</div>
 			</div>
 			<div class="d-flex w-100">
@@ -26,22 +26,22 @@
 		<div class="d-flex">
 			<div class="d-flex w-100">
 				<div class="pad w-100">
-					<input type="text" :placeholder="$t('author')" v-model="item.author" :disabled="edit || reCreate" :required="!(edit || reCreate)"/>
-					<label class="placeholder" :class="{required:!(edit || reCreate)}"></label>
+					<input type="text" v-model="item.author" :disabled="edit || reCreate" :required="!(edit || reCreate)"/>
+					<label class="placeholder" :class="{required:!(edit || reCreate)}">{{$t('author')}}</label>
 				</div>
 			</div>
 			<div class="d-flex w-100">
 				<div class="pad w-100">
-					<input type="text" :placeholder="$t('isbn')" v-model="item.isbn" :disabled="edit || reCreate" :required="!(edit || reCreate)">
-					<label class="placeholder" :class="{required:!(edit || reCreate)}"></label>
+					<input type="text" v-model="item.isbn" :disabled="edit || reCreate" :required="!(edit || reCreate)">
+					<label class="placeholder" :class="{required:!(edit || reCreate)}">{{$t('isbn')}}</label>
 				</div>
 			</div>
 		</div>
 		<div class="d-flex">
 			<div class="d-flex w-100">
 				<div class="pad w-100">
-					<input type="text" :placeholder="$t('pub_year')" v-model="item.pub_year" :disabled="edit" :required="!(edit )"/>
-					<label class="placeholder" :class="{required:!(edit)}"></label>
+					<input type="text" v-model="item.pub_year" :disabled="edit" :required="!(edit )"/>
+					<label class="placeholder" :class="{required:!(edit)}">{{$t('pub_year')}}</label>
 				</div>
 			</div>
 			<div class="d-flex w-100">
@@ -60,8 +60,8 @@
 		<div class="d-flex">
 			<div class="d-flex w-100">
 				<div class="pad w-100">
-					<input type="text" :placeholder="$t('pub_city')" v-model="item.pub_city" :disabled="edit" :required="!(edit)">
-					<label class="placeholder" :class="{required:!(edit)}"></label>
+					<input type="text" v-model="item.pub_city" :disabled="edit" :required="!(edit)">
+					<label class="placeholder" :class="{required:!(edit)}">{{$t('pub_city')}}</label>
 				</div>
 			</div>
 			<div class="d-flex w-100">
@@ -78,12 +78,12 @@
 		<div class="d-flex">
 			<div class="d-flex w-100">
 				<div class="pad w-100">
-					<input type="text" :placeholder="(edit) ? 'not editable' : $t('count')" :required="!(edit)" v-model="(edit) ? null : item.count" :disabled="edit">
-					<label class="placeholder" :class="{required:!(edit)}"></label>
+					<input type="text" :required="!(edit)" v-model="(edit) ? null : item.count" :disabled="edit">
+					<label class="placeholder" :class="{required:!(edit)}">{{$t('count')}}</label>
 				</div>
 				<div class="pad w-100">
-					<input type="text" :placeholder="$t('cost')" v-model="item.cost" required>
-					<label class="placeholder required"></label>
+					<input type="text" v-model="item.cost" required>
+					<label class="placeholder required">{{$t('cost')}}</label>
 				</div>
 			</div>
 			<div class="d-flex w-100">

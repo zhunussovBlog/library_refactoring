@@ -25,7 +25,7 @@
 				<button type="submit">{{$t('search')}}</button>
 			</div>
 			<div class="pad col-1">
-				<button type="button">{{$t('reset')}}</button>
+				<button type="button" @click="reset(commit)">{{$t('reset')}}</button>
 			</div>
 		</div>
 		<div v-if="books_history.searching">
@@ -45,12 +45,12 @@
 import Table from '../../../components/common/Table'
 
 //mixins
-import {getResults} from '../../../mixins/common'
+import {getResults,reset} from '../../../mixins/common'
 
 import {mapGetters} from 'vuex'
 
 export default{
-	mixins:[getResults],
+	mixins:[getResults,reset],
 	components:{'table-div':Table},
 	computed:{
 		...mapGetters(['books_history'])
@@ -83,14 +83,10 @@ export default{
 		loadResults(){
 			this.$store.dispatch('setStore',{label:this.commit,data:{page:0}});
 			this.getResults(this.link,this.commit);
-		},
-		getSearchFields(){
-			this.$http.get(this.link+'/search-fields');
 		}
 	},
 	created(){
 		this.getTypes();
-		this.getSearchFields();
 	}
 }
 </script>

@@ -16,7 +16,7 @@
 				<div class="d-flex align-items-center flex-fill">
 					<div class="pad d-flex ml-5">
 						<button type="submit">{{$t('search')}}</button>
-						<button type="button" class="ml-2" @click="reset()">{{$t('reset')}}</button>
+						<button type="button" class="ml-2" @click="reset(commit)">{{$t('reset')}}</button>
 					</div>
 				</div>
 			</div>
@@ -37,14 +37,14 @@
 import TableDiv from '../../../components/common/Table'
 
 // mixins
-import {getResults} from '../../../mixins/common'
+import {getResults,reset} from '../../../mixins/common'
 
 import {mapGetters} from 'vuex'
 export default {
 	components:{
 		TableDiv
 	},
-	mixins:[getResults],
+	mixins:[getResults,reset],
 	computed:{
 		...mapGetters(['most_read'])
 	},
@@ -67,17 +67,10 @@ export default {
 			this.getResults(this.link,this.commit);
 		},
 		getInitData(){
-			let request={};
-			let now=new Date();
 			this.search();
 			
-		},
-		getSearchFields(){
-			this.$http.get(this.link+'/search-fields');
-		}
-	},
+		}	},
 	created(){
-		this.getSearchFields();
 		this.getInitData();
 	}
 }		

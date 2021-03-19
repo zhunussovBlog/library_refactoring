@@ -78,7 +78,7 @@ export default{
 		loadAllData(){
 			this.$store.dispatch('setStore',{label:this.commit,data:{page:0}});
 			this.getAllData(this.link,this.commit);
-		},
+		}
 	}
 }
 </script>

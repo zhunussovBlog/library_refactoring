@@ -1,8 +1,10 @@
 var setLocale = {
 	methods:{
 		setLocale(locale){
+			locale=locale ?? window.configs.default_lang;
 			this.$i18n.locale=locale;
-			this.$http.defaults.headers.common['Content-Language'] = this.$i18n.locale;
+			this.$http.defaults.headers.common['Content-Language'] = locale;
+			this.$http.get('/locale/'+locale);
 			localStorage.setItem('lang',JSON.stringify(locale));
 		}
 	}

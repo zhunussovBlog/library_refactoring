@@ -41,29 +41,29 @@
 		<div class="subtitle">{{$t('count')}}</div>
 		<div class="d-flex">
 			<div class="pad w-100">
-				<input type="string" :placeholder="$t('quantity_items')" v-model="batch.items_no" required/>
-				<label class="placeholder required"></label>
+				<input type="string" v-model="batch.items_no" required/>
+				<label class="placeholder required">{{$t('quantity_items')}}</label>
 			</div>
 			<div class="pad w-100">
-				<input type="string" :placeholder="$t('quantity_titles')" v-model="batch.titles_no" required />
-				<label class="placeholder required"></label>
+				<input type="string" v-model="batch.titles_no" required />
+				<label class="placeholder required">{{$t('quantity_titles')}}</label>
 			</div>
 		</div>
 		<div class="subtitle">{{$t('by_contract')}}</div>
 		<div class="d-flex">
 			<div class="pad w-100">
-				<input type="string" :placeholder="$t('document_number')" v-model="batch.doc_no" required />
-				<label class="placeholder required"></label>
+				<input type="string" v-model="batch.doc_no" required />
+				<label class="placeholder required">{{$t('document_number')}}</label>
 			</div>
 			<div class="pad w-100">
-				<input type="string" :placeholder="$t('contract_number')" v-model="batch.contract_no"/>
-				<label class="placeholder"></label>
+				<input type="string" v-model="batch.contract_no"/>
+				<label class="placeholder">{{$t('contract_number')}}</label>
 			</div>
 		</div>
 		<div class="d-flex">
 			<div class="pad w-100">
-				<textarea :placeholder="$t('invoice_details')" v-model="batch.invoice_details"/>
-				<label class="placeholder"></label>
+				<textarea v-model="batch.invoice_details"/>
+				<label class="placeholder">{{$t('invoice_details')}}</label>
 			</div>
 			<div class="pad w-100 d-flex justify-content-end align-items-end">
 				<div class="pad">

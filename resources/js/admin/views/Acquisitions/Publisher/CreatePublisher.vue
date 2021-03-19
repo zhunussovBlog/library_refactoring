@@ -4,28 +4,33 @@
 		
 		<div class="d-flex">
 			<div class="pad">
-				<input type="string" :placeholder="$t('name')" v-model="publisher.name" required />
-				<label class="placeholder required"></label>
+				<input type="string" v-model="publisher.name" required />
+				<label class="placeholder required">{{$t('name')}}</label>
 			</div>
 			<div class="pad">
-				<input type="string" :placeholder="$t('commercial_name')" v-model="publisher.com_name"/>
+				<input type="string" v-model="publisher.com_name"/>
+				<label class="placeholder required">{{$t('commercial_name')}}</label>
 			</div>
 		</div>
 		<div class="subtitle">{{$t('contact')}}</div>
 		<div class="d-flex">
 			<div class="pad">
-				<input type="string" :placeholder="$t('address')" v-model="publisher.address"/>
+				<input type="string" v-model="publisher.address"/>
+				<label class="placeholder required">{{$t('address')}}</label>
 			</div>
 			<div class="pad">
-				<input type="string" :placeholder="$t('email')" v-model="publisher.email"/>
+				<input type="string" v-model="publisher.email"/>
+				<label class="placeholder required">{{$t('email')}}</label>
 			</div>
 		</div>
 		<div class="d-flex">
 			<div class="pad">
-				<input type="string" :placeholder="$t('phone')" v-model="publisher.phone"/>
+				<input type="string" v-model="publisher.phone"/>
+				<label class="placeholder required">{{$t('phone')}}</label>
 			</div>
 			<div class="pad">
-				<input type="string" :placeholder="$t('fax')" v-model="publisher.fax"/>
+				<input type="string" v-model="publisher.fax"/>
+				<label class="placeholder required">{{$t('fax')}}</label>
 			</div>
 		</div>
 		<div class="flexible justify-content-end">
