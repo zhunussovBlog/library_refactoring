@@ -153,8 +153,6 @@ Route::middleware(['auth:api-student,api-employee'])->group(function () {
     });
 });
 
-Route::get('locale/{locale}', 'Api\LocaleController');
-
 // Media routes
 Route::group(['prefix' => 'media'], function () {
     Route::get('autocomplete', 'Api\Media\AutocompleteController@autocomplete');
