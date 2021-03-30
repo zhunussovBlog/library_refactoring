@@ -8,7 +8,7 @@ import router from './router'
 import i18n from './locales'
 import store from './store'
 
-import base from './configs/base'
+import base from '../configs/base'
 
 // vue modal
 Vue.use(VModal,

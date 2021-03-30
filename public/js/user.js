@@ -3728,10 +3728,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/user/configs/base.js":
-/*!*******************************************!*\
-  !*** ./resources/js/user/configs/base.js ***!
-  \*******************************************/
+/***/ "./resources/js/configs/base.js":
+/*!**************************************!*\
+  !*** ./resources/js/configs/base.js ***!
+  \**************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -5223,7 +5223,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./router */ "./resources/js/user/router/index.js");
 /* harmony import */ var _locale__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./locale */ "./resources/js/user/locale/index.js");
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./store */ "./resources/js/user/store/index.js");
-/* harmony import */ var _configs_base__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./configs/base */ "./resources/js/user/configs/base.js");
+/* harmony import */ var _configs_base__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../configs/base */ "./resources/js/configs/base.js");
 
 
 

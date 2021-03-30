@@ -6492,7 +6492,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./router */ "./resources/js/admin/router/index.js");
 /* harmony import */ var _locales__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./locales */ "./resources/js/admin/locales/index.js");
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./store */ "./resources/js/admin/store/index.js");
-/* harmony import */ var _configs_base__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./configs/base */ "./resources/js/admin/configs/base.js");
+/* harmony import */ var _configs_base__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../configs/base */ "./resources/js/configs/base.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
@@ -6567,25 +6567,6 @@ new vue__WEBPACK_IMPORTED_MODULE_8__.default({
   router: _router__WEBPACK_IMPORTED_MODULE_4__.default,
   store: _store__WEBPACK_IMPORTED_MODULE_6__.default
 }).$mount('#app');
-
-/***/ }),
-
-/***/ "./resources/js/admin/configs/base.js":
-/*!********************************************!*\
-  !*** ./resources/js/admin/configs/base.js ***!
-  \********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  baseURL: 'http://localhost:8000',
-  api: '/api/',
-  default_lang: 'en'
-});
 
 /***/ }),
 
@@ -7751,6 +7732,25 @@ __webpack_require__.r(__webpack_exports__);
     page: 0,
     pagination: true
   }
+});
+
+/***/ }),
+
+/***/ "./resources/js/configs/base.js":
+/*!**************************************!*\
+  !*** ./resources/js/configs/base.js ***!
+  \**************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  baseURL: 'http://localhost:8000',
+  api: '/api/',
+  default_lang: 'en'
 });
 
 /***/ }),
