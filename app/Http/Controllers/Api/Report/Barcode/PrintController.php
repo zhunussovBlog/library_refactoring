@@ -63,6 +63,6 @@ class PrintController extends Controller
             $pdf->endPage();
         }
 
-        $pdf->Output('barcodes.pdf', 'D');
+        $pdf->Output(now() . '.pdf', 'D');
     }
 }

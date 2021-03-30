@@ -13,9 +13,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Orchestra\Parser\Xml\Facade as XmlParser;
 
 class ShowController extends Controller
 {
@@ -45,28 +43,7 @@ class ShowController extends Controller
 
     private static function getFullInfo(string $keyName, $id): array
     {
-        $fullInfo = [];
-
-        $nodes = $nodes = DB::table(DB::raw("lib_bibliographic_info bi, XMLTABLE('//Nodes/Node' PASSING bi.XML_DATA) xt"))
-            ->select('xt.*')->where('bi.' . $keyName, $id)->get()->toArray();
-
-        foreach ($nodes as $node) {
-            $nodeData = XmlParser::extract($node->column_value)->getContent();
-            $cell = ((array)$nodeData->NodeData)["Cell"];
-            $size = count($cell);
-            for ($i = 0; $i < $size; $i++) {
-                if ($cell[$i] instanceof \SimpleXMLElement) {
-                    $cell[$i] = (string)$cell[$i];
-                }
-            }
-            $fullInfo[] = [
-                'id' => (string)$nodeData['Id'],
-                'parentId' => (string)$nodeData['ParentId'],
-                'data' => $cell,
-            ];
-        }
-
-        return $fullInfo;
+        return DB::table('view_marc_fileds as bi')->select()->where('bi.' . $keyName, $id)->get()->toArray();
     }
 
     public function searchFields(): JsonResponse
