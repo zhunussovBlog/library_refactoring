@@ -46,7 +46,7 @@ class Journal extends Model implements DefaultQueryInterface
             DB::raw("(case when (select r.j_issue_id from lib_reserve_list r
                             where ji.j_issue_id = r.j_issue_id and r.status = 1) is not null
                             then (select 1 from dual) else (select 0 from dual) end) as status"),
-            'j.callnumber as call_number',
+            DB::raw("(select t.data from view_marc_fileds t where t.journal_id = j.journal_id and t.id = '010.a') as call_number"),
             DB::raw("(select count(*) from lib_inventory i where i.j_issue_id = ji.j_issue_id and i.status = 1) as availability"))
             ->leftJoin('lib_journal_issues as ji', 'j.journal_id', '=', 'ji.journal_id')
             ->leftJoin('lib_publishers as p', 'p.publisher_id', '=', 'j.publisher_id')
