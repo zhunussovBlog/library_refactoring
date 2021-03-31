@@ -1,6 +1,6 @@
 #### **Stage 2,3**
 
-[Mind Map](Phase 3/mindmap.pdf)
+[Mind Map](phase_3/mindmap.pdf)
 
 
 1. Objective of the project:
@@ -117,12 +117,12 @@ Questions:
 
 
 1. What information does our library contain about books? \
-[dataset1.csv](Phase 3/dataset1.csv)
+[dataset1.csv](phase_3/dataset1.csv)
 2. Are there other types of materials besides books in the library? \
-[dataset2.csv](Phase 3/dataset2.csv) \
-[dataset3.csv](Phase 3/dataset3.csv)
+[dataset2.csv](phase_3/dataset2.csv) \
+[dataset3.csv](phase_3/dataset3.csv)
 3. How are the books themselves and copies of books stored? \
-[dataset4.csv](Phase 3/dataset4.csv)
+[dataset4.csv](phase_3/dataset4.csv)
 4. What keywords are used to search for books?
     1. Title
     2. Author
@@ -130,23 +130,23 @@ Questions:
     4. Publisher
     5. Call Number
 5. What are Book Batches? \
-[dataset5.csv](Phase 3/dataset5.csv)
+[dataset5.csv](phase_3/dataset5.csv)
 6. How are logs saved from each action in the library? \
-[dataset6.csv](Phase 3/dataset6.csv)
+[dataset6.csv](phase_3/dataset6.csv)
 7. How is attenuation controlled in the library? \
-[dataset7.csv](Phase 3/dataset7.csv)
+[dataset7.csv](phase_3/dataset7.csv)
 8. Library service: Book lending \
-[dataset8.csv](Phase 3/dataset8.csv)
+[dataset8.csv](phase_3/dataset8.csv)
 9. What are copies of books? \
-[dataset4.csv](Phase 3/dataset4.csv)
+[dataset4.csv](phase_3/dataset4.csv)
 10. What is the difference between batches and instances? \
 A batch of books is the book itself with additional. information. A copy is a copy of a book. For example: The library received one batch of books with 100 copies.
 11. What reports does the library have? \
-[dataset9.csv](Phase 3/dataset9.csv)
+[dataset9.csv](phase_3/dataset9.csv)
 12. What are book publishers? \
-[dataset10.csv](Phase 3/dataset10.csv)
+[dataset10.csv](phase_3/dataset10.csv)
 13. What are book providers? \
-[dataset11.csv](Phase 3/dataset11.csv)
+[dataset11.csv](phase_3/dataset11.csv)
 14. Who are our users?
     6. Students
     7. Employees
