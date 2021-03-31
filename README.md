@@ -164,56 +164,56 @@ A batch of books is the book itself with additional. information. A copy is a co
 
 1. User interface and functions
     1. Search materials
-        (Simple search)[Phase 6/phase_6_1-3(interface_and_functions)/simple_search_materials.png]
-        (Search results)(Phase 6/phase_6_1-3(interface_and_functions)/seacrh_materials.png)
-        (Advanced search)(Phase 6/phase_6_1-3(interface_and_functions)/advanced_search_materials.png)
-        (Autocomplete)(Phase 6/phase_6_1-3(interface_and_functions)/autocomplete_search.png)
+        - [Simple search](Phase 6/phase_6_1-3(interface_and_functions)/simple_search_materials.png)
+        - [Search results](Phase 6/phase_6_1-3(interface_and_functions)/seacrh_materials.png)
+        - [Advanced search](Phase 6/phase_6_1-3(interface_and_functions)/advanced_search_materials.png)
+        - [Autocomplete](Phase 6/phase_6_1-3(interface_and_functions)/autocomplete_search.png)
         - Files:
-            - (Books - defaultQuery)[app/Models/Media/Book.php]
-            - (Discs - defaultQuery)[app/Models/Media/Disc.php]
-            - (Journals - defaultQuery)[app/Models/Media/Journal.php]
+            - [Books - defaultQuery](app/Models/Media/Book.php)
+            - [Discs - defaultQuery](app/Models/Media/Disc.php)
+            - [Journals - defaultQuery](app/Models/Media/Journal.php)
     2. Search batches
-        (Search)[Phase 6/phase_6_1-3(interface_and_functions)/search_batches.png]
-        (Results)[Phase 6/phase_6_1-3(interface_and_functions)/search_batches_results.png]
+        - [Search](Phase 6/phase_6_1-3(interface_and_functions)/search_batches.png)
+        - [Results](Phase 6/phase_6_1-3(interface_and_functions)/search_batches_results.png)
         - Files
-            - (Batch - defaultQuery)[app/Models/Acquisition/Batch/Batch.php]
+            - [Batch - defaultQuery](app/Models/Acquisition/Batch/Batch.php)
     3. Search Items
-        (Search and results)[Phase 6/phase_6_1-3(interface_and_functions)/search_items.png]
+        - [Search and results](Phase 6/phase_6_1-3(interface_and_functions)/search_items.png)
         - Files
-            - (Item - defaultQuery)[app/Models/Acquisition/Item/Item.php]
+            - [Item - defaultQuery](app/Models/Acquisition/Item/Item.php)
     4. Search publisher
-        (Search and results)[Phase 6/phase_6_1-3(interface_and_functions)/search_publisher.png]
+        - [Search and results](Phase 6/phase_6_1-3(interface_and_functions)/search_publisher.png)
         - Files
-            - (Publisher - defaultQuery)[app/Models/Acquisition/Publisher/Publisher.php]
+            - [Publisher - defaultQuery](app/Models/Acquisition/Publisher/Publisher.php)
     5. Search supplier
-        (Search and results)[Phase 6/phase_6_1-3(interface_and_functions)/search_supplier.png]
+        - [Search and results](Phase 6/phase_6_1-3(interface_and_functions)/search_supplier.png)
         - Files
-            - (Supplier - defaultQuery)[app/Models/Acquisition/Supplier/Supplier.php]
+            - [Supplier - defaultQuery](app/Models/Acquisition/Supplier/Supplier.php)
     6. Reports - Book history
-        (Search and results)[Phase 6/phase_6_1-3(interface_and_functions)/reports_book_history.png]
+        - [Search and results](Phase 6/phase_6_1-3(interface_and_functions)/reports_book_history.png)
         - Files
-            - (Item - bookHistory)[app/Models/Acquisition/Item/ItemReports.php]
+            - [Item - bookHistory](app/Models/Acquisition/Item/ItemReports.php)
     7. Service desk - Search user
-        (Search and results)[Phase 6/phase_6_1-3(interface_and_functions)/search_for_user(by_username).png]
+        - [Search and results](Phase 6/phase_6_1-3(interface_and_functions)/search_for_user(by_username).png)
         - Files
             - Code part will be soon...
     8. Service desk - User information
-        (Modal)[Phase 6/phase_6_1-3(interface_and_functions)/user_information.png]
+        - [Modal](Phase 6/phase_6_1-3(interface_and_functions)/user_information.png)
         - Files
             - Code part will be soon...
 2. Database connection
     1. Database connection configs
-        (Configs)[Phase 6/phase_6_2(database_connection)/database_connection_configs.png]
+        - [Configs](Phase 6/phase_6_2(database_connection)/database_connection_configs.png)
         - Files
-            - (configs - library and login)[config/database.php]
+            - [configs - library and login](config/database.php)
     2. Database connection and queries driver
-        (Yajra - oci8)[Phase 6/phase_6_2(database_connection)/database_connection_driver(library-yajra).png]
+        - [Yajra - oci8](Phase 6/phase_6_2(database_connection)/database_connection_driver(library-yajra).png)
         - Files
-            - (driver)[composer.json]
+            - [driver](composer.json)
 3. Statistical information
     Reports - attendance by month and week
-        (Interface - byMonth)[Phase 6/phase_6_4(statistical_info)/reports_attendance_month_statistical_info.png]
-        (Interface - byWeek)[Phase 6/phase_6_4(statistical_info)/reports_attendance_week_statistical_info.png]
+        [Interface - byMonth](Phase 6/phase_6_4(statistical_info)/reports_attendance_month_statistical_info.png)
+        [Interface - byWeek](Phase 6/phase_6_4(statistical_info)/reports_attendance_week_statistical_info.png)
         - Files
-            - (Query - byMonth)[app/Models/User/WebLog.php]
-            - (Query - byWeek)[app/Models/User/WebLog.php]
+            - [Query - byMonth](app/Models/User/WebLog.php)
+            - [Query - byWeek](app/Models/User/WebLog.php)
