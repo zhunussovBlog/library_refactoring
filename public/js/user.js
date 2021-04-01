@@ -3711,6 +3711,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.$store.commit('setFullPageLoading', true);
+      this.$http.defaults.baseURL = window.configs.baseURL;
       this.$http.post('login', this.request).then(function (response) {
         _this.$store.dispatch('login', response.data.res);
 
@@ -3720,6 +3721,8 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         _this.message_error('login', error);
       }).then(function () {
+        _this.$http.defaults.baseURL = window.configs.baseURL + window.configs.api;
+
         _this.$store.commit('setFullPageLoading', false);
       });
     }
@@ -4470,7 +4473,11 @@ __webpack_require__.r(__webpack_exports__);
         var url = window.URL.createObjectURL(new Blob([res.data]));
         var link = document.createElement('a');
         link.href = url;
-        link.setAttribute('download', 'media.xlsx');
+        var now = new Date();
+        var name = 'books';
+        var extension = 'xlsx';
+        name += '_' + now.getFullYear() + '.' + now.getMonth() + '.' + now.getDate() + '_' + now.getHours() + '.' + now.getMinutes() + '.' + extension;
+        link.setAttribute('download', name);
         document.querySelector('#app').appendChild(link);
         link.click();
       })["catch"](function (err) {
@@ -5313,6 +5320,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var _this = this;
 
       this.$store.commit('setFullPageLoading', true);
+      this.$http.defaults.baseURL = window.configs.baseURL;
       this.$http.get('logout').then(function (response) {
         _this.$store.dispatch('logout');
 
@@ -5320,6 +5328,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       })["catch"](function (error) {
         _this.message_error('logout', error);
       }).then(function () {
+        _this.$http.defaults.baseURL = window.configs.baseURL + window.configs.api;
+
         _this.$store.commit('setFullPageLoading', false);
       });
     },
@@ -16085,7 +16095,11 @@ var render = function() {
             }),
             _vm._v(" "),
             _c("span", { staticClass: "ml-2" }, [
-              _vm._v(_vm._s(_vm.$t("select_all")))
+              _vm._v(
+                _vm._s(
+                  _vm.$t("select_all") + " (" + _vm.selected.data.length + ")"
+                )
+              )
             ])
           ],
           1
