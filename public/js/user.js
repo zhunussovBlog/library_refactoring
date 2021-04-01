@@ -3711,6 +3711,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.$store.commit('setFullPageLoading', true);
+      this.$http.defaults.baseURL = window.configs.baseURL;
       this.$http.post('login', this.request).then(function (response) {
         _this.$store.dispatch('login', response.data.res);
 
@@ -3720,6 +3721,8 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         _this.message_error('login', error);
       }).then(function () {
+        _this.$http.defaults.baseURL = window.configs.baseURL + window.configs.api;
+
         _this.$store.commit('setFullPageLoading', false);
       });
     }
@@ -5317,6 +5320,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var _this = this;
 
       this.$store.commit('setFullPageLoading', true);
+      this.$http.defaults.baseURL = window.configs.baseURL;
       this.$http.get('logout').then(function (response) {
         _this.$store.dispatch('logout');
 
@@ -5324,6 +5328,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       })["catch"](function (error) {
         _this.message_error('logout', error);
       }).then(function () {
+        _this.$http.defaults.baseURL = window.configs.baseURL + window.configs.api;
+
         _this.$store.commit('setFullPageLoading', false);
       });
     },

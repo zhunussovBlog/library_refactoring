@@ -16,7 +16,8 @@ class WebAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        if (empty($request->user()) || !$request->user()->is_admin) {
+        $user = session()->get('user');
+        if (empty($user) || !$user->is_admin) {
             return redirect('/');
         }
 
