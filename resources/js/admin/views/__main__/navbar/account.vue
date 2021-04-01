@@ -21,7 +21,9 @@
 import RegUser from '../../../assets/icons/RegUser'
 import CaretUp from '../../../assets/icons/CaretUp'
 
+import {message_error} from '../../../mixins/messages'
 export default{
+	mixins:[message_error],
 	components:{RegUser,CaretUp},
 	computed:{
 		user(){
@@ -38,15 +40,14 @@ export default{
 	},
 	methods:{
 		logout(){
+			this.$http.defaults.baseURL = window.configs.baseURL;
 			this.$http.get('/auth/logout').then(response=>{
 				this.$store.commit('setUser',{});
 				window.location.replace('/');
 			}).catch(error=>{
-				this.$fire({
-					title:'Logout',
-					text:messages.error(error),
-					type:"error",
-				});;
+				this.message_error('logout',error);
+			}).then(()=>{
+				this.$http.defaults.baseURL = window.configs.baseURL + window.configs.api;
 			});
 		},
 		showDropdown(){

@@ -22,12 +22,14 @@ export default{
 	methods:{
 		logout(){
 			this.$store.commit('setFullPageLoading',true);
+			this.$http.defaults.baseURL = window.configs.baseURL;
 			this.$http.get('logout').then(response=>{
 				this.$store.dispatch('logout');
 				this.message_success('logout',response);
 			}).catch(error=>{
 				this.message_error('logout',error);
 			}).then(()=>{
+				this.$http.defaults.baseURL = window.configs.baseURL + window.configs.api;
 				this.$store.commit('setFullPageLoading',false);
 			})
 		},
