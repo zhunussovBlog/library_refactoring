@@ -78,7 +78,7 @@ class Employee extends Authenticatable implements UserCidAttribute
                 || $permission->position_permit == "1";
         }
 
-        return $this->emp_id == '10671' || ($permitted ?? false);
+        return $permitted ?? false;
     }
 
     public function getIdAttribute()
