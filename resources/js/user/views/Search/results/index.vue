@@ -12,7 +12,7 @@
 			<div class="d-flex justify-content-between flex-fill">
 				<div class="d-flex align-items-center">
 					<checkbox :checked="selected.all && selected.data.length>0" @change="selectAll()"/>
-					<span class="ml-2">{{$t('select_all')}}</span>
+					<span class="ml-2">{{$t('select_all') + ' (' + selected.data.length+')'}}</span>
 				</div>
 				<div>
 					<button @click="saveExcel()">{{$t('export_all')}}</button>
