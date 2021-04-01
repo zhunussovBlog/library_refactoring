@@ -4578,7 +4578,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }, {
         responseType: 'blob'
       }).then(function (response) {
-        _this.download_file(response, 'media.pdf');
+        _this.download_file(response, 'barcode', 'pdf');
 
         _this.$store.commit('setFullPageLoading', false);
       });
@@ -5580,7 +5580,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }, {
         responseType: 'blob'
       }).then(function (response) {
-        _this.download_file(response, 'media.pdf');
+        _this.download_file(response, 'inventory_number', 'pdf');
 
         _this.$store.commit('setFullPageLoading', false);
       });
@@ -5594,7 +5594,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }, {
         responseType: 'blob'
       }).then(function (response) {
-        _this2.download_file(response, 'media.xlsx');
+        _this2.download_file(response, 'inventory_number', 'xlsx');
 
         _this2.$store.commit('setFullPageLoading', false);
       });
@@ -6987,7 +6987,9 @@ var edit_it = {
 };
 var download_file = {
   methods: {
-    download_file: function download_file(response, name) {
+    download_file: function download_file(response, name, extension) {
+      var now = new Date();
+      name += '_' + now.getFullYear() + '.' + now.getMonth() + '.' + now.getDate() + '_' + now.getHours() + '.' + now.getMinutes() + '.' + extension;
       var url = window.URL.createObjectURL(new Blob([response.data]));
       var link = document.createElement('a');
       link.href = url;

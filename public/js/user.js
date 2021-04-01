@@ -4470,7 +4470,11 @@ __webpack_require__.r(__webpack_exports__);
         var url = window.URL.createObjectURL(new Blob([res.data]));
         var link = document.createElement('a');
         link.href = url;
-        link.setAttribute('download', 'media.xlsx');
+        var now = new Date();
+        var name = 'books';
+        var extension = 'xlsx';
+        name += '_' + now.getFullYear() + '.' + now.getMonth() + '.' + now.getDate() + '_' + now.getHours() + '.' + now.getMinutes() + '.' + extension;
+        link.setAttribute('download', name);
         document.querySelector('#app').appendChild(link);
         link.click();
       })["catch"](function (err) {
@@ -16085,7 +16089,11 @@ var render = function() {
             }),
             _vm._v(" "),
             _c("span", { staticClass: "ml-2" }, [
-              _vm._v(_vm._s(_vm.$t("select_all")))
+              _vm._v(
+                _vm._s(
+                  _vm.$t("select_all") + " (" + _vm.selected.data.length + ")"
+                )
+              )
             ])
           ],
           1

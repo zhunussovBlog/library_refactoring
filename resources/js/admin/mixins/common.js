@@ -229,7 +229,11 @@ export const edit_it={
 }
 export const download_file={
 	methods:{
-		download_file(response,name){
+		download_file(response,name,extension){
+			let now=new Date;
+
+			name+='_'+now.getFullYear()+'.'+now.getMonth()+'.'+now.getDate()+'_'+now.getHours()+'.'+now.getMinutes() +'.'+extension;
+
 			const url = window.URL.createObjectURL(new Blob([response.data]));
 			const link = document.createElement('a');
 			link.href = url;
