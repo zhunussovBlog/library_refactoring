@@ -76,4 +76,37 @@ class Loan extends Model
     {
         return DB::table("dbmaster.departments")->select('dep_id as id', 'title_' . app()->getLocale() . ' as title')->orderBy('dep_id');
     }
+
+    public static function userHistory(string $userCID): \Illuminate\Database\Eloquent\Builder
+    {
+        return static::query()->select('l.loan_id', 'l.inv_id', 'i.barcode',
+            DB::raw("(case when i.book_id is not null
+                            then (select b.title from lib_books b where b.book_id = i.book_id)
+                            when i.j_issue_id is not null then (select j.title||' '||ji.issue_name
+                            from lib_journals j, lib_journal_issues ji where j.journal_id = ji.journal_id
+                            and ji.j_issue_id = i.j_issue_id) when i.disc_id is not null
+                            then (select d.name from lib_discs d where d.disc_id = i.disc_id) end) as title"),
+            DB::raw("(case when i.book_id is not null
+                            then (select listagg(ba.name||ba.surname, ', ') within group(order by ba.name)
+                                from lib_book_authors ba where ba.book_id = i.book_id group by i.book_id)
+                            when i.j_issue_id is not null
+                            then (select listagg(ba.name||ba.surname, ', ') within group(order by ba.name)
+                                from lib_book_authors ba where ba.j_issue_id = i.j_issue_id)
+                            when i.disc_id is not null
+                            then (select listagg(ba.name||ba.surname, ', ') within group(order by ba.name)
+                                from lib_book_authors ba where ba.disc_id = i.disc_id) end) as authors"),
+            DB::raw("(case when i.book_id is not null
+                            then (select b.pub_year from lib_books b where b.book_id = i.book_id)
+                            when i.j_issue_id is not null then (select j.pub_year
+                            from lib_journals j, lib_journal_issues ji where j.journal_id = ji.journal_id
+                            and ji.j_issue_id = i.j_issue_id) when i.disc_id is not null
+                            then (select d.pub_year from lib_discs d where d.disc_id = i.disc_id) end) as year"),
+            DB::raw("coalesce(i.book_id, i.j_issue_id, i.disc_id) as media_id"),
+            'l.borrow_date as issue_date', 'l.due_date', 'l.delivery_date',
+            DB::raw("(case when i.status = 0 and current_date <= due_date then 0
+                                 when i.status = 0 and current_date > due_date then -1
+                                 when delivery_date is not null and delivery_date <= due_date and i.status = 1 then 1 end) as status"))
+            ->leftJoin('lib_inventory as i', 'l.inv_id', '=', 'i.inv_id')
+            ->where('l.user_cid', '=', $userCID);
+    }
 }

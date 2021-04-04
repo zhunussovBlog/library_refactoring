@@ -22,7 +22,7 @@ Route::middleware(['auth:api-student,api-employee'])->group(function () {
 
     // Admin routes
     Route::middleware(['api-admin'])->group(function () {
-   // Route::group([], function () {
+//    Route::group([], function () {
         // Acquisition routes
 
         // Batch routes
@@ -149,6 +149,16 @@ Route::middleware(['auth:api-student,api-employee'])->group(function () {
             Route::post('search', 'Api\Report\Barcode\SearchController');
 
             Route::post('print', 'Api\Report\Barcode\PrintController');
+        });
+
+        Route::group(['prefix' => 'service'], function () {
+            Route::get('sort-fields', 'Api\Service\ShowController@sortFields');
+            Route::get('search-fields', 'Api\Service\ShowController@searchFields');
+            Route::get('filter-fields', 'Api\Service\ShowController@filterFields');
+
+            Route::get('user/{type}/{id}', 'Api\Service\ShowController@show');
+
+            Route::post('user/{type}/search', 'Api\Service\SearchController@search');
         });
     });
 });
