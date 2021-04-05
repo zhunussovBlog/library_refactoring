@@ -8,7 +8,7 @@ import router from './router'
 import i18n from './locale'
 import store from './store'
 
-import base from './configs/base'
+import base from '../configs/base'
 
 Vue.use(VModal, { dynamic: true, injectModalsContainer: true });
 Vue.use(VueSimpleAlert);

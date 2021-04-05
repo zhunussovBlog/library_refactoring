@@ -103,7 +103,7 @@ export default{
 		printIt(barcodes){
 			let inventories=barcodes.map(barcode=>barcode.id);
 			this.$http.post(this.link+'/print',{inventories:inventories},{responseType:'blob'}).then(response=>{
-				this.download_file(response,'media.pdf');
+				this.download_file(response,'barcode','pdf');
 				this.$store.commit('setFullPageLoading',false);	
 			})
 		}

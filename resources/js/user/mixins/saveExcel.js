@@ -9,7 +9,13 @@ export default{
 				const url = window.URL.createObjectURL(new Blob([res.data]));
 				const link = document.createElement('a');
 				link.href = url;
-				link.setAttribute('download', 'media.xlsx');
+				let now=new Date;
+				let name='books';
+				let extension='xlsx';
+
+				name+='_'+now.getFullYear()+'.'+now.getMonth()+'.'+now.getDate()+'_'+now.getHours()+'.'+now.getMinutes() +'.'+extension;
+
+				link.setAttribute('download', name);
 				document.querySelector('#app').appendChild(link);
 				link.click();
 			}).catch((err) => {
@@ -17,11 +23,11 @@ export default{
 				if(media.media.length==0){
 					text="Nothing selected. Please, select the media you want to save as data in excel file";
 				}
-					this.$fire({
-						title:this.$t("download"),
-						text:text,
-						type:"error"
-					});;
+				this.$fire({
+					title:this.$t("download"),
+					text:text,
+					type:"error"
+				});;
 			}).then(()=>{
 				this.$store.commit('setFullPageLoading',false);
 			})

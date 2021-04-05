@@ -79,14 +79,14 @@ export default{
 		print(){
 			this.$store.commit('setFullPageLoading',true);	
 			this.$http.post(this.link+'/print',{inventories:this.books_inv_number.all},{responseType:'blob'}).then(response=>{
-				this.download_file(response,'media.pdf');
+				this.download_file(response,'inventory_number','pdf');
 				this.$store.commit('setFullPageLoading',false);	
 			})
 		},
 		exportToExcel(){
 			this.$store.commit('setFullPageLoading',true);	
 			this.$http.post(this.link+'/export',{inventories:this.books_inv_number.all},{responseType:'blob'}).then(response=>{
-				this.download_file(response,'media.xlsx');
+				this.download_file(response,'inventory_number','xlsx');
 				this.$store.commit('setFullPageLoading',false);	
 			})
 		}

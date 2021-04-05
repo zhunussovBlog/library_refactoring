@@ -4578,7 +4578,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }, {
         responseType: 'blob'
       }).then(function (response) {
-        _this.download_file(response, 'media.pdf');
+        _this.download_file(response, 'barcode', 'pdf');
 
         _this.$store.commit('setFullPageLoading', false);
       });
@@ -5580,7 +5580,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }, {
         responseType: 'blob'
       }).then(function (response) {
-        _this.download_file(response, 'media.pdf');
+        _this.download_file(response, 'inventory_number', 'pdf');
 
         _this.$store.commit('setFullPageLoading', false);
       });
@@ -5594,7 +5594,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }, {
         responseType: 'blob'
       }).then(function (response) {
-        _this2.download_file(response, 'media.xlsx');
+        _this2.download_file(response, 'inventory_number', 'xlsx');
 
         _this2.$store.commit('setFullPageLoading', false);
       });
@@ -6143,6 +6143,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _assets_icons_RegUser__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../assets/icons/RegUser */ "./resources/js/admin/assets/icons/RegUser.vue");
 /* harmony import */ var _assets_icons_CaretUp__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../assets/icons/CaretUp */ "./resources/js/admin/assets/icons/CaretUp.vue");
+/* harmony import */ var _mixins_messages__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../mixins/messages */ "./resources/js/admin/mixins/messages.js");
 //
 //
 //
@@ -6164,7 +6165,9 @@ __webpack_require__.r(__webpack_exports__);
 // icons
 
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  mixins: [_mixins_messages__WEBPACK_IMPORTED_MODULE_2__.message_error],
   components: {
     RegUser: _assets_icons_RegUser__WEBPACK_IMPORTED_MODULE_0__.default,
     CaretUp: _assets_icons_CaretUp__WEBPACK_IMPORTED_MODULE_1__.default
@@ -6187,18 +6190,15 @@ __webpack_require__.r(__webpack_exports__);
     logout: function logout() {
       var _this = this;
 
+      this.$http.defaults.baseURL = window.configs.baseURL;
       this.$http.get('/auth/logout').then(function (response) {
         _this.$store.commit('setUser', {});
 
         window.location.replace('/');
       })["catch"](function (error) {
-        _this.$fire({
-          title: 'Logout',
-          text: messages.error(error),
-          type: "error"
-        });
-
-        ;
+        _this.message_error('logout', error);
+      }).then(function () {
+        _this.$http.defaults.baseURL = window.configs.baseURL + window.configs.api;
       });
     },
     showDropdown: function showDropdown() {
@@ -6492,7 +6492,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./router */ "./resources/js/admin/router/index.js");
 /* harmony import */ var _locales__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./locales */ "./resources/js/admin/locales/index.js");
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./store */ "./resources/js/admin/store/index.js");
-/* harmony import */ var _configs_base__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./configs/base */ "./resources/js/admin/configs/base.js");
+/* harmony import */ var _configs_base__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../configs/base */ "./resources/js/configs/base.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
@@ -6567,25 +6567,6 @@ new vue__WEBPACK_IMPORTED_MODULE_8__.default({
   router: _router__WEBPACK_IMPORTED_MODULE_4__.default,
   store: _store__WEBPACK_IMPORTED_MODULE_6__.default
 }).$mount('#app');
-
-/***/ }),
-
-/***/ "./resources/js/admin/configs/base.js":
-/*!********************************************!*\
-  !*** ./resources/js/admin/configs/base.js ***!
-  \********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  baseURL: 'http://localhost:8000',
-  api: '/api/',
-  default_lang: 'en'
-});
 
 /***/ }),
 
@@ -7006,7 +6987,9 @@ var edit_it = {
 };
 var download_file = {
   methods: {
-    download_file: function download_file(response, name) {
+    download_file: function download_file(response, name, extension) {
+      var now = new Date();
+      name += '_' + now.getFullYear() + '.' + now.getMonth() + '.' + now.getDate() + '_' + now.getHours() + '.' + now.getMinutes() + '.' + extension;
       var url = window.URL.createObjectURL(new Blob([response.data]));
       var link = document.createElement('a');
       link.href = url;
@@ -7751,6 +7734,25 @@ __webpack_require__.r(__webpack_exports__);
     page: 0,
     pagination: true
   }
+});
+
+/***/ }),
+
+/***/ "./resources/js/configs/base.js":
+/*!**************************************!*\
+  !*** ./resources/js/configs/base.js ***!
+  \**************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  baseURL: 'http://localhost:8000',
+  api: '/api/',
+  default_lang: 'en'
 });
 
 /***/ }),

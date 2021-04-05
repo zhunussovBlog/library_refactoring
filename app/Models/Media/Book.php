@@ -45,7 +45,7 @@ class Book extends Model implements DefaultQueryInterface
             DB::raw("(case when (select r.book_id from lib_reserve_list r
                             where b.book_id = r.book_id and r.status = 1) is not null
                             then (select 1 from dual) else (select 0 from dual) end) as status"),
-            'b.callnumber as call_number',
+            DB::raw("(select t.data from view_marc_fileds t where t.book_id = b.book_id and t.id = '010.a') as call_number"),
             DB::raw("(select count(*) from lib_inventory i where i.book_id = b.book_id and i.status = 1) as availability"))
             ->leftJoin('lib_publishers as p', 'p.publisher_id', '=', 'b.publisher_id')
             ->leftJoin('lib_material_types as mt', 'b.type', '=', 'mt.key');
