@@ -1,6 +1,6 @@
 <template>
 	<div class="text-choosable">
-		<div class="justify-content-between align-items-center">
+		<div class="d-flex justify-content-between align-items-center">
 			<div class="font-weight-bold">{{$t('more_info')}}</div>
 			<div @click="$emit('close')">
 				<span class="cursor-pointer font-size-20"><X /></span>
@@ -9,13 +9,13 @@
 		<div class="d-flex align-items-start flex-wrap mt-2">
 			<div class="p-3 rounded-lg bg-lightgrey">
 				<div class="image" :style="'background-image: url('+backgroundImage+')'"/>
-				<div class="mt-2 text-center">{{user.user.student ? user.user.student : user.user.employee}}</div>
+				<div class="mt-2 text-center">{{$t(type)}}</div>
 
 			</div>
-			<div class="bg-lightgrey rounded-lg p-3 ml-2 flex-1" v-if='user.user'>
-				<div v-for="(value,key,index) in objectWithoutKey(objectWithoutKey(objectWithoutKey(user.user,'user_cid'),'student'),'employee') ">
+			<div class="bg-lightgrey rounded-lg p-3 ml-4 flex-1" v-if='user.info'>
+				<div class="d-flex mt-2" v-for="(value,key,index) in objectWithoutKey(user.info,'user_cid') ">
 					<div class="text-grey">{{capitalize($t(key))}} :</div>
-					<div>{{value}}</div>
+					<div class="ml-2">{{value}}</div>
 					&nbsp;
 				</div>
 			</div>
@@ -39,7 +39,7 @@ export default {
 	components:{'table-div':Table,X},
 	computed:{
 		backgroundImage(){
-			return 'data:image/jpeg;base64,'+this.user.photo;
+			return this.user.photo;
 		}
 	},
 	data(){
@@ -69,7 +69,7 @@ export default {
 			return objectWithoutKey(string,key);
 		},
 		getInfo(){
-			this.$http.get('/user/show/'+this.type+'/'+this.id).then(response=>{
+			this.$http.get('service/user/'+this.type+'/'+this.id).then(response=>{
 				this.user=response.data.res;
 			}).catch(e=>{
 				this.goTo('users');
