@@ -38,6 +38,18 @@ class ShowController extends Controller
         ]);
     }
 
+    public function types(): JsonResponse
+    {
+        return response()->json([
+            'res' => [
+                'types' => [
+                    ['key' => 'student', 'title' => 'Student'],
+                    ['key' => 'employee', 'title' => 'Staff']
+                ]
+            ],
+        ]);
+    }
+
     public function searchFields(): JsonResponse
     {
         return response()->json([

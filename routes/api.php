@@ -155,6 +155,7 @@ Route::middleware(['auth:api-student,api-employee'])->group(function () {
             Route::get('sort-fields', 'Api\Service\ShowController@sortFields');
             Route::get('search-fields', 'Api\Service\ShowController@searchFields');
             Route::get('filter-fields', 'Api\Service\ShowController@filterFields');
+            Route::get('user/types', 'Api\Service\ShowController@types');
 
             Route::get('user/{type}/{id}', 'Api\Service\ShowController@show');
 
