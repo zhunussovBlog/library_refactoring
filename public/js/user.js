@@ -2976,8 +2976,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _mixins_goTo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../mixins/goTo */ "./resources/js/user/mixins/goTo.js");
-/* harmony import */ var _assets_icons_Book__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../assets/icons/Book */ "./resources/js/user/assets/icons/Book.vue");
+/* harmony import */ var _assets_icons_Book__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../assets/icons/Book */ "./resources/js/user/assets/icons/Book.vue");
 //
 //
 //
@@ -3001,9 +3000,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-// Sublime text 3
- // icons
-
+// icons
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   model: {
@@ -3017,9 +3014,8 @@ __webpack_require__.r(__webpack_exports__);
     input_classes: [String, Array],
     results: Array
   },
-  mixins: [_mixins_goTo__WEBPACK_IMPORTED_MODULE_0__.goTo],
   components: {
-    Book: _assets_icons_Book__WEBPACK_IMPORTED_MODULE_1__.default
+    Book: _assets_icons_Book__WEBPACK_IMPORTED_MODULE_0__.default
   },
   watch: {
     'value': function value(newVal) {
@@ -4344,7 +4340,7 @@ var links = [{
       link: 'https://sdu-kz.libcal.com/appointments'
     }, {
       name: 'quick_links.subject',
-      link: 'https://sdu-kz.libguides.com/prf.php'
+      link: 'https://sdu-kz.libguides.com/sl_profiles/page'
     }, {
       name: 'quick_links.digest',
       link: 'https://sdu-kz.libguides.com/LibReview'
@@ -16343,11 +16339,13 @@ var render = function() {
         }
       }),
       _vm._v(" "),
-      _c(
-        "button",
-        { staticClass: "p-3 w-min-120", attrs: { type: "submit" } },
-        [_vm._v(_vm._s(_vm.$t("search")))]
-      )
+      !_vm.$mobileCheck()
+        ? _c(
+            "button",
+            { staticClass: "p-3 w-min-120", attrs: { type: "submit" } },
+            [_vm._v(_vm._s(_vm.$t("search")))]
+          )
+        : _vm._e()
     ]
   )
 }
@@ -16525,22 +16523,24 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass: "link mt-3",
-          on: {
-            click: function($event) {
-              return _vm.move(_vm.components[_vm.num].num)
-            }
-          }
-        },
-        [
-          _vm._v(
-            "\n\t\t" + _vm._s(_vm.$t(_vm.components[_vm.num].name)) + "\n\t"
+      !_vm.$mobileCheck()
+        ? _c(
+            "div",
+            {
+              staticClass: "link mt-3",
+              on: {
+                click: function($event) {
+                  return _vm.move(_vm.components[_vm.num].num)
+                }
+              }
+            },
+            [
+              _vm._v(
+                "\n\t\t" + _vm._s(_vm.$t(_vm.components[_vm.num].name)) + "\n\t"
+              )
+            ]
           )
-        ]
-      )
+        : _vm._e()
     ],
     1
   )
@@ -16620,11 +16620,13 @@ var render = function() {
         }
       }),
       _vm._v(" "),
-      _c(
-        "button",
-        { staticClass: "border-grey w-min-120", attrs: { type: "submit" } },
-        [_vm._v(_vm._s(_vm.$t("search")))]
-      )
+      !_vm.$mobileCheck()
+        ? _c(
+            "button",
+            { staticClass: "border-grey w-min-120", attrs: { type: "submit" } },
+            [_vm._v(_vm._s(_vm.$t("search")))]
+          )
+        : _vm._e()
     ],
     1
   )

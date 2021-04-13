@@ -37,7 +37,7 @@
 	"title_by":"title",
 	"barcode_by":"barcode",
 	"batch_id_by":"batch number",
-	"inv_id_by":"inventory number",
+	"id_by":"inventory number",
 	"isbn_by":"isbn",
 	"and":"And",
 	"or":"Or",
@@ -185,5 +185,10 @@
 	"in_lib_by_month":"In library by month",
 
 	"print":"Print barcode",
-	"language":"Language"
+	"language":"Language",
+
+	"duration":"Duration",
+	"issuance":"Issuance",
+	"return":"Return",
+	"history":"History"
 }

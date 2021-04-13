@@ -105,6 +105,7 @@ export default
     },
     {
         path:'service',
+        name:'service',
         props:true,
         component:Service
     }

@@ -2,7 +2,7 @@ import {message_error,message_success} from './messages'
 export const getResults={
 	mixins:[message_error],
 	methods:{
-		getResults(link,commit,after){
+		getResults(link,commit,after,s_link){
 			this.$store.commit('setFullPageLoading',true);
 
 			
@@ -61,6 +61,9 @@ export const getResults={
 					link:'/search',
 					body:request,
 					mode:'post'
+				}
+				if(s_link){
+					s_request.link=s_link;
 				}
 				let data={data:response.data,searching:true,request:s_request};
 				if(store.all){
