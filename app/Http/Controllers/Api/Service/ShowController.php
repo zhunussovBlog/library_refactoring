@@ -29,7 +29,7 @@ class ShowController extends Controller
         }
 
         $image = Image::find($id);
-        $media = isset($mode->user_cid) && !empty($model->user_cid) ? Loan::userHistory($model->user_cid)->get()->toArray() : [];
+        $media = isset($model->user_cid) && !empty($model->user_cid) ? Loan::userHistory($model->user_cid)->get()->toArray() : [];
 
         $image = $image ? 'data:image/' . $type . ';base64,' . base64_encode($image->image) : null;
 
