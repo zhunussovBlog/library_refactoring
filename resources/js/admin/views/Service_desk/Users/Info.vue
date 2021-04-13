@@ -6,15 +6,14 @@
 				<span class="cursor-pointer font-size-20"><X /></span>
 			</div>
 		</div>
-		<div class="d-flex align-items-start flex-wrap mt-2">
+		<div class="d-flex align-items-start mt-2">
 			<div class="p-3 rounded-lg bg-lightgrey">
 				<div class="image" :style="'background-image: url('+backgroundImage+')'"/>
 				<div class="mt-2 text-center">{{$t(type)}}</div>
-
 			</div>
 			<div class="bg-lightgrey rounded-lg p-3 ml-4 flex-1" v-if='user.info'>
 				<div class="d-flex mt-2" v-for="(value,key,index) in objectWithoutKey(user.info,'user_cid') ">
-					<div class="text-grey">{{capitalize($t(key))}} :</div>
+					<div class="text-grey">{{capitalize($t(key))}}:</div>
 					<div class="ml-2">{{value}}</div>
 					&nbsp;
 				</div>

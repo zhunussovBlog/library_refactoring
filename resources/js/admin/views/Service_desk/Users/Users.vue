@@ -104,7 +104,7 @@ export default{
 			this.showModal(this.info,props);
 		},
 		serve(info){
-			this.$router.push({path:'service',params:{info:info}});
+			this.goTo('service',{info:info})
 		},
 		chooseType(type){
 			this.search_type=type.key;
