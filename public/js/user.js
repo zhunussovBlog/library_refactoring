@@ -16339,11 +16339,13 @@ var render = function() {
         }
       }),
       _vm._v(" "),
-      _c(
-        "button",
-        { staticClass: "p-3 w-min-120", attrs: { type: "submit" } },
-        [_vm._v(_vm._s(_vm.$t("search")))]
-      )
+      !_vm.$mobileCheck()
+        ? _c(
+            "button",
+            { staticClass: "p-3 w-min-120", attrs: { type: "submit" } },
+            [_vm._v(_vm._s(_vm.$t("search")))]
+          )
+        : _vm._e()
     ]
   )
 }
@@ -16521,22 +16523,24 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass: "link mt-3",
-          on: {
-            click: function($event) {
-              return _vm.move(_vm.components[_vm.num].num)
-            }
-          }
-        },
-        [
-          _vm._v(
-            "\n\t\t" + _vm._s(_vm.$t(_vm.components[_vm.num].name)) + "\n\t"
+      !_vm.$mobileCheck()
+        ? _c(
+            "div",
+            {
+              staticClass: "link mt-3",
+              on: {
+                click: function($event) {
+                  return _vm.move(_vm.components[_vm.num].num)
+                }
+              }
+            },
+            [
+              _vm._v(
+                "\n\t\t" + _vm._s(_vm.$t(_vm.components[_vm.num].name)) + "\n\t"
+              )
+            ]
           )
-        ]
-      )
+        : _vm._e()
     ],
     1
   )
@@ -16616,11 +16620,13 @@ var render = function() {
         }
       }),
       _vm._v(" "),
-      _c(
-        "button",
-        { staticClass: "border-grey w-min-120", attrs: { type: "submit" } },
-        [_vm._v(_vm._s(_vm.$t("search")))]
-      )
+      !_vm.$mobileCheck()
+        ? _c(
+            "button",
+            { staticClass: "border-grey w-min-120", attrs: { type: "submit" } },
+            [_vm._v(_vm._s(_vm.$t("search")))]
+          )
+        : _vm._e()
     ],
     1
   )

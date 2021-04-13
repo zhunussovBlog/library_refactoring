@@ -3,7 +3,7 @@
 		<keep-alive>
 			<component :is="components[num].component" class="d-flex" />
 		</keep-alive>
-		<div class="link mt-3" @click="move(components[num].num)">
+		<div class="link mt-3" @click="move(components[num].num)" v-if="!$mobileCheck()">
 			{{$t(components[num].name)}}
 		</div>
 	</div>
