@@ -9,6 +9,6 @@
 		<input name="site" value="eds-live" type="hidden" />
 		<input name="direct" value="true" type="hidden" />
 		<input name="bquery" type="text" class="w-100 border-grey no-border-right no-border-right-radius mr--5" :placeholder="$t('search_eresources')">
-		<button type="submit" class="p-3 w-min-120">{{$t('search')}}</button>
+		<button type="submit" class="p-3 w-min-120" v-if="!$mobileCheck()">{{$t('search')}}</button>
 	</form>
 </template>

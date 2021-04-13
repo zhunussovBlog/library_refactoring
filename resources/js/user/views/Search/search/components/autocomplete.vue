@@ -22,11 +22,9 @@
 	</form>
 </template>
 <script type="text/javascript">
-// Sublime text 3
-import {goTo} from '../../../../mixins/goTo'
-
 // icons
 import Book from '../../../../assets/icons/Book'
+
 export default{
 	model: {
 		prop: 'value',
@@ -39,7 +37,6 @@ export default{
 		input_classes:[String,Array],
 		results:Array,
 	},
-	mixins:[goTo],
 	components:{Book},
 	watch:{
 		'value'(newVal){

@@ -48,7 +48,7 @@ let links =[
 		},
 		{
 			name:'quick_links.subject',
-			link:'https://sdu-kz.libguides.com/prf.php'
+			link:'https://sdu-kz.libguides.com/sl_profiles/page'
 		},
 		{
 			name:'quick_links.digest',

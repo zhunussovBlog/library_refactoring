@@ -109,6 +109,11 @@ export default {
 	},
 	
 	users:{
+		search:{
+			add_options:{
+				all:''
+			}
+		},
 		data:[],
 		heads:[],
 		searching:false,
