@@ -24,8 +24,12 @@ class ShowController extends Controller
             default => throw new ReturnResponseException('Incorrect user type', 400),
         })->first();
 
+        if (empty($model)) {
+            throw new ReturnResponseException('User not found', 404);
+        }
+
         $image = Image::find($id);
-        $media = Loan::userHistory($model->user_cid)->get();
+        $media = isset($model->user_cid) && !empty($model->user_cid) ? Loan::userHistory($model->user_cid)->get()->toArray() : [];
 
         $image = $image ? 'data:image/' . $type . ';base64,' . base64_encode($image->image) : null;
 
@@ -33,7 +37,7 @@ class ShowController extends Controller
             'res' => [
                 'info' => $model,
                 'photo' => $image,
-                'history' => $media->toArray()
+                'history' => $media
             ]
         ]);
     }

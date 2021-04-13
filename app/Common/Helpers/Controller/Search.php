@@ -52,7 +52,22 @@ class Search
         $options = $validated['add_options'] ?? [];
 
         foreach ($options as $option) {
-            $builder = SearchHelper::search($builder, $searchFields, $option);
+            switch ($option['key']) {
+                case 'all':
+                    foreach ($searchFields as $field) {
+                        if ($field['key'] !== 'all') {
+                            $customOption = [
+                                'key' => $field['key'],
+                                'operator' => 'or',
+                                'value' => $option['value']
+                            ];
+                            $builder = SearchHelper::search($builder, $searchFields, $customOption);
+                        }
+                    }
+                    break;
+                default:
+                    $builder = SearchHelper::search($builder, $searchFields, $option);
+            }
         }
 
         $options = $validated['order'] ?? [];
