@@ -11,7 +11,8 @@ class UserSearchFields extends FieldInterface
     protected static array $sortFields = [
         ['key' => 'full_name', 'title' => 'Name'],
         ['key' => 'id', 'title' => 'User ID'],
-        ['key' => 'faculty', 'title' => 'Faculty']
+        ['key' => 'faculty', 'title' => 'Faculty'],
+        ['key' => 'department', 'title' => 'Department'],
     ];
 
     protected static array $addSearchFields = [

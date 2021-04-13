@@ -80,8 +80,9 @@ class Student extends Authenticatable implements UserCidAttribute
     {
         return DB::table('dbmaster.students as t')
             ->select('t.stud_id as id', 't.stud_id as username', DB::raw("t.name||' '||t.surname as full_name"),
-                DB::raw("(select ss.title_en from dbmaster.stud_status ss where ss.status_id = t.status) as status"),
                 DB::raw("(select d.title_en from dbmaster.departments d where d.dep_code = dp.dep_code_f and d.son = 1) as faculty"),
+                DB::raw("(select el.title_en from dbmaster.edu_levels el
+                                            where el.level_code = t.edu_level) as degree"),
                 DB::raw("'student' as type"))
             ->leftJoin('dbmaster.stud_prog as sp', static function ($join) {
                 $join->on('sp.stud_id', '=', 't.stud_id');
