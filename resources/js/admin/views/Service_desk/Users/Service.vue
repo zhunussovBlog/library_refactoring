@@ -170,7 +170,7 @@ export default{
 			this.state=tab.name.toLowerCase();
 		},
         testRequest() {
-		    this.$http.post('http://localhost/LibraryWebService.asmx/GetItemsStatus', {}, {}).then(response => {
+		    this.$http.post('http://localhost:44379/LibraryWebService.asmx/GetItemsStatus', {}, {}).then(response => {
 		        console.log(response);
             }).catch(e => {
                 console.log(e);
