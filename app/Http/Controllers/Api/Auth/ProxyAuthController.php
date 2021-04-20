@@ -28,9 +28,9 @@ class ProxyAuthController extends Controller
         $user = AuthProcedure::auth($validated, $server);
 
         if (empty($user)) {
-            return response('-FAIL');
+            return response('ERROR');
         }
 
-        return response("+VALID");
+        return response("OK");
     }
 }
