@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::post('cgi-bin/check.cgi', 'Api\Auth\ProxyAuthController')->name('cgi-login');
 Route::post('login', 'Auth\LoginController')->name('web-login');
 Route::post('logout', 'Auth\LogoutController')->name('web-logout');
 
