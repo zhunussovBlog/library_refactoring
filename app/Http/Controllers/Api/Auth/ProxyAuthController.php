@@ -25,13 +25,8 @@ class ProxyAuthController extends Controller
             'HTTP_USER_AGENT' => $request->server('HTTP_USER_AGENT')
         ];
 
-        $user = AuthProcedure::auth($validated, $server);
+        AuthProcedure::auth($validated, $server);
 
-        if (!empty($user)) {
-            echo("+VALID\n");
-        }
-
-        echo("Done\n");
-        exit(0);
+        return response('+OK');
     }
 }
