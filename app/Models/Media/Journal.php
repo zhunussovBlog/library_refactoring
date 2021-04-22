@@ -39,17 +39,15 @@ class Journal extends Model implements DefaultQueryInterface
     public static function defaultQuery(): Builder
     {
         return static::query()->select('j.journal_id as id', 'j.title as title',
-            'j.pub_year as year', 'p.name as publisher', 'j.language as language',
-            'mt.title_' . app()->getLocale() . ' as type', 'j.type as type_key', 'j.isbn', DB::raw("null as issn"),
+            'j.pub_year as year', 'j.language as language', 'j.callnumber as call_number',
+            'j.type as type_key', 'j.isbn', DB::raw("null as issn"),
+            DB::raw("(select lm.title_en from lib_material_types lm where lm.key = j.type) as type"),
             DB::raw("(select listagg(a.name||a.surname, ', ') within group(order by a.name)
                             from lib_book_authors a where a.j_issue_id = ji.j_issue_id group by a.j_issue_id) as author"),
-            DB::raw("(case when (select r.j_issue_id from lib_reserve_list r
-                            where ji.j_issue_id = r.j_issue_id and r.status = 1) is not null
-                            then (select 1 from dual) else (select 0 from dual) end) as status"),
-            DB::raw("(select t.data from view_marc_fileds t where t.journal_id = j.journal_id and t.id = '010.a') as call_number"),
-            DB::raw("(select count(*) from lib_inventory i where i.j_issue_id = ji.j_issue_id and i.status = 1) as availability"))
-            ->leftJoin('lib_journal_issues as ji', 'j.journal_id', '=', 'ji.journal_id')
-            ->leftJoin('lib_publishers as p', 'p.publisher_id', '=', 'j.publisher_id')
-            ->leftJoin('lib_material_types as mt', 'j.type', '=', 'mt.key');
+            DB::raw("(select lp.name from lib_publishers lp where lp.publisher_id = j.publisher_id) as publisher"),
+            DB::raw("(select decode(r.j_issue_id, null, 0, 1) from lib_reserve_list r
+                         where ji.j_issue_id= r.j_issue_id and r.status = 1) as status"),
+            DB::raw("(select count(i.inv_id) from lib_inventory i where i.j_issue_id = ji.j_issue_id and i.status = 1) as availability"))
+            ->leftJoin('lib_journal_issues as ji', 'j.journal_id', '=', 'ji.journal_id');
     }
 }
