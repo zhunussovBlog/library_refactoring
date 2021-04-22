@@ -38,15 +38,15 @@ class Book extends Model implements DefaultQueryInterface
     public static function defaultQuery(): Builder
     {
         return static::query()->select('b.book_id as id', 'b.title as title',
-            'b.pub_year as year', 'p.name as publisher', 'b.language as language', 'b.callnumber as call_number',
-            'mt.title_' . app()->getLocale() . ' as type', 'b.type as type_key', 'b.isbn', DB::raw("null as issn"),
+            'b.pub_year as year', 'b.language as language', 'b.callnumber as call_number',
+            DB::raw("(select lm.title_" . app()->getLocale() . " from lib_material_types lm where lm.key = b.type) as type"),
+            'b.type as type_key', 'b.isbn', DB::raw("null as issn"),
+            'p.name as publisher',
             DB::raw("(select listagg(a.name||a.surname, ', ') within group(order by a.name)
                             from lib_book_authors a where a.book_id = b.book_id group by a.book_id) as author"),
-            DB::raw("(case when (select r.book_id from lib_reserve_list r
-                            where b.book_id = r.book_id and r.status = 1) is not null
-                            then (select 1 from dual) else (select 0 from dual) end) as status"),
-            DB::raw("(select count(*) from lib_inventory i where i.book_id = b.book_id and i.status = 1) as availability"))
-            ->leftJoin('lib_publishers as p', 'p.publisher_id', '=', 'b.publisher_id')
-            ->leftJoin('lib_material_types as mt', 'b.type', '=', 'mt.key');
+            DB::raw("(select decode(r.book_id, null, 0, 1) from lib_reserve_list r
+                         where b.book_id = r.book_id and r.status = 1) as status"),
+            DB::raw("(select count(i.inv_id) from lib_inventory i where i.book_id = b.book_id and i.status = 1) as availability"))
+            ->leftJoin('lib_publishers as p', 'p.publisher_id', '=', 'b.publisher_id');
     }
 }
