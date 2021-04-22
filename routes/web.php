@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::post('login', 'Auth\LoginController')->name('web-login');
 Route::post('logout', 'Auth\LogoutController')->name('web-logout');
 

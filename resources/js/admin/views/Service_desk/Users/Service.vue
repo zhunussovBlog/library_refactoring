@@ -14,13 +14,16 @@
 				</div>
 			</div>
 		</div>
+        <button type="button" class="d-flex align-items-center" @click="testRequest">
+            Get books from station
+        </button>
 		<div class="mt-4">
 			<tabs :components="components" tabClasses="font-size-18 mr-3" :tabOnClick="tabOnClick"/>
 		</div>
 		<div class="mt-4">
 			<table-div
 			:heads="heads"
-			:data="data" 
+			:data="data"
 			:selectable="selectable"
 			:clickables="clickables"
 			:sortable="false"
@@ -165,7 +168,18 @@ export default{
 		},
 		tabOnClick(tab){
 			this.state=tab.name.toLowerCase();
-		}
+		},
+        testRequest() {
+		    this.$http.post('https://localhost:44379/LibraryWebService.asmx/GetItemsStatus', {}, {
+		        headers: {
+		            'Content-Type': 'application/x-www-form-urlencoded'
+                },
+            }).then(response => {
+		        console.log(response);
+            }).catch(e => {
+                console.log(e);
+            })
+        }
 	},
 	created(){
 		this.getInfo();
