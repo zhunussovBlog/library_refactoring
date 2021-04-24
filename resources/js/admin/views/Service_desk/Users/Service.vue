@@ -17,6 +17,9 @@
         <button type="button" class="d-flex align-items-center" @click="testRequest">
             Get books from station
         </button>
+        <button type="button" class="d-flex align-items-center" @click="ajaxRequest">
+            Get books from station (Ajax pure)
+        </button>
 		<div class="mt-4">
 			<tabs :components="components" tabClasses="font-size-18 mr-3" :tabOnClick="tabOnClick"/>
 		</div>
@@ -178,7 +181,21 @@ export default{
 		        console.log(response);
             }).catch(e => {
                 console.log(e);
-            })
+            });
+        },
+        ajaxRequest() {
+		    const request = new XMLHttpRequest();
+
+		    const url = 'https://localhost:44379/LibraryWebService.asmx/GetItemsStatus';
+		    request.open('POST', url, true);
+            request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            request.addEventListener("readystatechange", () => {
+                if(request.readyState === 4 && request.status === 200) {
+                    console.log(request.responseText);
+                }
+            });
+
+            request.send();
         }
 	},
 	created(){
