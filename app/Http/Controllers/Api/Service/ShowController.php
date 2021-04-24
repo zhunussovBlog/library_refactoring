@@ -33,11 +33,14 @@ class ShowController extends Controller
 
         $image = $image ? 'data:image/' . $type . ';base64,' . base64_encode($image->image) : null;
 
+        $total = $this->countTotal($media);
+
         return response()->json([
             'res' => [
                 'info' => $model,
                 'photo' => $image,
-                'history' => $media
+                'history' => $media,
+                'total' => $total,
             ]
         ]);
     }
@@ -73,5 +76,32 @@ class ShowController extends Controller
         return response()->json([
             'res' => FilterFields::filterFields(new UserSearchFields())
         ]);
+    }
+
+    private function countTotal(array $media): array
+    {
+        $borrowed = [];
+        $returned = [];
+        $dept = [];
+
+        foreach ($media as $item) {
+            switch ($item['status']) {
+                case 'issued':
+                    $borrowed[] = $item;
+                    break;
+                case 'overdue':
+                    $dept[] = $item;
+                    break;
+                case 'returned':
+                    $returned[] = $item;
+                    break;
+            }
+        }
+
+        $borrowed = count($borrowed);
+        $returned = count($returned);
+        $dept = count($dept);
+
+        return ['borrowed' => $borrowed, 'returned' => $returned, 'dept' => $dept];
     }
 }

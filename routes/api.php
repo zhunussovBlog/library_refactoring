@@ -160,6 +160,7 @@ Route::middleware(['auth:api-student,api-employee'])->group(function () {
             Route::get('user/{type}/{id}', 'Api\Service\ShowController@show');
 
             Route::post('user/{type}/search', 'Api\Service\SearchController@search');
+            Route::get('/media/search', 'Api\Service\SearchController@searchMedia');
         });
     });
 });

@@ -45,10 +45,7 @@ class Journal extends Model implements DefaultQueryInterface
             DB::raw("(select listagg(a.name||a.surname, ', ') within group(order by a.name)
                             from lib_book_authors a where a.j_issue_id = ji.j_issue_id group by a.j_issue_id) as author"),
             DB::raw("(select lp.name from lib_publishers lp where lp.publisher_id = j.publisher_id) as publisher"),
-            DB::raw("(select decode(r.j_issue_id, null, 0, 1)
-                          from lib_reserve_list r
-                         where ji.j_issue_id= r.j_issue_id
-                           and r.status = 1) as status"),
+            DB::raw("(select r.status from lib_reserve_list r where ji.j_issue_id = r.j_issue_id) as status"),
             DB::raw("(select count(i.inv_id)
                    from lib_inventory i
                   where i.j_issue_id = ji.j_issue_id

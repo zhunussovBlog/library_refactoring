@@ -44,8 +44,7 @@ class Book extends Model implements DefaultQueryInterface
             DB::raw("(select lp.name from lib_publishers lp where lp.publisher_id = b.publisher_id) as publisher"),
             DB::raw("(select listagg(a.name||a.surname, ', ') within group(order by a.name)
                             from lib_book_authors a where a.book_id = b.book_id group by a.book_id) as author"),
-            DB::raw("(select decode(r.book_id, null, 0, 1) from lib_reserve_list r
-                         where b.book_id = r.book_id and r.status = 1) as status"),
+            DB::raw("(select r.status from lib_reserve_list r where b.book_id = r.book_id) as status"),
             DB::raw("(select count(i.inv_id) from lib_inventory i where i.book_id = b.book_id and i.status = 1) as availability"));
     }
 }

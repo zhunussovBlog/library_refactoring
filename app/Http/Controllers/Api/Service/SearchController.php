@@ -10,9 +10,12 @@ use App\Common\Helpers\Search\FilterHelper;
 use App\Exceptions\ReturnResponseException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SearchRequest;
+use App\Models\Media\Book;
 use App\Models\User\Employee;
 use App\Models\User\Student;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SearchController extends Controller
 {
@@ -32,6 +35,24 @@ class SearchController extends Controller
         return response()->json([
             'res' => CustomPaginate::getPaginate($data, $request, $perPage),
             'filter' => $forFilter,
+            'all' => $data->pluck('id')->toArray()
+        ]);
+    }
+
+    public function searchMedia(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'value' => 'required'
+        ], $request->all());
+        $value = mb_strtolower($validated['value']);
+
+        $perPage = $request->get('per_page') ?? 10;
+        $data = Book::defaultQuery()->addSelect('i.barcode')
+            ->leftJoin('lib_inventory as i', 'b.book_id', '=', 'i.book_id')
+            ->where(DB::raw("lower(i.barcode)"), 'like', $value . '%')->get();
+
+        return response()->json([
+            'res' => CustomPaginate::getPaginate($data, $request, $perPage),
             'all' => $data->pluck('id')->toArray()
         ]);
     }
