@@ -5865,6 +5865,40 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_common_Back__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../components/common/Back */ "./resources/js/admin/components/common/Back.vue");
 /* harmony import */ var _components_common_Table__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../components/common/Table */ "./resources/js/admin/components/common/Table.vue");
 /* harmony import */ var _components_common_Tabs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../components/common/Tabs */ "./resources/js/admin/components/common/Tabs.vue");
+/* harmony import */ var _components_common_Input__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../components/common/Input */ "./resources/js/admin/components/common/Input.vue");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5900,7 +5934,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    Back: _components_common_Back__WEBPACK_IMPORTED_MODULE_0__.default,
+    TableDiv: _components_common_Table__WEBPACK_IMPORTED_MODULE_1__.default,
+    Tabs: _components_common_Tabs__WEBPACK_IMPORTED_MODULE_2__.default,
+    InputDiv: _components_common_Input__WEBPACK_IMPORTED_MODULE_3__.default
+  },
   props: {
     info: {
       type: Object,
@@ -6002,11 +6043,6 @@ __webpack_require__.r(__webpack_exports__);
       return data;
     }
   },
-  components: {
-    Back: _components_common_Back__WEBPACK_IMPORTED_MODULE_0__.default,
-    TableDiv: _components_common_Table__WEBPACK_IMPORTED_MODULE_1__.default,
-    Tabs: _components_common_Tabs__WEBPACK_IMPORTED_MODULE_2__.default
-  },
   data: function data() {
     return {
       user: {},
@@ -6017,7 +6053,11 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         name: 'history'
       }],
-      state: 'issuance'
+      state: 'issuance',
+      user_info: {
+        leftArray: [],
+        rightArray: []
+      }
     };
   },
   methods: {
@@ -6047,16 +6087,68 @@ __webpack_require__.r(__webpack_exports__);
     }(function (string, key) {
       return objectWithoutKey(string, key);
     }),
+    tabOnClick: function tabOnClick(tab) {
+      this.state = tab.name.toLowerCase();
+    },
+    makeUserInfo: function makeUserInfo() {
+      var even = [];
+      var odd = [];
+      var index = 0;
+
+      for (var _i = 0, _Object$entries = Object.entries(objectWithoutKey(this.user.info, 'user_cid')); _i < _Object$entries.length; _i++) {
+        var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
+            key = _Object$entries$_i[0],
+            value = _Object$entries$_i[1];
+
+        if (index % 2 == 0) {
+          even.push({
+            key: key,
+            value: value
+          });
+        } else {
+          odd.push({
+            key: key,
+            value: value
+          });
+        }
+
+        index++;
+      }
+
+      this.user_info.leftArray = even;
+      this.user_info.rightArray = odd;
+    },
     getInfo: function getInfo() {
       var _this = this;
 
-      console.log(this.info);
       this.$http.get('service/user/' + this.info.type + '/' + this.info.id).then(function (response) {
         _this.user = response.data.res;
+
+        _this.makeUserInfo();
       })["catch"](function (e) {});
     },
-    tabOnClick: function tabOnClick(tab) {
-      this.state = tab.name.toLowerCase();
+    testRequest: function testRequest() {
+      this.$http.post('https://localhost:44379/LibraryWebService.asmx/GetItemsStatus', {}, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      }).then(function (response) {
+        console.log(response);
+      })["catch"](function (e) {
+        console.log(e);
+      });
+    },
+    ajaxRequest: function ajaxRequest() {
+      var request = new XMLHttpRequest();
+      var url = 'https://localhost:44379/LibraryWebService.asmx/GetItemsStatus';
+      request.open('POST', url, true);
+      request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      request.addEventListener("readystatechange", function () {
+        if (request.readyState === 4 && request.status === 200) {
+          console.log(request.responseText);
+        }
+      });
+      request.send();
     }
   },
   created: function created() {
@@ -6190,8 +6282,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           name: 'faculty',
           link: 'faculty'
         }, {
-          name: 'status',
-          link: 'status'
+          name: 'degree',
+          link: 'degree'
         }]);
       }
 
@@ -26449,7 +26541,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.image[data-v-4b3707e1]{\n\twidth:15.625em;\n\theight: calc(15.625em * 4/3);\n\tbackground-repeat: no-repeat;\n\tbackground-size: 100% 100%;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.image[data-v-4b3707e1]{\n\tbackground-repeat: no-repeat;\n\tbackground-size: 100% 100%;\n}\n.imageWidth[data-v-4b3707e1]{\n\twidth:10em;\n}\n.imageHeight[data-v-4b3707e1]{\n\theight: calc(10em * 4/3);\n}\n.red[data-v-4b3707e1]{\n\tcolor:#FF0000;\n}\n.orange[data-v-4b3707e1]{\n\tcolor:#FF9D29;\n}\n.green[data-v-4b3707e1]{\n\tcolor:#00BB78;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -66038,7 +66130,7 @@ var render = function() {
       _vm.user.info
         ? _c(
             "div",
-            { staticClass: "bg-lightgrey rounded-lg p-3 ml-4 flex-1" },
+            { staticClass: "bg-lightgrey rounded-lg p-3 ml-4 flex-fill" },
             _vm._l(_vm.objectWithoutKey(_vm.user.info, "user_cid"), function(
               value,
               key,
@@ -66089,43 +66181,115 @@ var render = function() {
       _c("Back"),
       _vm._v(" "),
       _c("div", { staticClass: "d-flex mt-2" }, [
-        _c("div", { staticClass: "p-3 rounded-lg bg-lightgrey" }, [
-          _c("div", {
-            staticClass: "image",
-            style: "background-image: url(" + _vm.backgroundImage + ")"
-          }),
+        _c("div", { staticClass: "d-flex flex-column" }, [
+          _c(
+            "div",
+            { staticClass: "d-flex flex-column align-items-center p-3 px-5" },
+            [
+              _c("div", {
+                staticClass: "imageWidth imageHeight image rounded",
+                style: "background-image: url(" + _vm.backgroundImage + ")"
+              }),
+              _vm._v(" "),
+              _c("div", { staticClass: "mt-2 text-center" }, [
+                _vm._v(_vm._s(_vm.$t(_vm.info.type)))
+              ])
+            ]
+          ),
           _vm._v(" "),
-          _c("div", { staticClass: "mt-2 text-center" }, [
-            _vm._v(_vm._s(_vm.$t(_vm.info.type)))
-          ])
+          _c(
+            "div",
+            { staticClass: "d-flex flex-column bg-lightgrey p-2 px-5 mt-auto" },
+            _vm._l(_vm.user.total, function(value, key, index) {
+              return _c(
+                "div",
+                {
+                  key: index,
+                  staticClass:
+                    "d-flex justify-content-between imageWidth align-self-center",
+                  class: [
+                    { green: index == 0 },
+                    { orange: index == 1 },
+                    { red: index == 2 }
+                  ]
+                },
+                [
+                  _c("div", [_vm._v(_vm._s(key + ":"))]),
+                  _vm._v(" "),
+                  _c("div", [_vm._v(_vm._s(value))])
+                ]
+              )
+            }),
+            0
+          )
         ]),
         _vm._v(" "),
         _vm.user.info
           ? _c(
               "div",
-              { staticClass: "bg-lightgrey rounded-lg p-3 ml-4 flex-1" },
-              _vm._l(_vm.objectWithoutKey(_vm.user.info, "user_cid"), function(
-                value,
-                key,
-                index
-              ) {
-                return _c("div", { staticClass: "d-flex mt-2" }, [
-                  _c("div", { staticClass: "text-grey" }, [
-                    _vm._v(_vm._s(_vm.capitalize(_vm.$t(key))) + ":")
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "ml-2" }, [_vm._v(_vm._s(value))]),
-                  _vm._v("\n\t\t\t\t \n\t\t\t")
-                ])
-              }),
-              0
+              {
+                staticClass: "d-flex bg-lightgrey rounded-lg p-3 ml-4 flex-fill"
+              },
+              [
+                _c(
+                  "div",
+                  { staticClass: "w-100 mr-2" },
+                  _vm._l(_vm.user_info.leftArray, function(item, index) {
+                    return _c(
+                      "div",
+                      {
+                        key: index,
+                        staticClass: "d-flex",
+                        class: { "mt-3 mt-xl-5": index != 0 }
+                      },
+                      [
+                        _c("div", { staticClass: "text-grey" }, [
+                          _vm._v(_vm._s(_vm.capitalize(_vm.$t(item.key))) + ":")
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "ml-2" }, [
+                          _vm._v(_vm._s(item.value))
+                        ]),
+                        _vm._v("\n\t\t\t\t\t \n\t\t\t\t")
+                      ]
+                    )
+                  }),
+                  0
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "w-100" },
+                  _vm._l(_vm.user_info.rightArray, function(item, index) {
+                    return _c(
+                      "div",
+                      {
+                        key: index,
+                        staticClass: "d-flex",
+                        class: { "mt-3 mt-xl-5": index != 0 }
+                      },
+                      [
+                        _c("div", { staticClass: "text-grey" }, [
+                          _vm._v(_vm._s(_vm.capitalize(_vm.$t(item.key))) + ":")
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "ml-2" }, [
+                          _vm._v(_vm._s(item.value))
+                        ]),
+                        _vm._v("\n\t\t\t\t\t \n\t\t\t\t")
+                      ]
+                    )
+                  }),
+                  0
+                )
+              ]
             )
           : _vm._e()
       ]),
       _vm._v(" "),
       _c(
         "div",
-        { staticClass: "mt-4" },
+        { staticClass: "d-flex justify-content-between mt-4" },
         [
           _c("tabs", {
             attrs: {
@@ -66133,7 +66297,24 @@ var render = function() {
               tabClasses: "font-size-18 mr-3",
               tabOnClick: _vm.tabOnClick
             }
-          })
+          }),
+          _vm._v(" "),
+          _vm.state == "issuance"
+            ? _c(
+                "div",
+                { staticClass: "d-flex" },
+                [
+                  _c("input-div", {
+                    attrs: { search: true, placeholder: _vm.$t("barcode") }
+                  }),
+                  _vm._v(" "),
+                  _c("button", { staticClass: "ml-3 width-unset" }, [
+                    _vm._v("from RFID reader")
+                  ])
+                ],
+                1
+              )
+            : _vm._e()
         ],
         1
       ),
