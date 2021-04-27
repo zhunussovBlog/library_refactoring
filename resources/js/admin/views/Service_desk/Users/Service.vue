@@ -211,6 +211,7 @@ export default{
 		getInfo(){
 			this.$http.get('service/user/'+this.info.type+'/'+this.info.id).then(response=>{
 				this.user=response.data.res;
+				this.user.info=objectWithoutKey(this.user.info,'id');
 				this.makeUserInfo();
 			}).catch(e=>{})
 		},

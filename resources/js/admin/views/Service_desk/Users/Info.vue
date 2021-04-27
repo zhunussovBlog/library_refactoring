@@ -68,6 +68,7 @@ export default {
 		getInfo(){
 			this.$http.get('service/user/'+this.type+'/'+this.id).then(response=>{
 				this.user=response.data.res;
+				this.user.info=objectWithoutKey(this.user.info,'id');
 			}).catch(e=>{
 				this.goTo('users');
 			})
