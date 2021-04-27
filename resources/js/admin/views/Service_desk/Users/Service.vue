@@ -208,17 +208,6 @@ export default{
 				this.makeUserInfo();
 			}).catch(e=>{})
 		},
-		testRequest() {
-			this.$http.post('https://localhost:44379/LibraryWebService.asmx/GetItemsStatus', {}, {
-				headers: {
-					'Content-Type': 'application/x-www-form-urlencoded'
-				},
-			}).then(response => {
-				console.log(response);
-			}).catch(e => {
-				console.log(e);
-			});
-		},
 		ajaxRequest() {
 			const request = new XMLHttpRequest();
 

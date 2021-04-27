@@ -6108,17 +6108,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         _this.makeUserInfo();
       })["catch"](function (e) {});
     },
-    testRequest: function testRequest() {
-      this.$http.post('https://localhost:44379/LibraryWebService.asmx/GetItemsStatus', {}, {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      }).then(function (response) {
-        console.log(response);
-      })["catch"](function (e) {
-        console.log(e);
-      });
-    },
     ajaxRequest: function ajaxRequest() {
       var request = new XMLHttpRequest();
       var url = 'https://localhost:44379/LibraryWebService.asmx/GetItemsStatus';
