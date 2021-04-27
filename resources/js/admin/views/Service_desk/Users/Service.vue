@@ -34,8 +34,8 @@
 		<div class="d-flex justify-content-between mt-4">
 			<tabs :components="components" tabClasses="font-size-18 mr-3" :tabOnClick="tabOnClick"/>
 			<div class="d-flex" v-if="state=='issuance'">
-				<input-div :search="true" :placeholder="$t('barcode')"/>
-				<button class="ml-3 width-unset">from RFID reader</button>
+				<input-div :search="true" :placeholder="$t('barcode')" v-model="barcode" :onSubmit="search"/>
+				<button class="ml-3 width-unset" @click="ajaxRequest()">from RFID reader</button>
 			</div>
 		</div>
 		<div class="mt-4">
@@ -95,7 +95,7 @@ export default{
 					name:'barcode',link:'barcode'
 				},
 				{
-					name:'duration',link:'title'
+					name:'duration',link:'duration'
 				},
 				{
 					name:'title',link:'title'
@@ -153,6 +153,9 @@ export default{
 			if(this.state=='history'){
 				data=this.user.history
 			}
+			if(Object.keys(this.search_results).length>0){
+				data=this.search_results;
+			}
 			return data;
 		}
 	},
@@ -173,7 +176,9 @@ export default{
 			user_info:{
 				leftArray:[],
 				rightArray:[]
-			}
+			},
+			search_results:{},
+			barcode:''
 		}
 	},
 	methods:{
@@ -208,6 +213,11 @@ export default{
 				this.user.info=objectWithoutKey(this.user.info,'id');
 				this.makeUserInfo();
 			}).catch(e=>{})
+		},
+		search(){
+			this.$http.get('service/media/search?value='+this.barcode).then(response=>{
+				this.search_results=response.data.res.data;
+			})
 		},
 		ajaxRequest() {
 			const request = new XMLHttpRequest();

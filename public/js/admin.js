@@ -5966,7 +5966,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           link: 'barcode'
         }, {
           name: 'duration',
-          link: 'title'
+          link: 'duration'
         }, {
           name: 'title',
           link: 'title'
@@ -6022,6 +6022,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         data = this.user.history;
       }
 
+      if (Object.keys(this.search_results).length > 0) {
+        data = this.search_results;
+      }
+
       return data;
     }
   },
@@ -6039,7 +6043,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       user_info: {
         leftArray: [],
         rightArray: []
-      }
+      },
+      search_results: {},
+      barcode: ''
     };
   },
   methods: {
@@ -6109,6 +6115,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
         _this.makeUserInfo();
       })["catch"](function (e) {});
+    },
+    search: function search() {
+      var _this2 = this;
+
+      this.$http.get('service/media/search?value=' + this.barcode).then(function (response) {
+        _this2.search_results = response.data.res.data;
+      });
     },
     ajaxRequest: function ajaxRequest() {
       var request = new XMLHttpRequest();
@@ -66338,12 +66351,32 @@ var render = function() {
                 { staticClass: "d-flex" },
                 [
                   _c("input-div", {
-                    attrs: { search: true, placeholder: _vm.$t("barcode") }
+                    attrs: {
+                      search: true,
+                      placeholder: _vm.$t("barcode"),
+                      onSubmit: _vm.search
+                    },
+                    model: {
+                      value: _vm.barcode,
+                      callback: function($$v) {
+                        _vm.barcode = $$v
+                      },
+                      expression: "barcode"
+                    }
                   }),
                   _vm._v(" "),
-                  _c("button", { staticClass: "ml-3 width-unset" }, [
-                    _vm._v("from RFID reader")
-                  ])
+                  _c(
+                    "button",
+                    {
+                      staticClass: "ml-3 width-unset",
+                      on: {
+                        click: function($event) {
+                          return _vm.ajaxRequest()
+                        }
+                      }
+                    },
+                    [_vm._v("from RFID reader")]
+                  )
                 ],
                 1
               )
