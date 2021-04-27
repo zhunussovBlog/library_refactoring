@@ -40,14 +40,12 @@ export default{
 	},
 	methods:{
 		logout(){
-			this.$http.defaults.baseURL = window.configs.baseURL;
-			this.$http.get('/auth/logout').then(response=>{
+			this.$http.get('logout').then(response=>{
 				this.$store.commit('setUser',{});
+				localStorage.removeItem('access_token')
 				window.location.replace('/');
 			}).catch(error=>{
 				this.message_error('logout',error);
-			}).then(()=>{
-				this.$http.defaults.baseURL = window.configs.baseURL + window.configs.api;
 			});
 		},
 		showDropdown(){
