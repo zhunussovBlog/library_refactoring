@@ -8,8 +8,8 @@
 					<div class="mt-2 text-center">{{$t(info.type)}}</div>
 				</div>
 				<div class="d-flex flex-column bg-lightgrey p-2 px-5 mt-auto">
-					<div class="d-flex justify-content-between imageWidth align-self-center" :class="[{'green':index==0},{'orange':index==1},{'red':index==2}]"v-for="(value,key,index) in user.total" :key="index">
-						<div>{{$t(key)+':'}}</div>
+					<div class="d-flex justify-content-between imageWidth align-self-center" v-for="(value,key,index) in user.total" :key="index">
+						<div :class="[{'green':index==0},{'orange':index==1},{'red':index==2}]">{{$t(key)+':'}}</div>
 						<div>{{value}}</div>
 					</div>
 				</div>

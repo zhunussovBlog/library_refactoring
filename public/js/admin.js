@@ -5750,6 +5750,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 // mixins
  //components
 
@@ -5773,39 +5785,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      user: {
-        user: {},
-        media: []
-      },
-      heads: [{
-        name: 'author',
-        link: 'authors'
-      }, {
-        name: 'barcode',
-        link: 'barcode'
-      }, {
-        name: 'delivery_date',
-        link: 'delivery_date'
-      }, {
-        name: 'due_date',
-        link: 'due_date'
-      }, {
-        name: 'inventory_number',
-        link: 'inv_id'
-      }, {
-        name: 'issue_date',
-        link: 'issue_date'
-      }, {
-        name: 'status',
-        link: 'status'
-      }, {
-        name: 'titles',
-        link: 'title',
-        countable: true
-      }, {
-        name: 'year',
-        link: 'year'
-      }]
+      user: {}
     };
   },
   methods: {
@@ -26518,7 +26498,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.placeholder[data-v-bf8e509c]{\n\tbackground-color: white;\n}\ninput[data-v-bf8e509c]:disabled{\n\tcolor:black;\n}\n.image[data-v-bf8e509c]{\n\twidth:15.625em;\n\theight: calc(15.625em * 4/3);\n\tbackground-repeat: no-repeat;\n\tbackground-size: 100% 100%;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.placeholder[data-v-bf8e509c]{\n\tbackground-color: white;\n}\ninput[data-v-bf8e509c]:disabled{\n\tcolor:black;\n}\n.image[data-v-bf8e509c]{\n\tbackground-repeat: no-repeat;\n\tbackground-size: 100% 100%;\n}\n.imageWidth[data-v-bf8e509c]{\n\twidth:15.625em;\n}\n.imageHeight[data-v-bf8e509c]{\n\theight: calc(15.625em * 4/3);\n}\n.red[data-v-bf8e509c]{\n\tcolor:#FF0000;\n}\n.orange[data-v-bf8e509c]{\n\tcolor:#FF9D29;\n}\n.green[data-v-bf8e509c]{\n\tcolor:#00BB78;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -66121,16 +66101,59 @@ var render = function() {
       ]
     ),
     _vm._v(" "),
-    _c("div", { staticClass: "d-flex align-items-start mt-2" }, [
-      _c("div", { staticClass: "p-3 rounded-lg bg-lightgrey" }, [
-        _c("div", {
-          staticClass: "image",
-          style: "background-image: url(" + _vm.backgroundImage + ")"
-        }),
+    _c("div", { staticClass: "d-flex mt-2" }, [
+      _c("div", { staticClass: "d-flex flex-column" }, [
+        _c("div", { staticClass: "p-3 rounded-lg bg-lightgrey" }, [
+          _c("div", {
+            staticClass: "image imageWidth imageHeight",
+            style: "background-image: url(" + _vm.backgroundImage + ")"
+          }),
+          _vm._v(" "),
+          _c("div", { staticClass: "mt-2 text-center" }, [
+            _vm._v(_vm._s(_vm.$t(_vm.type)))
+          ])
+        ]),
         _vm._v(" "),
-        _c("div", { staticClass: "mt-2 text-center" }, [
-          _vm._v(_vm._s(_vm.$t(_vm.type)))
-        ])
+        _c(
+          "div",
+          {
+            staticClass:
+              "py-2 mt-3 bg-lightgrey d-flex flex-column align-items-center"
+          },
+          _vm._l(_vm.user.total, function(value, key, index) {
+            return _c(
+              "div",
+              {
+                key: index,
+                staticClass: "imageWidth d-flex justify-content-between"
+              },
+              [
+                _c(
+                  "div",
+                  {
+                    class: [
+                      { green: index == 0 },
+                      { orange: index == 1 },
+                      { red: index == 2 }
+                    ]
+                  },
+                  [
+                    _vm._v(
+                      "\n\t\t\t\t\t\t" +
+                        _vm._s(_vm.$t(key) + ":") +
+                        "\n\t\t\t\t\t"
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", [
+                  _vm._v("\n\t\t\t\t\t\t" + _vm._s(value) + "\n\t\t\t\t\t")
+                ])
+              ]
+            )
+          }),
+          0
+        )
       ]),
       _vm._v(" "),
       _vm.user.info
@@ -66142,14 +66165,22 @@ var render = function() {
               key,
               index
             ) {
-              return _c("div", { staticClass: "d-flex mt-4" }, [
-                _c("div", { staticClass: "text-grey" }, [
-                  _vm._v(_vm._s(_vm.capitalize(_vm.$t(key))) + ":")
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "ml-2" }, [_vm._v(_vm._s(value))]),
-                _vm._v("\n\t\t\t\t \n\t\t\t")
-              ])
+              return _c(
+                "div",
+                {
+                  key: index,
+                  staticClass: "d-flex",
+                  class: { "mt-4": index != 0 }
+                },
+                [
+                  _c("div", { staticClass: "text-grey" }, [
+                    _vm._v(_vm._s(_vm.capitalize(_vm.$t(key))) + ":")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "ml-2" }, [_vm._v(_vm._s(value))]),
+                  _vm._v("\n\t\t\t\t \n\t\t\t")
+                ]
+              )
             }),
             0
           )
@@ -66212,15 +66243,20 @@ var render = function() {
                 {
                   key: index,
                   staticClass:
-                    "d-flex justify-content-between imageWidth align-self-center",
-                  class: [
-                    { green: index == 0 },
-                    { orange: index == 1 },
-                    { red: index == 2 }
-                  ]
+                    "d-flex justify-content-between imageWidth align-self-center"
                 },
                 [
-                  _c("div", [_vm._v(_vm._s(_vm.$t(key) + ":"))]),
+                  _c(
+                    "div",
+                    {
+                      class: [
+                        { green: index == 0 },
+                        { orange: index == 1 },
+                        { red: index == 2 }
+                      ]
+                    },
+                    [_vm._v(_vm._s(_vm.$t(key) + ":"))]
+                  ),
                   _vm._v(" "),
                   _c("div", [_vm._v(_vm._s(value))])
                 ]
