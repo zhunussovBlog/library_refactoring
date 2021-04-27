@@ -5820,6 +5820,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.$http.get('service/user/' + this.type + '/' + this.id).then(function (response) {
         _this.user = response.data.res;
+        _this.user.info = objectWithoutKey(_this.user.info, 'id');
       })["catch"](function (e) {
         _this.goTo('users');
       });
@@ -6104,6 +6105,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
       this.$http.get('service/user/' + this.info.type + '/' + this.info.id).then(function (response) {
         _this.user = response.data.res;
+        _this.user.info = objectWithoutKey(_this.user.info, 'id');
 
         _this.makeUserInfo();
       })["catch"](function (e) {});
