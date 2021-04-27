@@ -5936,7 +5936,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     selectable: function selectable() {
       var selectable = {
         available: false,
-        button_title: 'check_in'
+        button_title: 'check_in',
+        func: this.checkIn
       };
 
       if (this.state == 'issuance') {
@@ -6044,8 +6045,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         leftArray: [],
         rightArray: []
       },
-      search_results: {},
-      barcode: ''
+      barcode: '',
+      search_results: {}
     };
   },
   methods: {
@@ -6122,6 +6123,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.$http.get('service/media/search?value=' + this.barcode).then(function (response) {
         _this2.search_results = response.data.res.data;
       });
+    },
+    checkIn: function checkIn(selected) {
+      alert('wait for it. Close this alert and in console u will see all selected media');
+      console.log(selected);
     },
     ajaxRequest: function ajaxRequest() {
       var request = new XMLHttpRequest();
@@ -6421,15 +6426,13 @@ __webpack_require__.r(__webpack_exports__);
     logout: function logout() {
       var _this = this;
 
-      this.$http.defaults.baseURL = window.configs.baseURL;
-      this.$http.get('/auth/logout').then(function (response) {
+      this.$http.get('logout').then(function (response) {
         _this.$store.commit('setUser', {});
 
+        localStorage.removeItem('access_token');
         window.location.replace('/');
       })["catch"](function (error) {
         _this.message_error('logout', error);
-      }).then(function () {
-        _this.$http.defaults.baseURL = window.configs.baseURL + window.configs.api;
       });
     },
     showDropdown: function showDropdown() {

@@ -70,7 +70,8 @@ export default{
 		selectable(){
 			let selectable={
 				available:false,
-				button_title:'check_in'
+				button_title:'check_in',
+				func:this.checkIn
 			};
 			if(this.state=='issuance'){
 				selectable.available=true;
@@ -177,8 +178,8 @@ export default{
 				leftArray:[],
 				rightArray:[]
 			},
-			search_results:{},
-			barcode:''
+			barcode:'',
+			search_results:{}
 		}
 	},
 	methods:{
@@ -218,6 +219,10 @@ export default{
 			this.$http.get('service/media/search?value='+this.barcode).then(response=>{
 				this.search_results=response.data.res.data;
 			})
+		},
+		checkIn(selected){
+			alert('wait for it. Close this alert and in console u will see all selected media');
+			console.log(selected);
 		},
 		ajaxRequest() {
 			const request = new XMLHttpRequest();
