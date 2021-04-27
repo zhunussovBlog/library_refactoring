@@ -46,6 +46,7 @@
 	"apply":"Apply",
 	"showing_pages":"{from} - {to} out of {total}",
 	"page":"Page",
+	"page_num":"Page {num}",
 	"previous":"Prev",
 	"next":"Next",
 	"move_to":"Move",
@@ -190,5 +191,8 @@
 	"duration":"Duration",
 	"issuance":"Issuance",
 	"return":"Return",
-	"history":"History"
+	"history":"History",
+	"dept":"Overdue",
+	"borrowed":"Borrowed",
+	"returned":"Returned"
 }

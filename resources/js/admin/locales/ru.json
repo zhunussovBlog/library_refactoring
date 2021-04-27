@@ -46,6 +46,7 @@
 	"apply":"Подтвердить",
 	"showing_pages":"{from} - {to} из {total}",
 	"page":"Стр.",
+	"page_num":"{num} страница",
 	"previous":"Назад",
 	"next":"Вперед",
 	"move_to":"Перейти",
@@ -191,5 +192,8 @@
 	"duration":"Продолжительность",
 	"issuance":"Выдача",
 	"return":"Возврат",
-	"history":"История"
+	"history":"История",
+	"dept":"Просроченный",
+	"borrowed":"На руках",
+	"returned":"Вернули"
 }

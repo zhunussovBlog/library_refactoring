@@ -12,7 +12,7 @@
 				<div class="mt-2 text-center">{{$t(type)}}</div>
 			</div>
 			<div class="bg-lightgrey rounded-lg p-3 ml-4 flex-fill" v-if='user.info'>
-				<div class="d-flex mt-2" v-for="(value,key,index) in objectWithoutKey(user.info,'user_cid') ">
+				<div class="d-flex mt-4" v-for="(value,key,index) in objectWithoutKey(user.info,'user_cid') ">
 					<div class="text-grey">{{capitalize($t(key))}}:</div>
 					<div class="ml-2">{{value}}</div>
 					&nbsp;

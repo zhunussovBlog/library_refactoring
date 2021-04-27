@@ -17,7 +17,8 @@
 			</button>
 			<form @submit.prevent="move(move_page)" class="d-flex align-items-center ml-4">
 				<input type="text" v-model='move_page' class="left_button border-grey col-3 height-unset pl-2" :placeholder="$t('page')"/>
-				<button type="submit" class="right_button width-unset border-grey bg-grey">{{$t('move_to')}}</button>
+				<button type="submit" class="right_button width-unset border-grey bg-grey text-black">{{$t('move_to')}}</button>
+				<div class="ml-3">{{$t('page_num',{num:data.current_page})}}</div>
 			</form>
 		</div>
 	</form>

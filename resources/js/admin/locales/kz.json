@@ -46,6 +46,7 @@
 	"apply":"Растау",
 	"showing_pages":"{total} нәтиженің {from} - {to} көрсетілуде",
 	"page":"Бет",
+	"page_num":"{num} бет",
 	"previous":"Артқа",
 	"next":"Келесі",
 	"move_to":"Өту",
@@ -190,5 +191,8 @@
 	"duration":"Ұзақтығы",
 	"issuance":"Беру",
 	"return":"Қайтару",
-	"history":"Тарих"
+	"history":"Тарих",
+	"dept":"Мерзімі өткен",
+	"borrowed":"Қарызға алынған",
+	"returned":"Қайтарылған"
 }
