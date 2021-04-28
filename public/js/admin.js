@@ -5084,42 +5084,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _LineChart__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LineChart */ "./resources/js/admin/views/Reports/Attendance/LineChart.vue");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-// attendance components
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  components: {
-    LineChart: _LineChart__WEBPACK_IMPORTED_MODULE_0__.default
-  }
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Reports/Attendance/LineChart.vue?vue&type=script&lang=js&":
-/*!************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Reports/Attendance/LineChart.vue?vue&type=script&lang=js& ***!
-  \************************************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 /* harmony import */ var _components_common_Tabs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../components/common/Tabs */ "./resources/js/admin/components/common/Tabs.vue");
 /* harmony import */ var _components_common_Dropdown__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../components/common/Dropdown */ "./resources/js/admin/components/common/Dropdown.vue");
 /* harmony import */ var _plugins_charts_Line__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../plugins/charts/Line */ "./resources/js/admin/plugins/charts/Line.js");
-/* harmony import */ var _plugins_charts_Pie__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../plugins/charts/Pie */ "./resources/js/admin/plugins/charts/Pie.js");
-/* harmony import */ var _mixins_charts__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../mixins/charts */ "./resources/js/admin/mixins/charts.js");
+/* harmony import */ var _mixins_charts__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../mixins/charts */ "./resources/js/admin/mixins/charts.js");
+//
+//
+//
 //
 //
 //
@@ -5148,23 +5119,22 @@ __webpack_require__.r(__webpack_exports__);
 
  // plugins / charts
 
-
  // mixins
 
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  mixins: [_mixins_charts__WEBPACK_IMPORTED_MODULE_3__.default, _mixins_charts__WEBPACK_IMPORTED_MODULE_3__.lineOptions],
+  components: {
+    Tabs: _components_common_Tabs__WEBPACK_IMPORTED_MODULE_0__.default,
+    LineChart: _plugins_charts_Line__WEBPACK_IMPORTED_MODULE_2__.default,
+    Dropdown: _components_common_Dropdown__WEBPACK_IMPORTED_MODULE_1__.default
+  },
   watch: {
     data: function data(newValue, oldValue) {
       this.setData();
       this.data = newValue;
     }
-  },
-  mixins: [_mixins_charts__WEBPACK_IMPORTED_MODULE_4__.default, _mixins_charts__WEBPACK_IMPORTED_MODULE_4__.lineOptions],
-  components: {
-    Tabs: _components_common_Tabs__WEBPACK_IMPORTED_MODULE_0__.default,
-    LineChart: _plugins_charts_Line__WEBPACK_IMPORTED_MODULE_2__.default,
-    Dropdown: _components_common_Dropdown__WEBPACK_IMPORTED_MODULE_1__.default
   },
   computed: {
     studentsNumber: function studentsNumber() {
@@ -6112,8 +6082,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     getInfo: function getInfo() {
       var _this = this;
 
-      // +this.info.type+'/'+this.info.id
-      this.$http.get('service/user/student/202105001').then(function (response) {
+      this.$http.get('service/user/' + this.info.type + '/' + this.info.id).then(function (response) {
         _this.user = response.data.res;
         _this.user.info = objectWithoutKey(_this.user.info, 'id');
 
@@ -7427,48 +7396,6 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     render: function render() {
       this.renderChart(this.data, this.options);
-    }
-  },
-  watch: {
-    data: function data() {
-      this.render();
-    }
-  },
-  mounted: function mounted() {
-    this.render();
-  }
-});
-
-/***/ }),
-
-/***/ "./resources/js/admin/plugins/charts/Pie.js":
-/*!**************************************************!*\
-  !*** ./resources/js/admin/plugins/charts/Pie.js ***!
-  \**************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var vue_chartjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-chartjs */ "./node_modules/vue-chartjs/es/index.js");
-/* harmony import */ var chartjs_plugin_labels__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! chartjs-plugin-labels */ "./node_modules/chartjs-plugin-labels/src/chartjs-plugin-labels.js");
-/* harmony import */ var chartjs_plugin_labels__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(chartjs_plugin_labels__WEBPACK_IMPORTED_MODULE_1__);
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  "extends": vue_chartjs__WEBPACK_IMPORTED_MODULE_0__.Pie,
-  props: ["data", "options"],
-  methods: {
-    render: function render() {
-      this.renderChart(this.data, Object.assign({}, {
-        plugins: {
-          datalabels: {
-            display: false
-          }
-        }
-      }, this.options));
     }
   },
   watch: {
@@ -25576,506 +25503,6 @@ Chart.plugins.register(plugin);
 return plugin;
 
 }));
-
-
-/***/ }),
-
-/***/ "./node_modules/chartjs-plugin-labels/src/chartjs-plugin-labels.js":
-/*!*************************************************************************!*\
-  !*** ./node_modules/chartjs-plugin-labels/src/chartjs-plugin-labels.js ***!
-  \*************************************************************************/
-/***/ (() => {
-
-/**
- * [chartjs-plugin-labels]{@link https://github.com/emn178/chartjs-plugin-labels}
- *
- * @version 1.1.0
- * @author Chen, Yi-Cyuan [emn178@gmail.com]
- * @copyright Chen, Yi-Cyuan 2017-2018
- * @license MIT
- */
-(function () {
-  'use strict';
-
-  if (typeof Chart === 'undefined') {
-    console.error('Can not find Chart object.');
-    return;
-  }
-
-  if (typeof Object.assign != 'function') {
-    Object.assign = function (target, varArgs) {
-      if (target == null) {
-        throw new TypeError('Cannot convert undefined or null to object');
-      }
-      var to = Object(target);
-      for (var index = 1; index < arguments.length; index++) {
-        var nextSource = arguments[index];
-        if (nextSource != null) {
-          for (var nextKey in nextSource) {
-            if (Object.prototype.hasOwnProperty.call(nextSource, nextKey)) {
-              to[nextKey] = nextSource[nextKey];
-            }
-          }
-        }
-      }
-      return to;
-    };
-  }
-
-  var SUPPORTED_TYPES = {};
-  ['pie', 'doughnut', 'polarArea', 'bar'].forEach(function (t) {
-    SUPPORTED_TYPES[t] = true;
-  });
-
-  function Label() {
-    this.renderToDataset = this.renderToDataset.bind(this);
-  }
-
-  Label.prototype.setup = function (chart, options) {
-    this.chart = chart;
-    this.ctx = chart.ctx;
-    this.args = {};
-    this.barTotal = {};
-    var chartOptions = chart.config.options;
-    this.options = Object.assign({
-      position: 'default',
-      precision: 0,
-      fontSize: chartOptions.defaultFontSize,
-      fontColor: chartOptions.defaultFontColor,
-      fontStyle: chartOptions.defaultFontStyle,
-      fontFamily: chartOptions.defaultFontFamily,
-      shadowOffsetX: 3,
-      shadowOffsetY: 3,
-      shadowColor: 'rgba(0,0,0,0.3)',
-      shadowBlur: 6,
-      images: [],
-      outsidePadding: 2,
-      textMargin: 2,
-      overlap: true
-    }, options);
-    if (chart.config.type === 'bar') {
-      this.options.position = 'default';
-      this.options.arc = false;
-      this.options.overlap = true;
-    }
-  };
-
-  Label.prototype.render = function () {
-    this.labelBounds = [];
-    this.chart.data.datasets.forEach(this.renderToDataset);
-  };
-
-  Label.prototype.renderToDataset = function (dataset, index) {
-    this.totalPercentage = 0;
-    this.total = null;
-    var arg = this.args[index];
-    arg.meta.data.forEach(function (element, index) {
-      this.renderToElement(dataset, arg, element, index);
-    }.bind(this));
-  };
-
-  Label.prototype.renderToElement = function (dataset, arg, element, index) {
-    if (!this.shouldRenderToElement(arg.meta, element)) {
-      return;
-    }
-    this.percentage = null;
-    var label = this.getLabel(dataset, element, index);
-    if (!label) {
-      return;
-    }
-    var ctx = this.ctx;
-    ctx.save();
-    ctx.font = Chart.helpers.fontString(this.options.fontSize, this.options.fontStyle, this.options.fontFamily);
-    var renderInfo = this.getRenderInfo(element, label);
-    if (!this.drawable(element, label, renderInfo)) {
-      ctx.restore();
-      return;
-    }
-    ctx.beginPath();
-    ctx.fillStyle = this.getFontColor(dataset, element, index);
-    this.renderLabel(label, renderInfo);
-    ctx.restore();
-  };
-
-  Label.prototype.renderLabel = function (label, renderInfo) {
-    return this.options.arc ? this.renderArcLabel(label, renderInfo) : this.renderBaseLabel(label, renderInfo);
-  };
-
-  Label.prototype.renderBaseLabel = function (label, position) {
-    var ctx = this.ctx;
-    if (typeof label === 'object') {
-      ctx.drawImage(label, position.x - label.width / 2, position.y - label.height / 2, label.width, label.height);
-    } else {
-      ctx.save();
-      ctx.textBaseline = 'top';
-      ctx.textAlign = 'center';
-
-      if (this.options.textShadow) {
-        ctx.shadowOffsetX = this.options.shadowOffsetX;
-        ctx.shadowOffsetY = this.options.shadowOffsetY;
-        ctx.shadowColor = this.options.shadowColor;
-        ctx.shadowBlur = this.options.shadowBlur;
-      }
-
-      var lines = label.split('\n');
-      for (var i = 0; i < lines.length; i++) {
-        var y = position.y - this.options.fontSize / 2 * lines.length + this.options.fontSize * i;
-        ctx.fillText(lines[i], position.x, y);
-      }
-      ctx.restore();
-    }
-  };
-
-  Label.prototype.renderArcLabel = function (label, renderInfo) {
-    var ctx = this.ctx, radius = renderInfo.radius, view = renderInfo.view;
-    ctx.save();
-    ctx.translate(view.x, view.y);
-    if (typeof label === 'string') {
-      ctx.rotate(renderInfo.startAngle);
-      ctx.textBaseline = 'middle';
-      ctx.textAlign = 'left';
-      var lines = label.split('\n'), max = 0, widths = [], offset = 0;
-      if (this.options.position === 'border') {
-        offset = (lines.length - 1) * this.options.fontSize / 2;
-      }
-      for (var j = 0; j < lines.length; ++j) {
-        var mertrics = ctx.measureText(lines[j]);
-        if (mertrics.width > max) {
-          max = mertrics.width;
-        }
-        widths.push(mertrics.width);
-      }
-      for (var j = 0; j < lines.length; ++j) {
-        var line = lines[j];
-        var y = (lines.length - 1 - j) * -this.options.fontSize + offset;
-        ctx.save();
-        var padding = (max - widths[j]) / 2;
-        ctx.rotate(padding / radius);
-        for (var i = 0; i < line.length; i++) {
-          var char = line.charAt(i);
-          mertrics = ctx.measureText(char);
-          ctx.save();
-          ctx.translate(0, -1 * radius);
-          ctx.fillText(char, 0, y);
-          ctx.restore();
-          ctx.rotate(mertrics.width / radius);
-        }
-        ctx.restore();
-      }
-    } else {
-      ctx.rotate((view.startAngle + Math.PI / 2 + renderInfo.endAngle) / 2);
-      ctx.translate(0, -1 * radius);
-      this.renderLabel(label, { x: 0, y: 0 });
-    }
-    ctx.restore();
-  };
-
-  Label.prototype.shouldRenderToElement = function (meta, element) {
-    return !meta.hidden && !element.hidden && (
-      this.options.showZero ||
-      this.chart.config.type === 'polarArea' ? element._view.outerRadius !== 0 : element._view.circumference !== 0
-    );
-  };
-
-  Label.prototype.getLabel = function (dataset, element, index) {
-    var label;
-    if (typeof this.options.render === 'function') {
-      label = this.options.render({
-        label: this.chart.config.data.labels[index],
-        value: dataset.data[index],
-        percentage: this.getPercentage(dataset, element, index),
-        dataset: dataset,
-        index: index
-      });
-    } else {
-      switch (this.options.render) {
-        case 'value':
-          label = dataset.data[index];
-          break;
-        case 'label':
-          label = this.chart.config.data.labels[index];
-          break;
-        case 'image':
-          label = this.options.images[index] ? this.loadImage(this.options.images[index]) : '';
-          break;
-        case 'percentage':
-        default:
-          label = this.getPercentage(dataset, element, index) + '%';
-          break;
-      }
-    }
-    if (typeof label === 'object') {
-      label = this.loadImage(label);
-    } else if (label !== null && label !== undefined) {
-      label = label.toString();
-    }
-    return label;
-  };
-
-  Label.prototype.getFontColor = function (dataset, element, index) {
-    var fontColor = this.options.fontColor;
-    if (typeof fontColor === 'function') {
-      fontColor = fontColor({
-        label: this.chart.config.data.labels[index],
-        value: dataset.data[index],
-        percentage: this.getPercentage(dataset, element, index),
-        backgroundColor: dataset.backgroundColor[index],
-        dataset: dataset,
-        index: index
-      });
-    } else if (typeof fontColor !== 'string') {
-      fontColor = fontColor[index] || this.chart.config.options.defaultFontColor;
-    }
-    return fontColor;
-  };
-
-  Label.prototype.getPercentage = function (dataset, element, index) {
-    if (this.percentage !== null) {
-      return this.percentage;
-    }
-    var percentage;
-    if (this.chart.config.type === 'polarArea') {
-      if (this.total === null) {
-        this.total = 0;
-        for (var i = 0;i < dataset.data.length; ++i) {
-          this.total += dataset.data[i];
-        }
-      }
-      percentage = dataset.data[index] / this.total * 100;
-    } else if (this.chart.config.type === 'bar') {
-      if (this.barTotal[index] === undefined) {
-        this.barTotal[index] = 0;
-        for (var i = 0;i < this.chart.data.datasets.length; ++i) {
-          this.barTotal[index] += this.chart.data.datasets[i].data[index];
-        }
-      }
-      percentage = dataset.data[index] / this.barTotal[index] * 100;
-    } else {
-      percentage = element._view.circumference / this.chart.config.options.circumference * 100;
-    }
-    percentage = parseFloat(percentage.toFixed(this.options.precision));
-    if (!this.options.showActualPercentages) {
-      if (this.chart.config.type === 'bar') {
-        this.totalPercentage = this.barTotalPercentage[index] || 0;
-      }
-      this.totalPercentage += percentage;
-      if (this.totalPercentage > 100) {
-        percentage -= this.totalPercentage - 100;
-        percentage = parseFloat(percentage.toFixed(this.options.precision));
-      }
-      if (this.chart.config.type === 'bar') {
-        this.barTotalPercentage[index] = this.totalPercentage
-      }
-    }
-    this.percentage = percentage;
-    return percentage;
-  };
-
-  Label.prototype.getRenderInfo = function (element, label) {
-    if (this.chart.config.type === 'bar') {
-      return this.getBarRenderInfo(element, label);
-    } else {
-      return this.options.arc ? this.getArcRenderInfo(element, label) : this.getBaseRenderInfo(element, label);
-    }
-  };
-
-  Label.prototype.getBaseRenderInfo = function (element, label) {
-    if (this.options.position === 'outside' || this.options.position === 'border') {
-      var renderInfo, rangeFromCentre,
-        view = element._view,
-        centreAngle = view.startAngle + (view.endAngle - view.startAngle) / 2,
-        innerRadius = view.outerRadius / 2;
-      if (this.options.position === 'border') {
-        rangeFromCentre = (view.outerRadius - innerRadius) / 2 + innerRadius;
-      } else if (this.options.position === 'outside') {
-        rangeFromCentre = (view.outerRadius - innerRadius) + innerRadius + this.options.textMargin;
-      }
-      renderInfo = {
-        x: view.x + (Math.cos(centreAngle) * rangeFromCentre),
-        y: view.y + (Math.sin(centreAngle) * rangeFromCentre)
-      };
-      if (this.options.position === 'outside') {
-        var offset = this.options.textMargin + this.measureLabel(label).width / 2;
-        renderInfo.x += renderInfo.x < view.x ? -offset : offset;
-      }
-      return renderInfo;
-    } else {
-      return element.tooltipPosition();
-    }
-  };
-
-  Label.prototype.getArcRenderInfo = function (element, label) {
-    var radius, view = element._view;
-    if (this.options.position === 'outside') {
-      radius = view.outerRadius + this.options.fontSize + this.options.textMargin;
-    } else if (this.options.position === 'border') {
-      radius = (view.outerRadius / 2 + view.outerRadius) / 2;
-    } else {
-      radius = (view.innerRadius + view.outerRadius) / 2;
-    }
-    var startAngle = view.startAngle, endAngle = view.endAngle;
-    var totalAngle = endAngle - startAngle;
-    startAngle += Math.PI / 2;
-    endAngle += Math.PI / 2;
-    var mertrics = this.measureLabel(label);
-    startAngle += (endAngle - (mertrics.width / radius + startAngle)) / 2;
-    return {
-      radius: radius,
-      startAngle: startAngle,
-      endAngle: endAngle,
-      totalAngle: totalAngle,
-      view: view
-    }
-  };
-
-  Label.prototype.getBarRenderInfo = function (element, label) {
-    var renderInfo = element.tooltipPosition();
-    renderInfo.y -= this.measureLabel(label).height / 2 + this.options.textMargin;
-    return renderInfo;
-  };
-
-  Label.prototype.drawable = function (element, label, renderInfo) {
-    if (this.options.overlap) {
-      return true;
-    } else if (this.options.arc) {
-      return renderInfo.endAngle - renderInfo.startAngle <= renderInfo.totalAngle;
-    } else {
-      var mertrics = this.measureLabel(label),
-        left = renderInfo.x - mertrics.width / 2,
-        right = renderInfo.x + mertrics.width / 2,
-        top = renderInfo.y - mertrics.height / 2,
-        bottom = renderInfo.y + mertrics.height / 2;
-      if (this.options.renderInfo === 'outside') {
-        return this.outsideInRange(left, right, top, bottom);
-      } else {
-        return element.inRange(left, top) && element.inRange(left, bottom) &&
-          element.inRange(right, top) && element.inRange(right, bottom);
-      }
-    }
-  };
-
-  Label.prototype.outsideInRange = function (left, right, top, bottom) {
-    var labelBounds = this.labelBounds;
-    for (var i = 0;i < labelBounds.length;++i) {
-      var bound = labelBounds[i];
-      var potins = [
-        [left, top],
-        [left, bottom],
-        [right, top],
-        [right, bottom]
-      ];
-      for (var j = 0;j < potins.length;++j) {
-        var x = potins[j][0];
-        var y = potins[j][1];
-        if (x >= bound.left && x <= bound.right && y >= bound.top && y <= bound.bottom) {
-          return false;
-        }
-      }
-      potins = [
-        [bound.left, bound.top],
-        [bound.left, bound.bottom],
-        [bound.right, bound.top],
-        [bound.right, bound.bottom]
-      ];
-      for (var j = 0;j < potins.length;++j) {
-        var x = potins[j][0];
-        var y = potins[j][1];
-        if (x >= left && x <= right && y >= top && y <= bottom) {
-          return false;
-        }
-      }
-    }
-    labelBounds.push({
-      left: left,
-      right: right,
-      top: top,
-      bottom: bottom
-    });
-    return true;
-  };
-
-  Label.prototype.measureLabel = function (label) {
-    if (typeof label === 'object') {
-      return { width: label.width, height: label.height };
-    } else {
-      var width = 0;
-      var lines = label.split('\n');
-      for (var i = 0; i < lines.length; ++i) {
-        var result = this.ctx.measureText(lines[i]);
-        if (result.width > width) {
-          width = result.width;
-        }
-      }
-      return { width: width, height: this.options.fontSize * lines.length };
-    }
-  };
-
-  Label.prototype.loadImage = function (obj) {
-    var image = new Image();
-    image.src = obj.src;
-    image.width = obj.width;
-    image.height = obj.height;
-    return image;
-  };
-
-  Chart.plugins.register({
-    id: 'labels',
-    beforeDatasetsUpdate: function (chart, options) {
-      if (!SUPPORTED_TYPES[chart.config.type]) {
-        return;
-      }
-      if (!Array.isArray(options)) {
-        options = [options];
-      }
-      var count = options.length;
-      if (!chart._labels || count !== chart._labels.length) {
-        chart._labels = options.map(function () {
-          return new Label();
-        });
-      }
-      var someOutside = false, maxPadding = 0;
-      for (var i = 0; i < count; ++i) {
-        var label = chart._labels[i];
-        label.setup(chart, options[i]);
-        if (label.options.position === 'outside') {
-          someOutside = true;
-          var padding = label.options.fontSize * 1.5 + label.options.outsidePadding;
-          if (padding > maxPadding) {
-            maxPadding = padding;
-          }
-        }
-      }
-      if (someOutside) {
-        chart.chartArea.top += maxPadding;
-        chart.chartArea.bottom -= maxPadding;
-      }
-    },
-    afterDatasetUpdate: function (chart, args, options) {
-      if (!SUPPORTED_TYPES[chart.config.type]) {
-        return;
-      }
-      chart._labels.forEach(function (label) {
-        label.args[args.index] = args;
-      });
-    },
-    beforeDraw: function (chart) {
-      if (!SUPPORTED_TYPES[chart.config.type]) {
-        return;
-      }
-      chart._labels.forEach(function (label) {
-        label.barTotalPercentage = {};
-      });
-    },
-    afterDatasetsDraw: function (chart) {
-      if (!SUPPORTED_TYPES[chart.config.type]) {
-        return;
-      }
-      chart._labels.forEach(function (label) {
-        label.render();
-      });
-    }
-  });
-})();
 
 
 /***/ }),
@@ -57384,45 +56811,6 @@ component.options.__file = "resources/js/admin/views/Reports/Attendance/Attendan
 
 /***/ }),
 
-/***/ "./resources/js/admin/views/Reports/Attendance/LineChart.vue":
-/*!*******************************************************************!*\
-  !*** ./resources/js/admin/views/Reports/Attendance/LineChart.vue ***!
-  \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _LineChart_vue_vue_type_template_id_07372dd3___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LineChart.vue?vue&type=template&id=07372dd3& */ "./resources/js/admin/views/Reports/Attendance/LineChart.vue?vue&type=template&id=07372dd3&");
-/* harmony import */ var _LineChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LineChart.vue?vue&type=script&lang=js& */ "./resources/js/admin/views/Reports/Attendance/LineChart.vue?vue&type=script&lang=js&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-;
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
-  _LineChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
-  _LineChart_vue_vue_type_template_id_07372dd3___WEBPACK_IMPORTED_MODULE_0__.render,
-  _LineChart_vue_vue_type_template_id_07372dd3___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/admin/views/Reports/Attendance/LineChart.vue"
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
-
-/***/ }),
-
 /***/ "./resources/js/admin/views/Reports/BooksHistory/Books.vue":
 /*!*****************************************************************!*\
   !*** ./resources/js/admin/views/Reports/BooksHistory/Books.vue ***!
@@ -58231,22 +57619,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Attendance_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Attendance.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Reports/Attendance/Attendance.vue?vue&type=script&lang=js&");
  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Attendance_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
-
-/***/ }),
-
-/***/ "./resources/js/admin/views/Reports/Attendance/LineChart.vue?vue&type=script&lang=js&":
-/*!********************************************************************************************!*\
-  !*** ./resources/js/admin/views/Reports/Attendance/LineChart.vue?vue&type=script&lang=js& ***!
-  \********************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LineChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./LineChart.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Reports/Attendance/LineChart.vue?vue&type=script&lang=js&");
- /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LineChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
 
 /***/ }),
 
@@ -59497,23 +58869,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Attendance_vue_vue_type_template_id_62815730___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Attendance_vue_vue_type_template_id_62815730___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Attendance.vue?vue&type=template&id=62815730& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Reports/Attendance/Attendance.vue?vue&type=template&id=62815730&");
-
-
-/***/ }),
-
-/***/ "./resources/js/admin/views/Reports/Attendance/LineChart.vue?vue&type=template&id=07372dd3&":
-/*!**************************************************************************************************!*\
-  !*** ./resources/js/admin/views/Reports/Attendance/LineChart.vue?vue&type=template&id=07372dd3& ***!
-  \**************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LineChart_vue_vue_type_template_id_07372dd3___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LineChart_vue_vue_type_template_id_07372dd3___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
-/* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LineChart_vue_vue_type_template_id_07372dd3___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./LineChart.vue?vue&type=template&id=07372dd3& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Reports/Attendance/LineChart.vue?vue&type=template&id=07372dd3&");
 
 
 /***/ }),
@@ -65386,98 +64741,76 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("div", { staticClass: "d-flex" }, [
+  return _c("div", { staticClass: "d-flex" }, [
+    _c("div", { staticClass: "m-2 bg-white rounded-lg w-100 p-4" }, [
       _c(
         "div",
-        { staticClass: "m-2 bg-white rounded-lg w-100 p-4" },
-        [_c("line-chart")],
-        1
-      )
-    ])
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Reports/Attendance/LineChart.vue?vue&type=template&id=07372dd3&":
-/*!*****************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Reports/Attendance/LineChart.vue?vue&type=template&id=07372dd3& ***!
-  \*****************************************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* binding */ render),
-/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
-/* harmony export */ });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "w-100" }, [
-    _c(
-      "div",
-      { staticClass: "d-flex align-items-center justify-content-between" },
-      [
-        _c("div", { staticClass: "font-weight-bold font-size-18" }, [
-          _vm._v(_vm._s(_vm.$t("attendance_statistics")))
-        ])
-      ]
-    ),
-    _vm._v(" "),
-    _c("div", { staticClass: "d-flex mt-1" }, [
-      _c(
-        "div",
-        { staticClass: "flex-fill" },
+        { staticClass: "d-flex align-items-center justify-content-between" },
         [
-          _c("line-chart", {
-            attrs: { data: _vm.data, options: _vm.withOptions(_vm.lineOptions) }
-          })
-        ],
-        1
+          _c("div", { staticClass: "font-weight-bold font-size-18" }, [
+            _vm._v(_vm._s(_vm.$t("attendance_statistics")))
+          ])
+        ]
       ),
       _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "col-2 ml-2" },
-        [
-          _c("dropdown", {
-            attrs: {
-              dropdownClasses: "dropdown-left w-100",
-              titleClasses:
-                "border rounded-lg border-black p-2 d-flex justify-content-center no-hover-color",
-              title: _vm.$t("show_for_" + (_vm.weekly ? "week" : "month")),
-              items: _vm.dropdownItems,
-              itemOnClick: _vm.dropdownItemOnClick
-            }
-          }),
-          _vm._v(" "),
-          _c("div", { staticClass: "font-weight-bold mt-4" }, [
-            _vm._v(
-              _vm._s(_vm.$t("in_lib_by_" + (_vm.weekly ? "week" : "month")))
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "d-flex justify-content-between mt-3" }, [
-            _c("span", [_vm._v(_vm._s(_vm.$t("student")) + ": ")]),
+      _c("div", { staticClass: "d-flex mt-1" }, [
+        _c(
+          "div",
+          { staticClass: "flex-fill" },
+          [
+            _c("line-chart", {
+              attrs: {
+                data: _vm.data,
+                options: _vm.withOptions(_vm.lineOptions)
+              }
+            })
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "col-2 ml-2" },
+          [
+            _c("dropdown", {
+              attrs: {
+                dropdownClasses: "dropdown-left w-100",
+                titleClasses:
+                  "border rounded-lg border-black p-2 d-flex justify-content-center no-hover-color",
+                title: _vm.$t("show_for_" + (_vm.weekly ? "week" : "month")),
+                items: _vm.dropdownItems,
+                itemOnClick: _vm.dropdownItemOnClick
+              }
+            }),
             _vm._v(" "),
-            _c("span", [_vm._v(_vm._s(_vm.studentsNumber))])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "d-flex justify-content-between mt-3" }, [
-            _c("span", [_vm._v(_vm._s(_vm.$t("employee")) + ": ")]),
+            _c("div", { staticClass: "font-weight-bold mt-4" }, [
+              _vm._v(
+                _vm._s(_vm.$t("in_lib_by_" + (_vm.weekly ? "week" : "month")))
+              )
+            ]),
             _vm._v(" "),
-            _c("span", [_vm._v(_vm._s(_vm.stuffNumber))])
-          ])
-        ],
-        1
-      )
+            _c("div", { staticClass: "d-flex justify-content-between mt-3" }, [
+              _c("span", [_vm._v(_vm._s(_vm.$t("student")) + ": ")]),
+              _vm._v(" "),
+              _c("span", [_vm._v(_vm._s(_vm.studentsNumber))])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "d-flex justify-content-between mt-3" }, [
+              _c("span", [_vm._v(_vm._s(_vm.$t("employee")) + ": ")]),
+              _vm._v(" "),
+              _c("span", [_vm._v(_vm._s(_vm.stuffNumber))])
+            ]),
+            _vm._v(" "),
+            _c("pie-chart", {
+              attrs: {
+                data: _vm.pieData,
+                options: _vm.withOptions(_vm.pieOptions)
+              }
+            })
+          ],
+          1
+        )
+      ])
     ])
   ])
 }
@@ -83745,7 +83078,7 @@ var index = {
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse("{\"ok\":\"OK\",\"acquisitions\":\"Acquisitions\",\"batches\":\"Batch | Batches\",\"items\":\"Item | Items\",\"publishers\":\"Publisher | Publishers\",\"suppliers\":\"Supplier | Suppliers\",\"table\":\"Table\",\"logout\":\"Logout\",\"search\":\"Search\",\"searching\":\"Search\",\"reset\":\"Reset\",\"load_all\":\"Load all data\",\"create\":\"Create\",\"count\":\"Count\",\"save\":\"Save\",\"cancel\":\"Cancel\",\"cost\":\"Cost\",\"from\":\"From\",\"until\":\"Until\",\"not_found\":\"No data found\",\"create_date\":\"Form fill date\",\"edit_date\":\"Form edit date\",\"results\":\"Results\",\"results_of\":\"results\",\"yes\":\"Yes\",\"no\":\"No\",\"edit\":\"Edit\",\"delete\":\"Delete\",\"show_more\":\"Details\",\"more\":\"More ...\",\"confirmation\":\"Are you sure you want to delete?\",\"sort_by\":\"Sort by\",\"search_by\":\"Search by {type}\",\"author_by\":\"author\",\"title_by\":\"title\",\"barcode_by\":\"barcode\",\"batch_id_by\":\"batch number\",\"id_by\":\"inventory number\",\"isbn_by\":\"isbn\",\"and\":\"And\",\"or\":\"Or\",\"not\":\"Not\",\"per_page\":\"Results per page\",\"apply\":\"Apply\",\"showing_pages\":\"{from} - {to} out of {total}\",\"page\":\"Page\",\"page_num\":\"Page {num}\",\"previous\":\"Prev\",\"next\":\"Next\",\"move_to\":\"Move\",\"asc\":\"Ascending\",\"desc\":\"Descending\",\"refresh\":\"Refresh\",\"choose\":\"Choose\",\"choose_search_mode\":\"Choose search mode\",\"save_&_search\":\"Save and search\",\"error\":\"Error !\",\"batch_filter\":\"Batches filter\",\"item_filter\":\"Items filter\",\"search_batches\":\"Search batches\",\"search_items\":\"Search items\",\"search_barcodes\":\"Search barcodes\",\"batches_number\":\"Batch number\",\"batches_by\":\"batch number\",\"add_batch\":\"Add batch\",\"add_item\":\"Add item\",\"create_batches\":\"Create batch\",\"create_items\":\"Create item\",\"create_supplier\":\"Create supplier\",\"create_publisher\":\"Create publisher\",\"edit_batches\":\"Edit batch\",\"edit_items\":\"Edit item\",\"edit_supplier\":\"Edit supplier\",\"edit_publisher\":\"Edit publisher\",\"recreate\":\"Re-create\",\"reCreate_items\":\"Re-create item\",\"type_of_supply\":\"Type of supply\",\"type_of_item\":\"Type of item\",\"quantity_items\":\"Quantity of items\",\"quantity_titles\":\"Quantity of titles\",\"document_number\":\"Document number\",\"contract_number\":\"Contract number\",\"inventory_number\":\"Inventory number\",\"inv_id\":\"Inventory number\",\"types\":\"Types\",\"filled_in\":\"Filled in\",\"made_actually\":\"Made acutally\",\"correct\":\"Correct\",\"titles_no_match\":\"The number of titles does not match\",\"items_no_match\":\"The number of items does not match\",\"add_input\":\"Add input +\",\"status\":\"Status\",\"invoice_date\":\"Invoice date\",\"by_contract\":\"By contract\",\"invoice_details\":\"Invoice details\",\"barcode\":\"Barcode\",\"isbn\":\"ISBN\",\"created_by\":\"Form filled by\",\"edited_by\":\"Form edited by\",\"titles\":\"Title | Titles\",\"title\":\"Title\",\"author\":\"Author\",\"year\":\"Year\",\"pub_year\":\"Publisher year\",\"pub_city\":\"Publisher city\",\"location\":\"Location\",\"fill_date\":\"Form fill date\",\"beginning\":\"Start\",\"end\":\"End\",\"currency\":\"Currency\",\"author-title\":\"Author - title\",\"name\":\"Name\",\"name_by\":\"name\",\"commercial_name\":\"Commercial name\",\"bin\":\"BIN / IIN\",\"contact\":\"Contacts\",\"address\":\"Address\",\"email\":\"E-mail\",\"phone\":\"Phone number\",\"fax\":\"Fax\",\"service_desk\":\"Service desk\",\"users\":\"Users\",\"books\":\"Books history\",\"search_user\":\"Search user\",\"type\":\"Type\",\"student\":\"Student\",\"employee\":\"Staff\",\"all\":\"All\",\"username\":\"Username\",\"user_id\":\"User ID\",\"user_id_user\":\"User ID (or name || surname)\",\"username_user\":\"Username (or name || surname)\",\"surname\":\"Surname\",\"section\":\"Section\",\"serve\":\"Book issuance\",\"check_in\":\"Check in\",\"search_material\":\"Search material\",\"user_info\":\"User information\",\"full_name\":\"Full name\",\"degree\":\"Degree\",\"class\":\"Year\",\"faculty\":\"Faculty\",\"program\":\"Program\",\"id\":\"ID\",\"mobile\":\"Phone number\",\"more_info\":\"More details\",\"select_all\":\"Select all ( {num} selected )\",\"delivery_date\":\"Delivery date\",\"due_date\":\"Due date\",\"issue_date\":\"Issue date\",\"borrow_date\":\"Borrow date\",\"last_user_borrowed\":\"Last user\",\"give_material\":\"Give material\",\"hesab_id\":\"Batch ID\",\"batch_id\":\"Batch Id\",\"items_no\":\"Quantity of items\",\"titles_no\":\"Quantity of titles\",\"receive_date\":\"Form fill date\",\"supplier_id\":\"Supplier ID\",\"supplier_name\":\"Supplier name\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"Publisher ID\",\"com_name\":\"Commercial name\",\"reports\":\"Reports\",\"attendance\":\"Attendance\",\"mrbooks\":\"Most read books\",\"attendance_statistics\":\"Virtual attendance statistics\",\"show_for_week\":\"Show for week\",\"show_for_month\":\"Show for month\",\"in_lib_by_week\":\"In library by week\",\"in_lib_by_month\":\"In library by month\",\"print\":\"Print barcode\",\"language\":\"Language\",\"duration\":\"Duration\",\"issuance\":\"Issuance\",\"return\":\"Return\",\"history\":\"History\",\"dept\":\"Overdue\",\"borrowed\":\"Borrowed\",\"returned\":\"Returned\"}");
+module.exports = JSON.parse("{\"ok\":\"OK\",\"acquisitions\":\"Acquisitions\",\"batches\":\"Batch | Batches\",\"items\":\"Item | Items\",\"publishers\":\"Publisher | Publishers\",\"suppliers\":\"Supplier | Suppliers\",\"table\":\"Table\",\"logout\":\"Logout\",\"search\":\"Search\",\"searching\":\"Search\",\"reset\":\"Reset\",\"load_all\":\"Load all data\",\"count\":\"Count\",\"save\":\"Save\",\"cancel\":\"Cancel\",\"cost\":\"Cost\",\"from\":\"From\",\"until\":\"Until\",\"not_found\":\"No data found\",\"create_date\":\"Form fill date\",\"edit_date\":\"Form edit date\",\"results\":\"Results\",\"results_of\":\"results\",\"yes\":\"Yes\",\"no\":\"No\",\"edit\":\"Edit\",\"delete\":\"Delete\",\"create\":\"Create\",\"show_more\":\"Details\",\"more\":\"More ...\",\"confirmation\":\"Are you sure you want to delete?\",\"sort_by\":\"Sort by\",\"search_by\":\"Search by {type}\",\"author_by\":\"author\",\"title_by\":\"title\",\"barcode_by\":\"barcode\",\"batch_id_by\":\"batch number\",\"id_by\":\"inventory number\",\"isbn_by\":\"isbn\",\"and\":\"And\",\"or\":\"Or\",\"not\":\"Not\",\"per_page\":\"Results per page\",\"apply\":\"Apply\",\"showing_pages\":\"{from} - {to} out of {total}\",\"page\":\"Page\",\"page_num\":\"Page {num}\",\"previous\":\"Prev\",\"next\":\"Next\",\"move_to\":\"Move\",\"asc\":\"Ascending\",\"desc\":\"Descending\",\"refresh\":\"Refresh\",\"choose\":\"Choose\",\"choose_search_mode\":\"Choose search mode\",\"save_&_search\":\"Save and search\",\"error\":\"Error !\",\"batch_filter\":\"Batches filter\",\"item_filter\":\"Items filter\",\"search_batches\":\"Search batches\",\"search_items\":\"Search items\",\"search_barcodes\":\"Search barcodes\",\"batches_number\":\"Batch number\",\"batches_by\":\"batch number\",\"add_batch\":\"Add batch\",\"add_item\":\"Add item\",\"create_batches\":\"Create batch\",\"create_items\":\"Create item\",\"create_supplier\":\"Create supplier\",\"create_publisher\":\"Create publisher\",\"edit_batches\":\"Edit batch\",\"edit_items\":\"Edit item\",\"edit_supplier\":\"Edit supplier\",\"edit_publisher\":\"Edit publisher\",\"recreate\":\"Re-create\",\"reCreate_items\":\"Re-create item\",\"type_of_supply\":\"Type of supply\",\"type_of_item\":\"Type of item\",\"quantity_items\":\"Quantity of items\",\"quantity_titles\":\"Quantity of titles\",\"document_number\":\"Document number\",\"contract_number\":\"Contract number\",\"inventory_number\":\"Inventory number\",\"inv_id\":\"Inventory number\",\"types\":\"Types\",\"filled_in\":\"Filled in\",\"made_actually\":\"Made acutally\",\"correct\":\"Correct\",\"titles_no_match\":\"The number of titles does not match\",\"items_no_match\":\"The number of items does not match\",\"add_input\":\"Add input +\",\"status\":\"Status\",\"invoice_date\":\"Invoice date\",\"by_contract\":\"By contract\",\"invoice_details\":\"Invoice details\",\"barcode\":\"Barcode\",\"isbn\":\"ISBN\",\"created_by\":\"Form filled by\",\"edited_by\":\"Form edited by\",\"titles\":\"Title | Titles\",\"title\":\"Title\",\"author\":\"Author\",\"year\":\"Year\",\"pub_year\":\"Publisher year\",\"pub_city\":\"Publisher city\",\"location\":\"Location\",\"fill_date\":\"Form fill date\",\"beginning\":\"Start\",\"end\":\"End\",\"currency\":\"Currency\",\"author-title\":\"Author - title\",\"name\":\"Name\",\"name_by\":\"name\",\"commercial_name\":\"Commercial name\",\"bin\":\"BIN / IIN\",\"contact\":\"Contacts\",\"address\":\"Address\",\"email\":\"E-mail\",\"phone\":\"Phone number\",\"fax\":\"Fax\",\"service_desk\":\"Service desk\",\"users\":\"Users\",\"books\":\"Books history\",\"search_user\":\"Search user\",\"type\":\"Type\",\"student\":\"Student\",\"employee\":\"Staff\",\"all\":\"All\",\"username\":\"Username\",\"user_id\":\"User ID\",\"user_id_user\":\"User ID (or name || surname)\",\"username_user\":\"Username (or name || surname)\",\"surname\":\"Surname\",\"section\":\"Section\",\"serve\":\"Book issuance\",\"check_in\":\"Check in\",\"search_material\":\"Search material\",\"user_info\":\"User information\",\"full_name\":\"Full name\",\"degree\":\"Degree\",\"class\":\"Year\",\"faculty\":\"Faculty\",\"program\":\"Program\",\"id\":\"ID\",\"mobile\":\"Phone number\",\"more_info\":\"More details\",\"select_all\":\"Select all ( {num} selected )\",\"delivery_date\":\"Delivery date\",\"due_date\":\"Due date\",\"issue_date\":\"Issue date\",\"borrow_date\":\"Borrow date\",\"last_user_borrowed\":\"Last user\",\"give_material\":\"Give material\",\"hesab_id\":\"Batch ID\",\"batch_id\":\"Batch Id\",\"items_no\":\"Quantity of items\",\"titles_no\":\"Quantity of titles\",\"receive_date\":\"Form fill date\",\"supplier_id\":\"Supplier ID\",\"supplier_name\":\"Supplier name\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"Publisher ID\",\"com_name\":\"Commercial name\",\"reports\":\"Reports\",\"attendance\":\"Attendance\",\"mrbooks\":\"Most read books\",\"attendance_statistics\":\"Virtual attendance statistics\",\"show_for_week\":\"Show for week\",\"show_for_month\":\"Show for month\",\"in_lib_by_week\":\"In library by week\",\"in_lib_by_month\":\"In library by year\",\"print\":\"Print barcode\",\"language\":\"Language\",\"duration\":\"Duration\",\"issuance\":\"Issuance\",\"return\":\"Return\",\"history\":\"History\",\"dept\":\"Overdue\",\"borrowed\":\"Borrowed\",\"returned\":\"Returned\"}");
 
 /***/ }),
 
@@ -83756,7 +83089,7 @@ module.exports = JSON.parse("{\"ok\":\"OK\",\"acquisitions\":\"Acquisitions\",\"
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse("{\"ok\":\"Ну жарайд\",\"acquisitions\":\"Кітап қабылдау\",\"batches\":\"Партия | Партиялар\",\"items\":\"Дана | Даналар\",\"publishers\":\"Баспагер | Баспагерлер\",\"suppliers\":\"Жеткізуші | Жеткізушілер\",\"table\":\"Таблица\",\"logout\":\"Шығу\",\"search\":\"Іздеу\",\"searching\":\"Іздеу\",\"reset\":\"Қалпына келтіру\",\"load_all\":\"Барін көрсету\",\"create\":\"Қосу\",\"count\":\"Сандар\",\"save\":\"Сақтау\",\"cancel\":\"Бас тарту\",\"cost\":\"Бағасы\",\"from\":\"Бастап\",\"until\":\"Дейін\",\"not_found\":\"Деректер табылмады\",\"create_date\":\"Форма толтырылған күні\",\"edit_date\":\"Форма өзгертілген күні\",\"results\":\"Нәтижелер\",\"results_of\":\"нәтиже табылды\",\"yes\":\"Ия\",\"no\":\"Жоқ\",\"edit\":\"Өзгерту\",\"delete\":\"Жою\",\"show_more\":\"Көбірек\",\"more\":\"Көбірек ...\",\"confirmation\":\"Жойғыңыз келетініне сенімдісіз бе?\",\"sort_by\":\"Сұрыптау\",\"search_by\":\"{type} іздеу\",\"author_by\":\"Авторымен\",\"title_by\":\"Тақырырбымен\",\"barcode_by\":\"Баркодымен\",\"batch_id_by\":\"Партия нөмірімен\",\"id_by\":\"Инвентарь нөмірімен\",\"isbn_by\":\"ISBN-мен\",\"and\":\"Және\",\"or\":\"Немесе\",\"not\":\"Емес\",\"per_page\":\"Парақтагы нәтижелер саны\",\"apply\":\"Растау\",\"showing_pages\":\"{total} нәтиженің {from} - {to} көрсетілуде\",\"page\":\"Бет\",\"page_num\":\"{num} бет\",\"previous\":\"Артқа\",\"next\":\"Келесі\",\"move_to\":\"Өту\",\"asc\":\"Өсу\",\"desc\":\"Азаю\",\"refresh\":\"Жаңарту\",\"choose\":\"Таңдаңыз\",\"choose_search_mode\":\"Іздеу режимін таңдаңыз\",\"save_&_search\":\"Сақтау және іздеу\",\"error\":\"Қате !\",\"batch_filter\":\"Партиялық сүзгі\",\"item_filter\":\"Даналық сүзгі\",\"search_batches\":\"Партия іздеу\",\"search_items\":\"Дана іздеу\",\"search_barcodes\":\"Баркод іздеу\",\"batches_number\":\"Партия нөмірі\",\"batches_by\":\"Партия нөмірімен\",\"add_batch\":\"Партия қосу\",\"add_item\":\"Дана қосу\",\"create_batches\":\"Партия қосу\",\"create_items\":\"Дана қосу\",\"create_supplier\":\"Жеткізуші қосу\",\"create_publisher\":\"Баспагер қосу\",\"edit_batches\":\"Партия өзгерту\",\"edit_items\":\"Дана өзгерту\",\"edit_supplier\":\"Жеткізуші өзгерту\",\"edit_publisher\":\"Баспагер өзгерту\",\"recreate\":\"Қайта қосу\",\"reCreate_items\":\"Дана қайта қосу\",\"type_of_supply\":\"Жеткізу түрі\",\"type_of_item\":\"Дана түрі\",\"quantity_items\":\"Дана саны\",\"quantity_titles\":\"Тақырып саны\",\"document_number\":\"Документ нөмірі\",\"contract_number\":\"Контракт нөмірі\",\"inventory_number\":\"Инвентарь нөмірі\",\"inv_id\":\"Инвентарь нөмірі\",\"types\":\"Түрлер\",\"filled_in\":\"Енгізілді\",\"made_actually\":\"Негізгі саны\",\"correct\":\"Дұрыс\",\"titles_no_match\":\"Тақырыптар саны сәйкес келмейді\",\"items_no_match\":\"Даналар саны сәйкес келмейді\",\"add_input\":\"Енгізуді қосу +\",\"status\":\"Статус\",\"invoice_date\":\"Жеткізген күні\",\"by_contract\":\"Контракт арқылы\",\"invoice_details\":\"Жеткізу деректері\",\"barcode\":\"Баркод\",\"isbn\":\"ISBN\",\"created_by\":\"Толтырылды\",\"edited_by\":\"Өзгертілді\",\"titles\":\"Атау | Атаулар\",\"title\":\"Атау\",\"author\":\"Автор\",\"year\":\"Жылы\",\"pub_year\":\"Баспа жылы\",\"pub_city\":\"Баспа қаласы\",\"location\":\"Орналасқан жері\",\"fill_date\":\"Толтырылған күні\",\"beginning\":\"Бастап\",\"end\":\"Дейін\",\"currency\":\"Валютасы\",\"author-title\":\"Автор - атауы\",\"name\":\"Аты\",\"name_by\":\"Атымен\",\"commercial_name\":\"Коммерциялық аты\",\"bin\":\"BIN / IIN\",\"contact\":\"Байланыстар\",\"address\":\"Мекен-жайы\",\"email\":\"Электрондық поштасы\",\"phone\":\"Телефон нөмірі\",\"fax\":\"Факс\",\"service_desk\":\"Қызмет көрсету\",\"users\":\"Пайдаланушылар\",\"books\":\"Кітаптар тарихы\",\"search_user\":\"Пайдаланушы іздеу\",\"type\":\"Түрі\",\"student\":\"Студент\",\"employee\":\"Қызметкер\",\"all\":\"Бәрі\",\"username\":\"Пайдаланушы аты\",\"user_id\":\"Пайдаланушы ID\",\"user_id_user\":\"Пайдаланушы ID (немесе аты || жөні)\",\"username_user\":\"Пайдаланушы аты (немесе аты || жөні)\",\"surname\":\"Тегі\",\"section\":\"Бөлімі\",\"serve\":\"Кітап беру\",\"check_in\":\"Check in\",\"search_material\":\"Материал іздеу\",\"user_info\":\"Пайдаланушы туралы ақпарат\",\"full_name\":\"Аты - тегі\",\"degree\":\"Дәрежесі\",\"class\":\"Оқу жылы\",\"faculty\":\"Факультеті\",\"program\":\"Бағдарламасы\",\"id\":\"ID\",\"mobile\":\"Телефон нөмірі\",\"more_info\":\"Толығырақ\",\"select_all\":\"Барлығын таңдау ( {num} таңдалды )\",\"delivery_date\":\"Жеткізілім уақыты\",\"due_date\":\"Мерзімнің өту күні\",\"issue_date\":\"Берілген күні\",\"borrow_date\":\"Қарызға алу күні\",\"last_user_borrowed\":\"Соңғы пайдаланушы\",\"give_material\":\"Материал беру\",\"hesab_id\":\"Партия ID\",\"batch_id\":\"Партия ID\",\"items_no\":\"Дана саны\",\"titles_no\":\"Тақырып саны\",\"receive_date\":\"Толтырылған күні\",\"supplier_id\":\"Жеткізуші ID\",\"supplier_name\":\"Жеткізущі аты\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"Баспагер ID\",\"com_name\":\"Коммерциялық аты\",\"reports\":\"Есептер\",\"attendance\":\"Қатысу\",\"mrbooks\":\"Көпшілігі оқитын кітаптар\",\"attendance_statistics\":\"Қатысушылардың виртуалды статистикасы\",\"show_for_week\":\"Бір апта бойынша көрсету\",\"show_for_month\":\"Бір ай бойынша көрсету\",\"in_lib_by_week\":\"Бір аптада кітапханада\",\"in_lib_by_month\":\"Бір айда кітапханада\",\"print\":\"Баркодты басып шығару\",\"language\":\"Тілі\",\"duration\":\"Ұзақтығы\",\"issuance\":\"Беру\",\"return\":\"Қайтару\",\"history\":\"Тарих\",\"dept\":\"Мерзімі өткен\",\"borrowed\":\"Қарызға алынған\",\"returned\":\"Қайтарылған\"}");
+module.exports = JSON.parse("{\"ok\":\"Ну жарайд\",\"acquisitions\":\"Кітап қабылдау\",\"batches\":\"Партия | Партиялар\",\"items\":\"Дана | Даналар\",\"publishers\":\"Баспагер | Баспагерлер\",\"suppliers\":\"Жеткізуші | Жеткізушілер\",\"table\":\"Таблица\",\"logout\":\"Шығу\",\"search\":\"Іздеу\",\"searching\":\"Іздеу\",\"reset\":\"Қалпына келтіру\",\"load_all\":\"Барін көрсету\",\"count\":\"Сандар\",\"save\":\"Сақтау\",\"cancel\":\"Бас тарту\",\"cost\":\"Бағасы\",\"from\":\"Бастап\",\"until\":\"Дейін\",\"not_found\":\"Деректер табылмады\",\"create_date\":\"Форма толтырылған күні\",\"edit_date\":\"Форма өзгертілген күні\",\"results\":\"Нәтижелер\",\"results_of\":\"нәтиже табылды\",\"yes\":\"Ия\",\"no\":\"Жоқ\",\"edit\":\"Өзгерту\",\"delete\":\"Жою\",\"create\":\"Қосу\",\"show_more\":\"Көбірек\",\"more\":\"Көбірек ...\",\"confirmation\":\"Жойғыңыз келетініне сенімдісіз бе?\",\"sort_by\":\"Сұрыптау\",\"search_by\":\"{type} іздеу\",\"author_by\":\"Авторымен\",\"title_by\":\"Тақырырбымен\",\"barcode_by\":\"Баркодымен\",\"batch_id_by\":\"Партия нөмірімен\",\"id_by\":\"Инвентарь нөмірімен\",\"isbn_by\":\"ISBN-мен\",\"and\":\"Және\",\"or\":\"Немесе\",\"not\":\"Емес\",\"per_page\":\"Парақтагы нәтижелер саны\",\"apply\":\"Растау\",\"showing_pages\":\"{total} нәтиженің {from} - {to} көрсетілуде\",\"page\":\"Бет\",\"page_num\":\"{num} бет\",\"previous\":\"Артқа\",\"next\":\"Келесі\",\"move_to\":\"Өту\",\"asc\":\"Өсу\",\"desc\":\"Азаю\",\"refresh\":\"Жаңарту\",\"choose\":\"Таңдаңыз\",\"choose_search_mode\":\"Іздеу режимін таңдаңыз\",\"save_&_search\":\"Сақтау және іздеу\",\"error\":\"Қате !\",\"batch_filter\":\"Партиялық сүзгі\",\"item_filter\":\"Даналық сүзгі\",\"search_batches\":\"Партия іздеу\",\"search_items\":\"Дана іздеу\",\"search_barcodes\":\"Баркод іздеу\",\"batches_number\":\"Партия нөмірі\",\"batches_by\":\"Партия нөмірімен\",\"add_batch\":\"Партия қосу\",\"add_item\":\"Дана қосу\",\"create_batches\":\"Партия қосу\",\"create_items\":\"Дана қосу\",\"create_supplier\":\"Жеткізуші қосу\",\"create_publisher\":\"Баспагер қосу\",\"edit_batches\":\"Партия өзгерту\",\"edit_items\":\"Дана өзгерту\",\"edit_supplier\":\"Жеткізуші өзгерту\",\"edit_publisher\":\"Баспагер өзгерту\",\"recreate\":\"Қайта қосу\",\"reCreate_items\":\"Дана қайта қосу\",\"type_of_supply\":\"Жеткізу түрі\",\"type_of_item\":\"Дана түрі\",\"quantity_items\":\"Дана саны\",\"quantity_titles\":\"Тақырып саны\",\"document_number\":\"Документ нөмірі\",\"contract_number\":\"Контракт нөмірі\",\"inventory_number\":\"Инвентарь нөмірі\",\"inv_id\":\"Инвентарь нөмірі\",\"types\":\"Түрлер\",\"filled_in\":\"Енгізілді\",\"made_actually\":\"Негізгі саны\",\"correct\":\"Дұрыс\",\"titles_no_match\":\"Тақырыптар саны сәйкес келмейді\",\"items_no_match\":\"Даналар саны сәйкес келмейді\",\"add_input\":\"Енгізуді қосу +\",\"status\":\"Статус\",\"invoice_date\":\"Жеткізген күні\",\"by_contract\":\"Контракт арқылы\",\"invoice_details\":\"Жеткізу деректері\",\"barcode\":\"Баркод\",\"isbn\":\"ISBN\",\"created_by\":\"Толтырылды\",\"edited_by\":\"Өзгертілді\",\"titles\":\"Атау | Атаулар\",\"title\":\"Атау\",\"author\":\"Автор\",\"year\":\"Жылы\",\"pub_year\":\"Баспа жылы\",\"pub_city\":\"Баспа қаласы\",\"location\":\"Орналасқан жері\",\"fill_date\":\"Толтырылған күні\",\"beginning\":\"Бастап\",\"end\":\"Дейін\",\"currency\":\"Валютасы\",\"author-title\":\"Автор - атауы\",\"name\":\"Аты\",\"name_by\":\"Атымен\",\"commercial_name\":\"Коммерциялық аты\",\"bin\":\"BIN / IIN\",\"contact\":\"Байланыстар\",\"address\":\"Мекен-жайы\",\"email\":\"Электрондық поштасы\",\"phone\":\"Телефон нөмірі\",\"fax\":\"Факс\",\"service_desk\":\"Қызмет көрсету\",\"users\":\"Пайдаланушылар\",\"books\":\"Кітаптар тарихы\",\"search_user\":\"Пайдаланушы іздеу\",\"type\":\"Түрі\",\"student\":\"Студент\",\"employee\":\"Қызметкер\",\"all\":\"Бәрі\",\"username\":\"Пайдаланушы аты\",\"user_id\":\"Пайдаланушы ID\",\"user_id_user\":\"Пайдаланушы ID (немесе аты || жөні)\",\"username_user\":\"Пайдаланушы аты (немесе аты || жөні)\",\"surname\":\"Тегі\",\"section\":\"Бөлімі\",\"serve\":\"Кітап беру\",\"check_in\":\"Check in\",\"search_material\":\"Материал іздеу\",\"user_info\":\"Пайдаланушы туралы ақпарат\",\"full_name\":\"Аты - тегі\",\"degree\":\"Дәрежесі\",\"class\":\"Оқу жылы\",\"faculty\":\"Факультеті\",\"program\":\"Бағдарламасы\",\"id\":\"ID\",\"mobile\":\"Телефон нөмірі\",\"more_info\":\"Толығырақ\",\"select_all\":\"Барлығын таңдау ( {num} таңдалды )\",\"delivery_date\":\"Жеткізілім уақыты\",\"due_date\":\"Мерзімнің өту күні\",\"issue_date\":\"Берілген күні\",\"borrow_date\":\"Қарызға алу күні\",\"last_user_borrowed\":\"Соңғы пайдаланушы\",\"give_material\":\"Материал беру\",\"hesab_id\":\"Партия ID\",\"batch_id\":\"Партия ID\",\"items_no\":\"Дана саны\",\"titles_no\":\"Тақырып саны\",\"receive_date\":\"Толтырылған күні\",\"supplier_id\":\"Жеткізуші ID\",\"supplier_name\":\"Жеткізущі аты\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"Баспагер ID\",\"com_name\":\"Коммерциялық аты\",\"reports\":\"Есептер\",\"attendance\":\"Қатысу\",\"mrbooks\":\"Көпшілігі оқитын кітаптар\",\"attendance_statistics\":\"Қатысушылардың виртуалды статистикасы\",\"show_for_week\":\"Бір апта бойынша көрсету\",\"show_for_month\":\"Бір ай бойынша көрсету\",\"in_lib_by_week\":\"Бір аптада кітапханада\",\"in_lib_by_month\":\"Бір жылда кітапханада\",\"print\":\"Баркодты басып шығару\",\"language\":\"Тілі\",\"duration\":\"Ұзақтығы\",\"issuance\":\"Беру\",\"return\":\"Қайтару\",\"history\":\"Тарих\",\"dept\":\"Мерзімі өткен\",\"borrowed\":\"Қарызға алынған\",\"returned\":\"Қайтарылған\"}");
 
 /***/ }),
 
@@ -83767,7 +83100,7 @@ module.exports = JSON.parse("{\"ok\":\"Ну жарайд\",\"acquisitions\":\"К
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse("{\"ok\":\"OK\",\"acquisitions\":\"Комплектование\",\"batches\":\"Партия | Партии\",\"items\":\"Экземлпяр | Экземпляры\",\"publishers\":\"Издатель | Издатели\",\"suppliers\":\"Поставщик | Поставщики\",\"table\":\"Таблица\",\"logout\":\"Выйти\",\"search\":\"Найти\",\"searching\":\"Поиск\",\"reset\":\"Сброс\",\"load_all\":\"Загрузить все\",\"create\":\"Создать\",\"count\":\"Количество\",\"save\":\"Сохранить\",\"cancel\":\"Отменить\",\"cost\":\"Цена\",\"from\":\"От\",\"until\":\"До\",\"not_found\":\"Ничего не найдено\",\"create_date\":\"Дата заполнения формы\",\"edit_date\":\"Дата изменения формы\",\"results\":\"Результаты\",\"results_of\":\"результатов\",\"yes\":\"Да\",\"no\":\"Нет\",\"edit\":\"Изменить\",\"delete\":\"Удалить\",\"show_more\":\"Узнать больше\",\"more\":\"Больше ...\",\"confirmation\":\"Вы действительно хотите удалить?\",\"sort_by\":\"Сортировать по\",\"search_by\":\"Искать по {type}\",\"author_by\":\"автору\",\"title_by\":\"заглавию\",\"barcode_by\":\"баркоду\",\"batch_id_by\":\"номеру партии\",\"id_by\":\"номеру инвентаря\",\"isbn_by\":\"ISBN\",\"and\":\"И\",\"or\":\"Или\",\"not\":\"Не\",\"per_page\":\"Результатов на странице\",\"apply\":\"Подтвердить\",\"showing_pages\":\"{from} - {to} из {total}\",\"page\":\"Стр.\",\"page_num\":\"{num} страница\",\"previous\":\"Назад\",\"next\":\"Вперед\",\"move_to\":\"Перейти\",\"asc\":\"По возрастанию\",\"desc\":\"По убыванию\",\"refresh\":\"Обновить\",\"choose\":\"Выберите\",\"choose_search_mode\":\"Выберите режим поиска\",\"save_&_search\":\"Сохранить и искать\",\"error\":\"Ошибка !\",\"batch_filter\":\"Фильтр партий\",\"item_filter\":\"Фильтр экземпляров\",\"search_batches\":\"Искать партию\",\"search_items\":\"Искать экземпляр\",\"search_barcodes\":\"Искать баркоды\",\"batches_number\":\"Номер партии\",\"batches_by\":\"по номеру партии\",\"add_batch\":\"Добавить партию\",\"add_item\":\"Добавить экземпляр\",\"create_batches\":\"Создать партию\",\"create_items\":\"Создать экземпляр\",\"create_supplier\":\"Создать поставщика\",\"create_publisher\":\"Создать издателя\",\"edit_batches\":\"Изменить партию\",\"edit_items\":\"Изменить экземпляр\",\"edit_supplier\":\"Изменить поставщика\",\"edit_publisher\":\"Изменить издателя\",\"recreate\":\"Пересоздать\",\"reCreate_items\":\"Пересоздать экземпляр\",\"type_of_supply\":\"Тип поставки\",\"type_of_item\":\"Тип экземпляра\",\"quantity_items\":\"Количество экземпляров\",\"quantity_titles\":\"Количество заглавий\",\"document_number\":\"Номер документа\",\"contract_number\":\"Контрактный номер\",\"inventory_number\":\"Номер инвентаря\",\"inv_id\":\"Номер инвентаря\",\"types\":\"Types\",\"filled_in\":\"Введено\",\"made_actually\":\"Введено фактически\",\"correct\":\"Правильно\",\"titles_no_match\":\"Количество заглавий не совпадает\",\"items_no_match\":\"Количество экземпляров не совпадает\",\"add_input\":\"Добавить входные данные +\",\"status\":\"Статус\",\"invoice_date\":\"Дата счета-фактуры\",\"by_contract\":\"По контракту\",\"invoice_details\":\"Информация о счете-фактуре\",\"barcode\":\"Баркод\",\"isbn\":\"ISBN\",\"created_by\":\"Заполнено\",\"edited_by\":\"Изменено\",\"titles\":\"Заглавие | Заглавия\",\"title\":\"Заглавие\",\"author\":\"Автор\",\"year\":\"Год\",\"pub_year\":\"Год издания\",\"pub_city\":\"Город издания\",\"location\":\"Место расположения\",\"fill_date\":\"Дата заполнения\",\"beginning\":\"От\",\"end\":\"До\",\"currency\":\"Валюта\",\"author-title\":\"Автор - заглавие\",\"name\":\"Имя\",\"name_by\":\"по имени\",\"commercial_name\":\"Коммерческое имя\",\"bin\":\"BIN / IIN\",\"contact\":\"Контакты\",\"address\":\"Адресс\",\"email\":\"Электронная почта\",\"phone\":\"Номер телефона\",\"fax\":\"Факс\",\"service_desk\":\"Служба поддержки\",\"users\":\"Пользователи\",\"books\":\"История книг\",\"search_user\":\"Найти пользователя\",\"type\":\"Тип\",\"student\":\"Студент\",\"employee\":\"Работник\",\"all\":\"Все\",\"username\":\"Имя пользователя\",\"user_id\":\"ID пользователя\",\"user_id_user\":\"ID пользователя (или имя || фамилия)\",\"username_user\":\"Имя пользователя (или имя || фамилия)\",\"surname\":\"Фамилия\",\"section\":\"Раздел\",\"serve\":\"Выдача книг\",\"check_in\":\"Check in\",\"search_material\":\"Поиск материала\",\"user_info\":\"Информация о пользователе\",\"full_name\":\"Имя - фамилия\",\"degree\":\"Степень\",\"class\":\"Год\",\"faculty\":\"Факультет\",\"program\":\"Программа\",\"id\":\"ID\",\"mobile\":\"Номер телефона\",\"more_info\":\"Подробнее\",\"select_all\":\"Выбрать все ( {num} выбрано )\",\"delivery_date\":\"Дата доставки\",\"due_date\":\"Дата сдачи\",\"issue_date\":\"Дата выпуска\",\"borrow_date\":\"Дата заимствования\",\"last_user_borrowed\":\"Последний пользователь\",\"give_material\":\"Дать материал\",\"hesab_id\":\"ID партии\",\"batch_id\":\"ID партии\",\"items_no\":\"Количество экземпляров\",\"titles_no\":\"Количество заглавий\",\"receive_date\":\"Дата заполнения\",\"supplier_id\":\"ID поставщика\",\"supplier_name\":\"Имя поставщика\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"ID издателя\",\"com_name\":\"Коммерческое имя\",\"reports\":\"Отчеты\",\"attendance\":\"Посещаемость\",\"mrbooks\":\"Самые читаемые книги\",\"attendance_statistics\":\"Статистика виртуальной посещаемости\",\"show_for_week\":\"Показать за неделю\",\"show_for_month\":\"Показать за месяц\",\"in_lib_by_week\":\"В библиотеке за неделю\",\"in_lib_by_month\":\"В библиотеке за месяц\",\"print\":\"Распечатать баркод\",\"language\":\"Язык\",\"duration\":\"Продолжительность\",\"issuance\":\"Выдача\",\"return\":\"Возврат\",\"history\":\"История\",\"dept\":\"Просроченный\",\"borrowed\":\"На руках\",\"returned\":\"Вернули\"}");
+module.exports = JSON.parse("{\"ok\":\"OK\",\"acquisitions\":\"Комплектование\",\"batches\":\"Партия | Партии\",\"items\":\"Экземлпяр | Экземпляры\",\"publishers\":\"Издатель | Издатели\",\"suppliers\":\"Поставщик | Поставщики\",\"table\":\"Таблица\",\"logout\":\"Выйти\",\"search\":\"Найти\",\"searching\":\"Поиск\",\"reset\":\"Сброс\",\"load_all\":\"Загрузить все\",\"count\":\"Количество\",\"save\":\"Сохранить\",\"cancel\":\"Отменить\",\"cost\":\"Цена\",\"from\":\"От\",\"until\":\"До\",\"not_found\":\"Ничего не найдено\",\"create_date\":\"Дата заполнения формы\",\"edit_date\":\"Дата изменения формы\",\"results\":\"Результаты\",\"results_of\":\"результатов\",\"yes\":\"Да\",\"no\":\"Нет\",\"edit\":\"Изменить\",\"delete\":\"Удалить\",\"create\":\"Создать\",\"show_more\":\"Узнать больше\",\"more\":\"Больше ...\",\"confirmation\":\"Вы действительно хотите удалить?\",\"sort_by\":\"Сортировать по\",\"search_by\":\"Искать по {type}\",\"author_by\":\"автору\",\"title_by\":\"заглавию\",\"barcode_by\":\"баркоду\",\"batch_id_by\":\"номеру партии\",\"id_by\":\"номеру инвентаря\",\"isbn_by\":\"ISBN\",\"and\":\"И\",\"or\":\"Или\",\"not\":\"Не\",\"per_page\":\"Результатов на странице\",\"apply\":\"Подтвердить\",\"showing_pages\":\"{from} - {to} из {total}\",\"page\":\"Стр.\",\"page_num\":\"{num} страница\",\"previous\":\"Назад\",\"next\":\"Вперед\",\"move_to\":\"Перейти\",\"asc\":\"По возрастанию\",\"desc\":\"По убыванию\",\"refresh\":\"Обновить\",\"choose\":\"Выберите\",\"choose_search_mode\":\"Выберите режим поиска\",\"save_&_search\":\"Сохранить и искать\",\"error\":\"Ошибка !\",\"batch_filter\":\"Фильтр партий\",\"item_filter\":\"Фильтр экземпляров\",\"search_batches\":\"Искать партию\",\"search_items\":\"Искать экземпляр\",\"search_barcodes\":\"Искать баркоды\",\"batches_number\":\"Номер партии\",\"batches_by\":\"по номеру партии\",\"add_batch\":\"Добавить партию\",\"add_item\":\"Добавить экземпляр\",\"create_batches\":\"Создать партию\",\"create_items\":\"Создать экземпляр\",\"create_supplier\":\"Создать поставщика\",\"create_publisher\":\"Создать издателя\",\"edit_batches\":\"Изменить партию\",\"edit_items\":\"Изменить экземпляр\",\"edit_supplier\":\"Изменить поставщика\",\"edit_publisher\":\"Изменить издателя\",\"recreate\":\"Пересоздать\",\"reCreate_items\":\"Пересоздать экземпляр\",\"type_of_supply\":\"Тип поставки\",\"type_of_item\":\"Тип экземпляра\",\"quantity_items\":\"Количество экземпляров\",\"quantity_titles\":\"Количество заглавий\",\"document_number\":\"Номер документа\",\"contract_number\":\"Контрактный номер\",\"inventory_number\":\"Номер инвентаря\",\"inv_id\":\"Номер инвентаря\",\"types\":\"Types\",\"filled_in\":\"Введено\",\"made_actually\":\"Введено фактически\",\"correct\":\"Правильно\",\"titles_no_match\":\"Количество заглавий не совпадает\",\"items_no_match\":\"Количество экземпляров не совпадает\",\"add_input\":\"Добавить входные данные +\",\"status\":\"Статус\",\"invoice_date\":\"Дата счета-фактуры\",\"by_contract\":\"По контракту\",\"invoice_details\":\"Информация о счете-фактуре\",\"barcode\":\"Баркод\",\"isbn\":\"ISBN\",\"created_by\":\"Заполнено\",\"edited_by\":\"Изменено\",\"titles\":\"Заглавие | Заглавия\",\"title\":\"Заглавие\",\"author\":\"Автор\",\"year\":\"Год\",\"pub_year\":\"Год издания\",\"pub_city\":\"Город издания\",\"location\":\"Место расположения\",\"fill_date\":\"Дата заполнения\",\"beginning\":\"От\",\"end\":\"До\",\"currency\":\"Валюта\",\"author-title\":\"Автор - заглавие\",\"name\":\"Имя\",\"name_by\":\"по имени\",\"commercial_name\":\"Коммерческое имя\",\"bin\":\"BIN / IIN\",\"contact\":\"Контакты\",\"address\":\"Адресс\",\"email\":\"Электронная почта\",\"phone\":\"Номер телефона\",\"fax\":\"Факс\",\"service_desk\":\"Служба поддержки\",\"users\":\"Пользователи\",\"books\":\"История книг\",\"search_user\":\"Найти пользователя\",\"type\":\"Тип\",\"student\":\"Студент\",\"employee\":\"Работник\",\"all\":\"Все\",\"username\":\"Имя пользователя\",\"user_id\":\"ID пользователя\",\"user_id_user\":\"ID пользователя (или имя || фамилия)\",\"username_user\":\"Имя пользователя (или имя || фамилия)\",\"surname\":\"Фамилия\",\"section\":\"Раздел\",\"serve\":\"Выдача книг\",\"check_in\":\"Check in\",\"search_material\":\"Поиск материала\",\"user_info\":\"Информация о пользователе\",\"full_name\":\"Имя - фамилия\",\"degree\":\"Степень\",\"class\":\"Год\",\"faculty\":\"Факультет\",\"program\":\"Программа\",\"id\":\"ID\",\"mobile\":\"Номер телефона\",\"more_info\":\"Подробнее\",\"select_all\":\"Выбрать все ( {num} выбрано )\",\"delivery_date\":\"Дата доставки\",\"due_date\":\"Дата сдачи\",\"issue_date\":\"Дата выпуска\",\"borrow_date\":\"Дата заимствования\",\"last_user_borrowed\":\"Последний пользователь\",\"give_material\":\"Дать материал\",\"hesab_id\":\"ID партии\",\"batch_id\":\"ID партии\",\"items_no\":\"Количество экземпляров\",\"titles_no\":\"Количество заглавий\",\"receive_date\":\"Дата заполнения\",\"supplier_id\":\"ID поставщика\",\"supplier_name\":\"Имя поставщика\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"ID издателя\",\"com_name\":\"Коммерческое имя\",\"reports\":\"Отчеты\",\"attendance\":\"Посещаемость\",\"mrbooks\":\"Самые читаемые книги\",\"attendance_statistics\":\"Статистика виртуальной посещаемости\",\"show_for_week\":\"Показать за неделю\",\"show_for_month\":\"Показать за месяц\",\"in_lib_by_week\":\"В библиотеке за неделю\",\"in_lib_by_month\":\"В библиотеке за год\",\"print\":\"Распечатать баркод\",\"language\":\"Язык\",\"duration\":\"Продолжительность\",\"issuance\":\"Выдача\",\"return\":\"Возврат\",\"history\":\"История\",\"dept\":\"Просроченный\",\"borrowed\":\"На руках\",\"returned\":\"Вернули\"}");
 
 /***/ })
 

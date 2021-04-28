@@ -211,8 +211,7 @@ export default{
 			this.user_info.rightArray=odd;
 		},
 		getInfo(){
-			// +this.info.type+'/'+this.info.id
-			this.$http.get('service/user/student/202105001').then(response=>{
+			this.$http.get('service/user/'+this.info.type+'/'+this.info.id).then(response=>{
 				this.user=response.data.res;
 				this.user.info=objectWithoutKey(this.user.info,'id');
 				this.makeUserInfo();
