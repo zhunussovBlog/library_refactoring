@@ -15,20 +15,22 @@
 				</div>
 			</div>
 			<div class="d-flex bg-lightgrey rounded-lg p-3 ml-4 flex-fill" v-if='user.info'>
-				<div class="w-100 mr-2">
-					<div class="d-flex" :class="{'mt-3 mt-xl-5':index!=0}" v-for="(item,index) in user_info.leftArray" :key="index">
-						<div class="text-grey">{{capitalize($t(item.key))}}:</div>
-						<div class="ml-2">{{item.value}}</div>
-						&nbsp;
-					</div>
-				</div>
-				<div class="w-100">
-					<div class="d-flex" :class="{'mt-3 mt-xl-5':index!=0}" v-for="(item,index) in user_info.rightArray" :key="index">
-						<div class="text-grey">{{capitalize($t(item.key))}}:</div>
-						<div class="ml-2">{{item.value}}</div>
-						&nbsp;
-					</div>
-				</div>
+				<table class="info_table">
+					<tr v-for="(item,index) in new Array(Math.ceil(Object.keys(user.info).length / 2))" :key="index">	
+						<td v-if="user_info.leftArray[index]!=undefined">
+							<div class="d-flex" :class="{'mt-3 mt-xl-5':index!=0}">
+								<div class="text-grey">{{capitalize($t(user_info.leftArray[index].key))}}:</div>
+								<div class="ml-2">{{user_info.leftArray[index].value}}</div>
+							</div>
+						</td>
+						<td v-if="user_info.rightArray[index]!=undefined">
+							<div class="d-flex" :class="{'mt-3 mt-xl-5':index!=0}">
+								<div class="text-grey">{{capitalize($t(user_info.rightArray[index].key))}}:</div>
+								<div class="ml-2">{{user_info.rightArray[index].value}}</div>
+							</div>
+						</td>
+					</tr>
+				</table>
 			</div>
 		</div>
 		<div class="d-flex justify-content-between mt-4">
@@ -209,7 +211,8 @@ export default{
 			this.user_info.rightArray=odd;
 		},
 		getInfo(){
-			this.$http.get('service/user/'+this.info.type+'/'+this.info.id).then(response=>{
+			// +this.info.type+'/'+this.info.id
+			this.$http.get('service/user/student/202105001').then(response=>{
 				this.user=response.data.res;
 				this.user.info=objectWithoutKey(this.user.info,'id');
 				this.makeUserInfo();
@@ -263,5 +266,11 @@ export default{
 }
 .green{
 	color:#00BB78;
+}
+.info_table{
+	width: 100%;
+}
+.info_table > tr >td{
+	vertical-align: top;
 }
 </style>

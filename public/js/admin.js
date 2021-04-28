@@ -5912,6 +5912,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
 // components
 
 
@@ -6110,7 +6112,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     getInfo: function getInfo() {
       var _this = this;
 
-      this.$http.get('service/user/' + this.info.type + '/' + this.info.id).then(function (response) {
+      // +this.info.type+'/'+this.info.id
+      this.$http.get('service/user/student/202105001').then(function (response) {
         _this.user = response.data.res;
         _this.user.info = objectWithoutKey(_this.user.info, 'id');
 
@@ -26529,7 +26532,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.image[data-v-4b3707e1]{\n\tbackground-repeat: no-repeat;\n\tbackground-size: 100% 100%;\n}\n.imageWidth[data-v-4b3707e1]{\n\twidth:14em;\n}\n.imageHeight[data-v-4b3707e1]{\n\theight: calc(14em * 4/3);\n}\n.red[data-v-4b3707e1]{\n\tcolor:#FF0000;\n}\n.orange[data-v-4b3707e1]{\n\tcolor:#FF9D29;\n}\n.green[data-v-4b3707e1]{\n\tcolor:#00BB78;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.image[data-v-4b3707e1]{\n\tbackground-repeat: no-repeat;\n\tbackground-size: 100% 100%;\n}\n.imageWidth[data-v-4b3707e1]{\n\twidth:14em;\n}\n.imageHeight[data-v-4b3707e1]{\n\theight: calc(14em * 4/3);\n}\n.red[data-v-4b3707e1]{\n\tcolor:#FF0000;\n}\n.orange[data-v-4b3707e1]{\n\tcolor:#FF9D29;\n}\n.green[data-v-4b3707e1]{\n\tcolor:#00BB78;\n}\n.info_table[data-v-4b3707e1]{\n\twidth: 100%;\n}\n.info_table > tr >td[data-v-4b3707e1]{\n\tvertical-align: top;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -66281,54 +66284,80 @@ var render = function() {
               },
               [
                 _c(
-                  "div",
-                  { staticClass: "w-100 mr-2" },
-                  _vm._l(_vm.user_info.leftArray, function(item, index) {
-                    return _c(
-                      "div",
-                      {
-                        key: index,
-                        staticClass: "d-flex",
-                        class: { "mt-3 mt-xl-5": index != 0 }
-                      },
-                      [
-                        _c("div", { staticClass: "text-grey" }, [
-                          _vm._v(_vm._s(_vm.capitalize(_vm.$t(item.key))) + ":")
-                        ]),
+                  "table",
+                  { staticClass: "info_table" },
+                  _vm._l(
+                    new Array(Math.ceil(Object.keys(_vm.user.info).length / 2)),
+                    function(item, index) {
+                      return _c("tr", { key: index }, [
+                        _vm.user_info.leftArray[index] != undefined
+                          ? _c("td", [
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "d-flex",
+                                  class: { "mt-3 mt-xl-5": index != 0 }
+                                },
+                                [
+                                  _c("div", { staticClass: "text-grey" }, [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm.capitalize(
+                                          _vm.$t(
+                                            _vm.user_info.leftArray[index].key
+                                          )
+                                        )
+                                      ) + ":"
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "ml-2" }, [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm.user_info.leftArray[index].value
+                                      )
+                                    )
+                                  ])
+                                ]
+                              )
+                            ])
+                          : _vm._e(),
                         _vm._v(" "),
-                        _c("div", { staticClass: "ml-2" }, [
-                          _vm._v(_vm._s(item.value))
-                        ]),
-                        _vm._v("\n\t\t\t\t\t \n\t\t\t\t")
-                      ]
-                    )
-                  }),
-                  0
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "w-100" },
-                  _vm._l(_vm.user_info.rightArray, function(item, index) {
-                    return _c(
-                      "div",
-                      {
-                        key: index,
-                        staticClass: "d-flex",
-                        class: { "mt-3 mt-xl-5": index != 0 }
-                      },
-                      [
-                        _c("div", { staticClass: "text-grey" }, [
-                          _vm._v(_vm._s(_vm.capitalize(_vm.$t(item.key))) + ":")
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "ml-2" }, [
-                          _vm._v(_vm._s(item.value))
-                        ]),
-                        _vm._v("\n\t\t\t\t\t \n\t\t\t\t")
-                      ]
-                    )
-                  }),
+                        _vm.user_info.rightArray[index] != undefined
+                          ? _c("td", [
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "d-flex",
+                                  class: { "mt-3 mt-xl-5": index != 0 }
+                                },
+                                [
+                                  _c("div", { staticClass: "text-grey" }, [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm.capitalize(
+                                          _vm.$t(
+                                            _vm.user_info.rightArray[index].key
+                                          )
+                                        )
+                                      ) + ":"
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "ml-2" }, [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm.user_info.rightArray[index].value
+                                      )
+                                    )
+                                  ])
+                                ]
+                              )
+                            ])
+                          : _vm._e()
+                      ])
+                    }
+                  ),
                   0
                 )
               ]
