@@ -59,11 +59,11 @@ import TableDiv from '../../../components/common/Table'
 import Tabs from '../../../components/common/Tabs'
 import InputDiv from '../../../components/common/Input'
 
-// libraries
-import convert from 'xml-js'
-
+// mixins
+import readFromRfid from '../../../mixins/readFromRfid'
 export default{
 	components:{Back,TableDiv,Tabs,InputDiv},
+	mixins:[readFromRfid],
 	props:{
 		info:{
 			type:Object,
@@ -185,8 +185,7 @@ export default{
 				rightArray:[]
 			},
 			barcode:'',
-			search_results:{},
-			convert:convert
+			search_results:{}
 		}
 	},
 	methods:{
@@ -223,36 +222,21 @@ export default{
 			}).catch(e=>{})
 		},
 		search(){
-			console.log(this.barcode);
 			this.$http.get('service/media/search?value='+this.barcode).then(response=>{
 				this.search_results=response.data.res.data;
 			})
 		},
 		checkIn(selected){
-			alert('wait for it. Close this alert and in console u will see all selected media');
-			console.log(selected);
+			this.readFromRfid('SetItemsCheckInOut','status=1');
 		},
 		getRfidInfo(){
 			this.getRfidBarcode();
-			console.log(this.barcode);
 			this.search();
 		},
 		getRfidBarcode(){
-			const request = new XMLHttpRequest();
-
-			const url = 'https://localhost:44379/LibraryWebService.asmx/getItemIDS';
-			request.open('POST', url, false);
-			request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-			request.addEventListener("readystatechange", () => {
-				if(request.readyState === 4 && request.status === 200) {
-					let json=this.convert.xml2json(request.responseText,{compact:true,spaces:4});
-					json=JSON.parse(json);
-					console.log(json);
-					this.barcode = json.ArrayOfResponse.Response.Result['_text'];
-				}
+			this.readFromRfid('getItemIDS','',(json)=>{
+				this.barcode = json.ArrayOfResponse.Response.Result['_text'];
 			});
-
-			request.send();
 		}
 	},
 	created(){

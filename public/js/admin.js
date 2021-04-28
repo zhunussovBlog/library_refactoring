@@ -5884,8 +5884,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_common_Table__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../components/common/Table */ "./resources/js/admin/components/common/Table.vue");
 /* harmony import */ var _components_common_Tabs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../components/common/Tabs */ "./resources/js/admin/components/common/Tabs.vue");
 /* harmony import */ var _components_common_Input__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../components/common/Input */ "./resources/js/admin/components/common/Input.vue");
-/* harmony import */ var xml_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! xml-js */ "./node_modules/xml-js/lib/index.js");
-/* harmony import */ var xml_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(xml_js__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _mixins_readFromRfid__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../mixins/readFromRfid */ "./resources/js/admin/mixins/readFromRfid.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -5956,7 +5955,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
- // libraries
+ // mixins
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -5966,6 +5965,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     Tabs: _components_common_Tabs__WEBPACK_IMPORTED_MODULE_2__.default,
     InputDiv: _components_common_Input__WEBPACK_IMPORTED_MODULE_3__.default
   },
+  mixins: [_mixins_readFromRfid__WEBPACK_IMPORTED_MODULE_4__.default],
   props: {
     info: {
       type: Object,
@@ -6088,8 +6088,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         rightArray: []
       },
       barcode: '',
-      search_results: {},
-      convert: (xml_js__WEBPACK_IMPORTED_MODULE_4___default())
+      search_results: {}
     };
   },
   methods: {
@@ -6163,40 +6162,23 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     search: function search() {
       var _this2 = this;
 
-      console.log(this.barcode);
       this.$http.get('service/media/search?value=' + this.barcode).then(function (response) {
         _this2.search_results = response.data.res.data;
       });
     },
     checkIn: function checkIn(selected) {
-      alert('wait for it. Close this alert and in console u will see all selected media');
-      console.log(selected);
+      this.readFromRfid('SetItemsCheckInOut', 'status=1');
     },
     getRfidInfo: function getRfidInfo() {
       this.getRfidBarcode();
-      console.log(this.barcode);
       this.search();
     },
     getRfidBarcode: function getRfidBarcode() {
       var _this3 = this;
 
-      var request = new XMLHttpRequest();
-      var url = 'https://localhost:44379/LibraryWebService.asmx/getItemIDS';
-      request.open('POST', url, false);
-      request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-      request.addEventListener("readystatechange", function () {
-        if (request.readyState === 4 && request.status === 200) {
-          var json = _this3.convert.xml2json(request.responseText, {
-            compact: true,
-            spaces: 4
-          });
-
-          json = JSON.parse(json);
-          console.log(json);
-          _this3.barcode = json.ArrayOfResponse.Response.Result['_text'];
-        }
+      this.readFromRfid('getItemIDS', '', function (json) {
+        _this3.barcode = json.ArrayOfResponse.Response.Result['_text'];
       });
-      request.send();
     }
   },
   created: function created() {
@@ -7401,6 +7383,45 @@ var message_error = {
     }
   }
 };
+
+/***/ }),
+
+/***/ "./resources/js/admin/mixins/readFromRfid.js":
+/*!***************************************************!*\
+  !*** ./resources/js/admin/mixins/readFromRfid.js ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  methods: {
+    readFromRfid: function readFromRfid(link, data, after) {
+      var request = new XMLHttpRequest();
+      var url = 'https://localhost:44379/LibraryWebService.asmx/' + link;
+      request.open('POST', url, false);
+      request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      request.addEventListener("readystatechange", function () {
+        if (request.readyState === 4 && request.status === 200) {
+          if (after != null) {
+            var convert = __webpack_require__(/*! xml-js */ "./node_modules/xml-js/lib/index.js");
+
+            var json = convert.xml2json(xml, {
+              compact: true,
+              spaces: 4
+            });
+            json = JSON.parse(json);
+            after(json);
+          }
+        }
+      });
+      request.send(data);
+    }
+  }
+});
 
 /***/ }),
 
