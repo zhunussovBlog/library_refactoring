@@ -193,5 +193,7 @@
 	"history":"History",
 	"dept":"Overdue",
 	"borrowed":"Borrowed",
-	"returned":"Returned"
+	"returned":"Returned",
+
+	"initialize":"Initialize"
 }

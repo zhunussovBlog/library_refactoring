@@ -43,8 +43,9 @@
 					:link="link"
 					:commit="commit"
 					:pagination="print_barcode.pagination"
-					:clickables="false"
+					:clickables="true"
 					:sortable="false"
+					:custom_func="custom_func"
 					/>
 				</div>
 			</div>
@@ -89,12 +90,50 @@ export default{
 			},
 			link:'/barcode',
 			commit:'print_barcode',
-			barcodes:[]
+			barcodes:[],
+			custom_func:{
+				available:true,
+				title:'initialize',
+				func:this.initBarcode,
+				class:['outline-green']
+			}
 		}
 	},
 	methods:{
 		changeMode(mode){
 			this.type=mode;
+		},
+		initBarcode(item){
+			this.initializeItem();
+			this.setBarcode(item.barcode);
+		},
+		initializeItem(){
+			const request = new XMLHttpRequest();
+
+			const url = 'https://localhost:44379/LibraryWebService.asmx/InitializeItemLabel';
+			request.open('POST', url, false);
+			request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+			request.addEventListener("readystatechange", () => {
+				if(request.readyState === 4 && request.status === 200) {
+					console.log('Working',xml2json(request.responseText));
+				}
+			});
+
+			request.send();
+		},
+		setBarcode(barcode){
+			const request = new XMLHttpRequest();
+
+			const url = 'https://localhost:44379/LibraryWebService.asmx/SetItemId';
+			request.open('POST', url, false);
+
+			request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+			request.addEventListener("readystatechange", () => {
+				if(request.readyState === 4 && request.status === 200) {
+					console.log('Working',xml2json(request.responseText));
+				}
+			});
+			request.send('newID='+barcode);
 		},
 		loadResults(){
 			this.$store.dispatch('setStore',{label:this.commit,data:{page:0}});
