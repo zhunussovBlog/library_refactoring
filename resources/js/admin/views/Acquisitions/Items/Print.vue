@@ -56,8 +56,6 @@
 // components
 import Back from '../../../components/common/Back'
 import Dropdown from '../../../components/common/Dropdown'
-
-// components
 import Table from '../../../components/common/Table'
 
 // loading indicator
@@ -66,7 +64,10 @@ import PulseLoader from 'vue-spinner/src/PulseLoader'
 //mixins
 import {getResults,download_file} from '../../../mixins/common'
 
+// libraries
 import {mapGetters} from 'vuex'
+import convert from 'xml-js'
+
 export default{
 	mixins:[getResults,download_file],
 	components:{Back,Dropdown,'table-div':Table,PulseLoader},
@@ -96,7 +97,8 @@ export default{
 				title:'initialize',
 				func:this.initBarcode,
 				class:['outline-green']
-			}
+			},
+			convert:convert
 		}
 	},
 	methods:{
@@ -115,7 +117,8 @@ export default{
 			request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 			request.addEventListener("readystatechange", () => {
 				if(request.readyState === 4 && request.status === 200) {
-					console.log('Working',xml2json(request.responseText));
+					console.log(this.convert.xml2json(request.responseText,{compact:true,spaces:4}));
+					console.log(this.convert.xml2json(request.responseText,{compact:false,spaces:4}));
 				}
 			});
 
@@ -130,7 +133,8 @@ export default{
 			request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 			request.addEventListener("readystatechange", () => {
 				if(request.readyState === 4 && request.status === 200) {
-					console.log('Working',xml2json(request.responseText));
+					console.log(this.convert.xml2json(request.responseText,{compact:false,spaces:4}));
+					console.log(this.convert.xml2json(request.responseText,{compact:false,spaces:4}));
 				}
 			});
 			request.send('newID='+barcode);

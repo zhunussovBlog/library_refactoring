@@ -36,12 +36,14 @@
         "chartjs-plugin-datalabels": "^0.7.0",
         "chartjs-plugin-labels": "^1.1.0",
         "epic-spinners": "^1.1.0",
+        "stream": "^0.0.2",
         "vue-chartjs": "^3.5.1",
         "vue-i18n": "^8.22.2",
         "vue-js-modal": "^2.0.0-rc.6",
         "vue-router": "^3.4.9",
         "vue-simple-alert": "^1.1.1",
         "vue-spinner": "^1.0.4",
-        "vuex": "^3.6.0"
+        "vuex": "^3.6.0",
+        "xml-js": "^1.6.11"
     }
 }
