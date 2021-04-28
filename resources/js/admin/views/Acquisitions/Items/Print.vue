@@ -124,7 +124,7 @@ export default{
 		setBarcode(barcode){
 			const request = new XMLHttpRequest();
 
-			const url = 'https://localhost:44379/LibraryWebService.asmx/SetItemId';
+			const url = 'https://localhost:44379/LibraryWebService.asmx/SetItemID';
 			request.open('POST', url, false);
 
 			request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');

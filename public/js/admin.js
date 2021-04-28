@@ -4593,7 +4593,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     setBarcode: function setBarcode(barcode) {
       var request = new XMLHttpRequest();
-      var url = 'https://localhost:44379/LibraryWebService.asmx/SetItemId';
+      var url = 'https://localhost:44379/LibraryWebService.asmx/SetItemID';
       request.open('POST', url, false);
       request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
       request.addEventListener("readystatechange", function () {
