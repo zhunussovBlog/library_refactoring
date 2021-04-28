@@ -223,6 +223,7 @@ export default{
 			}).catch(e=>{})
 		},
 		search(){
+			console.log(this.barcode);
 			this.$http.get('service/media/search?value='+this.barcode).then(response=>{
 				this.search_results=response.data.res.data;
 			})
@@ -232,7 +233,8 @@ export default{
 			console.log(selected);
 		},
 		getRfidInfo(){
-			this.barcode = this.getRfidBarcode();
+			this.getRfidBarcode();
+			console.log(this.barcode);
 			this.search();
 		},
 		getRfidBarcode(){
@@ -246,7 +248,7 @@ export default{
 					let json=this.convert.xml2json(request.responseText,{compact:true,spaces:4});
 					json=JSON.parse(json);
 					console.log(json);
-					return (json.ArrayOfResponse.Response.Result['_text']);
+					this.barcode = json.ArrayOfResponse.Response.Result['_text'];
 				}
 			});
 

@@ -6163,6 +6163,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     search: function search() {
       var _this2 = this;
 
+      console.log(this.barcode);
       this.$http.get('service/media/search?value=' + this.barcode).then(function (response) {
         _this2.search_results = response.data.res.data;
       });
@@ -6172,7 +6173,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       console.log(selected);
     },
     getRfidInfo: function getRfidInfo() {
-      this.barcode = this.getRfidBarcode();
+      this.getRfidBarcode();
+      console.log(this.barcode);
       this.search();
     },
     getRfidBarcode: function getRfidBarcode() {
@@ -6191,7 +6193,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
           json = JSON.parse(json);
           console.log(json);
-          return json.ArrayOfResponse.Response.Result['_text'];
+          _this3.barcode = json.ArrayOfResponse.Response.Result['_text'];
         }
       });
       request.send();
