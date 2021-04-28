@@ -244,8 +244,7 @@ export default{
 			request.addEventListener("readystatechange", () => {
 				if(request.readyState === 4 && request.status === 200) {
 					let json=this.convert.xml2json(request.responseText,{compact:true,spaces:4});
-					console.log(json);
-					console.log(json.ArrayOfResponse.Response.Result['_text']);
+					json=JSON.parse(json);
 					return (json.ArrayOfResponse.Response.Result['_text']);
 				}
 			});
