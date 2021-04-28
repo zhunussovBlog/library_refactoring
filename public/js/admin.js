@@ -6190,6 +6190,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           });
 
           console.log(json);
+          console.log(json.ArrayOfResponse.Response.Result['_text']);
           return json.ArrayOfResponse.Response.Result['_text'];
         }
       });
