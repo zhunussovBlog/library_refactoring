@@ -4585,7 +4585,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.readFromRfid('InitializeItemLabel');
     },
     setBarcode: function setBarcode(barcode) {
-      this.readFromRfid('setItemID', 'newID=' + barcode);
+      this.readFromRfid('SetItemID', 'newID=' + barcode);
     },
     loadResults: function loadResults() {
       this.$store.dispatch('setStore', {

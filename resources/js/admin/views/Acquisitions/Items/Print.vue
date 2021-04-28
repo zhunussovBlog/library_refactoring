@@ -112,7 +112,7 @@ export default{
 			this.readFromRfid('InitializeItemLabel');
 		},
 		setBarcode(barcode){
-			this.readFromRfid('setItemID','newID='+barcode);
+			this.readFromRfid('SetItemID','newID='+barcode);
 		},
 		loadResults(){
 			this.$store.dispatch('setStore',{label:this.commit,data:{page:0}});
