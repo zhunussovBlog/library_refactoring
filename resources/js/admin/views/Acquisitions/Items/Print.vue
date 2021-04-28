@@ -63,13 +63,13 @@ import PulseLoader from 'vue-spinner/src/PulseLoader'
 
 //mixins
 import {getResults,download_file} from '../../../mixins/common'
+import readFromRfid from '../../../mixins/readFromRfid'
 
 // libraries
 import {mapGetters} from 'vuex'
-import convert from 'xml-js'
 
 export default{
-	mixins:[getResults,download_file],
+	mixins:[getResults,download_file,readFromRfid],
 	components:{Back,Dropdown,'table-div':Table,PulseLoader},
 	computed:{
 		...mapGetters(['print_barcode'])
@@ -97,8 +97,7 @@ export default{
 				title:'initialize',
 				func:this.initBarcode,
 				class:['outline-green']
-			},
-			convert:convert
+			}
 		}
 	},
 	methods:{
@@ -110,34 +109,10 @@ export default{
 			this.setBarcode(item.barcode);
 		},
 		initializeItem(){
-			const request = new XMLHttpRequest();
-
-			const url = 'https://localhost:44379/LibraryWebService.asmx/InitializeItemLabel';
-			request.open('POST', url, false);
-			request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-			request.addEventListener("readystatechange", () => {
-				if(request.readyState === 4 && request.status === 200) {
-					console.log(this.convert.xml2json(request.responseText,{compact:true,spaces:4}));
-					console.log(this.convert.xml2json(request.responseText,{compact:false,spaces:4}));
-				}
-			});
-
-			request.send();
+			this.readFromRfid('InitializeItemLabel');
 		},
 		setBarcode(barcode){
-			const request = new XMLHttpRequest();
-
-			const url = 'https://localhost:44379/LibraryWebService.asmx/SetItemID';
-			request.open('POST', url, false);
-
-			request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-			request.addEventListener("readystatechange", () => {
-				if(request.readyState === 4 && request.status === 200) {
-					console.log(this.convert.xml2json(request.responseText,{compact:false,spaces:4}));
-					console.log(this.convert.xml2json(request.responseText,{compact:false,spaces:4}));
-				}
-			});
-			request.send('newID='+barcode);
+			this.readFromRfid('setItemID','newID='+barcode);
 		},
 		loadResults(){
 			this.$store.dispatch('setStore',{label:this.commit,data:{page:0}});

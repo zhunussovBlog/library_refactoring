@@ -10,7 +10,7 @@ export default{
 				if(request.readyState === 4 && request.status === 200) {
                     if(after!=null){
                         let convert= require('xml-js');
-                        let json=convert.xml2json(xml,{compact:true,spaces:4});
+                        let json=convert.xml2json(request.responseText,{compact:true,spaces:4});
                         json=JSON.parse(json);
                         after(json);
                     }

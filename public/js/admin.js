@@ -4458,9 +4458,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_common_Table__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../components/common/Table */ "./resources/js/admin/components/common/Table.vue");
 /* harmony import */ var vue_spinner_src_PulseLoader__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-spinner/src/PulseLoader */ "./node_modules/vue-spinner/src/PulseLoader.vue");
 /* harmony import */ var _mixins_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../mixins/common */ "./resources/js/admin/mixins/common.js");
+/* harmony import */ var _mixins_readFromRfid__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../mixins/readFromRfid */ "./resources/js/admin/mixins/readFromRfid.js");
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var xml_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! xml-js */ "./node_modules/xml-js/lib/index.js");
-/* harmony import */ var xml_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(xml_js__WEBPACK_IMPORTED_MODULE_5__);
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -4528,12 +4527,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
  //mixins
 
+
  // libraries
 
 
-
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  mixins: [_mixins_common__WEBPACK_IMPORTED_MODULE_4__.getResults, _mixins_common__WEBPACK_IMPORTED_MODULE_4__.download_file],
+  mixins: [_mixins_common__WEBPACK_IMPORTED_MODULE_4__.getResults, _mixins_common__WEBPACK_IMPORTED_MODULE_4__.download_file, _mixins_readFromRfid__WEBPACK_IMPORTED_MODULE_5__.default],
   components: {
     Back: _components_common_Back__WEBPACK_IMPORTED_MODULE_0__.default,
     Dropdown: _components_common_Dropdown__WEBPACK_IMPORTED_MODULE_1__.default,
@@ -4571,8 +4570,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         title: 'initialize',
         func: this.initBarcode,
         "class": ['outline-green']
-      },
-      convert: (xml_js__WEBPACK_IMPORTED_MODULE_5___default())
+      }
     };
   },
   methods: {
@@ -4584,46 +4582,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.setBarcode(item.barcode);
     },
     initializeItem: function initializeItem() {
-      var _this = this;
-
-      var request = new XMLHttpRequest();
-      var url = 'https://localhost:44379/LibraryWebService.asmx/InitializeItemLabel';
-      request.open('POST', url, false);
-      request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-      request.addEventListener("readystatechange", function () {
-        if (request.readyState === 4 && request.status === 200) {
-          console.log(_this.convert.xml2json(request.responseText, {
-            compact: true,
-            spaces: 4
-          }));
-          console.log(_this.convert.xml2json(request.responseText, {
-            compact: false,
-            spaces: 4
-          }));
-        }
-      });
-      request.send();
+      this.readFromRfid('InitializeItemLabel');
     },
     setBarcode: function setBarcode(barcode) {
-      var _this2 = this;
-
-      var request = new XMLHttpRequest();
-      var url = 'https://localhost:44379/LibraryWebService.asmx/SetItemID';
-      request.open('POST', url, false);
-      request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-      request.addEventListener("readystatechange", function () {
-        if (request.readyState === 4 && request.status === 200) {
-          console.log(_this2.convert.xml2json(request.responseText, {
-            compact: false,
-            spaces: 4
-          }));
-          console.log(_this2.convert.xml2json(request.responseText, {
-            compact: false,
-            spaces: 4
-          }));
-        }
-      });
-      request.send('newID=' + barcode);
+      this.readFromRfid('setItemID', 'newID=' + barcode);
     },
     loadResults: function loadResults() {
       this.$store.dispatch('setStore', {
@@ -4635,7 +4597,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.getResults(this.link, this.commit);
     },
     printIt: function printIt(barcodes) {
-      var _this3 = this;
+      var _this = this;
 
       var inventories = barcodes.map(function (barcode) {
         return barcode.id;
@@ -4645,9 +4607,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }, {
         responseType: 'blob'
       }).then(function (response) {
-        _this3.download_file(response, 'barcode', 'pdf');
+        _this.download_file(response, 'barcode', 'pdf');
 
-        _this3.$store.commit('setFullPageLoading', false);
+        _this.$store.commit('setFullPageLoading', false);
       });
     }
   }
@@ -7409,7 +7371,7 @@ __webpack_require__.r(__webpack_exports__);
           if (after != null) {
             var convert = __webpack_require__(/*! xml-js */ "./node_modules/xml-js/lib/index.js");
 
-            var json = convert.xml2json(xml, {
+            var json = convert.xml2json(request.responseText, {
               compact: true,
               spaces: 4
             });
