@@ -5884,6 +5884,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_common_Table__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../components/common/Table */ "./resources/js/admin/components/common/Table.vue");
 /* harmony import */ var _components_common_Tabs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../components/common/Tabs */ "./resources/js/admin/components/common/Tabs.vue");
 /* harmony import */ var _components_common_Input__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../components/common/Input */ "./resources/js/admin/components/common/Input.vue");
+/* harmony import */ var xml_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! xml-js */ "./node_modules/xml-js/lib/index.js");
+/* harmony import */ var xml_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(xml_js__WEBPACK_IMPORTED_MODULE_4__);
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -5953,6 +5955,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 // components
 
 
+
+ // libraries
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -6084,7 +6088,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         rightArray: []
       },
       barcode: '',
-      search_results: {}
+      search_results: {},
+      convert: (xml_js__WEBPACK_IMPORTED_MODULE_4___default())
     };
   },
   methods: {
@@ -6166,14 +6171,25 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       alert('wait for it. Close this alert and in console u will see all selected media');
       console.log(selected);
     },
-    ajaxRequest: function ajaxRequest() {
+    getRfidInfo: function getRfidInfo() {
+      this.barcode = this.getRfidBarcode();
+      this.search();
+    },
+    getRfidBarcode: function getRfidBarcode() {
+      var _this3 = this;
+
       var request = new XMLHttpRequest();
-      var url = 'https://localhost:44379/LibraryWebService.asmx/GetItemsStatus';
-      request.open('POST', url, true);
+      var url = 'https://localhost:44379/LibraryWebService.asmx/getItemIDS';
+      request.open('POST', url, false);
       request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
       request.addEventListener("readystatechange", function () {
         if (request.readyState === 4 && request.status === 200) {
-          console.log(request.responseText);
+          var json = _this3.convert.xml2json(request.responseText, {
+            compact: true,
+            spaces: 4
+          });
+
+          return json.ArrayOfResponse.Response.Result['_text'];
         }
       });
       request.send();
@@ -70162,7 +70178,7 @@ var render = function() {
                       staticClass: "ml-3 width-unset",
                       on: {
                         click: function($event) {
-                          return _vm.ajaxRequest()
+                          return _vm.getRfidInfo()
                         }
                       }
                     },

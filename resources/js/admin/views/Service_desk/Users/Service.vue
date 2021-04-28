@@ -37,7 +37,7 @@
 			<tabs :components="components" tabClasses="font-size-18 mr-3" :tabOnClick="tabOnClick"/>
 			<div class="d-flex" v-if="state=='issuance'">
 				<input-div :search="true" :placeholder="$t('barcode')" v-model="barcode" :onSubmit="search"/>
-				<button class="ml-3 width-unset" @click="ajaxRequest()">from RFID reader</button>
+				<button class="ml-3 width-unset" @click="getRfidInfo()">from RFID reader</button>
 			</div>
 		</div>
 		<div class="mt-4">
@@ -58,6 +58,10 @@ import Back from '../../../components/common/Back'
 import TableDiv from '../../../components/common/Table'
 import Tabs from '../../../components/common/Tabs'
 import InputDiv from '../../../components/common/Input'
+
+// libraries
+import convert from 'xml-js'
+
 export default{
 	components:{Back,TableDiv,Tabs,InputDiv},
 	props:{
@@ -181,7 +185,8 @@ export default{
 				rightArray:[]
 			},
 			barcode:'',
-			search_results:{}
+			search_results:{},
+			convert:convert
 		}
 	},
 	methods:{
@@ -226,15 +231,20 @@ export default{
 			alert('wait for it. Close this alert and in console u will see all selected media');
 			console.log(selected);
 		},
-		ajaxRequest() {
+		getRfidInfo(){
+			this.barcode = this.getRfidBarcode();
+			this.search();
+		},
+		getRfidBarcode(){
 			const request = new XMLHttpRequest();
 
-			const url = 'https://localhost:44379/LibraryWebService.asmx/GetItemsStatus';
-			request.open('POST', url, true);
+			const url = 'https://localhost:44379/LibraryWebService.asmx/getItemIDS';
+			request.open('POST', url, false);
 			request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 			request.addEventListener("readystatechange", () => {
 				if(request.readyState === 4 && request.status === 200) {
-					console.log(request.responseText);
+					let json=this.convert.xml2json(request.responseText,{compact:true,spaces:4});
+					return (json.ArrayOfResponse.Response.Result['_text']);
 				}
 			});
 
