@@ -245,6 +245,7 @@ export default{
 				if(request.readyState === 4 && request.status === 200) {
 					let json=this.convert.xml2json(request.responseText,{compact:true,spaces:4});
 					json=JSON.parse(json);
+					console.log(json);
 					return (json.ArrayOfResponse.Response.Result['_text']);
 				}
 			});
