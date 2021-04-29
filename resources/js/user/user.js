@@ -34,6 +34,19 @@ Number.prototype.pad=(n)=> {
     return (n < 10) ? ("0" + n) : n;
 }
 
+// returns you an object without a key  ( deletes a key from an object )
+window.objectWithoutKey = (object, key) => {
+  const {[key]: deletedKey, ...otherKeys} = object;
+  return otherKeys;
+}
+
+// capitalizes any string ( only first letter )
+window.capitalize = (s) => {
+	let string = s.slice();
+	if (typeof string !== 'string') return ''
+    return string.charAt(0).toUpperCase() + string.slice(1)
+}
+
 new Vue({
   render: h => h(App),
   i18n,

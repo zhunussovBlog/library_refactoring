@@ -1,6 +1,10 @@
 import Home from "../views/Home";
+
 import Search from "../views/Search";
 import Full from "../views/Search/results/full_description";
+
+import Mybooks from "../views/Mybooks";
+
 export default [
 {
     path: '/',
@@ -18,6 +22,11 @@ export default [
 {
     path:'/full',
     component:Full
+},
+{
+    path:'/mybooks',
+    name:'mybooks',
+    component:Mybooks
 },
 {
     path:'*',

@@ -440,7 +440,7 @@ input{
 }
 
 .table{
-	position: position-relative;
+	position: relative;
 	max-height: max(68vh,31.25em);
 	overflow: auto;
 	border-bottom:0.0625em solid #E8E8E8;
