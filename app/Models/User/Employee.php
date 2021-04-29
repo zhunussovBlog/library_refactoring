@@ -60,7 +60,7 @@ class Employee extends Authenticatable implements UserCidAttribute
         'attempt_date',
     ];
 
-    protected $appends = ['is_admin', 'user_cid', 'surname', 'id', 'username'];
+    protected $appends = ['is_admin', 'user_cid', 'surname', 'id', 'username', 'type'];
 
     public function getUserCidAttribute()
     {
@@ -135,5 +135,13 @@ class Employee extends Authenticatable implements UserCidAttribute
                         $join->on('eg.status', '=', 1);
                     })->leftJoin('dbmaster.dep_gorev as dg', 'dg.dep_gorev_id', '=', 'eg.dep_gorev_id')
                     ->where('e.emp_id', '=', $id);
+    }
+
+    /**
+     * @return string
+     */
+    public function getTypeAttribute(): string
+    {
+        return 'employee';
     }
 }

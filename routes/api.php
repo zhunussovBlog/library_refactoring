@@ -19,6 +19,7 @@ Route::post('cgi-bin/check.cgi', 'Api\Auth\ProxyAuthController')->name('cgi-logi
 Route::middleware(['auth:api-student,api-employee'])->group(function () {
     Route::post('logout', 'Api\Auth\LogoutController')->name('logout');
     Route::get('user', 'Api\Auth\UserController')->name('user');
+    Route::get('user/my-books', 'Api\Service\ShowController@userInfo')->name('my-books');
 
     // Admin routes
     Route::middleware(['api-admin'])->group(function () {

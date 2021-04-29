@@ -45,7 +45,6 @@ class Student extends Authenticatable implements UserCidAttribute
         'web_lan',
         'last_psw_set_date',
         'emp_id',
-        'type',
         'name_native',
         'surname_native',
         'old_sdu_id',
@@ -59,7 +58,7 @@ class Student extends Authenticatable implements UserCidAttribute
         'study_count'
     ];
 
-    protected $appends = ['user_cid', 'username', 'id'];
+    protected $appends = ['user_cid', 'username', 'id', 'type'];
 
     public function getUserCidAttribute()
     {
@@ -121,5 +120,13 @@ class Student extends Authenticatable implements UserCidAttribute
                 $join->on('dp.prog_code', '=', 'sp.prog_code');
                 $join->on('dp.son', '=', 1);
             })->where('t.stud_id', '=', $id);
+    }
+
+    /**
+     * @return string
+     */
+    public function getTypeAttribute(): string
+    {
+        return 'student';
     }
 }
