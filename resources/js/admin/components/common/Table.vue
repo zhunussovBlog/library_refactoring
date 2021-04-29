@@ -51,7 +51,7 @@
 							</span>
 						</th>
 						<!-- all clickables share one table head -->
-						<th class="header bg-lightgrey" v-if="clickables"></th>
+						<th class="header bg-lightgrey" :class="{'bg-orange  text-white' :selectable.available}" v-if="clickables"></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -97,6 +97,9 @@
 								<button type="button" class="ml-2 outline-green" @click="service.func(info)" v-if="service.available">
 									<span class="icon"><Book /></span>
 									<span>{{$t(service.title)}}</span>
+								</button>
+								<button type="button" class="ml-2" :class="custom_func.class" @click="custom_func.func(info)" v-if="custom_func.available">
+									<span>{{$t(custom_func.title)}}</span>
 								</button>
 							</div>
 						</td>
@@ -160,6 +163,10 @@ export default{
 			default(){return {}}
 		},
 		deleteObj:{
+			type:Object,
+			default(){return {}}
+		},
+		custom_func:{
 			type:Object,
 			default(){return {}}
 		},

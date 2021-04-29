@@ -5,11 +5,11 @@
 			<div class="d-flex align-items-start justify-content-between">
 				<div class="d-flex align-items-start flex-fill">
 					<div class="d-flex flex-column flex-fill">
-						<div class="d-flex flex-fill" :class="{'mt-2':index!=0}" v-for="(input,index) in items.search.search_options">
+						<div class="d-flex flex-fill" :class="{'mt-2':index!=0}" v-for="(input,index) in items.search.search_options" :key="index">
 							<div class="d-flex flex-fill">
 								<div class="select position-relative bg-white z-index-1">
 									<select class="no_border_right h-100" v-model="input.key">
-										<option v-for="(item,index) in items.search_fields" :value="item.key">{{$tc(item.key,1)}}</option>
+										<option v-for="(item,index) in items.search_fields" :value="item.key" :key="index">{{$tc(item.key,1)}}</option>
 									</select>
 									<label class="placeholder">{{$t('type')}}</label>
 								</div>

@@ -78,7 +78,7 @@ export default{
 				heads=heads.concat([{name:'degree',link:'degree_position'},{name:'department',link:'department'}]);
 			}
 			else{
-				heads=heads.concat([{name:'faculty',link:'faculty'},{name:'status',link:'status'}]);
+				heads=heads.concat([{name:'faculty',link:'faculty'},{name:'degree',link:'degree'}]);
 			}
 			this.$store.state.users.heads=heads;
 		},

@@ -6,13 +6,25 @@
 				<span class="cursor-pointer font-size-20"><X /></span>
 			</div>
 		</div>
-		<div class="d-flex align-items-start mt-2">
-			<div class="p-3 rounded-lg bg-lightgrey">
-				<div class="image" :style="'background-image: url('+backgroundImage+')'"/>
-				<div class="mt-2 text-center">{{$t(type)}}</div>
+		<div class="d-flex mt-2">
+			<div class="d-flex flex-column">
+				<div class="p-3 rounded-lg bg-lightgrey">
+					<div class="image imageWidth imageHeight" :style="'background-image: url('+backgroundImage+')'"/>
+					<div class="mt-2 text-center">{{$t(type)}}</div>
+				</div>
+				<div class="py-2 mt-3 bg-lightgrey d-flex flex-column align-items-center">
+					<div class="imageWidth d-flex justify-content-between" v-for="(value,key,index) in user.total" :key="index">
+						<div :class="[{'green':index==0},{'orange':index==1},{'red':index==2}]">
+							{{$t(key)+":"}}
+						</div>
+						<div>
+							{{value}}
+						</div>
+					</div>
+				</div>
 			</div>
-			<div class="bg-lightgrey rounded-lg p-3 ml-4 flex-1" v-if='user.info'>
-				<div class="d-flex mt-2" v-for="(value,key,index) in objectWithoutKey(user.info,'user_cid') ">
+			<div class="bg-lightgrey rounded-lg p-3 ml-4 flex-fill" v-if='user.info'>
+				<div class="d-flex" :class="{'mt-4':index!=0}" v-for="(value,key,index) in objectWithoutKey(user.info,'user_cid')" :key="index">
 					<div class="text-grey">{{capitalize($t(key))}}:</div>
 					<div class="ml-2">{{value}}</div>
 					&nbsp;
@@ -43,21 +55,7 @@ export default {
 	},
 	data(){
 		return{
-			user:{
-				user:{},
-				media:[]
-			},
-			heads:[
-				{name:'author',link:'authors'},
-				{name:'barcode',link:'barcode'},
-				{name:'delivery_date',link:'delivery_date'},
-				{name:'due_date',link:'due_date'},
-				{name:'inventory_number',link:'inv_id'},
-				{name:'issue_date',link:'issue_date'},
-				{name:'status',link:'status'},
-				{name:'titles',link:'title',countable:true},
-				{name:'year',link:'year'},
-				],
+			user:{}
 		}
 	},
 	methods:{
@@ -70,10 +68,12 @@ export default {
 		getInfo(){
 			this.$http.get('service/user/'+this.type+'/'+this.id).then(response=>{
 				this.user=response.data.res;
+				this.user.info=objectWithoutKey(this.user.info,'id');
 			}).catch(e=>{
 				this.goTo('users');
 			})
-		}
+		},
+
 	},
 	created(){
 		this.getInfo();
@@ -88,9 +88,22 @@ input:disabled{
 	color:black;
 }
 .image{
-	width:15.625em;
-	height: calc(15.625em * 4/3);
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
+}
+.imageWidth{
+	width:15.625em;
+}
+.imageHeight{
+	height: calc(15.625em * 4/3);
+}
+.red{
+	color:#FF0000;
+}
+.orange{
+	color:#FF9D29;
+}
+.green{
+	color:#00BB78;
 }
 </style>

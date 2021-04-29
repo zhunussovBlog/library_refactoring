@@ -11,7 +11,6 @@
 	"searching":"Search",
 	"reset":"Reset",
 	"load_all":"Load all data",
-	"create":"Create",
 	"count":"Count",
 	"save":"Save",
 	"cancel":"Cancel",
@@ -46,6 +45,7 @@
 	"apply":"Apply",
 	"showing_pages":"{from} - {to} out of {total}",
 	"page":"Page",
+	"page_num":"Page {num}",
 	"previous":"Prev",
 	"next":"Next",
 	"move_to":"Move",
@@ -182,7 +182,7 @@
 	"show_for_week":"Show for week",
 	"show_for_month":"Show for month",
 	"in_lib_by_week":"In library by week",
-	"in_lib_by_month":"In library by month",
+	"in_lib_by_month":"In library by year",
 
 	"print":"Print barcode",
 	"language":"Language",
@@ -190,5 +190,10 @@
 	"duration":"Duration",
 	"issuance":"Issuance",
 	"return":"Return",
-	"history":"History"
+	"history":"History",
+	"dept":"Overdue",
+	"borrowed":"Borrowed",
+	"returned":"Returned",
+
+	"initialize":"Initialize"
 }

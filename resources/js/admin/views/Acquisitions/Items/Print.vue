@@ -43,8 +43,9 @@
 					:link="link"
 					:commit="commit"
 					:pagination="print_barcode.pagination"
-					:clickables="false"
+					:clickables="true"
 					:sortable="false"
+					:custom_func="custom_func"
 					/>
 				</div>
 			</div>
@@ -55,8 +56,6 @@
 // components
 import Back from '../../../components/common/Back'
 import Dropdown from '../../../components/common/Dropdown'
-
-// components
 import Table from '../../../components/common/Table'
 
 // loading indicator
@@ -64,10 +63,13 @@ import PulseLoader from 'vue-spinner/src/PulseLoader'
 
 //mixins
 import {getResults,download_file} from '../../../mixins/common'
+import readFromRfid from '../../../mixins/readFromRfid'
 
+// libraries
 import {mapGetters} from 'vuex'
+
 export default{
-	mixins:[getResults,download_file],
+	mixins:[getResults,download_file,readFromRfid],
 	components:{Back,Dropdown,'table-div':Table,PulseLoader},
 	computed:{
 		...mapGetters(['print_barcode'])
@@ -89,12 +91,28 @@ export default{
 			},
 			link:'/barcode',
 			commit:'print_barcode',
-			barcodes:[]
+			barcodes:[],
+			custom_func:{
+				available:true,
+				title:'initialize',
+				func:this.initBarcode,
+				class:['outline-green']
+			}
 		}
 	},
 	methods:{
 		changeMode(mode){
 			this.type=mode;
+		},
+		initBarcode(item){
+			this.initializeItem();
+			this.setBarcode(item.barcode);
+		},
+		initializeItem(){
+			this.readFromRfid('InitializeItemLabel');
+		},
+		setBarcode(barcode){
+			this.readFromRfid('SetItemID','newID='+barcode);
 		},
 		loadResults(){
 			this.$store.dispatch('setStore',{label:this.commit,data:{page:0}});
