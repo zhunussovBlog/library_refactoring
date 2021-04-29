@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 Route::post('login', 'Auth\LoginController')->name('web-login');
 Route::post('logout', 'Auth\LogoutController')->name('web-logout');
+Route::get('user', 'Auth\UserController')->name('web-user');
 
 Route::group(['prefix' => 'admin', 'middleware' => ['web', 'web-admin']], static function () {
     Route::get('{any?}', static function () {

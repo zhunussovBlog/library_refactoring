@@ -13,6 +13,7 @@ use App\Models\User\Employee;
 use App\Models\User\Image;
 use App\Models\User\Student;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ShowController extends Controller
@@ -47,12 +48,13 @@ class ShowController extends Controller
     }
 
     /**
+     * @param Request $request
      * @return JsonResponse
      * @throws ReturnResponseException
      */
-    public function userInfo(): JsonResponse
+    public function userInfo(Request $request): JsonResponse
     {
-        $user = Auth::user();
+        $user = $request->user();
 
         return $this->show($user->type, $user->id);
     }

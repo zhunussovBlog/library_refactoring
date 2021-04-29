@@ -8,6 +8,7 @@ use App\Http\Requests\UserLoginRequest;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
 {
@@ -23,11 +24,12 @@ class LoginController extends Controller
 
         Auth::login($user);
 
-        session()->put('user', $user);
 
         $token = $user->createToken(config('auth.token'));
 
         $user = Auth::user();
+
+        Session::put('user', ['info' => $user, 'access_token' => $token->accessToken]);
 
         return response()->json(['res' => [
             'access_token' => $token->accessToken,
