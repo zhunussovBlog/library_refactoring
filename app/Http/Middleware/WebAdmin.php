@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class WebAdmin
 {
@@ -16,8 +17,8 @@ class WebAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        $user = session()->get('user');
-        if (empty($user) || !$user->is_admin) {
+        $user = Session::get('user');
+        if (empty($user) || !$user['info']->is_admin) {
             return redirect('/');
         }
 
