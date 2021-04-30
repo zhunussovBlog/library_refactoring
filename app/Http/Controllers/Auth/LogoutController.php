@@ -11,7 +11,8 @@ class LogoutController extends Controller
 {
     public function __invoke(Request $request): JsonResponse
     {
-        $request->user()->tokens()->delete();
+        $user = $request->user('api-student') ?? $request->user('api-employee');
+        $user->tokens()->delete();
         Session::forget('user');
         return response()->json(['res' => [
             'message' => 'Logged out'
