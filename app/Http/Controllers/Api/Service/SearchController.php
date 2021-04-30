@@ -47,7 +47,7 @@ class SearchController extends Controller
         $value = mb_strtolower($validated['value']);
 
         $perPage = $request->get('per_page') ?? 10;
-        $data = Book::defaultQuery()->addSelect('i.barcode')
+        $data = Book::defaultQuery()->addSelect('i.barcode', 'i.inv_id')
             ->leftJoin('lib_inventory as i', 'b.book_id', '=', 'i.book_id')
             ->where(DB::raw("lower(i.barcode)"), 'like', $value . '%')->get();
 
