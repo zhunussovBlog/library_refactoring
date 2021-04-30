@@ -141,4 +141,7 @@ export default {
 	"class":"Год",
 	"faculty":"Факультет",
 	"program":"Программа",
+	"issue_date":"Дата выпуска",
+	"inv_id":"Номер инвентаря",
+	"barcode":"Баркод",
 }

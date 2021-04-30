@@ -28,7 +28,7 @@ export default{
 		logout(){
 			this.$store.commit('setFullPageLoading',true);
 			this.$http.defaults.baseURL = window.configs.baseURL;
-			this.$http.get('logout').then(response=>{
+			this.$http.post('logout').then(response=>{
 				this.$store.dispatch('logout');
 				this.message_success('logout',response);
 			}).catch(error=>{

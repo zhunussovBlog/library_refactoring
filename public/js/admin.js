@@ -5847,6 +5847,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_common_Tabs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../components/common/Tabs */ "./resources/js/admin/components/common/Tabs.vue");
 /* harmony import */ var _components_common_Input__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../components/common/Input */ "./resources/js/admin/components/common/Input.vue");
 /* harmony import */ var _mixins_readFromRfid__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../mixins/readFromRfid */ "./resources/js/admin/mixins/readFromRfid.js");
+/* harmony import */ var _mixins_messages__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../mixins/messages */ "./resources/js/admin/mixins/messages.js");
+/* harmony import */ var _mixins_goTo__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../mixins/goTo */ "./resources/js/admin/mixins/goTo.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -5920,6 +5922,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
  // mixins
 
 
+
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
     Back: _components_common_Back__WEBPACK_IMPORTED_MODULE_0__.default,
@@ -5927,7 +5931,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     Tabs: _components_common_Tabs__WEBPACK_IMPORTED_MODULE_2__.default,
     InputDiv: _components_common_Input__WEBPACK_IMPORTED_MODULE_3__.default
   },
-  mixins: [_mixins_readFromRfid__WEBPACK_IMPORTED_MODULE_4__.default],
+  mixins: [_mixins_readFromRfid__WEBPACK_IMPORTED_MODULE_4__.default, _mixins_messages__WEBPACK_IMPORTED_MODULE_5__.message_success, _mixins_goTo__WEBPACK_IMPORTED_MODULE_6__.goTo],
   props: {
     info: {
       type: Object,
@@ -6025,10 +6029,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
       if (this.state == 'history') {
         data = this.user.history;
-      }
-
-      if (Object.keys(this.search_results).length > 0) {
-        data = this.search_results;
+      } else if (this.state == 'issuance') {
+        data = this.books;
+      } else {
+        data = [];
       }
 
       return data;
@@ -6050,7 +6054,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         rightArray: []
       },
       barcode: '',
-      search_results: {}
+      search_results: {},
+      books: []
     };
   },
   methods: {
@@ -6119,27 +6124,45 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         _this.user.info = objectWithoutKey(_this.user.info, 'id');
 
         _this.makeUserInfo();
-      })["catch"](function (e) {});
+      })["catch"](function (e) {
+        _this.goTo('users');
+      });
     },
     search: function search() {
       var _this2 = this;
 
       this.$http.get('service/media/search?value=' + this.barcode).then(function (response) {
         _this2.search_results = response.data.res.data;
+
+        _this2.addToBooks(_this2.search_results);
       });
     },
+    addToBooks: function addToBooks(books) {
+      this.books = this.books.concat(books);
+    },
     checkIn: function checkIn(selected) {
-      this.readFromRfid('SetItemsCheckInOut', 'status=1');
+      var _this3 = this;
+
+      var info = {
+        loan_id: 0,
+        inv_id: selected[0].inv_id,
+        user_cid: this.user.info.user_cid
+      };
+      this.$http.post('service/media/give', info).then(function (response) {
+        _this3.message_success('check in ', response);
+      });
+      this.readFromRfid('SetItemsCheckInOut', 'status=0');
+      this.getInfo();
     },
     getRfidInfo: function getRfidInfo() {
       this.getRfidBarcode();
       this.search();
     },
     getRfidBarcode: function getRfidBarcode() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.readFromRfid('getItemIDS', '', function (json) {
-        _this3.barcode = json.ArrayOfResponse.Response.Result['_text'];
+        _this4.barcode = json.ArrayOfResponse.Response.Result['_text'];
       });
     }
   },
@@ -6428,13 +6451,16 @@ __webpack_require__.r(__webpack_exports__);
     logout: function logout() {
       var _this = this;
 
-      this.$http.get('logout').then(function (response) {
+      this.$http.defaults.baseURL = window.configs.baseURL;
+      this.$http.post('logout').then(function (response) {
         _this.$store.commit('setUser', {});
 
         localStorage.removeItem('access_token');
         window.location.replace('/');
       })["catch"](function (error) {
         _this.message_error('logout', error);
+      }).then(function () {
+        _this.$http.defaults.baseURL = window.configs.baseURL + window.configs.api;
       });
     },
     showDropdown: function showDropdown() {
@@ -6760,10 +6786,13 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.use(vue_simple_alert__WEBPACK_IMPORTED_
 window.configs = Object.assign({}, _configs_base__WEBPACK_IMPORTED_MODULE_7__.default);
 vue__WEBPACK_IMPORTED_MODULE_8__.default.config.productionTip = false; // setting axios defaults
 
+axios__WEBPACK_IMPORTED_MODULE_0___default().interceptors.request.use(function (config) {
+  config.headers['Content-Language'] = _locales__WEBPACK_IMPORTED_MODULE_5__.default.locale;
+  config.headers['Authorization'] = 'Bearer ' + _store__WEBPACK_IMPORTED_MODULE_6__.default.getters.access_token;
+  return config;
+});
 (axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.baseURL) = window.configs.baseURL + window.configs.api;
-(axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.headers.common.Authorization) = 'Bearer ' + localStorage.getItem('access_token');
-(axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.headers.common["Content-Type"]) = 'application/json';
-(axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.headers.common["Content-Language"]) = _locales__WEBPACK_IMPORTED_MODULE_5__.default.locale; // turning axios into this.$http - for the usage to be simpler
+(axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.headers.common["Content-Type"]) = 'application/json'; // turning axios into this.$http - for the usage to be simpler
 // $i18n is turned automatically while creating app, just like store 
 
 vue__WEBPACK_IMPORTED_MODULE_8__.default.prototype.$http = (axios__WEBPACK_IMPORTED_MODULE_0___default()); // custom
@@ -7661,6 +7690,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  // auth
+  access_token: function access_token(state) {
+    var token = localStorage.getItem('access_token');
+
+    if (state.user != null) {
+      if (state.user.access_token) {
+        token = state.user.access_token;
+      }
+    }
+
+    return token;
+  },
   // authorized user
   user: function user(state) {
     return state.user;

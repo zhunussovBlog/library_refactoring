@@ -61,9 +61,11 @@ import InputDiv from '../../../components/common/Input'
 
 // mixins
 import readFromRfid from '../../../mixins/readFromRfid'
+import {message_success} from '../../../mixins/messages'
+import {goTo} from '../../../mixins/goTo'
 export default{
 	components:{Back,TableDiv,Tabs,InputDiv},
-	mixins:[readFromRfid],
+	mixins:[readFromRfid,message_success,goTo],
 	props:{
 		info:{
 			type:Object,
@@ -160,8 +162,11 @@ export default{
 			if(this.state=='history'){
 				data=this.user.history
 			}
-			if(Object.keys(this.search_results).length>0){
-				data=this.search_results;
+			else if(this.state=='issuance'){
+				data=this.books
+			}
+			else{
+				data=[]
 			}
 			return data;
 		}
@@ -185,7 +190,8 @@ export default{
 				rightArray:[]
 			},
 			barcode:'',
-			search_results:{}
+			search_results:{},
+			books:[]
 		}
 	},
 	methods:{
@@ -219,15 +225,30 @@ export default{
 				this.user=response.data.res;
 				this.user.info=objectWithoutKey(this.user.info,'id');
 				this.makeUserInfo();
-			}).catch(e=>{})
+			}).catch(e=>{
+				this.goTo('users');
+			})
 		},
 		search(){
 			this.$http.get('service/media/search?value='+this.barcode).then(response=>{
 				this.search_results=response.data.res.data;
+				this.addToBooks(this.search_results);
 			})
 		},
+		addToBooks(books){
+			this.books=this.books.concat(books);
+		},
 		checkIn(selected){
-			this.readFromRfid('SetItemsCheckInOut','status=1');
+			let info ={
+				loan_id:0,
+				inv_id:selected[0].inv_id,
+				user_cid:this.user.info.user_cid
+			};
+			this.$http.post('service/media/give',info).then(response=>{
+				this.message_success('check in ',response);
+			});
+			this.readFromRfid('SetItemsCheckInOut','status=0');
+			this.getInfo();
 		},
 		getRfidInfo(){
 			this.getRfidBarcode();
