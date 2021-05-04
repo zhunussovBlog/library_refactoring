@@ -287,6 +287,8 @@ export default{
 }
 .info_table{
 	width: 100%;
+	border-spacing: .625em 0;
+	border-collapse: separate;
 }
 .info_table > tr >td{
 	vertical-align: top;

@@ -28054,7 +28054,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.image[data-v-4b3707e1]{\n\tbackground-repeat: no-repeat;\n\tbackground-size: 100% 100%;\n}\n.imageWidth[data-v-4b3707e1]{\n\twidth:14em;\n}\n.imageHeight[data-v-4b3707e1]{\n\theight: calc(14em * 4/3);\n}\n.red[data-v-4b3707e1]{\n\tcolor:#FF0000;\n}\n.orange[data-v-4b3707e1]{\n\tcolor:#FF9D29;\n}\n.green[data-v-4b3707e1]{\n\tcolor:#00BB78;\n}\n.info_table[data-v-4b3707e1]{\n\twidth: 100%;\n}\n.info_table > tr >td[data-v-4b3707e1]{\n\tvertical-align: top;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.image[data-v-4b3707e1]{\n\tbackground-repeat: no-repeat;\n\tbackground-size: 100% 100%;\n}\n.imageWidth[data-v-4b3707e1]{\n\twidth:14em;\n}\n.imageHeight[data-v-4b3707e1]{\n\theight: calc(14em * 4/3);\n}\n.red[data-v-4b3707e1]{\n\tcolor:#FF0000;\n}\n.orange[data-v-4b3707e1]{\n\tcolor:#FF9D29;\n}\n.green[data-v-4b3707e1]{\n\tcolor:#00BB78;\n}\n.info_table[data-v-4b3707e1]{\n\twidth: 100%;\n\tborder-spacing: .625em 0;\n\tborder-collapse: separate;\n}\n.info_table > tr >td[data-v-4b3707e1]{\n\tvertical-align: top;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
