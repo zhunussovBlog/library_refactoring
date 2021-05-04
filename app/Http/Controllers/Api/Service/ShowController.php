@@ -36,6 +36,7 @@ class ShowController extends Controller
         $image = $image ? 'data:image/' . $type . ';base64,' . base64_encode($image->image) : null;
 
         $total = $this->countTotal($media);
+        $borrowed = $this->getBorrowedBooks($media);
 
         return response()->json([
             'res' => [
@@ -43,6 +44,7 @@ class ShowController extends Controller
                 'photo' => $image,
                 'history' => $media,
                 'total' => $total,
+                'return' => $borrowed,
             ]
         ]);
     }
@@ -90,6 +92,18 @@ class ShowController extends Controller
         return response()->json([
             'res' => FilterFields::filterFields(new UserSearchFields())
         ]);
+    }
+
+    private function getBorrowedBooks(array $media): array
+    {
+        $borrowed = [];
+        foreach ($media as $item) {
+            if ($item['status'] === 'issued' || $item['status'] === 'overdue') {
+                $borrowed[] = $item;
+            }
+        }
+
+        return $borrowed;
     }
 
     private function countTotal(array $media): array
