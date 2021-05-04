@@ -5920,6 +5920,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
 // components
 
 
@@ -5994,13 +5995,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           link: 'due_date'
         }, {
           name: 'author',
-          link: 'author'
+          link: 'authors'
         }, {
           name: 'barcode',
           link: 'barcode'
         }, {
           name: 'inventory_number',
-          link: 'inv_no'
+          link: 'inv_id'
         }, {
           name: 'title',
           link: 'title'
@@ -6037,7 +6038,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       } else if (this.state == 'issuance') {
         data = this.books;
       } else {
-        data = [];
+        data = this.user["return"];
       }
 
       return data;
@@ -6060,7 +6061,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       },
       barcode: '',
       search_results: {},
-      books: []
+      books: [],
+      custom_func: {
+        title: 'return',
+        "class": 'outline-green',
+        func: this.checkOut,
+        available: true
+      }
     };
   },
   methods: {
@@ -6160,13 +6167,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
                   user_cid: _this3.user.info.user_cid
                 };
                 _context.next = 3;
-                return _this3.$http.post('service/media/give', info).then(function (response) {
-                  _this3.message_success('check in ', response);
-                });
+                return _this3.readFromRfid('SetItemsCheckInOut', 'status=0');
 
               case 3:
                 _context.next = 5;
-                return _this3.readFromRfid('SetItemsCheckInOut', 'status=0');
+                return _this3.$http.post('service/media/give', info).then(function (response) {
+                  _this3.message_success('check in ', response);
+                });
 
               case 5:
                 _this3.getInfo();
@@ -6179,15 +6186,46 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }, _callee);
       }))();
     },
+    checkOut: function checkOut(book) {
+      var _this4 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+        var info;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                info = {
+                  loan_id: book.loan_id,
+                  inv_id: book.inv_id,
+                  user_cid: _this4.user.info.user_cid
+                }; // await this.readFromRfid('SetItemsCheckInOut','status=1');
+
+                _context2.next = 3;
+                return _this4.$http.post('service/media/back', info).then(function (response) {
+                  _this4.message_success('check out', response);
+                });
+
+              case 3:
+                _this4.getInfo();
+
+              case 4:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
+    },
     getRfidInfo: function getRfidInfo() {
       this.getRfidBarcode();
       this.search();
     },
     getRfidBarcode: function getRfidBarcode() {
-      var _this4 = this;
+      var _this5 = this;
 
       this.readFromRfid('getItemIDS', '', function (json) {
-        _this4.barcode = json.ArrayOfResponse.Response.Result['_text'];
+        _this5.barcode = json.ArrayOfResponse.Response.Result['_text'];
       });
     }
   },
@@ -70269,7 +70307,8 @@ var render = function() {
               selectable: _vm.selectable,
               clickables: _vm.clickables,
               sortable: false,
-              pagination: false
+              pagination: false,
+              custom_func: _vm.custom_func
             }
           })
         ],

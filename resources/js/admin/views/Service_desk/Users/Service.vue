@@ -48,6 +48,7 @@
 			:clickables="clickables"
 			:sortable="false"
 			:pagination="false"
+			:custom_func="custom_func"
 			/>
 		</div>
 	</div>
@@ -120,13 +121,13 @@ export default{
 					name:'due_date',link:'due_date'
 				},
 				{
-					name:'author',link:'author'
+					name:'author',link:'authors'
 				},
 				{
 					name:'barcode',link:'barcode'
 				},
 				{
-					name:'inventory_number',link:'inv_no'
+					name:'inventory_number',link:'inv_id'
 				},
 				{
 					name:'title',link:'title'
@@ -166,7 +167,7 @@ export default{
 				data=this.books
 			}
 			else{
-				data=[]
+				data=this.user.return
 			}
 			return data;
 		}
@@ -191,7 +192,13 @@ export default{
 			},
 			barcode:'',
 			search_results:{},
-			books:[]
+			books:[],
+			custom_func:{
+				title:'return',
+				class:'outline-green',
+				func:this.checkOut,
+				available:true
+			}
 		}
 	},
 	methods:{
@@ -244,10 +251,22 @@ export default{
 				inv_id:selected[0].inv_id,
 				user_cid:this.user.info.user_cid
 			};
+			await this.readFromRfid('SetItemsCheckInOut','status=0');
 			await this.$http.post('service/media/give',info).then(response=>{
 				this.message_success('check in ',response);
 			});
-			await this.readFromRfid('SetItemsCheckInOut','status=0');
+			this.getInfo();
+		},
+		async checkOut(book){
+			let info ={
+				loan_id:book.loan_id,
+				inv_id:book.inv_id,
+				user_cid:this.user.info.user_cid
+			};
+			// await this.readFromRfid('SetItemsCheckInOut','status=1');
+			await this.$http.post('service/media/back',info).then(response=>{
+				this.message_success('check out',response);
+			});
 			this.getInfo();
 		},
 		getRfidInfo(){
