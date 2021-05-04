@@ -6156,29 +6156,28 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var _this3 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-        var info;
+        var now, info;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
+                now = new Date();
                 info = {
                   loan_id: 0,
                   inv_id: selected[0].inv_id,
-                  user_cid: _this3.user.info.user_cid
-                };
-                _context.next = 3;
-                return _this3.readFromRfid('SetItemsCheckInOut', 'status=0');
+                  user_cid: _this3.user.info.user_cid,
+                  due_date: now
+                }; // await this.readFromRfid('SetItemsCheckInOut','status=0');
 
-              case 3:
-                _context.next = 5;
+                _context.next = 4;
                 return _this3.$http.post('service/media/give', info).then(function (response) {
                   _this3.message_success('check in ', response);
                 });
 
-              case 5:
+              case 4:
                 _this3.getInfo();
 
-              case 6:
+              case 5:
               case "end":
                 return _context.stop();
             }

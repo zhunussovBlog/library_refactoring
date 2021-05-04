@@ -55,7 +55,7 @@ class ActionsController extends Controller
 
         $validated['web_log_id'] = $webLog;
 
-        $validated['due_date'] = Carbon::now()->toDateString();
+        $validated['due_date'] = Carbon::now()->addDay()->toDateString();
 
         return $validated;
     }

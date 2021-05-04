@@ -246,12 +246,14 @@ export default{
 			this.books=this.books.concat(books);
 		},
 		async checkIn(selected){
+			let now=new Date();
 			let info ={
 				loan_id:0,
 				inv_id:selected[0].inv_id,
-				user_cid:this.user.info.user_cid
+				user_cid:this.user.info.user_cid,
+				due_date:now
 			};
-			await this.readFromRfid('SetItemsCheckInOut','status=0');
+			// await this.readFromRfid('SetItemsCheckInOut','status=0');
 			await this.$http.post('service/media/give',info).then(response=>{
 				this.message_success('check in ',response);
 			});
