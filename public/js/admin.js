@@ -2850,6 +2850,7 @@ __webpack_require__.r(__webpack_exports__);
   watch: {
     'data': function data(newVal, oldVal) {
       this.array = newVal;
+      console.log(newVal);
     }
   },
   methods: {
@@ -7049,6 +7050,12 @@ var getResults = {
           request: s_request
         };
 
+        if (response.data.res.current_page != null) {
+          data.pagination = true;
+        }
+
+        ;
+
         if (store.all) {
           data.all = response.data.all;
         }
@@ -7100,14 +7107,21 @@ var getAllData = {
           link: '/index',
           mode: 'get'
         };
+        var data = {
+          data: response.data,
+          searching: true,
+          request: s_request
+        };
+
+        if (response.data.res.current_page != null) {
+          data.pagination = true;
+        }
+
+        ;
 
         _this2.$store.dispatch('setStore', {
           label: commit,
-          data: {
-            data: response.data,
-            searching: true,
-            request: s_request
-          }
+          data: data
         });
       })["catch"](function (error) {
         _this2.$store.dispatch('setStore', {
@@ -68573,7 +68587,7 @@ var render = function() {
             }
           }),
           _vm._v(" "),
-          _c("label", { staticClass: "placeholder required" }, [
+          _c("label", { staticClass: "placeholder" }, [
             _vm._v(_vm._s(_vm.$t("commercial_name")))
           ])
         ])
@@ -68606,7 +68620,7 @@ var render = function() {
             }
           }),
           _vm._v(" "),
-          _c("label", { staticClass: "placeholder required" }, [
+          _c("label", { staticClass: "placeholder" }, [
             _vm._v(_vm._s(_vm.$t("address")))
           ])
         ]),
@@ -68633,7 +68647,7 @@ var render = function() {
             }
           }),
           _vm._v(" "),
-          _c("label", { staticClass: "placeholder required" }, [
+          _c("label", { staticClass: "placeholder" }, [
             _vm._v(_vm._s(_vm.$t("email")))
           ])
         ])
@@ -68662,7 +68676,7 @@ var render = function() {
             }
           }),
           _vm._v(" "),
-          _c("label", { staticClass: "placeholder required" }, [
+          _c("label", { staticClass: "placeholder" }, [
             _vm._v(_vm._s(_vm.$t("phone")))
           ])
         ]),
@@ -68689,7 +68703,7 @@ var render = function() {
             }
           }),
           _vm._v(" "),
-          _c("label", { staticClass: "placeholder required" }, [
+          _c("label", { staticClass: "placeholder" }, [
             _vm._v(_vm._s(_vm.$t("fax")))
           ])
         ])
@@ -68922,7 +68936,7 @@ var render = function() {
             }
           }),
           _vm._v(" "),
-          _c("label", { staticClass: "placeholder required" }, [
+          _c("label", { staticClass: "placeholder" }, [
             _vm._v(_vm._s(_vm.$t("bin")))
           ])
         ])
@@ -68951,7 +68965,7 @@ var render = function() {
             }
           }),
           _vm._v(" "),
-          _c("label", { staticClass: "placeholder required" }, [
+          _c("label", { staticClass: "placeholder" }, [
             _vm._v(_vm._s(_vm.$t("commercial_name")))
           ])
         ])
@@ -68984,7 +68998,7 @@ var render = function() {
             }
           }),
           _vm._v(" "),
-          _c("label", { staticClass: "placeholder required" }, [
+          _c("label", { staticClass: "placeholder" }, [
             _vm._v(_vm._s(_vm.$t("address")))
           ])
         ]),
@@ -69011,7 +69025,7 @@ var render = function() {
             }
           }),
           _vm._v(" "),
-          _c("label", { staticClass: "placeholder required" }, [
+          _c("label", { staticClass: "placeholder" }, [
             _vm._v(_vm._s(_vm.$t("email")))
           ])
         ])
@@ -69040,7 +69054,7 @@ var render = function() {
             }
           }),
           _vm._v(" "),
-          _c("label", { staticClass: "placeholder required" }, [
+          _c("label", { staticClass: "placeholder" }, [
             _vm._v(_vm._s(_vm.$t("phone")))
           ])
         ]),
@@ -69067,7 +69081,7 @@ var render = function() {
             }
           }),
           _vm._v(" "),
-          _c("label", { staticClass: "placeholder required" }, [
+          _c("label", { staticClass: "placeholder" }, [
             _vm._v(_vm._s(_vm.$t("fax")))
           ])
         ])

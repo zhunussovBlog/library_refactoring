@@ -264,6 +264,7 @@ export default{
 	watch:{
 		'data'(newVal,oldVal){
 			this.array=newVal;
+			console.log(newVal);
 		}
 	},
 	methods:{
