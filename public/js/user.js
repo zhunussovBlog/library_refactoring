@@ -1861,9 +1861,12 @@ __webpack_require__.r(__webpack_exports__);
     checkLogin: function checkLogin() {
       var _this = this;
 
+      this.$http.defaults.baseURL = window.configs.baseURL;
       this.$http.get('user').then(function (response) {
         _this.$store.commit('setUser', response.data.res.user);
-      })["catch"](function (e) {});
+      })["catch"](function (e) {}).then(function () {
+        _this.$http.defaults.baseURL = window.configs.baseURL + window.configs.api;
+      });
     }
   },
   created: function created() {
@@ -4014,7 +4017,10 @@ __webpack_require__.r(__webpack_exports__);
   "returned": "Returned",
   "class": "Year",
   "faculty": "Faculty",
-  "program": "Program"
+  "program": "Program",
+  "issue_date": "Issue date",
+  "inv_id": "Inventory number",
+  "barcode": "Barcode"
 });
 
 /***/ }),
@@ -4208,7 +4214,10 @@ __webpack_require__.r(__webpack_exports__);
   "returned": "Қайтарылған",
   "class": "Оқу жылы",
   "faculty": "Факультеті",
-  "program": "Бағдарламасы"
+  "program": "Бағдарламасы",
+  "issue_date": "Берілген күні",
+  "inv_id": "Инвентарь нөмірі",
+  "barcode": "Баркод"
 });
 
 /***/ }),
@@ -4366,7 +4375,10 @@ __webpack_require__.r(__webpack_exports__);
   "returned": "Вернули",
   "class": "Год",
   "faculty": "Факультет",
-  "program": "Программа"
+  "program": "Программа",
+  "issue_date": "Дата выпуска",
+  "inv_id": "Номер инвентаря",
+  "barcode": "Баркод"
 });
 
 /***/ }),
@@ -5018,6 +5030,17 @@ __webpack_require__.r(__webpack_exports__);
   },
   logged: function logged(state) {
     return state.user ? Object.keys(state.user).length > 0 : false;
+  },
+  access_token: function access_token(state) {
+    var token = localStorage.getItem('access_token');
+
+    if (state.user != null) {
+      if (state.user.access_token) {
+        token = state.user.access_token;
+      }
+    }
+
+    return token;
   }
 });
 
@@ -5417,10 +5440,13 @@ vue__WEBPACK_IMPORTED_MODULE_8__.default.use((vue_js_modal__WEBPACK_IMPORTED_MOD
 vue__WEBPACK_IMPORTED_MODULE_8__.default.use(vue_simple_alert__WEBPACK_IMPORTED_MODULE_2__.default);
 window.configs = Object.assign({}, _configs_base__WEBPACK_IMPORTED_MODULE_7__.default);
 vue__WEBPACK_IMPORTED_MODULE_8__.default.config.productionTip = false;
+axios__WEBPACK_IMPORTED_MODULE_0___default().interceptors.request.use(function (config) {
+  config.headers['Content-Language'] = _locale__WEBPACK_IMPORTED_MODULE_5__.default.locale;
+  config.headers['Authorization'] = 'Bearer ' + _store__WEBPACK_IMPORTED_MODULE_6__.default.getters.access_token;
+  return config;
+});
 (axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.baseURL) = window.configs.baseURL + window.configs.api;
-(axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.headers.common.Authorization) = 'Bearer ' + localStorage.getItem('access_token');
 (axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.headers.common["Content-Type"]) = 'application/json';
-(axios__WEBPACK_IMPORTED_MODULE_0___default().defaults.headers.common["Content-Language"]) = _locale__WEBPACK_IMPORTED_MODULE_5__.default.locale;
 vue__WEBPACK_IMPORTED_MODULE_8__.default.prototype.$http = (axios__WEBPACK_IMPORTED_MODULE_0___default()); // customs
 
 vue__WEBPACK_IMPORTED_MODULE_8__.default.prototype.$mobileCheck = function () {
@@ -5515,7 +5541,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       this.$store.commit('setFullPageLoading', true);
       this.$http.defaults.baseURL = window.configs.baseURL;
-      this.$http.get('logout').then(function (response) {
+      this.$http.post('logout').then(function (response) {
         _this2.$store.dispatch('logout');
 
         _this2.message_success('logout', response);

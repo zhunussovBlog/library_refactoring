@@ -26,10 +26,13 @@ window.configs=Object.assign({},base);
 Vue.config.productionTip = false;
 
 // setting axios defaults
+Axios.interceptors.request.use(function (config) {
+  config.headers['Content-Language'] = i18n.locale;
+  config.headers['Authorization'] = 'Bearer ' + store.getters.access_token;
+  return config;
+});
 Axios.defaults.baseURL = window.configs.baseURL + window.configs.api
-Axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('access_token');
 Axios.defaults.headers.common['Content-Type'] = 'application/json';
-Axios.defaults.headers.common['Content-Language'] = i18n.locale;
 
 // turning axios into this.$http - for the usage to be simpler
 // $i18n is turned automatically while creating app, just like store 

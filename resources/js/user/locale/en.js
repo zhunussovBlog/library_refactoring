@@ -138,5 +138,8 @@ export default {
 	"returned":"Returned",
 	"class":"Year",
 	"faculty":"Faculty",
-	"program":"Program"
+	"program":"Program",
+	"issue_date":"Issue date",
+	"inv_id":"Inventory number",
+	"barcode":"Barcode",
 }

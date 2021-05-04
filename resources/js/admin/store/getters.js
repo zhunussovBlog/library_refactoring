@@ -1,4 +1,15 @@
 export default {
+	// auth
+	access_token:(state)=>{
+		let token=localStorage.getItem('access_token');
+		if(state.user!=null){
+			if(state.user.access_token){
+				token=state.user.access_token
+			}
+		}
+		return token
+	},
+	
 	// authorized user
 	user:state=>state.user,
 

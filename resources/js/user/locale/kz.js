@@ -141,4 +141,7 @@ export default {
 	"class":"Оқу жылы",
 	"faculty":"Факультеті",
 	"program":"Бағдарламасы",
+	"issue_date":"Берілген күні",
+	"inv_id":"Инвентарь нөмірі",
+	"barcode":"Баркод",
 }

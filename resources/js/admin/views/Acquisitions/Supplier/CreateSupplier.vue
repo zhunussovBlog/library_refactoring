@@ -9,34 +9,34 @@
 			</div>
 			<div class="pad">
 				<input type="string" v-model="supplier.bin"/>
-				<label class="placeholder required">{{$t('bin')}}</label>
+				<label class="placeholder">{{$t('bin')}}</label>
 			</div>
 		</div>
 		<div class="d-flex">
 			<div class="pad">
 				<input type="string" v-model="supplier.com_name"/>
-				<label class="placeholder required">{{$t('commercial_name')}}</label>
+				<label class="placeholder">{{$t('commercial_name')}}</label>
 			</div>
 		</div>
 		<div class="subtitle">{{$t('contact')}}</div>
 		<div class="d-flex">
 			<div class="pad">
 				<input type="string" v-model="supplier.address"/>
-				<label class="placeholder required">{{$t('address')}}</label>
+				<label class="placeholder">{{$t('address')}}</label>
 			</div>
 			<div class="pad">
 				<input type="string" v-model="supplier.email" />
-				<label class="placeholder required">{{$t('email')}}</label>
+				<label class="placeholder">{{$t('email')}}</label>
 			</div>
 		</div>
 		<div class="d-flex">
 			<div class="pad">
 				<input type="string" v-model="supplier.phone"/>
-				<label class="placeholder required">{{$t('phone')}}</label>
+				<label class="placeholder">{{$t('phone')}}</label>
 			</div>
 			<div class="pad">
 				<input type="string" v-model="supplier.fax"/>
-				<label class="placeholder required">{{$t('fax')}}</label>
+				<label class="placeholder">{{$t('fax')}}</label>
 			</div>
 		</div>
 		<div class="flexible justify-content-end">

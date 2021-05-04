@@ -105,11 +105,7 @@ export default{
 			this.type=mode;
 		},
 		initBarcode(item){
-			this.initializeItem();
 			this.setBarcode(item.barcode);
-		},
-		initializeItem(){
-			this.readFromRfid('InitializeItemLabel');
 		},
 		setBarcode(barcode){
 			this.readFromRfid('SetItemID','newID='+barcode);

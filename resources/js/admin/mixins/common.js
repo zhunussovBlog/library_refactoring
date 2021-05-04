@@ -1,4 +1,5 @@
 import {message_error,message_success} from './messages'
+
 export const getResults={
 	mixins:[message_error],
 	methods:{
@@ -66,6 +67,9 @@ export const getResults={
 					s_request.link=s_link;
 				}
 				let data={data:response.data,searching:true,request:s_request};
+				if(response.data.res.current_page!=null){
+					data.pagination=true;	
+				};
 				if(store.all){
 					data.all=response.data.all
 				};
@@ -102,7 +106,11 @@ export const getAllData={
 					link:'/index',
 					mode:'get'
 				}
-				this.$store.dispatch('setStore',{label:commit,data:{data:response.data,searching:true,request:s_request}});
+				let data={data:response.data,searching:true,request:s_request};
+				if(response.data.res.current_page!=null){
+					data.pagination=true;	
+				};
+				this.$store.dispatch('setStore',{label:commit,data:data});
 			}).catch(error=>{
 				this.$store.dispatch('setStore',{label:commit,data:{data:{},searching:false}});
 				this.message_error('search',error);
