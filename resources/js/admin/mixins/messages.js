@@ -1,7 +1,10 @@
 export const message_success={
 	methods:{
 		message_success(title,response){
-			let message=response.data.res ? (response.data.res.message ?? this.$t('success') ) : this.$t('success');
+			let message=this.$t('success');
+			if(Object.keys(response).length>0){
+				message=response.data.res ? (response.data.res.message ?? this.$t('success') ) : this.$t('success');
+			}
 			this.$fire({
 				title:this.$t(title),
 				text:message,
@@ -14,8 +17,10 @@ export const message_success={
 export const message_error={
 	methods:{
 		message_error(title,error){
-			console.log(error.response);
-			let message=error.response.data ? ((error.response.data.message ?? error.response.data.errors.message) ?? this.$t('error')) : this.$t('error');
+			let message=this.$t('error');
+			if(Object.keys(error).length>0){
+				message=error.response.data ? ((error.response.data.message ?? error.response.data.errors.message) ?? this.$t('error')) : this.$t('error');
+			}
 			this.$fire({
 				title:this.$t(title),
 				text:message,

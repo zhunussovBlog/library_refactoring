@@ -4454,13 +4454,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _components_common_Back__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../components/common/Back */ "./resources/js/admin/components/common/Back.vue");
-/* harmony import */ var _components_common_Dropdown__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../components/common/Dropdown */ "./resources/js/admin/components/common/Dropdown.vue");
-/* harmony import */ var _components_common_Table__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../components/common/Table */ "./resources/js/admin/components/common/Table.vue");
-/* harmony import */ var vue_spinner_src_PulseLoader__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-spinner/src/PulseLoader */ "./node_modules/vue-spinner/src/PulseLoader.vue");
-/* harmony import */ var _mixins_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../mixins/common */ "./resources/js/admin/mixins/common.js");
-/* harmony import */ var _mixins_readFromRfid__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../mixins/readFromRfid */ "./resources/js/admin/mixins/readFromRfid.js");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _components_common_Back__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../components/common/Back */ "./resources/js/admin/components/common/Back.vue");
+/* harmony import */ var _components_common_Dropdown__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../components/common/Dropdown */ "./resources/js/admin/components/common/Dropdown.vue");
+/* harmony import */ var _components_common_Table__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../components/common/Table */ "./resources/js/admin/components/common/Table.vue");
+/* harmony import */ var vue_spinner_src_PulseLoader__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue-spinner/src/PulseLoader */ "./node_modules/vue-spinner/src/PulseLoader.vue");
+/* harmony import */ var _mixins_common__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../mixins/common */ "./resources/js/admin/mixins/common.js");
+/* harmony import */ var _mixins_messages__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../mixins/messages */ "./resources/js/admin/mixins/messages.js");
+/* harmony import */ var _mixins_readFromRfid__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../mixins/readFromRfid */ "./resources/js/admin/mixins/readFromRfid.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -4529,18 +4538,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
  //mixins
 
 
+
  // libraries
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  mixins: [_mixins_common__WEBPACK_IMPORTED_MODULE_4__.getResults, _mixins_common__WEBPACK_IMPORTED_MODULE_4__.download_file, _mixins_readFromRfid__WEBPACK_IMPORTED_MODULE_5__.default],
+  mixins: [_mixins_common__WEBPACK_IMPORTED_MODULE_5__.getResults, _mixins_common__WEBPACK_IMPORTED_MODULE_5__.download_file, _mixins_readFromRfid__WEBPACK_IMPORTED_MODULE_7__.default, _mixins_messages__WEBPACK_IMPORTED_MODULE_6__.message_success],
   components: {
-    Back: _components_common_Back__WEBPACK_IMPORTED_MODULE_0__.default,
-    Dropdown: _components_common_Dropdown__WEBPACK_IMPORTED_MODULE_1__.default,
-    'table-div': _components_common_Table__WEBPACK_IMPORTED_MODULE_2__.default,
-    PulseLoader: vue_spinner_src_PulseLoader__WEBPACK_IMPORTED_MODULE_3__.default
+    Back: _components_common_Back__WEBPACK_IMPORTED_MODULE_1__.default,
+    Dropdown: _components_common_Dropdown__WEBPACK_IMPORTED_MODULE_2__.default,
+    'table-div': _components_common_Table__WEBPACK_IMPORTED_MODULE_3__.default,
+    PulseLoader: vue_spinner_src_PulseLoader__WEBPACK_IMPORTED_MODULE_4__.default
   },
-  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_6__.mapGetters)(['print_barcode'])),
+  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_8__.mapGetters)(['print_barcode'])),
   data: function data() {
     return {
       types: [],
@@ -4582,7 +4592,26 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.setBarcode(item.barcode);
     },
     setBarcode: function setBarcode(barcode) {
-      this.readFromRfid('SetItemID', 'newID=' + barcode);
+      var _this = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return _this.readFromRfid('SetItemID', 'newID=' + barcode);
+
+              case 2:
+                _this.message_success('setting barcode id', {});
+
+              case 3:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }))();
     },
     loadResults: function loadResults() {
       this.$store.dispatch('setStore', {
@@ -4594,19 +4623,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.getResults(this.link, this.commit);
     },
     printIt: function printIt(barcodes) {
-      var _this = this;
+      var _this2 = this;
 
       var inventories = barcodes.map(function (barcode) {
         return barcode.id;
       });
+      this.$$store.commit('setFullPageLoading', true);
       this.$http.post(this.link + '/print', {
         inventories: inventories
       }, {
         responseType: 'blob'
       }).then(function (response) {
-        _this.download_file(response, 'barcode', 'pdf');
+        _this2.download_file(response, 'barcode', 'pdf');
 
-        _this.$store.commit('setFullPageLoading', false);
+        _this2.$store.commit('setFullPageLoading', false);
       });
     }
   }
@@ -6167,17 +6197,20 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
                   inv_id: selected[0].inv_id,
                   user_cid: _this3.user.info.user_cid,
                   due_date: now
-                }; // await this.readFromRfid('SetItemsCheckInOut','status=0');
-
+                };
                 _context.next = 4;
+                return _this3.readFromRfid('SetItemsCheckInOut', 'status=0');
+
+              case 4:
+                _context.next = 6;
                 return _this3.$http.post('service/media/give', info).then(function (response) {
                   _this3.message_success('check in ', response);
                 });
 
-              case 4:
+              case 6:
                 _this3.getInfo();
 
-              case 5:
+              case 7:
               case "end":
                 return _context.stop();
             }
@@ -6198,17 +6231,20 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
                   loan_id: book.loan_id,
                   inv_id: book.inv_id,
                   user_cid: _this4.user.info.user_cid
-                }; // await this.readFromRfid('SetItemsCheckInOut','status=1');
-
+                };
                 _context2.next = 3;
+                return _this4.readFromRfid('SetItemsCheckInOut', 'status=1');
+
+              case 3:
+                _context2.next = 5;
                 return _this4.$http.post('service/media/back', info).then(function (response) {
                   _this4.message_success('check out', response);
                 });
 
-              case 3:
+              case 5:
                 _this4.getInfo();
 
-              case 4:
+              case 6:
               case "end":
                 return _context2.stop();
             }
@@ -7420,9 +7456,14 @@ __webpack_require__.r(__webpack_exports__);
 var message_success = {
   methods: {
     message_success: function message_success(title, response) {
-      var _response$data$res$me;
+      var message = this.$t('success');
 
-      var message = response.data.res ? (_response$data$res$me = response.data.res.message) !== null && _response$data$res$me !== void 0 ? _response$data$res$me : this.$t('success') : this.$t('success');
+      if (Object.keys(response).length > 0) {
+        var _response$data$res$me;
+
+        message = response.data.res ? (_response$data$res$me = response.data.res.message) !== null && _response$data$res$me !== void 0 ? _response$data$res$me : this.$t('success') : this.$t('success');
+      }
+
       this.$fire({
         title: this.$t(title),
         text: message,
@@ -7436,10 +7477,14 @@ var message_success = {
 var message_error = {
   methods: {
     message_error: function message_error(title, error) {
-      var _ref, _error$response$data$;
+      var message = this.$t('error');
 
-      console.log(error.response);
-      var message = error.response.data ? (_ref = (_error$response$data$ = error.response.data.message) !== null && _error$response$data$ !== void 0 ? _error$response$data$ : error.response.data.errors.message) !== null && _ref !== void 0 ? _ref : this.$t('error') : this.$t('error');
+      if (Object.keys(error).length > 0) {
+        var _ref, _error$response$data$;
+
+        message = error.response.data ? (_ref = (_error$response$data$ = error.response.data.message) !== null && _error$response$data$ !== void 0 ? _error$response$data$ : error.response.data.errors.message) !== null && _ref !== void 0 ? _ref : this.$t('error') : this.$t('error');
+      }
+
       this.$fire({
         title: this.$t(title),
         text: message,
@@ -7463,9 +7508,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _messages__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./messages */ "./resources/js/admin/mixins/messages.js");
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  mixins: [_messages__WEBPACK_IMPORTED_MODULE_0__.message_success, _messages__WEBPACK_IMPORTED_MODULE_0__.message_error],
   methods: {
     readFromRfid: function readFromRfid(link, data, after) {
+      var _this = this;
+
       var request = new XMLHttpRequest();
       var url = 'https://localhost:44379/LibraryWebService.asmx/' + link;
       request.open('POST', url, false);
@@ -7482,9 +7532,19 @@ __webpack_require__.r(__webpack_exports__);
             json = JSON.parse(json);
             after(json);
           }
+        } else {
+          _this.message_error('read from RFID', {});
         }
       });
-      request.send(data);
+      request.addEventListener('error', function () {
+        _this.message_error('read from RFID', {});
+      });
+
+      try {
+        request.send(data);
+      } catch (e) {
+        this.message_error('read from RFID', {});
+      }
     }
   }
 });

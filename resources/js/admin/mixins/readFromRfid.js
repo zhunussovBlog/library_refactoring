@@ -1,4 +1,6 @@
+import {message_success,message_error} from './messages'
 export default{
+    mixins:[message_success,message_error],
     methods:{
         readFromRfid(link,data,after){
             const request = new XMLHttpRequest();
@@ -15,9 +17,19 @@ export default{
                         after(json);
                     }
 				}
+                else{
+                    this.message_error('read from RFID',{})
+                }
 			});
+            request.addEventListener('error',()=>{
+                this.message_error('read from RFID',{})
+            })
 
-			request.send(data);
+            try{
+                request.send(data);
+            }catch(e){
+                this.message_error('read from RFID',{})
+            }
         }
     }
 }

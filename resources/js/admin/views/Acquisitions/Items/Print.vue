@@ -63,13 +63,14 @@ import PulseLoader from 'vue-spinner/src/PulseLoader'
 
 //mixins
 import {getResults,download_file} from '../../../mixins/common'
+import {message_success} from '../../../mixins/messages'
 import readFromRfid from '../../../mixins/readFromRfid'
 
 // libraries
 import {mapGetters} from 'vuex'
 
 export default{
-	mixins:[getResults,download_file,readFromRfid],
+	mixins:[getResults,download_file,readFromRfid,message_success],
 	components:{Back,Dropdown,'table-div':Table,PulseLoader},
 	computed:{
 		...mapGetters(['print_barcode'])
@@ -107,8 +108,9 @@ export default{
 		initBarcode(item){
 			this.setBarcode(item.barcode);
 		},
-		setBarcode(barcode){
-			this.readFromRfid('SetItemID','newID='+barcode);
+		async setBarcode(barcode){
+			await this.readFromRfid('SetItemID','newID='+barcode);
+			this.message_success('setting barcode id',{});
 		},
 		loadResults(){
 			this.$store.dispatch('setStore',{label:this.commit,data:{page:0}});
@@ -116,6 +118,7 @@ export default{
 		},
 		printIt(barcodes){
 			let inventories=barcodes.map(barcode=>barcode.id);
+			this.$$store.commit('setFullPageLoading',true);
 			this.$http.post(this.link+'/print',{inventories:inventories},{responseType:'blob'}).then(response=>{
 				this.download_file(response,'barcode','pdf');
 				this.$store.commit('setFullPageLoading',false);	
