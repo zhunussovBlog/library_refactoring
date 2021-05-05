@@ -4292,7 +4292,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         link: 'barcode'
       }, {
         name: 'inventory_number',
-        link: 'inv_id'
+        link: 'id'
       }, {
         name: 'batches_number',
         link: 'batch_id'
@@ -4543,7 +4543,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  mixins: [_mixins_common__WEBPACK_IMPORTED_MODULE_5__.getResults, _mixins_common__WEBPACK_IMPORTED_MODULE_5__.download_file, _mixins_readFromRfid__WEBPACK_IMPORTED_MODULE_7__.default, _mixins_messages__WEBPACK_IMPORTED_MODULE_6__.message_success],
+  mixins: [_mixins_common__WEBPACK_IMPORTED_MODULE_5__.getResults, _mixins_common__WEBPACK_IMPORTED_MODULE_5__.download_file, _mixins_readFromRfid__WEBPACK_IMPORTED_MODULE_7__.default],
   components: {
     Back: _components_common_Back__WEBPACK_IMPORTED_MODULE_1__.default,
     Dropdown: _components_common_Dropdown__WEBPACK_IMPORTED_MODULE_2__.default,
@@ -4628,15 +4628,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var inventories = barcodes.map(function (barcode) {
         return barcode.id;
       });
-      this.$$store.commit('setFullPageLoading', true);
       this.$http.post(this.link + '/print', {
         inventories: inventories
       }, {
         responseType: 'blob'
       }).then(function (response) {
         _this2.download_file(response, 'barcode', 'pdf');
-
-        _this2.$store.commit('setFullPageLoading', false);
       });
     }
   }

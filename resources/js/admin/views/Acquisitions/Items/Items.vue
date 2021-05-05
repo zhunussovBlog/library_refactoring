@@ -98,7 +98,7 @@ export default{
 			More:More,
 			heads:[
 			{name:'barcode',link:'barcode'},
-			{name:'inventory_number',link:'inv_id'},
+			{name:'inventory_number',link:'id'},
 			{name:'batches_number',link:'batch_id'},
 			{name:'author',link:'author'},
 			{name:'titles',link:'title'},

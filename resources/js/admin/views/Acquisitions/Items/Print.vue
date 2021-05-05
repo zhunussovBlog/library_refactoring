@@ -70,7 +70,7 @@ import readFromRfid from '../../../mixins/readFromRfid'
 import {mapGetters} from 'vuex'
 
 export default{
-	mixins:[getResults,download_file,readFromRfid,message_success],
+	mixins:[getResults,download_file,readFromRfid],
 	components:{Back,Dropdown,'table-div':Table,PulseLoader},
 	computed:{
 		...mapGetters(['print_barcode'])
@@ -118,10 +118,8 @@ export default{
 		},
 		printIt(barcodes){
 			let inventories=barcodes.map(barcode=>barcode.id);
-			this.$$store.commit('setFullPageLoading',true);
 			this.$http.post(this.link+'/print',{inventories:inventories},{responseType:'blob'}).then(response=>{
 				this.download_file(response,'barcode','pdf');
-				this.$store.commit('setFullPageLoading',false);	
 			})
 		}
 	}
