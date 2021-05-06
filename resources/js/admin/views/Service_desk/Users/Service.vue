@@ -37,7 +37,7 @@
 			<tabs :components="components" tabClasses="font-size-18 mr-3" :tabOnClick="tabOnClick"/>
 			<div class="d-flex" v-if="state=='issuance'">
 				<input-div :search="true" :placeholder="$t('barcode')" v-model="barcode" :onSubmit="search"/>
-				<button class="ml-3 width-unset" @click="getRfidInfo()">from RFID reader</button>
+				<button class="ml-3 width-unset" @click="getRfidInfo()">{{$t('read_from_rfid')}}</button>
 			</div>
 		</div>
 		<div class="mt-4">
@@ -237,15 +237,18 @@ export default{
 			})
 		},
 		search(){
+			this.$store.commit('setFullPageLoading',true);
 			this.$http.get('service/media/search?value='+this.barcode).then(response=>{
 				this.search_results=response.data.res.data;
 				this.addToBooks(this.search_results);
+				this.$store.commit('setFullPageLoading',false);
 			})
 		},
 		addToBooks(books){
 			this.books=this.books.concat(books);
 		},
 		async checkIn(selected){
+			this.$store.commit('setFullPageLoading',true);
 			let now=new Date();
 			let info ={
 				loan_id:0,
@@ -253,27 +256,42 @@ export default{
 				user_cid:this.user.info.user_cid,
 				due_date:now
 			};
-			await this.readFromRfid('SetItemsCheckInOut','status=0');
-			await this.$http.post('service/media/give',info).then(response=>{
-				this.message_success('check in ',response);
-			});
-			this.getInfo();
+			try{
+				await this.readFromRfid('SetItemsCheckInOut','status=0');
+				await this.$http.post('service/media/give',info).then(response=>{
+					this.message_success('check_in ',response);
+				});
+				await this.getInfo();
+			}finally{
+				this.$store.commit('setFullPageLoading',false);
+			}
 		},
 		async checkOut(book){
+			this.$store.commit('setFullPageLoading',true);
 			let info ={
 				loan_id:book.loan_id,
 				inv_id:book.inv_id,
 				user_cid:this.user.info.user_cid
 			};
-			await this.readFromRfid('SetItemsCheckInOut','status=1');
-			await this.$http.post('service/media/back',info).then(response=>{
-				this.message_success('check out',response);
-			});
-			this.getInfo();
+			try{
+				await this.readFromRfid('SetItemsCheckInOut','status=1');
+				await this.$http.post('service/media/back',info).then(response=>{
+					this.message_success('check_out',response);
+				});
+				await this.getInfo();
+			}finally{
+				this.$store.commit('setFullPageLoading',false);
+			}
 		},
 		getRfidInfo(){
-			this.getRfidBarcode();
-			this.search();
+			this.$store.commit('setFullPageLoading',true);
+			try{
+				this.getRfidBarcode();
+				this.search();
+			}finally{
+				this.$store.commit('setFullPageLoading',false);
+			}
+			
 		},
 		getRfidBarcode(){
 			this.readFromRfid('getItemIDS','',(json)=>{

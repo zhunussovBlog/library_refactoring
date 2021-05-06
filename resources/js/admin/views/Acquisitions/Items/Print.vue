@@ -115,6 +115,7 @@ export default{
 		loadResults(){
 			this.$store.dispatch('setStore',{label:this.commit,data:{page:0}});
 			this.getResults(this.link,this.commit);
+			this.$eventHub.$emit('selectRefresh');
 		},
 		printIt(barcodes){
 			let inventories=barcodes.map(barcode=>barcode.id);
