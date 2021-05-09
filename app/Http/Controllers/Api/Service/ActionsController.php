@@ -9,6 +9,7 @@ use App\Http\Requests\Service\ActionRequest;
 use App\Models\User\WebLog;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 
 class ActionsController extends Controller
 {
@@ -24,7 +25,7 @@ class ActionsController extends Controller
         return response()->json([
             'res' => [
                 'message' => 'success',
-                'result' => (bool) $result['pRes'],
+                'result' => (bool)$result['pRes'],
             ]
         ]);
     }
@@ -41,7 +42,7 @@ class ActionsController extends Controller
         return response()->json([
             'res' => [
                 'message' => 'success',
-                'result' => (bool) $result['pRes'],
+                'result' => (bool)$result['pRes'],
             ]
         ]);
     }
@@ -55,7 +56,14 @@ class ActionsController extends Controller
 
         $validated['web_log_id'] = $webLog;
 
-        $validated['due_date'] = Carbon::now()->addDay()->toDateString();
+        $duration = DB::table('lib_cfg as lc')->select('lc.data')
+            ->leftJoin('user_groups as ug', 'ug.group_id', '=', 'lc.group_id')
+            ->where('lc.cfg_key', '=', 'BORROW_PERIOD')
+            ->where('ug.user_cid', '=', $userCID)
+            ->orderBy('data', 'desc')
+            ->first();
+
+        $validated['due_date'] = Carbon::now()->addDays((int) $duration->data)->toDateString();
 
         return $validated;
     }
