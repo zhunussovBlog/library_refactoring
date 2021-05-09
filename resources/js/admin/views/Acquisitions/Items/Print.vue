@@ -63,6 +63,7 @@ import PulseLoader from 'vue-spinner/src/PulseLoader'
 
 //mixins
 import {getResults,download_file} from '../../../mixins/common'
+import {message_success} from '../../../mixins/messages'
 import readFromRfid from '../../../mixins/readFromRfid'
 
 // libraries
@@ -107,18 +108,19 @@ export default{
 		initBarcode(item){
 			this.setBarcode(item.barcode);
 		},
-		setBarcode(barcode){
-			this.readFromRfid('SetItemID','newID='+barcode);
+		async setBarcode(barcode){
+			await this.readFromRfid('SetItemID','newID='+barcode);
+			this.message_success('setting barcode id',{});
 		},
 		loadResults(){
 			this.$store.dispatch('setStore',{label:this.commit,data:{page:0}});
 			this.getResults(this.link,this.commit);
+			this.$eventHub.$emit('selectRefresh');
 		},
 		printIt(barcodes){
 			let inventories=barcodes.map(barcode=>barcode.id);
 			this.$http.post(this.link+'/print',{inventories:inventories},{responseType:'blob'}).then(response=>{
 				this.download_file(response,'barcode','pdf');
-				this.$store.commit('setFullPageLoading',false);	
 			})
 		}
 	}

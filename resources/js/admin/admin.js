@@ -10,26 +10,29 @@ import store from './store'
 
 import base from '../configs/base'
 
+// Events
+const eventHub = new Vue();
+Vue.prototype.$eventHub = eventHub;
+
 // vue modal
-Vue.use(VModal,
-{
-  dynamic: true,
-  dynamicDefaults: {
-    height: 'auto'
-  },
+Vue.use(VModal, {
+    dynamic: true,
+    dynamicDefaults: {
+        height: 'auto'
+    },
 });
 
 // vue alert ( like a modal ) - alerts successful or error messagers on load 
 Vue.use(VueSimpleAlert);
 
-window.configs=Object.assign({},base);
+window.configs = Object.assign({}, base);
 Vue.config.productionTip = false;
 
 // setting axios defaults
-Axios.interceptors.request.use(function (config) {
-  config.headers['Content-Language'] = i18n.locale;
-  config.headers['Authorization'] = 'Bearer ' + store.getters.access_token;
-  return config;
+Axios.interceptors.request.use(function(config) {
+    config.headers['Content-Language'] = i18n.locale;
+    config.headers['Authorization'] = 'Bearer ' + store.getters.access_token;
+    return config;
 });
 Axios.defaults.baseURL = window.configs.baseURL + window.configs.api
 Axios.defaults.headers.common['Content-Type'] = 'application/json';
@@ -40,33 +43,35 @@ Vue.prototype.$http = Axios;
 
 // custom
 // creates a fast copy of any object
-window.copy=(object)=>{
-	return JSON.parse(JSON.stringify(object));
+window.copy = (object) => {
+    return JSON.parse(JSON.stringify(object));
 }
 
 // capitalizes any string ( only first letter )
 window.capitalize = (s) => {
-	let string = s.slice();
-	if (typeof string !== 'string') return ''
+    let string = s.slice();
+    if (typeof string !== 'string') return ''
     return string.charAt(0).toUpperCase() + string.slice(1)
 }
 
 // returns you an object without a key  ( deletes a key from an object )
 window.objectWithoutKey = (object, key) => {
-  const {[key]: deletedKey, ...otherKeys} = object;
-  return otherKeys;
+    const {
+        [key]: deletedKey, ...otherKeys
+    } = object;
+    return otherKeys;
 }
 
 // turns string date into date value for an input type date
 Date.prototype.toDateInputValue = (function() {
-  var local = new Date(this);
-  local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
-  return local.toJSON().slice(0,10);
+    var local = new Date(this);
+    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+    return local.toJSON().slice(0, 10);
 });
 
 new Vue({
-  render: h => h(App),
-  i18n,
-  router,
-  store
+    render: h => h(App),
+    i18n,
+    router,
+    store
 }).$mount('#app')

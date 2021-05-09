@@ -264,7 +264,9 @@ export default{
 	watch:{
 		'data'(newVal,oldVal){
 			this.array=newVal;
-			console.log(newVal);
+		},
+		'heads'(){
+			this.selected=[];
 		}
 	},
 	methods:{
@@ -391,12 +393,11 @@ export default{
 		},
 		selectAll(){
 			let array = this.pagination ? this.array.data : this.data;
-			if(!this.selectedAll){
-				this.selected=[]
-			}
-			else{
+			this.selected=[];
+
+			if(this.selectedAll){
 				try{
-					// had to do a deep copy ( but couldn't find a good answer -> gotta improve it later )
+					// a deep copy
 					array.forEach(element=>{
 						this.selected.push(element);
 					})
@@ -412,6 +413,10 @@ export default{
 				this.getSortingFields();
 			}
 		}
+		this.$eventHub.$on('selectRefresh',()=>{
+			this.selected=[];
+			this.selectedAll=false;
+		})
 	}
 }
 </script>
