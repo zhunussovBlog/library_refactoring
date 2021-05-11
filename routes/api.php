@@ -162,6 +162,7 @@ Route::middleware(['auth:api-student,api-employee'])->group(function () {
 
             Route::post('user/{type}/search', 'Api\Service\SearchController@search');
             Route::get('/media/search', 'Api\Service\SearchController@searchMedia');
+            Route::get('/media/search/rfid', 'Api\Service\SearchController@getMediaWithStatusesByInventory');
 
             Route::post('/media/back', 'Api\Service\ActionsController@backMaterial');
             Route::post('/media/give', 'Api\Service\ActionsController@giveMaterial');

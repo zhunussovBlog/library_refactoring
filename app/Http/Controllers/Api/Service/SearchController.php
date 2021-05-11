@@ -56,4 +56,22 @@ class SearchController extends Controller
             'all' => $data->pluck('id')->toArray()
         ]);
     }
+
+    public function getMediaWithStatusesByInventory(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'inventories' => 'required|array',
+            'inventories.*' => 'integer'
+        ], $request->all());
+
+        $perPage = $request->get('per_page') ?? 10;
+        $data = Book::defaultQuery()->addSelect('i.barcode', 'i.inv_id')
+            ->leftJoin('lib_inventory as i', 'b.book_id', '=', 'i.book_id')
+            ->whereIn(DB::raw("lower(i.inv_id)"), $validated['inventories'])->get();
+
+        return response()->json([
+            'res' => CustomPaginate::getPaginate($data, $request, $perPage),
+            'all' => $data->pluck('id')->toArray()
+        ]);
+    }
 }
