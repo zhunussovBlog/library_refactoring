@@ -68,11 +68,9 @@ class SearchController extends Controller
 
         $data = Item::query()->select(
             DB::raw("(case when l.delivery_date is not null and i.status = 1 then 'not borrowed'
-                            else (case
-                                when current_date <= due_date then 'borrowed'
-                                when current_date > due_date then 'borrowed'
-                                end)
-                                 end) as status"), 'i.barcode', 'i.inv_id',
+                            when current_date <= due_date then 'borrowed'
+                            when current_date > due_date then 'borrowed'
+                            else 'not borrowed' end) as status"), 'i.barcode', 'i.inv_id',
             DB::raw("(select b.title from lib_books b where b.book_id = i.book_id) as title"),
             DB::raw("(select listagg(a.name||a.surname, ', ') within group(order by a.name)
                             from lib_book_authors a where a.book_id = i.book_id group by a.book_id) as author"))
