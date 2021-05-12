@@ -10,7 +10,9 @@ use App\Common\Helpers\Search\FilterHelper;
 use App\Exceptions\ReturnResponseException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SearchRequest;
+use App\Models\Acquisition\Item\Item;
 use App\Models\Media\Book;
+use App\Models\Media\Loan;
 use App\Models\User\Employee;
 use App\Models\User\Student;
 use Illuminate\Http\JsonResponse;
@@ -64,14 +66,17 @@ class SearchController extends Controller
             'barcodes.*' => 'integer'
         ], $request->all());
 
-        $perPage = $request->get('per_page') ?? 10;
-        $data = Book::defaultQuery()->addSelect('i.barcode', 'i.inv_id')
-            ->leftJoin('lib_inventory as i', 'b.book_id', '=', 'i.book_id')
-            ->whereIn('i.barcode', $validated['barcodes'])->get();
+        $data = Item::query()->select(
+            DB::raw("(case when l.delivery_date is not null and i.status = 1 then 'not borrowed'
+                            else 'borrowed' end) as status"), 'i.barcode', 'i.inv_id',
+            DB::raw("(select b.title from lib_books b where b.book_id = i.book_id) as title"),
+            DB::raw("(select listagg(a.name||a.surname, ', ') within group(order by a.name)
+                            from lib_book_authors a where a.book_id = i.book_id group by a.book_id) as author"))
+            ->leftJoin('lib_loans as l', 'l.inv_id', '=', 'i.inv_id')
+            ->whereIn('i.barcode', $validated['barcodes'])->get()->unique('inv_id')->toArray();
 
         return response()->json([
-            'res' => CustomPaginate::getPaginate($data, $request, $perPage),
-            'all' => $data->pluck('id')->toArray()
+            'res' => $data,
         ]);
     }
 }
