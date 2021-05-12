@@ -71,7 +71,6 @@ class SearchController extends Controller
                             else (case
                                 when current_date <= due_date then 'borrowed'
                                 when current_date > due_date then 'borrowed'
-                                else 'not borrowed'
                                 end)
                                  end) as status"), 'i.barcode', 'i.inv_id',
             DB::raw("(select b.title from lib_books b where b.book_id = i.book_id) as title"),
