@@ -388,7 +388,14 @@ export default{
 				selected.splice(selected.indexOf(info),1);
 			}
 			else{
-				selected.push(info);
+				if(this.selectable.if!=null){
+					if(this.selectable.if(info)){
+						selected.push(info);
+					}
+				}
+				else{
+					selected.push(info);
+				}
 			}
 		},
 		selectAll(){
@@ -399,7 +406,14 @@ export default{
 				try{
 					// a deep copy
 					array.forEach(element=>{
-						this.selected.push(element);
+						if(this.selectable.if!=null){
+							if(this.selectable.if(element)){
+								this.selected.push(element);
+							}
+						}
+						else{
+							this.selected.push(element);
+						}
 					})
 				}catch(e){
 					this.selected=[];

@@ -2994,7 +2994,13 @@ __webpack_require__.r(__webpack_exports__);
       if (selected.includes(info)) {
         selected.splice(selected.indexOf(info), 1);
       } else {
-        selected.push(info);
+        if (this.selectable["if"] != null) {
+          if (this.selectable["if"](info)) {
+            selected.push(info);
+          }
+        } else {
+          selected.push(info);
+        }
       }
     },
     selectAll: function selectAll() {
@@ -3007,7 +3013,13 @@ __webpack_require__.r(__webpack_exports__);
         try {
           // a deep copy
           array.forEach(function (element) {
-            _this3.selected.push(element);
+            if (_this3.selectable["if"] != null) {
+              if (_this3.selectable["if"](element)) {
+                _this3.selected.push(element);
+              }
+            } else {
+              _this3.selected.push(element);
+            }
           });
         } catch (e) {
           this.selected = [];
@@ -5973,7 +5985,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     Tabs: _components_common_Tabs__WEBPACK_IMPORTED_MODULE_3__.default,
     InputDiv: _components_common_Input__WEBPACK_IMPORTED_MODULE_4__.default
   },
-  mixins: [_mixins_readFromRfid__WEBPACK_IMPORTED_MODULE_5__.default, _mixins_messages__WEBPACK_IMPORTED_MODULE_6__.message_success, _mixins_goTo__WEBPACK_IMPORTED_MODULE_7__.goTo],
+  mixins: [_mixins_readFromRfid__WEBPACK_IMPORTED_MODULE_5__.default, _mixins_messages__WEBPACK_IMPORTED_MODULE_6__.message_success, _mixins_messages__WEBPACK_IMPORTED_MODULE_6__.message_error, _mixins_goTo__WEBPACK_IMPORTED_MODULE_7__.goTo],
   props: {
     info: {
       type: Object,
@@ -5987,7 +5999,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var selectable = {
         available: false,
         button_title: 'check_in',
-        func: this.checkIn
+        func: this.checkIn,
+        "if": this.selectable_if
       };
 
       if (this.state == 'issuance') {
@@ -6024,11 +6037,15 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }, {
           name: 'author',
           link: 'author'
+        }, {
+          name: 'status',
+          link: 'status'
         }];
       } else if (this.state == 'return') {
         heads = [{
           name: 'due_date',
-          link: 'due_date'
+          link: 'due_date',
+          is_date: true
         }, {
           name: 'author',
           link: 'authors'
@@ -6045,7 +6062,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       } else {
         heads = [{
           name: 'due_date',
-          link: 'due_date'
+          link: 'due_date',
+          is_date: true
         }, {
           name: 'author',
           link: 'authors'
@@ -6096,7 +6114,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         rightArray: []
       },
       barcode: '',
-      search_results: {},
       books: [],
       custom_func: {
         title: 'return',
@@ -6135,6 +6152,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     }),
     tabOnClick: function tabOnClick(tab) {
       this.state = tab.name.toLowerCase();
+    },
+    selectable_if: function selectable_if(info) {
+      return info.status != 'borrowed';
     },
     makeUserInfo: function makeUserInfo() {
       var even = [];
@@ -6180,65 +6200,51 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var _this2 = this;
 
       this.$store.commit('setFullPageLoading', true);
-      this.$http.get('service/media/search?value=' + this.barcode).then(function (response) {
-        _this2.search_results = response.data.res.data;
-
-        _this2.addToBooks(_this2.search_results);
+      this.$http.get('service/media/search/by-inventory?barcodes[]=' + this.barcode).then(function (response) {
+        _this2.addToBooks(response.data.res);
 
         _this2.$store.commit('setFullPageLoading', false);
       });
     },
-    addToBooks: function addToBooks(books) {
-      this.books = this.books.concat(books);
-    },
-    checkIn: function checkIn(selected) {
+    searchAllBarcodes: function searchAllBarcodes() {
       var _this3 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-        var now, info;
+        var barcodes;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 _this3.$store.commit('setFullPageLoading', true);
 
-                now = new Date();
-                info = {
-                  loan_id: 0,
-                  inv_id: selected[0].inv_id,
-                  user_cid: _this3.user.info.user_cid,
-                  due_date: now
-                };
-                _context.prev = 3;
-                _context.next = 6;
-                return _this3.readFromRfid('SetItemsCheckInOut', 'status=0');
+                barcodes = '';
 
-              case 6:
+                _this3.books.forEach(function (book) {
+                  barcodes += 'barcodes[]=' + book.barcode + '&';
+                });
+
+                barcodes = barcodes.split('');
+                barcodes.splice(-1, 1);
+                barcodes = barcodes.join('');
                 _context.next = 8;
-                return _this3.$http.post('service/media/give', info).then(function (response) {
-                  _this3.message_success('check_in ', response);
+                return _this3.$http.get('service/media/search/by-inventory?' + barcodes).then(function (response) {
+                  _this3.books = response.data.res;
+
+                  _this3.$store.commit('setFullPageLoading', false);
                 });
 
               case 8:
-                _context.next = 10;
-                return _this3.getInfo();
-
-              case 10:
-                _context.prev = 10;
-
-                _this3.$store.commit('setFullPageLoading', false);
-
-                return _context.finish(10);
-
-              case 13:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[3,, 10, 13]]);
+        }, _callee);
       }))();
     },
-    checkOut: function checkOut(book) {
+    addToBooks: function addToBooks(books) {
+      this.books = this.books.concat(books);
+    },
+    checkIn: function checkIn(selected) {
       var _this4 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
@@ -6249,19 +6255,19 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               case 0:
                 _this4.$store.commit('setFullPageLoading', true);
 
+                _context2.prev = 1;
                 info = {
-                  loan_id: book.loan_id,
-                  inv_id: book.inv_id,
+                  loan_id: 0,
+                  inv_id: selected[0].inv_id,
                   user_cid: _this4.user.info.user_cid
                 };
-                _context2.prev = 2;
                 _context2.next = 5;
-                return _this4.readFromRfid('SetItemsCheckInOut', 'status=1');
+                return _this4.readFromRfid('SetItemsCheckInOut', 'status=0');
 
               case 5:
                 _context2.next = 7;
-                return _this4.$http.post('service/media/back', info).then(function (response) {
-                  _this4.message_success('check_out', response);
+                return _this4.$http.post('service/media/give', info).then(function (response) {
+                  _this4.message_success('check_in ', response);
                 });
 
               case 7:
@@ -6269,18 +6275,93 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
                 return _this4.getInfo();
 
               case 9:
-                _context2.prev = 9;
+                _context2.next = 11;
+                return _this4.searchAllBarcodes();
+
+              case 11:
+                _this4.$eventHub.$emit('selectRefresh');
+
+                _context2.next = 17;
+                break;
+
+              case 14:
+                _context2.prev = 14;
+                _context2.t0 = _context2["catch"](1);
+
+                if (_context2.t0 != "rfid problem") {
+                  _this4.message_error('check_in', _context2.t0);
+                }
+
+              case 17:
+                _context2.prev = 17;
 
                 _this4.$store.commit('setFullPageLoading', false);
 
-                return _context2.finish(9);
+                return _context2.finish(17);
 
-              case 12:
+              case 20:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, null, [[2,, 9, 12]]);
+        }, _callee2, null, [[1, 14, 17, 20]]);
+      }))();
+    },
+    checkOut: function checkOut(book) {
+      var _this5 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
+        var info;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _this5.$store.commit('setFullPageLoading', true);
+
+                _context3.prev = 1;
+                info = {
+                  loan_id: book.loan_id,
+                  inv_id: book.inv_id,
+                  user_cid: _this5.user.info.user_cid
+                };
+                _context3.next = 5;
+                return _this5.readFromRfid('SetItemsCheckInOut', 'status=1');
+
+              case 5:
+                _context3.next = 7;
+                return _this5.$http.post('service/media/back', info).then(function (response) {
+                  _this5.message_success('check_out', response);
+                });
+
+              case 7:
+                _context3.next = 9;
+                return _this5.getInfo();
+
+              case 9:
+                _context3.next = 14;
+                break;
+
+              case 11:
+                _context3.prev = 11;
+                _context3.t0 = _context3["catch"](1);
+
+                if (_context3.t0.message != "rfid problem") {
+                  _this5.message_error('check_out', _context3.t0);
+                }
+
+              case 14:
+                _context3.prev = 14;
+
+                _this5.$store.commit('setFullPageLoading', false);
+
+                return _context3.finish(14);
+
+              case 17:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, null, [[1, 11, 14, 17]]);
       }))();
     },
     getRfidInfo: function getRfidInfo() {
@@ -6294,10 +6375,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       }
     },
     getRfidBarcode: function getRfidBarcode() {
-      var _this5 = this;
+      var _this6 = this;
 
       this.readFromRfid('getItemIDS', '', function (json) {
-        _this5.barcode = json.ArrayOfResponse.Response.Result['_text'];
+        _this6.barcode = json.ArrayOfResponse.Response.Result['_text'];
       });
     }
   },
@@ -28356,7 +28437,7 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css?family=Roboto:400,400italic,500,500italic,700,700italic,900,900italic,300italic,300,100italic,100);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "/*defaults*/\n.tabs{\n\tdisplay: flex;\n}\n.tab{\n\tmargin-right:2.5em;\n\tfont-weight: 500;\n\tfont-size: 1.5em;\n\tline-height: 1.75em;\n\tcursor: pointer;\n\ttransition: color .3s;\n}\n.line{\n\theight:0.3125em;\n\tbackground: #FF9D29;\n\tposition: absolute;\n\ttransition:.5s;\n\t/*emaa naugad*/\n\tbottom:-0.625em;\n}\n/*main stuff...initialization*/\n/*firefox only*/\ndiv * {\n\tscrollbar-color: #c5c5c5 #f4f4f4;\n\tscrollbar-width:thin;\n}\n\n/*crossbd-flexser*/\n::-webkit-scrollbar {\n\twidth: 0.5em;\n\theight: 0.5em;\n}\n\n::-webkit-scrollbar-thumb {\n\tbackground: #c5c5c5;\n}\n\n::-webkit-scrollbar-track {\n\tbackground: #f4f4f4;\n}\n\n*{\n\tbox-sizing: border-box;\n}\ninput,button,select,textarea{\n\tbackground:none;\n\tfont-size: 1em;\n\tcolor: #333;\n\twhite-space: nowrap;\n}\n*:focus{\n\toutline: none !important;\n}\nhtml,textarea{\n\tfont-family: 'Roboto', sans-serif;\n\tfont-style: normal;\n\tfont-weight: normal;\n\tline-height: 1.1875em;\n}\n\nhtml{\n\t-webkit-user-select: none; /* Safari */        \n\t-moz-user-select: none; /* Firefox */\n\t-ms-user-select: none; /* IE10+/Edge */\n\tuser-select: none; /* Standard */\n\tcolor:#333333;\n\tfont-size: 13px;\n}\nbody{\n\tpadding:0;\n\tmargin: 0;\n\tbackground-color: #F9F9F9;\n}\nbody,html,#app,#main,#main>.main{\n\tmax-height: 100vh;\n}\n#main>.main{\n\toverflow: auto;\n}\n\n/*custom*/\n.select>select,.select>input{\n\tappearance:none;\n\tpadding-right: 2em;\n}\n\n.select {\n\tdisplay: grid;\n\tgrid-template-areas: \"select\";\n\talign-items: center;\n}\n\n.select>select,.select>input,.select:after {\n\tgrid-area: select;\n}\n\n.select::after {\n\tcontent: \"\";\n\tdisplay: block;\n\twidth: 0.75em;\n\theight: 0.375em;\n\tmargin-right:1em;\n\tbackground-color: black;\n\tclip-path: polygon(100% 0%, 0 0%, 50% 100%);\n\tjustify-self:end;\n}\n\n.search_icon{\n\tposition: absolute;\n\tright: 1em;\n}\n\n/*custom defaults*/\n\n#navbar,#sidebar{\n\tposition: sticky;\n\ttop: 0;\n}\n\n.sidebar_hidden{\n\twidth: 0!important;\n\tmin-width: 0!important;\n}\n\n.main_shown{\n\tmax-width: 100vw;\n}\n\n.link{\n\tcursor: pointer;\n\ttransition: color .25s;\n\tcolor: inherit;\n\ttext-decoration: inherit;\n}\n\n.dropdown{\n\tposition: absolute;\n\twidth:12.75em;\n\tmax-height: 0;\n\toverflow: auto;\n\tz-index: 3;\n\ttop:100%;\n}\n\n.dropdown-left{\n\tleft: 0;\n}\n\n.dropdown-right{\n\tright:0;\n}\n\n.overflow-hidden{\n\toverflow: hidden;\n}\n\n/*inputs and buttons stuff*/\ninput,button,select,textarea{\n\twidth:100%;\n\theight:100%;\n\tborder:0.0625em solid #B5BAC7;\n\tpadding:0.625em 1.25em;\n\tborder-radius: 0.3125em;\n}\n\ntextarea{\n\tpadding-top: .625em;\n\tpadding-bottom: .625em;\n\tmin-height: 6.25em;\n}\n\nbutton,select{\n\tcursor: pointer;\n}\n\ninput:disabled,select:disabled{\n\tborder-color: red;\n\tcolor:grey;\n}\ninput:disabled::placeholder,select:disabled::placeholder{\n\tcolor:lightgrey;\n}\n\ninput:disabled ~ .placeholder,select:disabled ~ .placeholder{\n\tcolor:grey;\n}\n\n::placeholder{\n\tcolor:#9C9FA7;\n\topacity: 1;\n}\n\n:-ms-input-placeholder { /* Internet Explorer 10-11 */\n\tcolor: red;\n}\n\n::-ms-input-placeholder { /* Microsoft Edge */\n\tcolor: red;\n}\n\nselect,option{\n\toverflow:hidden;\n}\n\noption{\n\twidth:100%;\n\tmax-width: 30em;\n}\n\noption{\n\twhite-space: nowrap;\n\ttext-overflow: ellipsis;\n}\n\nbutton{\n\tbackground-color: #FF9D29;\n\tcolor:white;\n\tborder-color: transparent;\n\ttransition: .3s;\n}\n\nbutton:hover{\n\tborder:1px solid white;\n}\n\n.required::before{\n\tcontent:'* ';\n\tcolor:red;\n}\n\n/*input's label float*/\n\n.placeholder{\n\tposition: absolute;\n\tpointer-events: none;\n\tbackground-color: white;\n\ttop: -0.5em;\n\tleft:2em;\n\tmargin-left: -0.3125em;\n\tpadding:0 0.3125em;\n\tfont-size: 0.8em;\n\tcolor:#9C9FA7;\n}\n.select> .placeholder,input[type=date]~.placeholder{\n\ttop:-0.8em;\n}\n\n/*bootstrap like stuff*/\n.outline-green,.outline-orange,.outline-black,.outline-red{\n\tbackground-color: transparent;\n\tborder:1px solid;\n}\n\n.outline-green{\n\tcolor: #00BB78;\n\tborder-color:#00BB78; \n}\n\n.outline-green:hover{\n\tbackground-color: #00BB78;\n\tcolor:white;\n}\n\n.outline-orange{\n\tcolor: #FF9D29;\n\tborder-color:#FF9D29;\n}\n\n.outline-orange:hover{\n\tbackground-color: #FF9D29;\n\tcolor:white;\n}\n\n.outline-red{\n\tcolor:#FF5756;\n\tborder-color: #FF5756;\n}\n\n.outline-red:hover{\n\tbackground-color: #FF5756;\n\tcolor:white;\n}\n\n.outline-black{\n\tcolor: #333;\n}\n\n.outline-black:hover{\n\tbackground-color: #333;\n\tcolor: #F4F4F4;\n}\n\n.cancel-button{\n\tbackground-color: #F4F4F4;\n\tcolor: #333;\n}\n\n.cancel-button:hover{\n\tborder:1px solid #333;\n}\n\n.text-choosable,.text-choosable *{\n\t-webkit-user-select: text; /* Safari */        \n\t-moz-user-select: text; /* Firefox */\n\t-ms-user-select: text; /* IE10+/Edge */\n\tuser-select: text; /* Standard */\n}\n\n.text-ellipsis{\n\toverflow:hidden;\n\ttext-overflow: ellipsis;\n}\n\n.text-no-wrap,.text-no-wrap>*{\n\twhite-space: nowrap;\n}\n\n.title{\n\tfont-size: 1.5em;\n\tmargin: .5em 0;\n}\n\n.subtitle{\n\tfont-size: 1.25em;\n\tmargin:0.5em 0;\n}\n\n.border-black{\n\tborder-color: black !important;\n}\n\n.border-grey{\n\tborder-color: #B5BAC7 !important;\n}\n\n.border-orange{\n\tborder-color: #FF9D29 !important;\n}\n\n.no_border_left{\n\tborder-left:none;\n\tmargin-left: -0.3125em;\n}\n\n.text-red{\n\tcolor: red;\n}\n\n.text-lightgrey{\n\tcolor: #B5BAC7;\n}\n\n.text-grey{\n\tcolor: #9C9FA7;\n}\n\n.text-white{\n\tcolor: white;\n}\n\n.text-black{\n\tcolor: #333;\n}\n\n.text-blue{\n\tcolor:blue;\n}\n\n.text-orange{\n\tcolor: #FF9D29;\n}\n\n.caret-orange{\n\tcaret-color: #FF9D29;\n}\n\n.bg-transparent{\n\tbackground-color: transparent;\n}\n\n.bg-white{\n\tbackground-color: #FFFFFF;\n}\n\n.bg-bg{\n\tbackground-color: #eef5ff;\n}\n\n.bg-darkgrey{\n\tbackground-color: #B5BAC7;\n}\n\n.bg-grey{\n\tbackground-color: #EDEDED;\n}\n\n.bg-lightgrey{\n\tbackground-color: #F4F4F4;\n}\n\n.bg-orange{\n\tbackground-color: #FF9D29;\n}\n\n.transition{\n\ttransition: .5s;\n}\n\n.cursor-pointer{\n\tcursor: pointer;\n}\n\n.pad{\n\tpadding:0.3125em !important;\n\tposition: relative;\n}\n\n.h-min-100{\n\tmin-height: 100%;\n}\n\n.height-1{\n\theight: 0.0625em;\n}\n\n.width-unset{\n\twidth:unset;\n}\n\n.height-unset{\n\theight:unset;\n}\n\n.font-weight-bold{\n\tfont-weight: 500 !important;\n}\n\n.font-size-24{\n\tfont-size: 1.5em;\n}\n\n.font-size-20{\n\tfont-size: 1.25em;\n}\n\n.font-size-18{\n\tfont-size: 1.125em;\n}\n\n.font-size-14{\n\tfont-size: 0.875em;\n\tline-height: 1.04em;\n}\n\n.font-size-12{\n\tfont-size: 0.75em;\n}\n\n.rotate{\n\ttransform: rotate(-180deg);\n}\n\n.z-index-1{\n\tz-index: 1;\n}\n\n.overflow-auto,.overflow-scroll{\n\toverflow: auto;\n}\n\n.overflow-scroll{\n\tborder-bottom:1px solid #E8E8E8;\n\tscrollbar-width:.125em;\n\tpadding-right: .625em;\n\tpadding-bottom: .625em;\n}\n\n.overflow-scroll::-webkit-scrollbar {\n\twidth: 0.125em;\n}\n\n/*icons*/\n\nsvg:not(:root).svg-inline--fa {\n\toverflow: visible;\n}\n\n.svg-inline--fa.fa-w-10 {\n\twidth: 0.625em;\n}\n\n.svg-inline--fa.fa-w-11 {\n\twidth: 0.6875em;\n}\n\n.svg-inline--fa.fa-w-14 {\n\twidth: 0.875em;\n}\n\n.svg-inline--fa.fa-w-16 {\n\twidth: 1em;\n}\n\n.svg-inline--fa.fa-w-18 {\n\twidth: 1.125em;\n}\n\n.svg-inline--fa {\n\tdisplay: inline-block;\n\tfont-size: inherit;\n\theight: 1em;\n\toverflow: visible;\n\tvertical-align: -0.125em;\n}\n\n/*responsiveness*/\n\n@media screen and (min-width: 1440px){\n\thtml{\n\t\tfont-size: 16px;\n\t}\n}\n@media screen and (min-width: 2000px){\n\thtml{\n\t\tfont-size: 18px;\n\t}\n}\n\n/*: or :: changes*/\n\n\n.link:hover{\n\tcolor:#FF9D29;\n}\n\n/*modal changes*/\n\ndiv.vm--overlay{\n\tbackground-color: rgba(51,51,51,0.3);\n}\n\ndiv.vm--container,div.vm--overlay{\n\ttransition: .5s;\n}\n\n/*cancellations*/\n\n.no-hover-color:hover{\n\tcolor:initial;\n}\n\n.col, .col-1, .col-10, .col-11, .col-12, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-auto, .col-lg, .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-auto, .col-md, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-auto, .col-sm, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-auto, .col-xl, .col-xl-1, .col-xl-10, .col-xl-11, .col-xl-12, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-auto {\n\tpadding-right:0px;\n\tpadding-left:0px;\n}\n\n.table thead th {\n\tvertical-align: middle;\n}\n\n.table td, .table th {\n\tvertical-align: middle;\n}\n\nlabel {\n\tmargin-bottom: unset;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "/*defaults*/\n\n.tabs {\n    display: flex;\n}\n\n.tab {\n    margin-right: 2.5em;\n    font-weight: 500;\n    font-size: 1.5em;\n    line-height: 1.75em;\n    cursor: pointer;\n    transition: color .3s;\n}\n\n.line {\n    height: 0.3125em;\n    background: #FF9D29;\n    position: absolute;\n    transition: .5s;\n    /*emaa naugad*/\n    bottom: -0.625em;\n}\n\n\n/*main stuff...initialization*/\n\n\n/*firefox only*/\n\ndiv * {\n    scrollbar-color: #c5c5c5 #f4f4f4;\n    scrollbar-width: thin;\n}\n\n\n/*crossbd-flexser*/\n\n::-webkit-scrollbar {\n    width: 0.5em;\n    height: 0.5em;\n}\n\n::-webkit-scrollbar-thumb {\n    background: #c5c5c5;\n}\n\n::-webkit-scrollbar-track {\n    background: #f4f4f4;\n}\n\n* {\n    box-sizing: border-box;\n}\n\ninput,\nbutton,\nselect,\ntextarea {\n    background: none;\n    font-size: 1em;\n    color: #333;\n    white-space: nowrap;\n}\n\n*:focus {\n    outline: none !important;\n}\n\nhtml,\ntextarea {\n    font-family: 'Roboto', sans-serif;\n    font-style: normal;\n    font-weight: normal;\n    line-height: 1.1875em;\n}\n\nhtml {\n    -webkit-user-select: none;\n    /* Safari */\n    -moz-user-select: none;\n    /* Firefox */\n    -ms-user-select: none;\n    /* IE10+/Edge */\n    user-select: none;\n    /* Standard */\n    color: #333333;\n    font-size: 13px;\n}\n\nbody {\n    padding: 0;\n    margin: 0;\n    background-color: #F9F9F9;\n}\n\nbody,\nhtml,\n#app,\n#main,\n#main>.main {\n    max-height: 100vh;\n}\n\n#main>.main {\n    overflow: auto;\n}\n\n\n/*custom*/\n\n.select>select,\n.select>input {\n    appearance: none;\n    padding-right: 2em;\n}\n\n.select {\n    display: grid;\n    grid-template-areas: \"select\";\n    align-items: center;\n}\n\n.select>select,\n.select>input,\n.select:after {\n    grid-area: select;\n}\n\n.select::after {\n    content: \"\";\n    display: block;\n    width: 0.75em;\n    height: 0.375em;\n    margin-right: 1em;\n    background-color: black;\n    clip-path: polygon(100% 0%, 0 0%, 50% 100%);\n    justify-self: end;\n}\n\n.search_icon {\n    position: absolute;\n    right: 1em;\n}\n\n\n/*custom defaults*/\n\n#navbar,\n#sidebar {\n    position: sticky;\n    top: 0;\n}\n\n.sidebar_hidden {\n    width: 0!important;\n    min-width: 0!important;\n}\n\n.main_shown {\n    max-width: 100vw;\n}\n\n.link {\n    cursor: pointer;\n    transition: color .25s;\n    color: inherit;\n    text-decoration: inherit;\n}\n\n.dropdown {\n    position: absolute;\n    width: 12.75em;\n    max-height: 0;\n    overflow: auto;\n    z-index: 3;\n    top: 100%;\n}\n\n.dropdown-left {\n    left: 0;\n}\n\n.dropdown-right {\n    right: 0;\n}\n\n.overflow-hidden {\n    overflow: hidden;\n}\n\n\n/*inputs and buttons stuff*/\n\ninput,\nbutton,\nselect,\ntextarea {\n    width: 100%;\n    height: 100%;\n    border: 0.0625em solid #B5BAC7;\n    padding: 0.625em 1.25em;\n    border-radius: 0.3125em;\n}\n\ntextarea {\n    padding-top: .625em;\n    padding-bottom: .625em;\n    min-height: 6.25em;\n}\n\nbutton,\nselect {\n    cursor: pointer;\n}\n\ninput:disabled,\nselect:disabled {\n    border-color: red;\n    color: grey;\n}\n\ninput:disabled::placeholder,\nselect:disabled::placeholder {\n    color: lightgrey;\n}\n\ninput:disabled~.placeholder,\nselect:disabled~.placeholder {\n    color: grey;\n}\n\n::placeholder {\n    color: #9C9FA7;\n    opacity: 1;\n}\n\n:-ms-input-placeholder {\n    /* Internet Explorer 10-11 */\n    color: red;\n}\n\n::-ms-input-placeholder {\n    /* Microsoft Edge */\n    color: red;\n}\n\nselect,\noption {\n    overflow: hidden;\n}\n\noption {\n    width: 100%;\n    max-width: 30em;\n}\n\noption {\n    white-space: nowrap;\n    text-overflow: ellipsis;\n}\n\nbutton {\n    background-color: #FF9D29;\n    color: white;\n    border-color: transparent;\n    transition: .3s;\n}\n\nbutton:hover {\n    border: 1px solid white;\n}\n\n.required::before {\n    content: '* ';\n    color: red;\n}\n\n\n/*input's label float*/\n\n.placeholder {\n    position: absolute;\n    pointer-events: none;\n    background-color: white;\n    top: -0.5em;\n    left: 2em;\n    margin-left: -0.3125em;\n    padding: 0 0.3125em;\n    font-size: 0.8em;\n    color: #9C9FA7;\n}\n\n.select>.placeholder,\ninput[type=date]~.placeholder {\n    top: -0.8em;\n}\n\n\n/*bootstrap like stuff*/\n\n.outline-green,\n.outline-orange,\n.outline-black,\n.outline-red {\n    background-color: transparent;\n    border: 1px solid;\n}\n\n.outline-green {\n    color: #00BB78;\n    border-color: #00BB78;\n}\n\n.outline-green:hover {\n    background-color: #00BB78;\n    color: white;\n}\n\n.outline-orange {\n    color: #FF9D29;\n    border-color: #FF9D29;\n}\n\n.outline-orange:hover {\n    background-color: #FF9D29;\n    color: white;\n}\n\n.outline-red {\n    color: #FF5756;\n    border-color: #FF5756;\n}\n\n.outline-red:hover {\n    background-color: #FF5756;\n    color: white;\n}\n\n.outline-black {\n    color: #333;\n}\n\n.outline-black:hover {\n    background-color: #333;\n    color: #F4F4F4;\n}\n\n.cancel-button {\n    background-color: #F4F4F4;\n    color: #333;\n}\n\n.cancel-button:hover {\n    border: 1px solid #333;\n}\n\n.text-choosable,\n.text-choosable * {\n    -webkit-user-select: text;\n    /* Safari */\n    -moz-user-select: text;\n    /* Firefox */\n    -ms-user-select: text;\n    /* IE10+/Edge */\n    user-select: text;\n    /* Standard */\n}\n\n.text-ellipsis {\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n\n.text-no-wrap,\n.text-no-wrap>* {\n    white-space: nowrap;\n}\n\n.title {\n    font-size: 1.5em;\n    margin: .5em 0;\n}\n\n.subtitle {\n    font-size: 1.25em;\n    margin: 0.5em 0;\n}\n\n.border-black {\n    border-color: black !important;\n}\n\n.border-grey {\n    border-color: #B5BAC7 !important;\n}\n\n.border-orange {\n    border-color: #FF9D29 !important;\n}\n\n.no_border_left {\n    border-left: none;\n    margin-left: -0.3125em;\n}\n\n.text-red {\n    color: red;\n}\n\n.text-lightgrey {\n    color: #B5BAC7;\n}\n\n.text-grey {\n    color: #9C9FA7;\n}\n\n.text-white {\n    color: white;\n}\n\n.text-black {\n    color: #333;\n}\n\n.text-blue {\n    color: blue;\n}\n\n.text-orange {\n    color: #FF9D29;\n}\n\n.caret-orange {\n    caret-color: #FF9D29;\n}\n\n.bg-transparent {\n    background-color: transparent;\n}\n\n.bg-white {\n    background-color: #FFFFFF;\n}\n\n.bg-bg {\n    background-color: #eef5ff;\n}\n\n.bg-darkgrey {\n    background-color: #B5BAC7;\n}\n\n.bg-grey {\n    background-color: #EDEDED;\n}\n\n.bg-lightgrey {\n    background-color: #F4F4F4;\n}\n\n.bg-orange {\n    background-color: #FF9D29;\n}\n\n.transition {\n    transition: .5s;\n}\n\n.cursor-pointer {\n    cursor: pointer;\n}\n\n.pad {\n    padding: 0.3125em !important;\n    position: relative;\n}\n\n.h-min-100 {\n    min-height: 100%;\n}\n\n.height-1 {\n    height: 0.0625em;\n}\n\n.width-unset {\n    width: unset;\n}\n\n.height-unset {\n    height: unset;\n}\n\n.font-weight-bold {\n    font-weight: 500 !important;\n}\n\n.font-size-24 {\n    font-size: 1.5em;\n}\n\n.font-size-20 {\n    font-size: 1.25em;\n}\n\n.font-size-18 {\n    font-size: 1.125em;\n}\n\n.font-size-14 {\n    font-size: 0.875em;\n    line-height: 1.04em;\n}\n\n.font-size-12 {\n    font-size: 0.75em;\n}\n\n.rotate {\n    transform: rotate(-180deg);\n}\n\n.z-index-1 {\n    z-index: 1;\n}\n\n.overflow-auto,\n.overflow-scroll {\n    overflow: auto;\n}\n\n.overflow-scroll {\n    border-bottom: 1px solid #E8E8E8;\n    scrollbar-width: .125em;\n    padding-right: .625em;\n    padding-bottom: .625em;\n}\n\n.overflow-scroll::-webkit-scrollbar {\n    width: 0.125em;\n}\n\n\n/*icons*/\n\nsvg:not(:root).svg-inline--fa {\n    overflow: visible;\n}\n\n.svg-inline--fa.fa-w-10 {\n    width: 0.625em;\n}\n\n.svg-inline--fa.fa-w-11 {\n    width: 0.6875em;\n}\n\n.svg-inline--fa.fa-w-14 {\n    width: 0.875em;\n}\n\n.svg-inline--fa.fa-w-16 {\n    width: 1em;\n}\n\n.svg-inline--fa.fa-w-18 {\n    width: 1.125em;\n}\n\n.svg-inline--fa {\n    display: inline-block;\n    font-size: inherit;\n    height: 1em;\n    overflow: visible;\n    vertical-align: -0.125em;\n}\n\n\n/*responsiveness*/\n\n@media screen and (min-width: 1440px) {\n    html {\n        font-size: 16px;\n    }\n}\n\n@media screen and (min-width: 2000px) {\n    html {\n        font-size: 18px;\n    }\n}\n\n\n/*: or :: changes*/\n\n.link:hover {\n    color: #FF9D29;\n}\n\n\n/*modal changes*/\n\ndiv.vm--overlay {\n    background-color: rgba(51, 51, 51, 0.3);\n}\n\ndiv.vm--container,\ndiv.vm--overlay {\n    transition: .5s;\n}\n\n\n/*cancellations*/\n\n.no-hover-color:hover {\n    color: initial;\n}\n\n.col,\n.col-1,\n.col-10,\n.col-11,\n.col-12,\n.col-2,\n.col-3,\n.col-4,\n.col-5,\n.col-6,\n.col-7,\n.col-8,\n.col-9,\n.col-auto,\n.col-lg,\n.col-lg-1,\n.col-lg-10,\n.col-lg-11,\n.col-lg-12,\n.col-lg-2,\n.col-lg-3,\n.col-lg-4,\n.col-lg-5,\n.col-lg-6,\n.col-lg-7,\n.col-lg-8,\n.col-lg-9,\n.col-lg-auto,\n.col-md,\n.col-md-1,\n.col-md-10,\n.col-md-11,\n.col-md-12,\n.col-md-2,\n.col-md-3,\n.col-md-4,\n.col-md-5,\n.col-md-6,\n.col-md-7,\n.col-md-8,\n.col-md-9,\n.col-md-auto,\n.col-sm,\n.col-sm-1,\n.col-sm-10,\n.col-sm-11,\n.col-sm-12,\n.col-sm-2,\n.col-sm-3,\n.col-sm-4,\n.col-sm-5,\n.col-sm-6,\n.col-sm-7,\n.col-sm-8,\n.col-sm-9,\n.col-sm-auto,\n.col-xl,\n.col-xl-1,\n.col-xl-10,\n.col-xl-11,\n.col-xl-12,\n.col-xl-2,\n.col-xl-3,\n.col-xl-4,\n.col-xl-5,\n.col-xl-6,\n.col-xl-7,\n.col-xl-8,\n.col-xl-9,\n.col-xl-auto {\n    padding-right: 0px;\n    padding-left: 0px;\n}\n\n.table thead th {\n    vertical-align: middle;\n}\n\n.table td,\n.table th {\n    vertical-align: middle;\n}\n\nlabel {\n    margin-bottom: unset;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
