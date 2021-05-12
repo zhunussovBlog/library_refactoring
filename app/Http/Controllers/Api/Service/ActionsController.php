@@ -59,7 +59,7 @@ class ActionsController extends Controller
         $duration = DB::table('lib_cfg as lc')->select('lc.data')
             ->leftJoin('user_groups as ug', 'ug.group_id', '=', 'lc.group_id')
             ->where('lc.cfg_key', '=', 'BORROW_PERIOD')
-            ->where('ug.user_cid', '=', $userCID)
+            ->where('ug.user_cid', '=', $validated['user_cid'])
             ->orderBy('data', 'desc')
             ->first();
 
