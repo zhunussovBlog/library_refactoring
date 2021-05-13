@@ -90,6 +90,10 @@ trait ItemReports
                                         left join lib_journal_issues ji on j.journal_id = ji.journal_id
                                         where ji.j_issue_id = i.j_issue_id)
                                 when i.disc_id is not null
-                                then (select d.name from lib_discs d where d.disc_id = i.disc_id) end) as title"));
+                                then (select d.name from lib_discs d where d.disc_id = i.disc_id) end) as title"),
+            DB::raw("(case when i.tag_printed = 1 then 'printed'
+                                       else 'not printed' end) as print_status"),
+            DB::raw("(case when i.tag_initialized = 1 then 'initialized'
+                                       else 'not initialized' end) as init_status"));
     }
 }

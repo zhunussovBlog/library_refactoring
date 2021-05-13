@@ -150,6 +150,7 @@ Route::middleware(['auth:api-student,api-employee'])->group(function () {
             Route::post('search', 'Api\Report\Barcode\SearchController');
 
             Route::post('print', 'Api\Report\Barcode\PrintController');
+            Route::get('init/{id}', 'Api\Report\Barcode\InitializeController');
         });
 
         Route::group(['prefix' => 'service'], function () {

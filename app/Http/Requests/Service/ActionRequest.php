@@ -26,7 +26,9 @@ class ActionRequest extends FormRequest
         return [
             'inv_id' => 'required|int',
             'loan_id' => 'required|int',
-            'user_cid' => 'required|string'
+            'user_cid' => 'required|string',
+            'duration' => 'nullable|int',
+            'due_date' => 'nullable|date',
         ];
     }
 }

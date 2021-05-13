@@ -56,14 +56,8 @@ class ActionsController extends Controller
 
         $validated['web_log_id'] = $webLog;
 
-        $duration = DB::table('lib_cfg as lc')->select('lc.data')
-            ->leftJoin('user_groups as ug', 'ug.group_id', '=', 'lc.group_id')
-            ->where('lc.cfg_key', '=', 'BORROW_PERIOD')
-            ->where('ug.user_cid', '=', $validated['user_cid'])
-            ->orderBy('data', 'desc')
-            ->first();
-
-        $validated['due_date'] = Carbon::now()->addDays((int) $duration->data)->toDateString();
+        $validated['due_date'] = !empty($validated['duration']) ?
+            Carbon::now()->addDays((int) $validated['duration'])->toDateString() : $validated['due_date'];
 
         return $validated;
     }

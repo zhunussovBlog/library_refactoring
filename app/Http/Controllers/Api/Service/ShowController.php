@@ -15,6 +15,7 @@ use App\Models\User\Student;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ShowController extends Controller
 {
@@ -38,6 +39,13 @@ class ShowController extends Controller
         $total = $this->countTotal($media);
         $borrowed = $this->getBorrowedBooks($media);
 
+        $duration = DB::table('lib_cfg as lc')->select('lc.data')
+            ->leftJoin('user_groups as ug', 'ug.group_id', '=', 'lc.group_id')
+            ->where('lc.cfg_key', '=', 'BORROW_PERIOD')
+            ->where('ug.user_cid', '=', $model->user_cid)
+            ->orderBy('data', 'desc')
+            ->first();
+
         return response()->json([
             'res' => [
                 'info' => $model,
@@ -45,6 +53,7 @@ class ShowController extends Controller
                 'history' => $media,
                 'total' => $total,
                 'return' => $borrowed,
+                'duration' => !empty($duration) ? $duration->data : null
             ]
         ]);
     }

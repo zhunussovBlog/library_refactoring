@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Api\Report\Barcode;
 
+use App\Common\Helpers\Query\OracleProcedure;
+use App\Exceptions\ReturnResponseException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Report\Barcode\BarcodePrintRequest;
 use App\Models\Acquisition\Item\Item;
+use PDO;
 use TCPDF;
 
 class PrintController extends Controller
@@ -44,6 +47,10 @@ class PrintController extends Controller
             $barcodeNo = $barcode['barcode'];
             $author = $barcode['author'];
 
+            if (!$this->setTagPrinted($invId)) {
+                throw new ReturnResponseException('Procedure error', 500);
+            }
+
             if (strlen($title) > 30) {
                 $title = mb_substr($title, 0, 30) . '...';
             }
@@ -64,5 +71,16 @@ class PrintController extends Controller
         }
 
         $pdf->Output(now() . '.pdf', 'D');
+    }
+
+    private function setTagPrinted(int $id): bool
+    {
+        $procedure = new OracleProcedure('pkg_acquisition.set_tags_printed', [
+            'pInvId' => ['value' => $id, 'type' => PDO::PARAM_INT],
+            'pRes' => ['value' => 0, 'isOut' => true, 'type' => PDO::PARAM_INT],
+        ]);
+
+        $procedure->call();
+        return (int) $procedure->getOutputParams()['pRes'] === 1;
     }
 }

@@ -104,7 +104,6 @@ class Employee extends Authenticatable implements UserCidAttribute
             'e.hname as username', DB::raw("(select dr.degree_title_en||'/'||g.gorev_ad_en from dbmaster.degree dr,
                                             dbmaster.gorev g where dr.degree_id = e.degree_id and g.gorev_id = dg.gorev_id) as degree_position"),
             DB::raw("(select d.title_en from dbmaster.departments d where d.dep_code = dg.dep_code and d.son = 1) as department"),
-            DB::raw("(select ei.outer_email from dbmaster.employee_info ei where ei.emp_id = e.emp_id)"),
             DB::raw("'employee' as type"))
             ->leftJoin('dbmaster.emp_gorev as eg', static function ($join) {
                 $join->on('eg.emp_id', '=', 'e.emp_id');
