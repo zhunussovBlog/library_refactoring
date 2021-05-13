@@ -274,7 +274,7 @@ export default{
 					inv_id:selected[0].inv_id,
 					user_cid:this.user.info.user_cid,
 				};
-				await this.readFromRfid('SetItemsCheckInOut','status=0');
+				// await this.readFromRfid('SetItemsCheckInOut','status=0');
 				await this.$http.post('service/media/give',info).then(response=>{
 					this.message_success('check_in ',response);
 				});
