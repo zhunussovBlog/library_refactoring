@@ -62,11 +62,11 @@ import InputDiv from '../../../components/common/Input'
 
 // mixins
 import readFromRfid from '../../../mixins/readFromRfid'
-import {message_success} from '../../../mixins/messages'
+import {message_success,message_error} from '../../../mixins/messages'
 import {goTo} from '../../../mixins/goTo'
 export default{
 	components:{Back,TableDiv,Tabs,InputDiv},
-	mixins:[readFromRfid,message_success,goTo],
+	mixins:[readFromRfid,message_success,message_error,goTo],
 	props:{
 		info:{
 			type:Object,
@@ -80,7 +80,8 @@ export default{
 			let selectable={
 				available:false,
 				button_title:'check_in',
-				func:this.checkIn
+				func:this.checkIn,
+				if:this.selectable_if
 			};
 			if(this.state=='issuance'){
 				selectable.available=true;
@@ -112,13 +113,16 @@ export default{
 				},
 				{
 					name:'author',link:'author'
+				},
+				{
+					name:'status',link:'status'
 				}
 				]
 			}
 			else if(this.state=='return'){
 				heads=[
 				{
-					name:'due_date',link:'due_date'
+					name:'due_date',link:'due_date',is_date:true
 				},
 				{
 					name:'author',link:'authors'
@@ -137,7 +141,7 @@ export default{
 			else{
 				heads=[
 				{
-					name:'due_date',link:'due_date'
+					name:'due_date',link:'due_date',is_date:true
 				},
 				{
 					name:'author',link:'authors'
@@ -191,7 +195,6 @@ export default{
 				rightArray:[]
 			},
 			barcode:'',
-			search_results:{},
 			books:[],
 			custom_func:{
 				title:'return',
@@ -210,6 +213,9 @@ export default{
 		},
 		tabOnClick(tab){
 			this.state=tab.name.toLowerCase();
+		},
+		selectable_if(info){
+			return info.status!='borrowed'
 		},
 		makeUserInfo(){
 			let even=[];
@@ -238,9 +244,22 @@ export default{
 		},
 		search(){
 			this.$store.commit('setFullPageLoading',true);
-			this.$http.get('service/media/search?value='+this.barcode).then(response=>{
-				this.search_results=response.data.res.data;
-				this.addToBooks(this.search_results);
+			this.$http.get('service/media/search/by-inventory?barcodes[]='+this.barcode).then(response=>{
+				this.addToBooks(response.data.res);
+				this.$store.commit('setFullPageLoading',false);
+			})
+		},
+		async searchAllBarcodes(){
+			this.$store.commit('setFullPageLoading',true);
+			let barcodes=''
+			this.books.forEach(book=>{
+				barcodes+='barcodes[]='+book.barcode+'&'
+			})
+			barcodes=barcodes.split('');
+			barcodes.splice(-1,1);
+			barcodes=barcodes.join('');
+			await this.$http.get('service/media/search/by-inventory?'+barcodes).then(response=>{
+				this.books=response.data.res;
 				this.$store.commit('setFullPageLoading',false);
 			})
 		},
@@ -249,36 +268,44 @@ export default{
 		},
 		async checkIn(selected){
 			this.$store.commit('setFullPageLoading',true);
-			let now=new Date();
-			let info ={
-				loan_id:0,
-				inv_id:selected[0].inv_id,
-				user_cid:this.user.info.user_cid,
-				due_date:now
-			};
 			try{
-				await this.readFromRfid('SetItemsCheckInOut','status=0');
+				let info ={
+					loan_id:0,
+					inv_id:selected[0].inv_id,
+					user_cid:this.user.info.user_cid,
+				};
+				// await this.readFromRfid('SetItemsCheckInOut','status=0');
 				await this.$http.post('service/media/give',info).then(response=>{
 					this.message_success('check_in ',response);
 				});
 				await this.getInfo();
+				await this.searchAllBarcodes();
+				this.$eventHub.$emit('selectRefresh');
+			}catch(e){
+				if(e!="rfid problem"){
+					this.message_error('check_in',e);
+				}
 			}finally{
 				this.$store.commit('setFullPageLoading',false);
 			}
 		},
 		async checkOut(book){
 			this.$store.commit('setFullPageLoading',true);
-			let info ={
-				loan_id:book.loan_id,
-				inv_id:book.inv_id,
-				user_cid:this.user.info.user_cid
-			};
 			try{
+				let info ={
+					loan_id:book.loan_id,
+					inv_id:book.inv_id,
+					user_cid:this.user.info.user_cid
+				};
 				await this.readFromRfid('SetItemsCheckInOut','status=1');
 				await this.$http.post('service/media/back',info).then(response=>{
 					this.message_success('check_out',response);
 				});
 				await this.getInfo();
+			}catch(e){
+				if(e.message!="rfid problem"){
+					this.message_error('check_out',e);
+				}
 			}finally{
 				this.$store.commit('setFullPageLoading',false);
 			}

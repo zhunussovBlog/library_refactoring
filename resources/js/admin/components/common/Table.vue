@@ -61,6 +61,7 @@
 							{{index+1}}
 						</td>
 						<td class="text-center" v-else>
+							{{selected.includes(info)}}
 							<Checkbox :checked="selected.includes(info)" @change="addSelection(info)" />
 						</td>
 						<!-- BATCHES ONLY -->
@@ -112,10 +113,10 @@
 		<div class="bg-lightgrey selectable d-flex align-items-center justify-content-between" v-if="selectable.available">
 			<div class="d-flex align-items-center">
 				<Checkbox v-model="selectedAll" @change="selectAll()"/> &nbsp; &nbsp;
-				<span>{{$t('select_all',{num:this.selected.length})}}</span>
+				<span @click="selectable.showSelected ? selectable.showSelected(selected) : ()=>{}">{{$t('select_all',{num:this.selected.length})}}</span>
 			</div>
 			<div class="pad">
-				<button type="button" class="outline-green" @click="selectable.func(selected)">
+				<button type="button" class="outline-green" @click="selectable.func(selected)" v-if="selectable.func!=null">
 					{{$t(selectable.button_title)}}
 				</button>
 			</div>
@@ -256,7 +257,7 @@ export default{
 			per_page: this.pagination ? this.$store.state[this.commit].per_page : 10,
 			per_page_list:[10,25,50,100,500],
 			sort_by:this.pagination ? this.$store.state[this.commit].sort_by : '',
-			selected:[],
+			selected:this.selectable.selected ? this.selectable.selected ?? [] : [],
 			selectedAll:false,
 			sort_mode:''
 		}
@@ -388,7 +389,14 @@ export default{
 				selected.splice(selected.indexOf(info),1);
 			}
 			else{
-				selected.push(info);
+				if(this.selectable.if!=null){
+					if(this.selectable.if(info)){
+						selected.push(info);
+					}
+				}
+				else{
+					selected.push(info);
+				}
 			}
 		},
 		selectAll(){
@@ -399,7 +407,14 @@ export default{
 				try{
 					// a deep copy
 					array.forEach(element=>{
-						this.selected.push(element);
+						if(this.selectable.if!=null){
+							if(this.selectable.if(element)){
+								this.selected.push(element);
+							}
+						}
+						else{
+							this.selected.push(element);
+						}
 					})
 				}catch(e){
 					this.selected=[];

@@ -1,0 +1,46 @@
+<template>
+    <table-div
+        :heads="heads"
+        :data="array"
+        :selectable="selectable_copy"
+        :link="link"
+        :commit="commit"
+        :pagination="pagination"
+        :clickables="clickables"
+        :sortable="sortable"
+        :custom_func="custom_func"
+    />
+</template>
+<script>
+import TableDiv from "../../../components/common/Table";
+export default {
+    props:{
+        heads:Array,
+        data:Array,
+        selectable:Object,
+        link:String,
+        commit:String,
+        pagination:Boolean,
+        clickables:Boolean,
+        sortable:Boolean,
+        custom_func:Object,
+        func:Object
+    },
+    components: { TableDiv },
+    data(){
+        return{
+            array:JSON.parse(JSON.stringify(this.data)),
+            selectable_copy:JSON.parse(JSON.stringify(this.selectable))
+        }
+    },
+    watch:{
+        array(newValue){
+            this.data=newValue;
+        }
+    },
+    created(){
+        this.selectable_copy.selected=this.array;
+        this.selectable_copy.func=this.func
+    }
+};
+</script>

@@ -57,6 +57,7 @@
 import Back from '../../../components/common/Back'
 import Dropdown from '../../../components/common/Dropdown'
 import Table from '../../../components/common/Table'
+import SelectedItems from './SelectedItems'
 
 // loading indicator
 import PulseLoader from 'vue-spinner/src/PulseLoader'
@@ -65,12 +66,13 @@ import PulseLoader from 'vue-spinner/src/PulseLoader'
 import {getResults,download_file} from '../../../mixins/common'
 import {message_success} from '../../../mixins/messages'
 import readFromRfid from '../../../mixins/readFromRfid'
+import showModal from '../../../mixins/showModal'
 
 // libraries
 import {mapGetters} from 'vuex'
 
 export default{
-	mixins:[getResults,download_file,readFromRfid],
+	mixins:[getResults,download_file,readFromRfid,message_success,showModal],
 	components:{Back,Dropdown,'table-div':Table,PulseLoader},
 	computed:{
 		...mapGetters(['print_barcode'])
@@ -88,7 +90,8 @@ export default{
 			selectable:{
 				available:true,
 				button_title:'print',
-				func:this.printIt
+				func:this.printIt,
+				showSelected:this.showSelected
 			},
 			link:'/barcode',
 			commit:'print_barcode',
@@ -98,7 +101,7 @@ export default{
 				title:'initialize',
 				func:this.initBarcode,
 				class:['outline-green']
-			}
+			},
 		}
 	},
 	methods:{
@@ -117,11 +120,32 @@ export default{
 			this.getResults(this.link,this.commit);
 			this.$eventHub.$emit('selectRefresh');
 		},
+		showSelected(barcodes,func){
+			let props={
+				heads:this.heads,
+				data:barcodes,
+				selectable:this.selectable,
+				commit:this.commit,
+				link:this.link,
+				pagination:false,
+				clickables:true,
+				sortable:false,
+				custom_func:this.custom_func
+			}
+			if(func!=undefined){
+				props.func=func;
+			}
+			this.showModal(SelectedItems,props);
+		},
 		printIt(barcodes){
-			let inventories=barcodes.map(barcode=>barcode.id);
-			this.$http.post(this.link+'/print',{inventories:inventories},{responseType:'blob'}).then(response=>{
-				this.download_file(response,'barcode','pdf');
-			})
+			let print=(barcodes)=>{
+				let inventories=barcodes.map(barcode=>barcode.id);
+				this.$http.post(this.link+'/print',{inventories:inventories},{responseType:'blob'}).then(response=>{
+					this.download_file(response,'barcode','pdf');
+					this.$emit('close');
+				})
+			}
+			this.showSelected(barcodes,print);
 		}
 	}
 }
