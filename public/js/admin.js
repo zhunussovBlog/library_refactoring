@@ -2711,7 +2711,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 // mixins 
 
  // icons
@@ -2851,11 +2850,11 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   watch: {
-    'data': function data(newVal, oldVal) {
+    data: function data(newVal, oldVal) {
       this.array = newVal;
     },
-    'heads': function heads() {
-      this.selected = [];
+    selected: function selected() {
+      this.$forceUpdate();
     }
   },
   methods: {
@@ -2993,10 +2992,20 @@ __webpack_require__.r(__webpack_exports__);
     // selecting
     addSelection: function addSelection(info) {
       var selected = this.selected;
+      console.log(selected.find(function (elem) {
+        return JSON.stringify(elem) == JSON.stringify(info);
+      }) != null);
+      var found = false;
 
-      if (selected.includes(info)) {
-        selected.splice(selected.indexOf(info), 1);
-      } else {
+      for (var i = 0; i < selected.length; i++) {
+        if (JSON.stringify(selected[i]) == JSON.stringify(info)) {
+          selected.splice(i, 1);
+          found = true;
+          break;
+        }
+      }
+
+      if (!found) {
         if (this.selectable["if"] != null) {
           if (this.selectable["if"](info)) {
             selected.push(info);
@@ -4651,7 +4660,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.getResults(this.link, this.commit);
       this.$eventHub.$emit('selectRefresh');
     },
-    showSelected: function showSelected(barcodes, func) {
+    showSelected: function showSelected(barcodes, changeSelected, func) {
       var props = {
         heads: this.heads,
         data: barcodes,
@@ -4661,7 +4670,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         pagination: false,
         clickables: true,
         sortable: false,
-        custom_func: this.custom_func
+        custom_func: this.custom_func,
+        changeSelected: changeSelected
       };
 
       if (func != undefined) {
@@ -4670,7 +4680,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       this.showModal(_SelectedItems__WEBPACK_IMPORTED_MODULE_4__.default, props);
     },
-    printIt: function printIt(barcodes) {
+    printIt: function printIt(barcodes, changeSelected) {
       var _this2 = this;
 
       var print = function print(barcodes) {
@@ -4689,7 +4699,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         });
       };
 
-      this.showSelected(barcodes, print);
+      this.showSelected(barcodes, changeSelected, print);
     }
   }
 });
@@ -4733,6 +4743,7 @@ __webpack_require__.r(__webpack_exports__);
     clickables: Boolean,
     sortable: Boolean,
     custom_func: Object,
+    changeSelected: Function,
     func: Object
   },
   components: {
@@ -4741,16 +4752,18 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       array: JSON.parse(JSON.stringify(this.data)),
-      selectable_copy: JSON.parse(JSON.stringify(this.selectable))
+      array_copy: JSON.parse(JSON.stringify(this.data)),
+      selectable_copy: {}
     };
   },
   watch: {
-    array: function array(newValue) {
-      this.data = newValue;
+    array: function array(newVal) {
+      this.changeSelected(newVal);
     }
   },
   created: function created() {
-    this.selectable_copy.selected = this.array;
+    this.selectable_copy = copy(this.selectable);
+    this.selectable_copy.selected = this.data;
     this.selectable_copy.func = this.func;
   }
 });
@@ -65683,13 +65696,15 @@ var render = function() {
                         "td",
                         { staticClass: "text-center" },
                         [
-                          _vm._v(
-                            "\n\t\t\t\t\t\t" +
-                              _vm._s(_vm.selected.includes(info)) +
-                              "\n\t\t\t\t\t\t"
-                          ),
                           _c("Checkbox", {
-                            attrs: { checked: _vm.selected.includes(info) },
+                            attrs: {
+                              checked:
+                                _vm.selected.find(function(elem) {
+                                  return (
+                                    JSON.stringify(elem) == JSON.stringify(info)
+                                  )
+                                }) != null
+                            },
                             on: {
                               change: function($event) {
                                 return _vm.addSelection(info)
@@ -65922,7 +65937,10 @@ var render = function() {
           [
             _c(
               "div",
-              { staticClass: "d-flex align-items-center" },
+              {
+                staticClass: "d-flex align-items-center",
+                class: { "cursor-pointer": _vm.selectable.showSelected }
+              },
               [
                 _c("Checkbox", {
                   on: {
@@ -65945,7 +65963,11 @@ var render = function() {
                     on: {
                       click: function($event) {
                         _vm.selectable.showSelected
-                          ? _vm.selectable.showSelected(_vm.selected)
+                          ? _vm.selectable.showSelected(_vm.selected, function(
+                              data
+                            ) {
+                              _vm.selected = data
+                            })
                           : function() {}
                       }
                     }
@@ -65971,7 +65993,9 @@ var render = function() {
                       attrs: { type: "button" },
                       on: {
                         click: function($event) {
-                          return _vm.selectable.func(_vm.selected)
+                          _vm.selectable.func(_vm.selected, function(data) {
+                            _vm.selected = data
+                          })
                         }
                       }
                     },
@@ -68934,7 +68958,7 @@ var render = function() {
   return _c("table-div", {
     attrs: {
       heads: _vm.heads,
-      data: _vm.array,
+      data: _vm.array_copy,
       selectable: _vm.selectable_copy,
       link: _vm.link,
       commit: _vm.commit,

@@ -1,7 +1,7 @@
 <template>
     <table-div
         :heads="heads"
-        :data="array"
+        :data="array_copy"
         :selectable="selectable_copy"
         :link="link"
         :commit="commit"
@@ -24,22 +24,26 @@ export default {
         clickables:Boolean,
         sortable:Boolean,
         custom_func:Object,
+        changeSelected:Function,
         func:Object
     },
     components: { TableDiv },
     data(){
         return{
             array:JSON.parse(JSON.stringify(this.data)),
-            selectable_copy:JSON.parse(JSON.stringify(this.selectable))
+            array_copy:JSON.parse(JSON.stringify(this.data)),
+            selectable_copy:{},
         }
     },
     watch:{
-        array(newValue){
-            this.data=newValue;
+        array(newVal){
+            this.changeSelected(newVal);
         }
     },
     created(){
-        this.selectable_copy.selected=this.array;
+        this.selectable_copy=copy(this.selectable);
+
+        this.selectable_copy.selected=this.data;
         this.selectable_copy.func=this.func
     }
 };

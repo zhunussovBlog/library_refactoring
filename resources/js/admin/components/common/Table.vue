@@ -61,8 +61,7 @@
 							{{index+1}}
 						</td>
 						<td class="text-center" v-else>
-							{{selected.includes(info)}}
-							<Checkbox :checked="selected.includes(info)" @change="addSelection(info)" />
+							<Checkbox :checked="selected.find(elem=>JSON.stringify(elem)==JSON.stringify(info))!=null" @change="addSelection(info)" />
 						</td>
 						<!-- BATCHES ONLY -->
 						<td v-if="status"
@@ -111,12 +110,12 @@
 		<!-- If the table has selectable elements then there is a "select all" checkbox below the table -->
 		<!-- SELECTABLE ONLY -->
 		<div class="bg-lightgrey selectable d-flex align-items-center justify-content-between" v-if="selectable.available">
-			<div class="d-flex align-items-center">
+			<div class="d-flex align-items-center" :class="{'cursor-pointer':selectable.showSelected}" >
 				<Checkbox v-model="selectedAll" @change="selectAll()"/> &nbsp; &nbsp;
-				<span @click="selectable.showSelected ? selectable.showSelected(selected) : ()=>{}">{{$t('select_all',{num:this.selected.length})}}</span>
+				<span @click="selectable.showSelected ? selectable.showSelected(selected,(data)=>{selected=data;}) : ()=>{}">{{$t('select_all',{num:this.selected.length})}}</span>
 			</div>
 			<div class="pad">
-				<button type="button" class="outline-green" @click="selectable.func(selected)" v-if="selectable.func!=null">
+				<button type="button" class="outline-green" @click="selectable.func(selected,(data)=>{selected=data;})" v-if="selectable.func!=null">
 					{{$t(selectable.button_title)}}
 				</button>
 			</div>
@@ -263,11 +262,11 @@ export default{
 		}
 	},
 	watch:{
-		'data'(newVal,oldVal){
+		data(newVal,oldVal){
 			this.array=newVal;
 		},
-		'heads'(){
-			this.selected=[];
+		selected(){
+			this.$forceUpdate();
 		}
 	},
 	methods:{
@@ -385,10 +384,16 @@ export default{
 		// selecting
 		addSelection(info){
 			let selected = this.selected;
-			if(selected.includes(info)){
-				selected.splice(selected.indexOf(info),1);
+			console.log(selected.find(elem=>JSON.stringify(elem)==JSON.stringify(info))!=null);
+			let found=false;
+			for(let i = 0;i<selected.length;i++){
+				if(JSON.stringify(selected[i])==JSON.stringify(info)){
+					selected.splice(i,1);
+					found=true;
+					break;
+				}
 			}
-			else{
+			if(!found){
 				if(this.selectable.if!=null){
 					if(this.selectable.if(info)){
 						selected.push(info);

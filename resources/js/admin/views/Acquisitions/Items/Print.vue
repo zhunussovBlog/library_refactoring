@@ -120,7 +120,7 @@ export default{
 			this.getResults(this.link,this.commit);
 			this.$eventHub.$emit('selectRefresh');
 		},
-		showSelected(barcodes,func){
+		showSelected(barcodes,changeSelected,func){
 			let props={
 				heads:this.heads,
 				data:barcodes,
@@ -130,14 +130,15 @@ export default{
 				pagination:false,
 				clickables:true,
 				sortable:false,
-				custom_func:this.custom_func
+				custom_func:this.custom_func,
+				changeSelected:changeSelected
 			}
 			if(func!=undefined){
 				props.func=func;
 			}
 			this.showModal(SelectedItems,props);
 		},
-		printIt(barcodes){
+		printIt(barcodes,changeSelected){
 			let print=(barcodes)=>{
 				let inventories=barcodes.map(barcode=>barcode.id);
 				this.$http.post(this.link+'/print',{inventories:inventories},{responseType:'blob'}).then(response=>{
@@ -145,7 +146,7 @@ export default{
 					this.$emit('close');
 				})
 			}
-			this.showSelected(barcodes,print);
+			this.showSelected(barcodes,changeSelected,print);
 		}
 	}
 }
