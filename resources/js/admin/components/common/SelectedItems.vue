@@ -12,7 +12,7 @@
     />
 </template>
 <script>
-import TableDiv from "../../../components/common/Table";
+import TableDiv from "./Table";
 export default {
     props:{
         heads:Array,

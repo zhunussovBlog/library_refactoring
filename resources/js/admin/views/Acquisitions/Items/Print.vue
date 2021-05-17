@@ -57,7 +57,7 @@
 import Back from '../../../components/common/Back'
 import Dropdown from '../../../components/common/Dropdown'
 import Table from '../../../components/common/Table'
-import SelectedItems from './SelectedItems'
+import SelectedItems from '../../../components/common/SelectedItems'
 
 // loading indicator
 import PulseLoader from 'vue-spinner/src/PulseLoader'
