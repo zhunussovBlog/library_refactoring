@@ -61,8 +61,7 @@
 							{{index+1}}
 						</td>
 						<td class="text-center" v-else>
-							{{selected.includes(info)}}
-							<Checkbox :checked="selected.includes(info)" @change="addSelection(info)" />
+							<Checkbox :checked="selected.find(elem=>JSON.stringify(elem)==JSON.stringify(info))!=null" @change="addSelection(info)" />
 						</td>
 						<!-- BATCHES ONLY -->
 						<td v-if="status"
@@ -75,10 +74,11 @@
 						<!-- default data elements
 						for in heads  -->
 						<td v-for="(name,i) in heads" :key="i"
-							:class="{'cursor-pointer':service.available}" 
-							@click="service.available ? service.showMore(info) : ()=>{}"
+							:class="{'cursor-pointer':service.available || (edit_duration && name.link=='duration')}" 
+							@click="tdOnClick(info,name)"
 						>
 							{{name.is_date && info[name.link]!=null ? new Date(info[name.link]).toDateInputValue() : info[name.link]}}
+							<edit class="d-inline-block float-right" v-if="edit_duration && name.link=='duration'"/>
 						</td>
 						<!-- if there are clickable elements in table -> Show more, Edit, ReCreate, Delete or Service -->
 						<td class="text-center" v-if="clickables">
@@ -111,12 +111,12 @@
 		<!-- If the table has selectable elements then there is a "select all" checkbox below the table -->
 		<!-- SELECTABLE ONLY -->
 		<div class="bg-lightgrey selectable d-flex align-items-center justify-content-between" v-if="selectable.available">
-			<div class="d-flex align-items-center">
+			<div class="d-flex align-items-center" :class="{'cursor-pointer':selectable.showSelected}" >
 				<Checkbox v-model="selectedAll" @change="selectAll()"/> &nbsp; &nbsp;
-				<span @click="selectable.showSelected ? selectable.showSelected(selected) : ()=>{}">{{$t('select_all',{num:this.selected.length})}}</span>
+				<span @click="selectable.showSelected ? selectable.showSelected(selected,(data)=>{selected=data;}) : ()=>{}">{{$t('select_all',{num:this.selected.length})}}</span>
 			</div>
 			<div class="pad">
-				<button type="button" class="outline-green" @click="selectable.func(selected)" v-if="selectable.func!=null">
+				<button type="button" class="outline-green" @click="selectable.func(selected,(data)=>{selected=data;})" v-if="selectable.func!=null">
 					{{$t(selectable.button_title)}}
 				</button>
 			</div>
@@ -154,6 +154,7 @@ import DeleteModal from'./DeleteModal'
 import pagination from './Pagination'
 import Dropdown from './Dropdown'
 import Checkbox from './Checkbox'
+import EditDuration from './EditDuration'
 
 export default{
 	props:{
@@ -227,6 +228,12 @@ export default{
 			default(){
 				return true
 			}
+		},
+		edit_duration:{
+			type:Boolean,
+			default(){
+				return false
+			}
 		}
 	},
 	mixins:[showModal,last],
@@ -239,7 +246,8 @@ export default{
 		Refresh,
 		Dropdown,
 		Checkbox,
-		pagination
+		pagination,
+		EditDuration
 	},
 	computed:{
 		// for sort by
@@ -263,14 +271,22 @@ export default{
 		}
 	},
 	watch:{
-		'data'(newVal,oldVal){
+		data(newVal,oldVal){
 			this.array=newVal;
 		},
-		'heads'(){
-			this.selected=[];
+		selected(){
+			this.$forceUpdate();
 		}
 	},
 	methods:{
+		tdOnClick(info,name){
+			if(this.service.available){
+				this.service.showMore(info)
+			}
+			if(this.edit_duration && name.link=='duration'){
+				this.showModal(EditDuration,{info});
+			}
+		},
 		showStatus(id){
 			this.$http.get('/batch/status/'+id).then(response=>{
 				this.showModal(this.ShowStatus,{id:id});
@@ -385,10 +401,16 @@ export default{
 		// selecting
 		addSelection(info){
 			let selected = this.selected;
-			if(selected.includes(info)){
-				selected.splice(selected.indexOf(info),1);
+			console.log(selected.find(elem=>JSON.stringify(elem)==JSON.stringify(info))!=null);
+			let found=false;
+			for(let i = 0;i<selected.length;i++){
+				if(JSON.stringify(selected[i])==JSON.stringify(info)){
+					selected.splice(i,1);
+					found=true;
+					break;
+				}
 			}
-			else{
+			if(!found){
 				if(this.selectable.if!=null){
 					if(this.selectable.if(info)){
 						selected.push(info);

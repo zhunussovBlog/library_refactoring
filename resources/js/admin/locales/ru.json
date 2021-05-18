@@ -189,6 +189,7 @@
     "language": "Язык",
 
     "duration": "Продолжительность",
+    "edit_duration": "Изменить продолжительность",
     "issuance": "Выдача",
     "return": "Возврат",
     "history": "История",
@@ -197,6 +198,7 @@
     "returned": "Вернули",
 
     "initialize": "Инициализировать",
-    "read_from_rfid": "Читать из RFID"
-
+    "read_from_rfid": "Читать из RFID",
+    "init_status": "Инициализирован",
+    "print_status": "Распечатан"
 }

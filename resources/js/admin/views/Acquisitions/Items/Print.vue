@@ -57,14 +57,14 @@
 import Back from '../../../components/common/Back'
 import Dropdown from '../../../components/common/Dropdown'
 import Table from '../../../components/common/Table'
-import SelectedItems from './SelectedItems'
+import SelectedItems from '../../../components/common/SelectedItems'
 
 // loading indicator
 import PulseLoader from 'vue-spinner/src/PulseLoader'
 
 //mixins
-import {getResults,download_file} from '../../../mixins/common'
-import {message_success} from '../../../mixins/messages'
+import {getResults,download_file,last} from '../../../mixins/common'
+import {message_success,message_error} from '../../../mixins/messages'
 import readFromRfid from '../../../mixins/readFromRfid'
 import showModal from '../../../mixins/showModal'
 
@@ -72,7 +72,7 @@ import showModal from '../../../mixins/showModal'
 import {mapGetters} from 'vuex'
 
 export default{
-	mixins:[getResults,download_file,readFromRfid,message_success,showModal],
+	mixins:[getResults,download_file,readFromRfid,message_success,message_error,showModal,last],
 	components:{Back,Dropdown,'table-div':Table,PulseLoader},
 	computed:{
 		...mapGetters(['print_barcode'])
@@ -86,6 +86,8 @@ export default{
 			{name:'inventory_number',link:'id'},
 			{name:'titles',link:'title'},
 			{name:'author',link:'author'},
+			{name:'init_status',link:'init_status'},
+			{name:'print_status',link:'print_status'}
 			],
 			selectable:{
 				available:true,
@@ -108,19 +110,24 @@ export default{
 		changeMode(mode){
 			this.type=mode;
 		},
-		initBarcode(item){
-			this.setBarcode(item.barcode);
+		async initBarcode(item){
+			await this.setBarcode(item.barcode);
+			this.initializeInDB(item.id);
 		},
 		async setBarcode(barcode){
 			await this.readFromRfid('SetItemID','newID='+barcode);
-			this.message_success('setting barcode id',{});
+		},
+		initializeInDB(id){
+			this.$http.get(this.link+'/init/'+id).then(()=>{
+				this.last(this.link,this.commit);
+				this.message_success('initialize',{});
+			});
 		},
 		loadResults(){
 			this.$store.dispatch('setStore',{label:this.commit,data:{page:0}});
 			this.getResults(this.link,this.commit);
-			this.$eventHub.$emit('selectRefresh');
 		},
-		showSelected(barcodes,func){
+		showSelected(barcodes,changeSelected,func){
 			let props={
 				heads:this.heads,
 				data:barcodes,
@@ -130,22 +137,24 @@ export default{
 				pagination:false,
 				clickables:true,
 				sortable:false,
-				custom_func:this.custom_func
+				custom_func:this.custom_func,
+				changeSelected:changeSelected
 			}
 			if(func!=undefined){
 				props.func=func;
 			}
 			this.showModal(SelectedItems,props);
 		},
-		printIt(barcodes){
+		printIt(barcodes,changeSelected){
 			let print=(barcodes)=>{
 				let inventories=barcodes.map(barcode=>barcode.id);
 				this.$http.post(this.link+'/print',{inventories:inventories},{responseType:'blob'}).then(response=>{
 					this.download_file(response,'barcode','pdf');
+					this.last(this.link,this.commit);
 					this.$emit('close');
 				})
 			}
-			this.showSelected(barcodes,print);
+			this.showSelected(barcodes,changeSelected,print);
 		}
 	}
 }

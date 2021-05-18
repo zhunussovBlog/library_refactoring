@@ -30,7 +30,7 @@
 					</div>
 				</div>
 				<div class="d-flex align-items-center ml-5">
-					<button type="button" @click="$router.push({path:'print'})">
+					<button type="button" class="outline-blue" @click="$router.push({path:'print'})">
 						<span><Print /> &nbsp;</span>
 						<span>{{($t('print'))}}</span>
 					</button>
@@ -102,10 +102,8 @@ export default{
 			{name:'batches_number',link:'batch_id'},
 			{name:'author',link:'author'},
 			{name:'titles',link:'title'},
-			{name:'fill_date',link:'create_date',is_date:true},
-			{name:'created_by',link:'created_by'},
-			{name:'edited_by',link:'edited_by'},
-			// edited by
+			{name:'init_status',link:'init_status'},
+			{name:'print_status',link:'print_status'}
 			],
 			editObj:{
 				available:true,
@@ -161,6 +159,8 @@ export default{
 			{name:'location',link:'location_title'},
 			{name:'fill_date',link:'create_date',is_date:true},
 			{name:'created_by',link:'username'},
+			{name:'init_status',link:'init_status'},
+			{name:'print_status',link:'print_status'}
 			];
 			let props={
 				data:info,

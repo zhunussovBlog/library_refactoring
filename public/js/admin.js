@@ -2127,6 +2127,67 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/components/common/EditDuration.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/components/common/EditDuration.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _mixins_messages__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../mixins/messages */ "./resources/js/admin/mixins/messages.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  mixins: [_mixins_messages__WEBPACK_IMPORTED_MODULE_0__.message_success, _mixins_messages__WEBPACK_IMPORTED_MODULE_0__.message_error],
+  props: {
+    info: Object
+  },
+  data: function data() {
+    return {
+      duration: this.info.duration,
+      due_date: ''
+    };
+  },
+  methods: {
+    confirm: function confirm() {
+      if (this.due_date) {
+        this.info.due_date = this.due_date;
+        var date1 = new Date();
+        var date2 = new Date(this.due_date);
+        var diffTime = Math.abs(date2 - date1);
+        var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        this.info.duration = diffDays;
+      } else if (this.duration) {
+        this.info.due_date = null;
+        this.info.duration = this.duration;
+      } else {
+        this.message_error('edit_duration', {});
+        return 0;
+      }
+
+      this.message_success('edit_duration', {});
+      this.$emit('close');
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/components/common/Input.vue?vue&type=script&lang=js&":
 /*!*************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/components/common/Input.vue?vue&type=script&lang=js& ***!
@@ -2550,6 +2611,70 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/components/common/SelectedItems.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/components/common/SelectedItems.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Table__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Table */ "./resources/js/admin/components/common/Table.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: {
+    heads: Array,
+    data: Array,
+    selectable: Object,
+    link: String,
+    commit: String,
+    pagination: Boolean,
+    clickables: Boolean,
+    sortable: Boolean,
+    custom_func: Object,
+    changeSelected: Function,
+    func: Object
+  },
+  components: {
+    TableDiv: _Table__WEBPACK_IMPORTED_MODULE_0__.default
+  },
+  data: function data() {
+    return {
+      array: JSON.parse(JSON.stringify(this.data)),
+      array_copy: JSON.parse(JSON.stringify(this.data)),
+      selectable_copy: {}
+    };
+  },
+  watch: {
+    array: function array(newVal) {
+      this.changeSelected(newVal);
+    }
+  },
+  created: function created() {
+    this.selectable_copy = copy(this.selectable);
+    this.selectable_copy.selected = this.data;
+    this.selectable_copy.func = this.func;
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/components/common/Table.vue?vue&type=script&lang=js&":
 /*!*************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/components/common/Table.vue?vue&type=script&lang=js& ***!
@@ -2574,6 +2699,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Pagination__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./Pagination */ "./resources/js/admin/components/common/Pagination.vue");
 /* harmony import */ var _Dropdown__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./Dropdown */ "./resources/js/admin/components/common/Dropdown.vue");
 /* harmony import */ var _Checkbox__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./Checkbox */ "./resources/js/admin/components/common/Checkbox.vue");
+/* harmony import */ var _EditDuration__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./EditDuration */ "./resources/js/admin/components/common/EditDuration.vue");
 //
 //
 //
@@ -2728,6 +2854,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     heads: Array,
@@ -2813,6 +2940,12 @@ __webpack_require__.r(__webpack_exports__);
       "default": function _default() {
         return true;
       }
+    },
+    edit_duration: {
+      type: Boolean,
+      "default": function _default() {
+        return false;
+      }
     }
   },
   mixins: [_mixins_showModal__WEBPACK_IMPORTED_MODULE_0__.default, _mixins_common__WEBPACK_IMPORTED_MODULE_1__.last],
@@ -2825,7 +2958,8 @@ __webpack_require__.r(__webpack_exports__);
     Refresh: _assets_icons_Refresh__WEBPACK_IMPORTED_MODULE_6__.default,
     Dropdown: _Dropdown__WEBPACK_IMPORTED_MODULE_11__.default,
     Checkbox: _Checkbox__WEBPACK_IMPORTED_MODULE_12__.default,
-    pagination: _Pagination__WEBPACK_IMPORTED_MODULE_10__.default
+    pagination: _Pagination__WEBPACK_IMPORTED_MODULE_10__.default,
+    EditDuration: _EditDuration__WEBPACK_IMPORTED_MODULE_13__.default
   },
   computed: {
     // for sort by
@@ -2851,14 +2985,25 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   watch: {
-    'data': function data(newVal, oldVal) {
+    data: function data(newVal, oldVal) {
       this.array = newVal;
     },
-    'heads': function heads() {
-      this.selected = [];
+    selected: function selected() {
+      this.$forceUpdate();
     }
   },
   methods: {
+    tdOnClick: function tdOnClick(info, name) {
+      if (this.service.available) {
+        this.service.showMore(info);
+      }
+
+      if (this.edit_duration && name.link == 'duration') {
+        this.showModal(_EditDuration__WEBPACK_IMPORTED_MODULE_13__.default, {
+          info: info
+        });
+      }
+    },
     showStatus: function showStatus(id) {
       var _this = this;
 
@@ -2993,10 +3138,20 @@ __webpack_require__.r(__webpack_exports__);
     // selecting
     addSelection: function addSelection(info) {
       var selected = this.selected;
+      console.log(selected.find(function (elem) {
+        return JSON.stringify(elem) == JSON.stringify(info);
+      }) != null);
+      var found = false;
 
-      if (selected.includes(info)) {
-        selected.splice(selected.indexOf(info), 1);
-      } else {
+      for (var i = 0; i < selected.length; i++) {
+        if (JSON.stringify(selected[i]) == JSON.stringify(info)) {
+          selected.splice(i, 1);
+          found = true;
+          break;
+        }
+      }
+
+      if (!found) {
         if (this.selectable["if"] != null) {
           if (this.selectable["if"](info)) {
             selected.push(info);
@@ -4326,17 +4481,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         name: 'titles',
         link: 'title'
       }, {
-        name: 'fill_date',
-        link: 'create_date',
-        is_date: true
+        name: 'init_status',
+        link: 'init_status'
       }, {
-        name: 'created_by',
-        link: 'created_by'
-      }, {
-        name: 'edited_by',
-        link: 'edited_by'
-      } // edited by
-      ],
+        name: 'print_status',
+        link: 'print_status'
+      }],
       editObj: {
         available: true,
         reCreate: true,
@@ -4440,6 +4590,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }, {
         name: 'created_by',
         link: 'username'
+      }, {
+        name: 'init_status',
+        link: 'init_status'
+      }, {
+        name: 'print_status',
+        link: 'print_status'
       }];
       var props = {
         data: info,
@@ -4482,7 +4638,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_common_Back__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../components/common/Back */ "./resources/js/admin/components/common/Back.vue");
 /* harmony import */ var _components_common_Dropdown__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../components/common/Dropdown */ "./resources/js/admin/components/common/Dropdown.vue");
 /* harmony import */ var _components_common_Table__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../components/common/Table */ "./resources/js/admin/components/common/Table.vue");
-/* harmony import */ var _SelectedItems__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./SelectedItems */ "./resources/js/admin/views/Acquisitions/Items/SelectedItems.vue");
+/* harmony import */ var _components_common_SelectedItems__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../components/common/SelectedItems */ "./resources/js/admin/components/common/SelectedItems.vue");
 /* harmony import */ var vue_spinner_src_PulseLoader__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue-spinner/src/PulseLoader */ "./node_modules/vue-spinner/src/PulseLoader.vue");
 /* harmony import */ var _mixins_common__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../mixins/common */ "./resources/js/admin/mixins/common.js");
 /* harmony import */ var _mixins_messages__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../mixins/messages */ "./resources/js/admin/mixins/messages.js");
@@ -4570,7 +4726,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  mixins: [_mixins_common__WEBPACK_IMPORTED_MODULE_6__.getResults, _mixins_common__WEBPACK_IMPORTED_MODULE_6__.download_file, _mixins_readFromRfid__WEBPACK_IMPORTED_MODULE_8__.default, _mixins_messages__WEBPACK_IMPORTED_MODULE_7__.message_success, _mixins_showModal__WEBPACK_IMPORTED_MODULE_9__.default],
+  mixins: [_mixins_common__WEBPACK_IMPORTED_MODULE_6__.getResults, _mixins_common__WEBPACK_IMPORTED_MODULE_6__.download_file, _mixins_readFromRfid__WEBPACK_IMPORTED_MODULE_8__.default, _mixins_messages__WEBPACK_IMPORTED_MODULE_7__.message_success, _mixins_messages__WEBPACK_IMPORTED_MODULE_7__.message_error, _mixins_showModal__WEBPACK_IMPORTED_MODULE_9__.default, _mixins_common__WEBPACK_IMPORTED_MODULE_6__.last],
   components: {
     Back: _components_common_Back__WEBPACK_IMPORTED_MODULE_1__.default,
     Dropdown: _components_common_Dropdown__WEBPACK_IMPORTED_MODULE_2__.default,
@@ -4594,6 +4750,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }, {
         name: 'author',
         link: 'author'
+      }, {
+        name: 'init_status',
+        link: 'init_status'
+      }, {
+        name: 'print_status',
+        link: 'print_status'
       }],
       selectable: {
         available: true,
@@ -4617,9 +4779,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.type = mode;
     },
     initBarcode: function initBarcode(item) {
-      this.setBarcode(item.barcode);
-    },
-    setBarcode: function setBarcode(barcode) {
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
@@ -4628,10 +4787,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return _this.readFromRfid('SetItemID', 'newID=' + barcode);
+                return _this.setBarcode(item.barcode);
 
               case 2:
-                _this.message_success('setting barcode id', {});
+                _this.initializeInDB(item.id);
 
               case 3:
               case "end":
@@ -4641,6 +4800,34 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }, _callee);
       }))();
     },
+    setBarcode: function setBarcode(barcode) {
+      var _this2 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return _this2.readFromRfid('SetItemID', 'newID=' + barcode);
+
+              case 2:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
+    },
+    initializeInDB: function initializeInDB(id) {
+      var _this3 = this;
+
+      this.$http.get(this.link + '/init/' + id).then(function () {
+        _this3.last(_this3.link, _this3.commit);
+
+        _this3.message_success('initialize', {});
+      });
+    },
     loadResults: function loadResults() {
       this.$store.dispatch('setStore', {
         label: this.commit,
@@ -4649,9 +4836,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       });
       this.getResults(this.link, this.commit);
-      this.$eventHub.$emit('selectRefresh');
     },
-    showSelected: function showSelected(barcodes, func) {
+    showSelected: function showSelected(barcodes, changeSelected, func) {
       var props = {
         heads: this.heads,
         data: barcodes,
@@ -4661,97 +4847,39 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         pagination: false,
         clickables: true,
         sortable: false,
-        custom_func: this.custom_func
+        custom_func: this.custom_func,
+        changeSelected: changeSelected
       };
 
       if (func != undefined) {
         props.func = func;
       }
 
-      this.showModal(_SelectedItems__WEBPACK_IMPORTED_MODULE_4__.default, props);
+      this.showModal(_components_common_SelectedItems__WEBPACK_IMPORTED_MODULE_4__.default, props);
     },
-    printIt: function printIt(barcodes) {
-      var _this2 = this;
+    printIt: function printIt(barcodes, changeSelected) {
+      var _this4 = this;
 
       var print = function print(barcodes) {
         var inventories = barcodes.map(function (barcode) {
           return barcode.id;
         });
 
-        _this2.$http.post(_this2.link + '/print', {
+        _this4.$http.post(_this4.link + '/print', {
           inventories: inventories
         }, {
           responseType: 'blob'
         }).then(function (response) {
-          _this2.download_file(response, 'barcode', 'pdf');
+          _this4.download_file(response, 'barcode', 'pdf');
 
-          _this2.$emit('close');
+          _this4.last(_this4.link, _this4.commit);
+
+          _this4.$emit('close');
         });
       };
 
-      this.showSelected(barcodes, print);
+      this.showSelected(barcodes, changeSelected, print);
     }
-  }
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Acquisitions/Items/SelectedItems.vue?vue&type=script&lang=js&":
-/*!****************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Acquisitions/Items/SelectedItems.vue?vue&type=script&lang=js& ***!
-  \****************************************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _components_common_Table__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../components/common/Table */ "./resources/js/admin/components/common/Table.vue");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: {
-    heads: Array,
-    data: Array,
-    selectable: Object,
-    link: String,
-    commit: String,
-    pagination: Boolean,
-    clickables: Boolean,
-    sortable: Boolean,
-    custom_func: Object,
-    func: Object
-  },
-  components: {
-    TableDiv: _components_common_Table__WEBPACK_IMPORTED_MODULE_0__.default
-  },
-  data: function data() {
-    return {
-      array: JSON.parse(JSON.stringify(this.data)),
-      selectable_copy: JSON.parse(JSON.stringify(this.selectable))
-    };
-  },
-  watch: {
-    array: function array(newValue) {
-      this.data = newValue;
-    }
-  },
-  created: function created() {
-    this.selectable_copy.selected = this.array;
-    this.selectable_copy.func = this.func;
   }
 });
 
@@ -6064,6 +6192,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
 // components
 
 
@@ -6291,18 +6420,29 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         _this.goTo('users');
       });
     },
-    search: function search() {
+    addDurationToBooks: function addDurationToBooks(array) {
       var _this2 = this;
+
+      array.forEach(function (book) {
+        if (book.duration == null) {
+          book.duration = _this2.user.duration;
+        }
+      });
+    },
+    search: function search() {
+      var _this3 = this;
 
       this.$store.commit('setFullPageLoading', true);
       this.$http.get('service/media/search/by-inventory?barcodes[]=' + this.barcode).then(function (response) {
-        _this2.addToBooks(response.data.res);
+        _this3.addDurationToBooks(response.data.res);
 
-        _this2.$store.commit('setFullPageLoading', false);
+        _this3.addToBooks(response.data.res);
+
+        _this3.$store.commit('setFullPageLoading', false);
       });
     },
     searchAllBarcodes: function searchAllBarcodes() {
-      var _this3 = this;
+      var _this4 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
         var barcodes;
@@ -6310,11 +6450,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _this3.$store.commit('setFullPageLoading', true);
+                _this4.$store.commit('setFullPageLoading', true);
 
                 barcodes = '';
 
-                _this3.books.forEach(function (book) {
+                _this4.books.forEach(function (book) {
                   barcodes += 'barcodes[]=' + book.barcode + '&';
                 });
 
@@ -6322,10 +6462,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
                 barcodes.splice(-1, 1);
                 barcodes = barcodes.join('');
                 _context.next = 8;
-                return _this3.$http.get('service/media/search/by-inventory?' + barcodes).then(function (response) {
-                  _this3.books = response.data.res;
+                return _this4.$http.get('service/media/search/by-inventory?' + barcodes).then(function (response) {
+                  _this4.books = response.data.res;
 
-                  _this3.$store.commit('setFullPageLoading', false);
+                  _this4.$store.commit('setFullPageLoading', false);
                 });
 
               case 8:
@@ -6340,7 +6480,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.books = this.books.concat(books);
     },
     checkIn: function checkIn(selected) {
-      var _this4 = this;
+      var _this5 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
         var info;
@@ -6348,59 +6488,66 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                _this4.$store.commit('setFullPageLoading', true);
+                _this5.$store.commit('setFullPageLoading', true);
 
                 _context2.prev = 1;
                 info = {
                   loan_id: 0,
                   inv_id: selected[0].inv_id,
-                  user_cid: _this4.user.info.user_cid
-                }; // await this.readFromRfid('SetItemsCheckInOut','status=0');
+                  user_cid: _this5.user.info.user_cid
+                };
 
-                _context2.next = 5;
-                return _this4.$http.post('service/media/give', info).then(function (response) {
-                  _this4.message_success('check_in ', response);
+                if (selected[0].due_date) {
+                  info.due_date = selected[0].due_date;
+                } else if (selected[0].duration) {
+                  info.duration = selected[0].duration;
+                } // await this.readFromRfid('SetItemsCheckInOut','status=0');
+
+
+                _context2.next = 6;
+                return _this5.$http.post('service/media/give', info).then(function (response) {
+                  _this5.message_success('check_in ', response);
                 });
 
-              case 5:
-                _context2.next = 7;
-                return _this4.getInfo();
+              case 6:
+                _context2.next = 8;
+                return _this5.getInfo();
 
-              case 7:
-                _context2.next = 9;
-                return _this4.searchAllBarcodes();
+              case 8:
+                _context2.next = 10;
+                return _this5.searchAllBarcodes();
 
-              case 9:
-                _this4.$eventHub.$emit('selectRefresh');
+              case 10:
+                _this5.$eventHub.$emit('selectRefresh');
 
-                _context2.next = 15;
+                _context2.next = 16;
                 break;
 
-              case 12:
-                _context2.prev = 12;
+              case 13:
+                _context2.prev = 13;
                 _context2.t0 = _context2["catch"](1);
 
                 if (_context2.t0 != "rfid problem") {
-                  _this4.message_error('check_in', _context2.t0);
+                  _this5.message_error('check_in', _context2.t0);
                 }
 
-              case 15:
-                _context2.prev = 15;
+              case 16:
+                _context2.prev = 16;
 
-                _this4.$store.commit('setFullPageLoading', false);
+                _this5.$store.commit('setFullPageLoading', false);
 
-                return _context2.finish(15);
+                return _context2.finish(16);
 
-              case 18:
+              case 19:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, null, [[1, 12, 15, 18]]);
+        }, _callee2, null, [[1, 13, 16, 19]]);
       }))();
     },
     checkOut: function checkOut(book) {
-      var _this5 = this;
+      var _this6 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
         var info;
@@ -6408,26 +6555,26 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                _this5.$store.commit('setFullPageLoading', true);
+                _this6.$store.commit('setFullPageLoading', true);
 
                 _context3.prev = 1;
                 info = {
                   loan_id: book.loan_id,
                   inv_id: book.inv_id,
-                  user_cid: _this5.user.info.user_cid
+                  user_cid: _this6.user.info.user_cid
                 };
                 _context3.next = 5;
-                return _this5.readFromRfid('SetItemsCheckInOut', 'status=1');
+                return _this6.readFromRfid('SetItemsCheckInOut', 'status=1');
 
               case 5:
                 _context3.next = 7;
-                return _this5.$http.post('service/media/back', info).then(function (response) {
-                  _this5.message_success('check_out', response);
+                return _this6.$http.post('service/media/back', info).then(function (response) {
+                  _this6.message_success('check_out', response);
                 });
 
               case 7:
                 _context3.next = 9;
-                return _this5.getInfo();
+                return _this6.getInfo();
 
               case 9:
                 _context3.next = 14;
@@ -6438,13 +6585,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
                 _context3.t0 = _context3["catch"](1);
 
                 if (_context3.t0.message != "rfid problem") {
-                  _this5.message_error('check_out', _context3.t0);
+                  _this6.message_error('check_out', _context3.t0);
                 }
 
               case 14:
                 _context3.prev = 14;
 
-                _this5.$store.commit('setFullPageLoading', false);
+                _this6.$store.commit('setFullPageLoading', false);
 
                 return _context3.finish(14);
 
@@ -6467,10 +6614,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       }
     },
     getRfidBarcode: function getRfidBarcode() {
-      var _this6 = this;
+      var _this7 = this;
 
       this.readFromRfid('getItemIDS', '', function (json) {
-        _this6.barcode = json.ArrayOfResponse.Response.Result['_text'];
+        _this7.barcode = json.ArrayOfResponse.Response.Result['_text'];
       });
     }
   },
@@ -28408,7 +28555,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/*I hate it !!!!!!!*/\n.text-center[data-v-356122b4]{\n\theight: 100%;\n\tpadding:0 2em;\n\ttext-align: center;\n\tdisplay: flex;\n\talign-items: center;\n}\n.pad[data-v-356122b4]{\n\twidth:100%;\n}\n.border-left-none[data-v-356122b4]{\n\tborder-left: none;\n}\n.border-right-none[data-v-356122b4]{\n\tborder-right: none;\n}\n.border-orange[data-v-356122b4]{\n\t/*fu.... so bad code .... HATE IT!*/\n\tborder-width:0.09375em;\n\tz-index: 1;\n\trounded-lg: 0.3125em;\n\n\t/*never use !important ... do never!!!*/\n\tborder-left:0.09375em solid #ff9d29 !important;\n\tborder-right:0.09375em solid #ff9d29 !important;\n}\n.border-left-radius[data-v-356122b4]{\n\tborder-top-left-radius: 0.3125em;\n\tborder-bottom-left-radius: 0.3125em;\n}\n.border-right-radius[data-v-356122b4]{\n\tborder-top-right-radius: 0.3125em;\n\tborder-bottom-right-radius: 0.3125em;\n}\n.mr--1[data-v-356122b4]{\n\tmargin-right: -0.0625em;\n}\n.input[data-v-356122b4]{\n\twidth:50%;\n\theight:100%;\n}\n.sections[data-v-356122b4]{\n\theight:2.5em;\n}\n.bg-orange[data-v-356122b4]{\n\tpadding:0 1.5em;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/*I hate it !!!!!!!*/\n.text-center[data-v-356122b4]{\n\theight: 100%;\n\tpadding:0 2em;\n\ttext-align: center;\n\tdisplay: flex;\n\talign-items: center;\n}\n.pad[data-v-356122b4]{\n\twidth:100%;\n}\n.border-left-none[data-v-356122b4]{\n\tborder-left: none;\n}\n.border-right-none[data-v-356122b4]{\n\tborder-right: none;\n}\n.border-orange[data-v-356122b4]{\n\t/*fu.... so bad code .... HATE IT!*/\n\tborder-width:0.09375em;\n\tz-index: 1;\n\tborder-radius: 0.3125em;\n\n\t/*never use !important ... do never!!!*/\n\tborder-left:0.09375em solid #ff9d29 !important;\n\tborder-right:0.09375em solid #ff9d29 !important;\n}\n.border-left-radius[data-v-356122b4]{\n\tborder-top-left-radius: 0.3125em;\n\tborder-bottom-left-radius: 0.3125em;\n}\n.border-right-radius[data-v-356122b4]{\n\tborder-top-right-radius: 0.3125em;\n\tborder-bottom-right-radius: 0.3125em;\n}\n.mr--1[data-v-356122b4]{\n\tmargin-right: -0.0625em;\n}\n.input[data-v-356122b4]{\n\twidth:50%;\n\theight:100%;\n}\n.sections[data-v-356122b4]{\n\theight:2.5em;\n}\n.bg-orange[data-v-356122b4]{\n\tpadding:0 1.5em;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -28529,7 +28676,7 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css?family=Roboto:400,400italic,500,500italic,700,700italic,900,900italic,300italic,300,100italic,100);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "/*defaults*/\n\n.tabs {\n    display: flex;\n}\n\n.tab {\n    margin-right: 2.5em;\n    font-weight: 500;\n    font-size: 1.5em;\n    line-height: 1.75em;\n    cursor: pointer;\n    transition: color .3s;\n}\n\n.line {\n    height: 0.3125em;\n    background: #FF9D29;\n    position: absolute;\n    transition: .5s;\n    /*emaa naugad*/\n    bottom: -0.625em;\n}\n\n\n/*main stuff...initialization*/\n\n\n/*firefox only*/\n\ndiv * {\n    scrollbar-color: #c5c5c5 #f4f4f4;\n    scrollbar-width: thin;\n}\n\n\n/*crossbd-flexser*/\n\n::-webkit-scrollbar {\n    width: 0.5em;\n    height: 0.5em;\n}\n\n::-webkit-scrollbar-thumb {\n    background: #c5c5c5;\n}\n\n::-webkit-scrollbar-track {\n    background: #f4f4f4;\n}\n\n* {\n    box-sizing: border-box;\n}\n\ninput,\nbutton,\nselect,\ntextarea {\n    background: none;\n    font-size: 1em;\n    color: #333;\n    white-space: nowrap;\n}\n\n*:focus {\n    outline: none !important;\n}\n\nhtml,\ntextarea {\n    font-family: 'Roboto', sans-serif;\n    font-style: normal;\n    font-weight: normal;\n    line-height: 1.1875em;\n}\n\nhtml {\n    -webkit-user-select: none;\n    /* Safari */\n    -moz-user-select: none;\n    /* Firefox */\n    -ms-user-select: none;\n    /* IE10+/Edge */\n    user-select: none;\n    /* Standard */\n    color: #333333;\n    font-size: 13px;\n}\n\nbody {\n    padding: 0;\n    margin: 0;\n    background-color: #F9F9F9;\n}\n\nbody,\nhtml,\n#app,\n#main,\n#main>.main {\n    max-height: 100vh;\n}\n\n#main>.main {\n    overflow: auto;\n}\n\n\n/*custom*/\n\n.select>select,\n.select>input {\n    appearance: none;\n    padding-right: 2em;\n}\n\n.select {\n    display: grid;\n    grid-template-areas: \"select\";\n    align-items: center;\n}\n\n.select>select,\n.select>input,\n.select:after {\n    grid-area: select;\n}\n\n.select::after {\n    content: \"\";\n    display: block;\n    width: 0.75em;\n    height: 0.375em;\n    margin-right: 1em;\n    background-color: black;\n    clip-path: polygon(100% 0%, 0 0%, 50% 100%);\n    justify-self: end;\n}\n\n.search_icon {\n    position: absolute;\n    right: 1em;\n}\n\n\n/*custom defaults*/\n\n#navbar,\n#sidebar {\n    position: sticky;\n    top: 0;\n}\n\n.sidebar_hidden {\n    width: 0!important;\n    min-width: 0!important;\n}\n\n.main_shown {\n    max-width: 100vw;\n}\n\n.link {\n    cursor: pointer;\n    transition: color .25s;\n    color: inherit;\n    text-decoration: inherit;\n}\n\n.dropdown {\n    position: absolute;\n    width: 12.75em;\n    max-height: 0;\n    overflow: auto;\n    z-index: 3;\n    top: 100%;\n}\n\n.dropdown-left {\n    left: 0;\n}\n\n.dropdown-right {\n    right: 0;\n}\n\n.overflow-hidden {\n    overflow: hidden;\n}\n\n\n/*inputs and buttons stuff*/\n\ninput,\nbutton,\nselect,\ntextarea {\n    width: 100%;\n    height: 100%;\n    border: 0.0625em solid #B5BAC7;\n    padding: 0.625em 1.25em;\n    border-radius: 0.3125em;\n}\n\ntextarea {\n    padding-top: .625em;\n    padding-bottom: .625em;\n    min-height: 6.25em;\n}\n\nbutton,\nselect {\n    cursor: pointer;\n}\n\ninput:disabled,\nselect:disabled {\n    border-color: red;\n    color: grey;\n}\n\ninput:disabled::placeholder,\nselect:disabled::placeholder {\n    color: lightgrey;\n}\n\ninput:disabled~.placeholder,\nselect:disabled~.placeholder {\n    color: grey;\n}\n\n::placeholder {\n    color: #9C9FA7;\n    opacity: 1;\n}\n\n:-ms-input-placeholder {\n    /* Internet Explorer 10-11 */\n    color: red;\n}\n\n::-ms-input-placeholder {\n    /* Microsoft Edge */\n    color: red;\n}\n\nselect,\noption {\n    overflow: hidden;\n}\n\noption {\n    width: 100%;\n    max-width: 30em;\n}\n\noption {\n    white-space: nowrap;\n    text-overflow: ellipsis;\n}\n\nbutton {\n    background-color: #FF9D29;\n    color: white;\n    border-color: transparent;\n    transition: .3s;\n}\n\nbutton:hover {\n    border: 1px solid white;\n}\n\n.required::before {\n    content: '* ';\n    color: red;\n}\n\n\n/*input's label float*/\n\n.placeholder {\n    position: absolute;\n    pointer-events: none;\n    background-color: white;\n    top: -0.5em;\n    left: 2em;\n    margin-left: -0.3125em;\n    padding: 0 0.3125em;\n    font-size: 0.8em;\n    color: #9C9FA7;\n}\n\n.select>.placeholder,\ninput[type=date]~.placeholder {\n    top: -0.8em;\n}\n\n\n/*bootstrap like stuff*/\n\n.outline-green,\n.outline-orange,\n.outline-black,\n.outline-red {\n    background-color: transparent;\n    border: 1px solid;\n}\n\n.outline-green {\n    color: #00BB78;\n    border-color: #00BB78;\n}\n\n.outline-green:hover {\n    background-color: #00BB78;\n    color: white;\n}\n\n.outline-orange {\n    color: #FF9D29;\n    border-color: #FF9D29;\n}\n\n.outline-orange:hover {\n    background-color: #FF9D29;\n    color: white;\n}\n\n.outline-red {\n    color: #FF5756;\n    border-color: #FF5756;\n}\n\n.outline-red:hover {\n    background-color: #FF5756;\n    color: white;\n}\n\n.outline-black {\n    color: #333;\n}\n\n.outline-black:hover {\n    background-color: #333;\n    color: #F4F4F4;\n}\n\n.cancel-button {\n    background-color: #F4F4F4;\n    color: #333;\n}\n\n.cancel-button:hover {\n    border: 1px solid #333;\n}\n\n.text-choosable,\n.text-choosable * {\n    -webkit-user-select: text;\n    /* Safari */\n    -moz-user-select: text;\n    /* Firefox */\n    -ms-user-select: text;\n    /* IE10+/Edge */\n    user-select: text;\n    /* Standard */\n}\n\n.text-ellipsis {\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n\n.text-no-wrap,\n.text-no-wrap>* {\n    white-space: nowrap;\n}\n\n.title {\n    font-size: 1.5em;\n    margin: .5em 0;\n}\n\n.subtitle {\n    font-size: 1.25em;\n    margin: 0.5em 0;\n}\n\n.border-black {\n    border-color: black !important;\n}\n\n.border-grey {\n    border-color: #B5BAC7 !important;\n}\n\n.border-orange {\n    border-color: #FF9D29 !important;\n}\n\n.no_border_left {\n    border-left: none;\n    margin-left: -0.3125em;\n}\n\n.text-red {\n    color: red;\n}\n\n.text-lightgrey {\n    color: #B5BAC7;\n}\n\n.text-grey {\n    color: #9C9FA7;\n}\n\n.text-white {\n    color: white;\n}\n\n.text-black {\n    color: #333;\n}\n\n.text-blue {\n    color: blue;\n}\n\n.text-orange {\n    color: #FF9D29;\n}\n\n.caret-orange {\n    caret-color: #FF9D29;\n}\n\n.bg-transparent {\n    background-color: transparent;\n}\n\n.bg-white {\n    background-color: #FFFFFF;\n}\n\n.bg-bg {\n    background-color: #eef5ff;\n}\n\n.bg-darkgrey {\n    background-color: #B5BAC7;\n}\n\n.bg-grey {\n    background-color: #EDEDED;\n}\n\n.bg-lightgrey {\n    background-color: #F4F4F4;\n}\n\n.bg-orange {\n    background-color: #FF9D29;\n}\n\n.transition {\n    transition: .5s;\n}\n\n.cursor-pointer {\n    cursor: pointer;\n}\n\n.pad {\n    padding: 0.3125em !important;\n    position: relative;\n}\n\n.h-min-100 {\n    min-height: 100%;\n}\n\n.height-1 {\n    height: 0.0625em;\n}\n\n.width-unset {\n    width: unset;\n}\n\n.height-unset {\n    height: unset;\n}\n\n.font-weight-bold {\n    font-weight: 500 !important;\n}\n\n.font-size-24 {\n    font-size: 1.5em;\n}\n\n.font-size-20 {\n    font-size: 1.25em;\n}\n\n.font-size-18 {\n    font-size: 1.125em;\n}\n\n.font-size-14 {\n    font-size: 0.875em;\n    line-height: 1.04em;\n}\n\n.font-size-12 {\n    font-size: 0.75em;\n}\n\n.rotate {\n    transform: rotate(-180deg);\n}\n\n.z-index-1 {\n    z-index: 1;\n}\n\n.overflow-auto,\n.overflow-scroll {\n    overflow: auto;\n}\n\n.overflow-scroll {\n    border-bottom: 1px solid #E8E8E8;\n    scrollbar-width: .125em;\n    padding-right: .625em;\n    padding-bottom: .625em;\n}\n\n.overflow-scroll::-webkit-scrollbar {\n    width: 0.125em;\n}\n\n\n/*icons*/\n\nsvg:not(:root).svg-inline--fa {\n    overflow: visible;\n}\n\n.svg-inline--fa.fa-w-10 {\n    width: 0.625em;\n}\n\n.svg-inline--fa.fa-w-11 {\n    width: 0.6875em;\n}\n\n.svg-inline--fa.fa-w-14 {\n    width: 0.875em;\n}\n\n.svg-inline--fa.fa-w-16 {\n    width: 1em;\n}\n\n.svg-inline--fa.fa-w-18 {\n    width: 1.125em;\n}\n\n.svg-inline--fa {\n    display: inline-block;\n    font-size: inherit;\n    height: 1em;\n    overflow: visible;\n    vertical-align: -0.125em;\n}\n\n\n/*responsiveness*/\n\n@media screen and (min-width: 1440px) {\n    html {\n        font-size: 16px;\n    }\n}\n\n@media screen and (min-width: 2000px) {\n    html {\n        font-size: 18px;\n    }\n}\n\n\n/*: or :: changes*/\n\n.link:hover {\n    color: #FF9D29;\n}\n\n\n/*modal changes*/\n\ndiv.vm--overlay {\n    background-color: rgba(51, 51, 51, 0.3);\n}\n\ndiv.vm--container,\ndiv.vm--overlay {\n    transition: .5s;\n}\n\n\n/*cancellations*/\n\n.no-hover-color:hover {\n    color: initial;\n}\n\n.col,\n.col-1,\n.col-10,\n.col-11,\n.col-12,\n.col-2,\n.col-3,\n.col-4,\n.col-5,\n.col-6,\n.col-7,\n.col-8,\n.col-9,\n.col-auto,\n.col-lg,\n.col-lg-1,\n.col-lg-10,\n.col-lg-11,\n.col-lg-12,\n.col-lg-2,\n.col-lg-3,\n.col-lg-4,\n.col-lg-5,\n.col-lg-6,\n.col-lg-7,\n.col-lg-8,\n.col-lg-9,\n.col-lg-auto,\n.col-md,\n.col-md-1,\n.col-md-10,\n.col-md-11,\n.col-md-12,\n.col-md-2,\n.col-md-3,\n.col-md-4,\n.col-md-5,\n.col-md-6,\n.col-md-7,\n.col-md-8,\n.col-md-9,\n.col-md-auto,\n.col-sm,\n.col-sm-1,\n.col-sm-10,\n.col-sm-11,\n.col-sm-12,\n.col-sm-2,\n.col-sm-3,\n.col-sm-4,\n.col-sm-5,\n.col-sm-6,\n.col-sm-7,\n.col-sm-8,\n.col-sm-9,\n.col-sm-auto,\n.col-xl,\n.col-xl-1,\n.col-xl-10,\n.col-xl-11,\n.col-xl-12,\n.col-xl-2,\n.col-xl-3,\n.col-xl-4,\n.col-xl-5,\n.col-xl-6,\n.col-xl-7,\n.col-xl-8,\n.col-xl-9,\n.col-xl-auto {\n    padding-right: 0px;\n    padding-left: 0px;\n}\n\n.table thead th {\n    vertical-align: middle;\n}\n\n.table td,\n.table th {\n    vertical-align: middle;\n}\n\nlabel {\n    margin-bottom: unset;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "/*defaults*/\n\n.tabs {\n    display: flex;\n}\n\n.tab {\n    margin-right: 2.5em;\n    font-weight: 500;\n    font-size: 1.5em;\n    line-height: 1.75em;\n    cursor: pointer;\n    transition: color .3s;\n}\n\n.line {\n    height: 0.3125em;\n    background: #FF9D29;\n    position: absolute;\n    transition: .5s;\n    /*emaa naugad*/\n    bottom: -0.625em;\n}\n\n\n/*main stuff...initialization*/\n\n\n/*firefox only*/\n\ndiv * {\n    scrollbar-color: #c5c5c5 #f4f4f4;\n    scrollbar-width: thin;\n}\n\n\n/*crossbd-flexser*/\n\n::-webkit-scrollbar {\n    width: 0.5em;\n    height: 0.5em;\n}\n\n::-webkit-scrollbar-thumb {\n    background: #c5c5c5;\n}\n\n::-webkit-scrollbar-track {\n    background: #f4f4f4;\n}\n\n* {\n    box-sizing: border-box;\n}\n\ninput,\nbutton,\nselect,\ntextarea {\n    background: none;\n    font-size: 1em;\n    color: #333;\n    white-space: nowrap;\n}\n\n*:focus {\n    outline: none !important;\n}\n\nhtml,\ntextarea {\n    font-family: 'Roboto', sans-serif;\n    font-style: normal;\n    font-weight: normal;\n    line-height: 1.1875em;\n}\n\nhtml {\n    -webkit-user-select: none;\n    /* Safari */\n    -moz-user-select: none;\n    /* Firefox */\n    -ms-user-select: none;\n    /* IE10+/Edge */\n    user-select: none;\n    /* Standard */\n    color: #333333;\n    font-size: 13px;\n}\n\nbody {\n    padding: 0;\n    margin: 0;\n    background-color: #F9F9F9;\n}\n\nbody,\nhtml,\n#app,\n#main,\n#main>.main {\n    max-height: 100vh;\n}\n\n#main>.main {\n    overflow: auto;\n}\n\n\n/*custom*/\n\n.select>select,\n.select>input {\n    appearance: none;\n    padding-right: 2em;\n}\n\n.select {\n    display: grid;\n    grid-template-areas: \"select\";\n    align-items: center;\n}\n\n.select>select,\n.select>input,\n.select:after {\n    grid-area: select;\n}\n\n.select::after {\n    content: \"\";\n    display: block;\n    width: 0.75em;\n    height: 0.375em;\n    margin-right: 1em;\n    background-color: black;\n    clip-path: polygon(100% 0%, 0 0%, 50% 100%);\n    justify-self: end;\n}\n\n.search_icon {\n    position: absolute;\n    right: 1em;\n}\n\n\n/*custom defaults*/\n\n#navbar,\n#sidebar {\n    position: sticky;\n    top: 0;\n}\n\n.sidebar_hidden {\n    width: 0!important;\n    min-width: 0!important;\n}\n\n.main_shown {\n    max-width: 100vw;\n}\n\n.link {\n    cursor: pointer;\n    transition: color .25s;\n    color: inherit;\n    text-decoration: inherit;\n}\n\n.dropdown {\n    position: absolute;\n    width: 12.75em;\n    max-height: 0;\n    overflow: auto;\n    z-index: 3;\n    top: 100%;\n}\n\n.dropdown-left {\n    left: 0;\n}\n\n.dropdown-right {\n    right: 0;\n}\n\n.overflow-hidden {\n    overflow: hidden;\n}\n\n\n/*inputs and buttons stuff*/\n\ninput,\nbutton,\nselect,\ntextarea {\n    width: 100%;\n    height: 100%;\n    border: 0.0625em solid #B5BAC7;\n    padding: 0.625em 1.25em;\n    border-radius: 0.3125em;\n}\n\ntextarea {\n    padding-top: .625em;\n    padding-bottom: .625em;\n    min-height: 6.25em;\n}\n\nbutton,\nselect {\n    cursor: pointer;\n}\n\ninput:disabled,\nselect:disabled {\n    border-color: red;\n    color: grey;\n}\n\ninput:disabled::placeholder,\nselect:disabled::placeholder {\n    color: lightgrey;\n}\n\ninput:disabled~.placeholder,\nselect:disabled~.placeholder {\n    color: grey;\n}\n\n::placeholder {\n    color: #9C9FA7;\n    opacity: 1;\n}\n\n:-ms-input-placeholder {\n    /* Internet Explorer 10-11 */\n    color: red;\n}\n\n::-ms-input-placeholder {\n    /* Microsoft Edge */\n    color: red;\n}\n\nselect,\noption {\n    overflow: hidden;\n}\n\noption {\n    width: 100%;\n    max-width: 30em;\n}\n\noption {\n    white-space: nowrap;\n    text-overflow: ellipsis;\n}\n\nbutton {\n    background-color: #FF9D29;\n    color: white;\n    border-color: transparent;\n    transition: .3s;\n}\n\nbutton:hover {\n    border: 1px solid white;\n}\n\n.required::before {\n    content: '* ';\n    color: red;\n}\n\n\n/*input's label float*/\n\n.placeholder {\n    position: absolute;\n    pointer-events: none;\n    background-color: white;\n    top: -0.5em;\n    left: 2em;\n    margin-left: -0.3125em;\n    padding: 0 0.3125em;\n    font-size: 0.8em;\n    color: #9C9FA7;\n}\n\n.select>.placeholder,\ninput[type=date]~.placeholder {\n    top: -0.8em;\n}\n\n\n/*bootstrap like stuff*/\n\n.outline-green,\n.outline-orange,\n.outline-black,\n.outline-red,\n.outline-blue {\n    background-color: transparent;\n    border: 1px solid;\n}\n\n.outline-green {\n    color: #00BB78;\n    border-color: #00BB78;\n}\n\n.outline-green:hover {\n    background-color: #00BB78;\n    color: white;\n}\n\n.outline-orange {\n    color: #FF9D29;\n    border-color: #FF9D29;\n}\n\n.outline-orange:hover {\n    background-color: #FF9D29;\n    color: white;\n}\n\n.outline-red {\n    color: #FF5756;\n    border-color: #FF5756;\n}\n\n.outline-red:hover {\n    background-color: #FF5756;\n    color: white;\n}\n\n.outline-black {\n    color: #333;\n}\n\n.outline-black:hover {\n    background-color: #333;\n    color: #F4F4F4;\n}\n\n.outline-blue {\n    color: #3F98EB;\n    border-color: #3F98EB;\n}\n\n.outline-blue:hover {\n    background-color: #3F98EB;\n    color: #F4F4F4;\n}\n\n.cancel-button {\n    background-color: #F4F4F4;\n    color: #333;\n}\n\n.cancel-button:hover {\n    border: 1px solid #333;\n}\n\n.text-choosable,\n.text-choosable * {\n    -webkit-user-select: text;\n    /* Safari */\n    -moz-user-select: text;\n    /* Firefox */\n    -ms-user-select: text;\n    /* IE10+/Edge */\n    user-select: text;\n    /* Standard */\n}\n\n.text-ellipsis {\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n\n.text-no-wrap,\n.text-no-wrap>* {\n    white-space: nowrap;\n}\n\n.title {\n    font-size: 1.5em;\n    margin: .5em 0;\n}\n\n.subtitle {\n    font-size: 1.25em;\n    margin: 0.5em 0;\n}\n\n.border-black {\n    border-color: black !important;\n}\n\n.border-grey {\n    border-color: #B5BAC7 !important;\n}\n\n.border-orange {\n    border-color: #FF9D29 !important;\n}\n\n.no_border_left {\n    border-left: none;\n    margin-left: -0.3125em;\n}\n\n.text-red {\n    color: red;\n}\n\n.text-lightgrey {\n    color: #B5BAC7;\n}\n\n.text-grey {\n    color: #9C9FA7;\n}\n\n.text-white {\n    color: white;\n}\n\n.text-black {\n    color: #333;\n}\n\n.text-blue {\n    color: blue;\n}\n\n.text-orange {\n    color: #FF9D29;\n}\n\n.caret-orange {\n    caret-color: #FF9D29;\n}\n\n.bg-transparent {\n    background-color: transparent;\n}\n\n.bg-white {\n    background-color: #FFFFFF;\n}\n\n.bg-bg {\n    background-color: #eef5ff;\n}\n\n.bg-darkgrey {\n    background-color: #B5BAC7;\n}\n\n.bg-grey {\n    background-color: #EDEDED;\n}\n\n.bg-lightgrey {\n    background-color: #F4F4F4;\n}\n\n.bg-orange {\n    background-color: #FF9D29;\n}\n\n.transition {\n    transition: .5s;\n}\n\n.cursor-pointer {\n    cursor: pointer;\n}\n\n.pad {\n    padding: 0.3125em !important;\n    position: relative;\n}\n\n.h-min-100 {\n    min-height: 100%;\n}\n\n.height-1 {\n    height: 0.0625em;\n}\n\n.width-unset {\n    width: unset;\n}\n\n.height-unset {\n    height: unset;\n}\n\n.font-weight-bold {\n    font-weight: 500 !important;\n}\n\n.font-size-24 {\n    font-size: 1.5em;\n}\n\n.font-size-20 {\n    font-size: 1.25em;\n}\n\n.font-size-18 {\n    font-size: 1.125em;\n}\n\n.font-size-14 {\n    font-size: 0.875em;\n    line-height: 1.04em;\n}\n\n.font-size-12 {\n    font-size: 0.75em;\n}\n\n.rotate {\n    transform: rotate(-180deg);\n}\n\n.z-index-1 {\n    z-index: 1;\n}\n\n.overflow-auto,\n.overflow-scroll {\n    overflow: auto;\n}\n\n.overflow-scroll {\n    border-bottom: 1px solid #E8E8E8;\n    scrollbar-width: .125em;\n    padding-right: .625em;\n    padding-bottom: .625em;\n}\n\n.overflow-scroll::-webkit-scrollbar {\n    width: 0.125em;\n}\n\n\n/*icons*/\n\nsvg:not(:root).svg-inline--fa {\n    overflow: visible;\n}\n\n.svg-inline--fa.fa-w-10 {\n    width: 0.625em;\n}\n\n.svg-inline--fa.fa-w-11 {\n    width: 0.6875em;\n}\n\n.svg-inline--fa.fa-w-14 {\n    width: 0.875em;\n}\n\n.svg-inline--fa.fa-w-16 {\n    width: 1em;\n}\n\n.svg-inline--fa.fa-w-18 {\n    width: 1.125em;\n}\n\n.svg-inline--fa {\n    display: inline-block;\n    font-size: inherit;\n    height: 1em;\n    overflow: visible;\n    vertical-align: -0.125em;\n}\n\n\n/*responsiveness*/\n\n@media screen and (min-width: 1440px) {\n    html {\n        font-size: 16px;\n    }\n}\n\n@media screen and (min-width: 2000px) {\n    html {\n        font-size: 18px;\n    }\n}\n\n\n/*: or :: changes*/\n\n.link:hover {\n    color: #FF9D29;\n}\n\n\n/*modal changes*/\n\ndiv.vm--overlay {\n    background-color: rgba(51, 51, 51, 0.3);\n}\n\ndiv.vm--container,\ndiv.vm--overlay {\n    transition: .5s;\n}\n\n\n/*cancellations*/\n\n.no-hover-color:hover {\n    color: initial;\n}\n\n.col,\n.col-1,\n.col-10,\n.col-11,\n.col-12,\n.col-2,\n.col-3,\n.col-4,\n.col-5,\n.col-6,\n.col-7,\n.col-8,\n.col-9,\n.col-auto,\n.col-lg,\n.col-lg-1,\n.col-lg-10,\n.col-lg-11,\n.col-lg-12,\n.col-lg-2,\n.col-lg-3,\n.col-lg-4,\n.col-lg-5,\n.col-lg-6,\n.col-lg-7,\n.col-lg-8,\n.col-lg-9,\n.col-lg-auto,\n.col-md,\n.col-md-1,\n.col-md-10,\n.col-md-11,\n.col-md-12,\n.col-md-2,\n.col-md-3,\n.col-md-4,\n.col-md-5,\n.col-md-6,\n.col-md-7,\n.col-md-8,\n.col-md-9,\n.col-md-auto,\n.col-sm,\n.col-sm-1,\n.col-sm-10,\n.col-sm-11,\n.col-sm-12,\n.col-sm-2,\n.col-sm-3,\n.col-sm-4,\n.col-sm-5,\n.col-sm-6,\n.col-sm-7,\n.col-sm-8,\n.col-sm-9,\n.col-sm-auto,\n.col-xl,\n.col-xl-1,\n.col-xl-10,\n.col-xl-11,\n.col-xl-12,\n.col-xl-2,\n.col-xl-3,\n.col-xl-4,\n.col-xl-5,\n.col-xl-6,\n.col-xl-7,\n.col-xl-8,\n.col-xl-9,\n.col-xl-auto {\n    padding-right: 0px;\n    padding-left: 0px;\n}\n\n.table thead th {\n    vertical-align: middle;\n}\n\n.table td,\n.table th {\n    vertical-align: middle;\n}\n\nlabel {\n    margin-bottom: unset;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -60841,6 +60988,45 @@ component.options.__file = "resources/js/admin/components/common/Dropdown.vue"
 
 /***/ }),
 
+/***/ "./resources/js/admin/components/common/EditDuration.vue":
+/*!***************************************************************!*\
+  !*** ./resources/js/admin/components/common/EditDuration.vue ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _EditDuration_vue_vue_type_template_id_54dee272___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EditDuration.vue?vue&type=template&id=54dee272& */ "./resources/js/admin/components/common/EditDuration.vue?vue&type=template&id=54dee272&");
+/* harmony import */ var _EditDuration_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./EditDuration.vue?vue&type=script&lang=js& */ "./resources/js/admin/components/common/EditDuration.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
+  _EditDuration_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
+  _EditDuration_vue_vue_type_template_id_54dee272___WEBPACK_IMPORTED_MODULE_0__.render,
+  _EditDuration_vue_vue_type_template_id_54dee272___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/admin/components/common/EditDuration.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/admin/components/common/Input.vue":
 /*!********************************************************!*\
   !*** ./resources/js/admin/components/common/Input.vue ***!
@@ -60960,6 +61146,45 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
 /* hot reload */
 if (false) { var api; }
 component.options.__file = "resources/js/admin/components/common/Pagination.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/admin/components/common/SelectedItems.vue":
+/*!****************************************************************!*\
+  !*** ./resources/js/admin/components/common/SelectedItems.vue ***!
+  \****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _SelectedItems_vue_vue_type_template_id_befa42a8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SelectedItems.vue?vue&type=template&id=befa42a8& */ "./resources/js/admin/components/common/SelectedItems.vue?vue&type=template&id=befa42a8&");
+/* harmony import */ var _SelectedItems_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SelectedItems.vue?vue&type=script&lang=js& */ "./resources/js/admin/components/common/SelectedItems.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
+  _SelectedItems_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
+  _SelectedItems_vue_vue_type_template_id_befa42a8___WEBPACK_IMPORTED_MODULE_0__.render,
+  _SelectedItems_vue_vue_type_template_id_befa42a8___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/admin/components/common/SelectedItems.vue"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
 
 /***/ }),
@@ -61399,45 +61624,6 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
 /* hot reload */
 if (false) { var api; }
 component.options.__file = "resources/js/admin/views/Acquisitions/Items/Print.vue"
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/js/admin/views/Acquisitions/Items/SelectedItems.vue":
-/*!***********************************************************************!*\
-  !*** ./resources/js/admin/views/Acquisitions/Items/SelectedItems.vue ***!
-  \***********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _SelectedItems_vue_vue_type_template_id_7feb3928___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SelectedItems.vue?vue&type=template&id=7feb3928& */ "./resources/js/admin/views/Acquisitions/Items/SelectedItems.vue?vue&type=template&id=7feb3928&");
-/* harmony import */ var _SelectedItems_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SelectedItems.vue?vue&type=script&lang=js& */ "./resources/js/admin/views/Acquisitions/Items/SelectedItems.vue?vue&type=script&lang=js&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-;
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
-  _SelectedItems_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
-  _SelectedItems_vue_vue_type_template_id_7feb3928___WEBPACK_IMPORTED_MODULE_0__.render,
-  _SelectedItems_vue_vue_type_template_id_7feb3928___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/admin/views/Acquisitions/Items/SelectedItems.vue"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
 
 /***/ }),
@@ -62164,6 +62350,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/admin/components/common/EditDuration.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/admin/components/common/EditDuration.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_EditDuration_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./EditDuration.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/components/common/EditDuration.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_EditDuration_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+
+/***/ }),
+
 /***/ "./resources/js/admin/components/common/Input.vue?vue&type=script&lang=js&":
 /*!*********************************************************************************!*\
   !*** ./resources/js/admin/components/common/Input.vue?vue&type=script&lang=js& ***!
@@ -62209,6 +62411,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Pagination_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Pagination.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/components/common/Pagination.vue?vue&type=script&lang=js&");
  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Pagination_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+
+/***/ }),
+
+/***/ "./resources/js/admin/components/common/SelectedItems.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/admin/components/common/SelectedItems.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SelectedItems_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SelectedItems.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/components/common/SelectedItems.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SelectedItems_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
 
 /***/ }),
 
@@ -62369,22 +62587,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Print_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Print.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Acquisitions/Items/Print.vue?vue&type=script&lang=js&");
  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Print_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
-
-/***/ }),
-
-/***/ "./resources/js/admin/views/Acquisitions/Items/SelectedItems.vue?vue&type=script&lang=js&":
-/*!************************************************************************************************!*\
-  !*** ./resources/js/admin/views/Acquisitions/Items/SelectedItems.vue?vue&type=script&lang=js& ***!
-  \************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SelectedItems_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SelectedItems.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Acquisitions/Items/SelectedItems.vue?vue&type=script&lang=js&");
- /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SelectedItems_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
 
 /***/ }),
 
@@ -63396,6 +63598,23 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/admin/components/common/EditDuration.vue?vue&type=template&id=54dee272&":
+/*!**********************************************************************************************!*\
+  !*** ./resources/js/admin/components/common/EditDuration.vue?vue&type=template&id=54dee272& ***!
+  \**********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EditDuration_vue_vue_type_template_id_54dee272___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EditDuration_vue_vue_type_template_id_54dee272___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EditDuration_vue_vue_type_template_id_54dee272___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./EditDuration.vue?vue&type=template&id=54dee272& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/components/common/EditDuration.vue?vue&type=template&id=54dee272&");
+
+
+/***/ }),
+
 /***/ "./resources/js/admin/components/common/Input.vue?vue&type=template&id=2fe06d11&scoped=true&":
 /*!***************************************************************************************************!*\
   !*** ./resources/js/admin/components/common/Input.vue?vue&type=template&id=2fe06d11&scoped=true& ***!
@@ -63443,6 +63662,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Pagination_vue_vue_type_template_id_4661aae3_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Pagination_vue_vue_type_template_id_4661aae3_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Pagination.vue?vue&type=template&id=4661aae3&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/components/common/Pagination.vue?vue&type=template&id=4661aae3&scoped=true&");
+
+
+/***/ }),
+
+/***/ "./resources/js/admin/components/common/SelectedItems.vue?vue&type=template&id=befa42a8&":
+/*!***********************************************************************************************!*\
+  !*** ./resources/js/admin/components/common/SelectedItems.vue?vue&type=template&id=befa42a8& ***!
+  \***********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SelectedItems_vue_vue_type_template_id_befa42a8___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SelectedItems_vue_vue_type_template_id_befa42a8___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SelectedItems_vue_vue_type_template_id_befa42a8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SelectedItems.vue?vue&type=template&id=befa42a8& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/components/common/SelectedItems.vue?vue&type=template&id=befa42a8&");
 
 
 /***/ }),
@@ -63630,23 +63866,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Print_vue_vue_type_template_id_55bee334___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Print_vue_vue_type_template_id_55bee334___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Print.vue?vue&type=template&id=55bee334& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Acquisitions/Items/Print.vue?vue&type=template&id=55bee334&");
-
-
-/***/ }),
-
-/***/ "./resources/js/admin/views/Acquisitions/Items/SelectedItems.vue?vue&type=template&id=7feb3928&":
-/*!******************************************************************************************************!*\
-  !*** ./resources/js/admin/views/Acquisitions/Items/SelectedItems.vue?vue&type=template&id=7feb3928& ***!
-  \******************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SelectedItems_vue_vue_type_template_id_7feb3928___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SelectedItems_vue_vue_type_template_id_7feb3928___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
-/* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SelectedItems_vue_vue_type_template_id_7feb3928___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SelectedItems.vue?vue&type=template&id=7feb3928& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Acquisitions/Items/SelectedItems.vue?vue&type=template&id=7feb3928&");
 
 
 /***/ }),
@@ -64485,6 +64704,7 @@ var render = function() {
       _c("g", [
         _c("path", {
           attrs: {
+            fill: "currentColor",
             d:
               "M42.5,19.408H40V1.843c0-0.69-0.561-1.25-1.25-1.25H6.25C5.56,0.593,5,1.153,5,1.843v17.563H2.5c-1.381,0-2.5,1.119-2.5,2.5v20c0,1.381,1.119,2.5,2.5,2.5h40c1.381,0,2.5-1.119,2.5-2.5v-20C45,20.525,43.881,19.408,42.5,19.408zM32.531,38.094H12.468v-5h20.063V38.094z M37.5,19.408H35c-1.381,0-2.5,1.119-2.5,2.5v5h-20v-5c0-1.381-1.119-2.5-2.5-2.5H7.5V3.093h30V19.408z M32.5,8.792h-20c-0.69,0-1.25-0.56-1.25-1.25s0.56-1.25,1.25-1.25h20c0.689,0,1.25,0.56,1.25,1.25S33.189,8.792,32.5,8.792zM32.5,13.792h-20c-0.69,0-1.25-0.56-1.25-1.25s0.56-1.25,1.25-1.25h20c0.689,0,1.25,0.56,1.25,1.25S33.189,13.792,32.5,13.792zM32.5,18.792h-20c-0.69,0-1.25-0.56-1.25-1.25s0.56-1.25,1.25-1.25h20c0.689,0,1.25,0.56,1.25,1.25S33.189,18.792,32.5,18.792z"
           }
@@ -65055,6 +65275,99 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/components/common/EditDuration.vue?vue&type=template&id=54dee272&":
+/*!*************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/components/common/EditDuration.vue?vue&type=template&id=54dee272& ***!
+  \*************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "p-5" }, [
+    _c("div", { staticClass: "font-size-20" }, [
+      _vm._v(_vm._s(_vm.$t("edit_duration")))
+    ]),
+    _vm._v(" "),
+    _c(
+      "form",
+      {
+        staticClass: "d-flex justify-content-between my-4",
+        on: {
+          submit: function($event) {
+            $event.preventDefault()
+            return _vm.confirm()
+          }
+        }
+      },
+      [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.duration,
+              expression: "duration"
+            }
+          ],
+          staticClass: "mr-4 height-unset",
+          attrs: { type: "text" },
+          domProps: { value: _vm.duration },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.duration = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.due_date,
+              expression: "due_date"
+            }
+          ],
+          staticClass: "mr-4",
+          attrs: { type: "date" },
+          domProps: { value: _vm.due_date },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.due_date = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("div", [
+          _c("button", { staticClass: "bg-green", attrs: { type: "submit" } }, [
+            _vm._v(_vm._s(_vm.$t("edit")))
+          ])
+        ])
+      ]
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/components/common/Input.vue?vue&type=template&id=2fe06d11&scoped=true&":
 /*!******************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/components/common/Input.vue?vue&type=template&id=2fe06d11&scoped=true& ***!
@@ -65429,6 +65742,43 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/components/common/SelectedItems.vue?vue&type=template&id=befa42a8&":
+/*!**************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/components/common/SelectedItems.vue?vue&type=template&id=befa42a8& ***!
+  \**************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("table-div", {
+    attrs: {
+      heads: _vm.heads,
+      data: _vm.array_copy,
+      selectable: _vm.selectable_copy,
+      link: _vm.link,
+      commit: _vm.commit,
+      pagination: _vm.pagination,
+      clickables: _vm.clickables,
+      sortable: _vm.sortable,
+      custom_func: _vm.custom_func
+    }
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/components/common/Table.vue?vue&type=template&id=539baf15&scoped=true&":
 /*!******************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/components/common/Table.vue?vue&type=template&id=539baf15&scoped=true& ***!
@@ -65683,13 +66033,15 @@ var render = function() {
                         "td",
                         { staticClass: "text-center" },
                         [
-                          _vm._v(
-                            "\n\t\t\t\t\t\t" +
-                              _vm._s(_vm.selected.includes(info)) +
-                              "\n\t\t\t\t\t\t"
-                          ),
                           _c("Checkbox", {
-                            attrs: { checked: _vm.selected.includes(info) },
+                            attrs: {
+                              checked:
+                                _vm.selected.find(function(elem) {
+                                  return (
+                                    JSON.stringify(elem) == JSON.stringify(info)
+                                  )
+                                }) != null
+                            },
                             on: {
                               change: function($event) {
                                 return _vm.addSelection(info)
@@ -65732,12 +66084,14 @@ var render = function() {
                       "td",
                       {
                         key: i,
-                        class: { "cursor-pointer": _vm.service.available },
+                        class: {
+                          "cursor-pointer":
+                            _vm.service.available ||
+                            (_vm.edit_duration && name.link == "duration")
+                        },
                         on: {
                           click: function($event) {
-                            _vm.service.available
-                              ? _vm.service.showMore(info)
-                              : function() {}
+                            return _vm.tdOnClick(info, name)
                           }
                         }
                       },
@@ -65749,9 +66103,15 @@ var render = function() {
                                 ? new Date(info[name.link]).toDateInputValue()
                                 : info[name.link]
                             ) +
-                            "\n\t\t\t\t\t"
-                        )
-                      ]
+                            "\n\t\t\t\t\t\t"
+                        ),
+                        _vm.edit_duration && name.link == "duration"
+                          ? _c("edit", {
+                              staticClass: "d-inline-block float-right"
+                            })
+                          : _vm._e()
+                      ],
+                      1
                     )
                   }),
                   _vm._v(" "),
@@ -65922,7 +66282,10 @@ var render = function() {
           [
             _c(
               "div",
-              { staticClass: "d-flex align-items-center" },
+              {
+                staticClass: "d-flex align-items-center",
+                class: { "cursor-pointer": _vm.selectable.showSelected }
+              },
               [
                 _c("Checkbox", {
                   on: {
@@ -65945,7 +66308,11 @@ var render = function() {
                     on: {
                       click: function($event) {
                         _vm.selectable.showSelected
-                          ? _vm.selectable.showSelected(_vm.selected)
+                          ? _vm.selectable.showSelected(_vm.selected, function(
+                              data
+                            ) {
+                              _vm.selected = data
+                            })
                           : function() {}
                       }
                     }
@@ -65971,7 +66338,9 @@ var render = function() {
                       attrs: { type: "button" },
                       on: {
                         click: function($event) {
-                          return _vm.selectable.func(_vm.selected)
+                          _vm.selectable.func(_vm.selected, function(data) {
+                            _vm.selected = data
+                          })
                         }
                       }
                     },
@@ -68589,6 +68958,7 @@ var render = function() {
                 _c(
                   "button",
                   {
+                    staticClass: "outline-blue",
                     attrs: { type: "button" },
                     on: {
                       click: function($event) {
@@ -68907,43 +69277,6 @@ var render = function() {
       1
     )
   ])
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Acquisitions/Items/SelectedItems.vue?vue&type=template&id=7feb3928&":
-/*!*********************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Acquisitions/Items/SelectedItems.vue?vue&type=template&id=7feb3928& ***!
-  \*********************************************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* binding */ render),
-/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
-/* harmony export */ });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("table-div", {
-    attrs: {
-      heads: _vm.heads,
-      data: _vm.array,
-      selectable: _vm.selectable_copy,
-      link: _vm.link,
-      commit: _vm.commit,
-      pagination: _vm.pagination,
-      clickables: _vm.clickables,
-      sortable: _vm.sortable,
-      custom_func: _vm.custom_func
-    }
-  })
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -70716,7 +71049,8 @@ var render = function() {
               clickables: _vm.clickables,
               sortable: false,
               pagination: false,
-              custom_func: _vm.custom_func
+              custom_func: _vm.custom_func,
+              edit_duration: true
             }
           })
         ],
@@ -88893,7 +89227,7 @@ module.exports = function(xml, userOptions) {
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse("{\"ok\":\"OK\",\"acquisitions\":\"Acquisitions\",\"batches\":\"Batch | Batches\",\"items\":\"Item | Items\",\"publishers\":\"Publisher | Publishers\",\"suppliers\":\"Supplier | Suppliers\",\"table\":\"Table\",\"logout\":\"Logout\",\"search\":\"Search\",\"searching\":\"Search\",\"reset\":\"Reset\",\"load_all\":\"Load all data\",\"count\":\"Count\",\"save\":\"Save\",\"cancel\":\"Cancel\",\"cost\":\"Cost\",\"from\":\"From\",\"until\":\"Until\",\"not_found\":\"No data found\",\"create_date\":\"Form fill date\",\"edit_date\":\"Form edit date\",\"results\":\"Results\",\"results_of\":\"results\",\"yes\":\"Yes\",\"no\":\"No\",\"edit\":\"Edit\",\"delete\":\"Delete\",\"create\":\"Create\",\"show_more\":\"Details\",\"more\":\"More ...\",\"confirmation\":\"Are you sure you want to delete?\",\"sort_by\":\"Sort by\",\"search_by\":\"Search by {type}\",\"author_by\":\"author\",\"title_by\":\"title\",\"barcode_by\":\"barcode\",\"batch_id_by\":\"batch number\",\"id_by\":\"inventory number\",\"isbn_by\":\"isbn\",\"and\":\"And\",\"or\":\"Or\",\"not\":\"Not\",\"per_page\":\"Results per page\",\"apply\":\"Apply\",\"showing_pages\":\"{from} - {to} out of {total}\",\"page\":\"Page\",\"page_num\":\"Page {num}\",\"previous\":\"Prev\",\"next\":\"Next\",\"move_to\":\"Move\",\"asc\":\"Ascending\",\"desc\":\"Descending\",\"refresh\":\"Refresh\",\"choose\":\"Choose\",\"choose_search_mode\":\"Choose search mode\",\"save_&_search\":\"Save and search\",\"error\":\"Error !\",\"batch_filter\":\"Batches filter\",\"item_filter\":\"Items filter\",\"search_batches\":\"Search batches\",\"search_items\":\"Search items\",\"search_barcodes\":\"Search barcodes\",\"batches_number\":\"Batch number\",\"batches_by\":\"batch number\",\"add_batch\":\"Add batch\",\"add_item\":\"Add item\",\"create_batches\":\"Create batch\",\"create_items\":\"Create item\",\"create_supplier\":\"Create supplier\",\"create_publisher\":\"Create publisher\",\"edit_batches\":\"Edit batch\",\"edit_items\":\"Edit item\",\"edit_supplier\":\"Edit supplier\",\"edit_publisher\":\"Edit publisher\",\"recreate\":\"Re-create\",\"reCreate_items\":\"Re-create item\",\"type_of_supply\":\"Type of supply\",\"type_of_item\":\"Type of item\",\"quantity_items\":\"Quantity of items\",\"quantity_titles\":\"Quantity of titles\",\"document_number\":\"Document number\",\"contract_number\":\"Contract number\",\"inventory_number\":\"Inventory number\",\"inv_id\":\"Inventory number\",\"types\":\"Types\",\"filled_in\":\"Filled in\",\"made_actually\":\"Made acutally\",\"correct\":\"Correct\",\"titles_no_match\":\"The number of titles does not match\",\"items_no_match\":\"The number of items does not match\",\"add_input\":\"Add input +\",\"status\":\"Status\",\"invoice_date\":\"Invoice date\",\"by_contract\":\"By contract\",\"invoice_details\":\"Invoice details\",\"barcode\":\"Barcode\",\"isbn\":\"ISBN\",\"created_by\":\"Form filled by\",\"edited_by\":\"Form edited by\",\"titles\":\"Title | Titles\",\"title\":\"Title\",\"author\":\"Author\",\"year\":\"Year\",\"pub_year\":\"Publisher year\",\"pub_city\":\"Publisher city\",\"location\":\"Location\",\"fill_date\":\"Form fill date\",\"beginning\":\"Start\",\"end\":\"End\",\"currency\":\"Currency\",\"author-title\":\"Author - title\",\"name\":\"Name\",\"name_by\":\"name\",\"commercial_name\":\"Commercial name\",\"bin\":\"BIN / IIN\",\"contact\":\"Contacts\",\"address\":\"Address\",\"email\":\"E-mail\",\"phone\":\"Phone number\",\"fax\":\"Fax\",\"service_desk\":\"Service desk\",\"users\":\"Users\",\"books\":\"Books history\",\"search_user\":\"Search user\",\"type\":\"Type\",\"student\":\"Student\",\"employee\":\"Staff\",\"all\":\"All\",\"username\":\"Username\",\"user_id\":\"User ID\",\"user_id_user\":\"User ID (or name || surname)\",\"username_user\":\"Username (or name || surname)\",\"surname\":\"Surname\",\"section\":\"Section\",\"serve\":\"Book issuance\",\"check_in\":\"Issue\",\"search_material\":\"Search material\",\"user_info\":\"User information\",\"full_name\":\"Full name\",\"degree\":\"Degree\",\"class\":\"Year\",\"faculty\":\"Faculty\",\"program\":\"Program\",\"id\":\"ID\",\"mobile\":\"Phone number\",\"more_info\":\"More details\",\"select_all\":\"Select all ( {num} selected )\",\"delivery_date\":\"Delivery date\",\"due_date\":\"Due date\",\"issue_date\":\"Issue date\",\"borrow_date\":\"Borrow date\",\"last_user_borrowed\":\"Last user\",\"give_material\":\"Give material\",\"hesab_id\":\"Batch ID\",\"batch_id\":\"Batch Id\",\"items_no\":\"Quantity of items\",\"titles_no\":\"Quantity of titles\",\"receive_date\":\"Form fill date\",\"supplier_id\":\"Supplier ID\",\"supplier_name\":\"Supplier name\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"Publisher ID\",\"com_name\":\"Commercial name\",\"reports\":\"Reports\",\"attendance\":\"Attendance\",\"mrbooks\":\"Most read books\",\"attendance_statistics\":\"Virtual attendance statistics\",\"show_for_week\":\"Show for week\",\"show_for_month\":\"Show for month\",\"in_lib_by_week\":\"In library by week\",\"in_lib_by_month\":\"In library by year\",\"print\":\"Print barcode\",\"language\":\"Language\",\"duration\":\"Duration\",\"issuance\":\"Issuance\",\"return\":\"Return\",\"history\":\"History\",\"dept\":\"Overdue\",\"borrowed\":\"Borrowed\",\"returned\":\"Returned\",\"initialize\":\"Initialize\",\"read_from_rfid\":\"Read from RFID\"}");
+module.exports = JSON.parse("{\"ok\":\"OK\",\"acquisitions\":\"Acquisitions\",\"batches\":\"Batch | Batches\",\"items\":\"Item | Items\",\"publishers\":\"Publisher | Publishers\",\"suppliers\":\"Supplier | Suppliers\",\"table\":\"Table\",\"logout\":\"Logout\",\"search\":\"Search\",\"searching\":\"Search\",\"reset\":\"Reset\",\"load_all\":\"Load all data\",\"count\":\"Count\",\"save\":\"Save\",\"cancel\":\"Cancel\",\"cost\":\"Cost\",\"from\":\"From\",\"until\":\"Until\",\"not_found\":\"No data found\",\"create_date\":\"Form fill date\",\"edit_date\":\"Form edit date\",\"results\":\"Results\",\"results_of\":\"results\",\"yes\":\"Yes\",\"no\":\"No\",\"edit\":\"Edit\",\"delete\":\"Delete\",\"create\":\"Create\",\"show_more\":\"Details\",\"more\":\"More ...\",\"confirmation\":\"Are you sure you want to delete?\",\"sort_by\":\"Sort by\",\"search_by\":\"Search by {type}\",\"author_by\":\"author\",\"title_by\":\"title\",\"barcode_by\":\"barcode\",\"batch_id_by\":\"batch number\",\"id_by\":\"inventory number\",\"isbn_by\":\"isbn\",\"and\":\"And\",\"or\":\"Or\",\"not\":\"Not\",\"per_page\":\"Results per page\",\"apply\":\"Apply\",\"showing_pages\":\"{from} - {to} out of {total}\",\"page\":\"Page\",\"page_num\":\"Page {num}\",\"previous\":\"Prev\",\"next\":\"Next\",\"move_to\":\"Move\",\"asc\":\"Ascending\",\"desc\":\"Descending\",\"refresh\":\"Refresh\",\"choose\":\"Choose\",\"choose_search_mode\":\"Choose search mode\",\"save_&_search\":\"Save and search\",\"error\":\"Error !\",\"batch_filter\":\"Batches filter\",\"item_filter\":\"Items filter\",\"search_batches\":\"Search batches\",\"search_items\":\"Search items\",\"search_barcodes\":\"Search barcodes\",\"batches_number\":\"Batch number\",\"batches_by\":\"batch number\",\"add_batch\":\"Add batch\",\"add_item\":\"Add item\",\"create_batches\":\"Create batch\",\"create_items\":\"Create item\",\"create_supplier\":\"Create supplier\",\"create_publisher\":\"Create publisher\",\"edit_batches\":\"Edit batch\",\"edit_items\":\"Edit item\",\"edit_supplier\":\"Edit supplier\",\"edit_publisher\":\"Edit publisher\",\"recreate\":\"Re-create\",\"reCreate_items\":\"Re-create item\",\"type_of_supply\":\"Type of supply\",\"type_of_item\":\"Type of item\",\"quantity_items\":\"Quantity of items\",\"quantity_titles\":\"Quantity of titles\",\"document_number\":\"Document number\",\"contract_number\":\"Contract number\",\"inventory_number\":\"Inventory number\",\"inv_id\":\"Inventory number\",\"types\":\"Types\",\"filled_in\":\"Filled in\",\"made_actually\":\"Made acutally\",\"correct\":\"Correct\",\"titles_no_match\":\"The number of titles does not match\",\"items_no_match\":\"The number of items does not match\",\"add_input\":\"Add input +\",\"status\":\"Status\",\"invoice_date\":\"Invoice date\",\"by_contract\":\"By contract\",\"invoice_details\":\"Invoice details\",\"barcode\":\"Barcode\",\"isbn\":\"ISBN\",\"created_by\":\"Form filled by\",\"edited_by\":\"Form edited by\",\"titles\":\"Title | Titles\",\"title\":\"Title\",\"author\":\"Author\",\"year\":\"Year\",\"pub_year\":\"Publisher year\",\"pub_city\":\"Publisher city\",\"location\":\"Location\",\"fill_date\":\"Form fill date\",\"beginning\":\"Start\",\"end\":\"End\",\"currency\":\"Currency\",\"author-title\":\"Author - title\",\"name\":\"Name\",\"name_by\":\"name\",\"commercial_name\":\"Commercial name\",\"bin\":\"BIN / IIN\",\"contact\":\"Contacts\",\"address\":\"Address\",\"email\":\"E-mail\",\"phone\":\"Phone number\",\"fax\":\"Fax\",\"service_desk\":\"Service desk\",\"users\":\"Users\",\"books\":\"Books history\",\"search_user\":\"Search user\",\"type\":\"Type\",\"student\":\"Student\",\"employee\":\"Staff\",\"all\":\"All\",\"username\":\"Username\",\"user_id\":\"User ID\",\"user_id_user\":\"User ID (or name || surname)\",\"username_user\":\"Username (or name || surname)\",\"surname\":\"Surname\",\"section\":\"Section\",\"serve\":\"Book issuance\",\"check_in\":\"Issue\",\"search_material\":\"Search material\",\"user_info\":\"User information\",\"full_name\":\"Full name\",\"degree\":\"Degree\",\"class\":\"Year\",\"faculty\":\"Faculty\",\"program\":\"Program\",\"id\":\"ID\",\"mobile\":\"Phone number\",\"more_info\":\"More details\",\"select_all\":\"Select all ( {num} selected )\",\"delivery_date\":\"Delivery date\",\"due_date\":\"Due date\",\"issue_date\":\"Issue date\",\"borrow_date\":\"Borrow date\",\"last_user_borrowed\":\"Last user\",\"give_material\":\"Give material\",\"hesab_id\":\"Batch ID\",\"batch_id\":\"Batch Id\",\"items_no\":\"Quantity of items\",\"titles_no\":\"Quantity of titles\",\"receive_date\":\"Form fill date\",\"supplier_id\":\"Supplier ID\",\"supplier_name\":\"Supplier name\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"Publisher ID\",\"com_name\":\"Commercial name\",\"reports\":\"Reports\",\"attendance\":\"Attendance\",\"mrbooks\":\"Most read books\",\"attendance_statistics\":\"Virtual attendance statistics\",\"show_for_week\":\"Show for week\",\"show_for_month\":\"Show for month\",\"in_lib_by_week\":\"In library by week\",\"in_lib_by_month\":\"In library by year\",\"print\":\"Print barcode\",\"language\":\"Language\",\"duration\":\"Duration\",\"edit_duration\":\"Edit duration\",\"issuance\":\"Issuance\",\"return\":\"Return\",\"history\":\"History\",\"dept\":\"Overdue\",\"borrowed\":\"Borrowed\",\"returned\":\"Returned\",\"initialize\":\"Initialize\",\"read_from_rfid\":\"Read from RFID\",\"init_status\":\"Initialized\",\"print_status\":\"Printed\"}");
 
 /***/ }),
 
@@ -88904,7 +89238,7 @@ module.exports = JSON.parse("{\"ok\":\"OK\",\"acquisitions\":\"Acquisitions\",\"
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse("{\"ok\":\"Ну жарайд\",\"acquisitions\":\"Кітап қабылдау\",\"batches\":\"Партия | Партиялар\",\"items\":\"Дана | Даналар\",\"publishers\":\"Баспагер | Баспагерлер\",\"suppliers\":\"Жеткізуші | Жеткізушілер\",\"table\":\"Таблица\",\"logout\":\"Шығу\",\"search\":\"Іздеу\",\"searching\":\"Іздеу\",\"reset\":\"Қалпына келтіру\",\"load_all\":\"Барін көрсету\",\"count\":\"Сандар\",\"save\":\"Сақтау\",\"cancel\":\"Бас тарту\",\"cost\":\"Бағасы\",\"from\":\"Бастап\",\"until\":\"Дейін\",\"not_found\":\"Деректер табылмады\",\"create_date\":\"Форма толтырылған күні\",\"edit_date\":\"Форма өзгертілген күні\",\"results\":\"Нәтижелер\",\"results_of\":\"нәтиже табылды\",\"yes\":\"Ия\",\"no\":\"Жоқ\",\"edit\":\"Өзгерту\",\"delete\":\"Жою\",\"create\":\"Қосу\",\"show_more\":\"Көбірек\",\"more\":\"Көбірек ...\",\"confirmation\":\"Жойғыңыз келетініне сенімдісіз бе?\",\"sort_by\":\"Сұрыптау\",\"search_by\":\"{type} іздеу\",\"author_by\":\"Авторымен\",\"title_by\":\"Тақырырбымен\",\"barcode_by\":\"Баркодымен\",\"batch_id_by\":\"Партия нөмірімен\",\"id_by\":\"Инвентарь нөмірімен\",\"isbn_by\":\"ISBN-мен\",\"and\":\"Және\",\"or\":\"Немесе\",\"not\":\"Емес\",\"per_page\":\"Парақтагы нәтижелер саны\",\"apply\":\"Растау\",\"showing_pages\":\"{total} нәтиженің {from} - {to} көрсетілуде\",\"page\":\"Бет\",\"page_num\":\"{num} бет\",\"previous\":\"Артқа\",\"next\":\"Келесі\",\"move_to\":\"Өту\",\"asc\":\"Өсу\",\"desc\":\"Азаю\",\"refresh\":\"Жаңарту\",\"choose\":\"Таңдаңыз\",\"choose_search_mode\":\"Іздеу режимін таңдаңыз\",\"save_&_search\":\"Сақтау және іздеу\",\"error\":\"Қате !\",\"batch_filter\":\"Партиялық сүзгі\",\"item_filter\":\"Даналық сүзгі\",\"search_batches\":\"Партия іздеу\",\"search_items\":\"Дана іздеу\",\"search_barcodes\":\"Баркод іздеу\",\"batches_number\":\"Партия нөмірі\",\"batches_by\":\"Партия нөмірімен\",\"add_batch\":\"Партия қосу\",\"add_item\":\"Дана қосу\",\"create_batches\":\"Партия қосу\",\"create_items\":\"Дана қосу\",\"create_supplier\":\"Жеткізуші қосу\",\"create_publisher\":\"Баспагер қосу\",\"edit_batches\":\"Партия өзгерту\",\"edit_items\":\"Дана өзгерту\",\"edit_supplier\":\"Жеткізуші өзгерту\",\"edit_publisher\":\"Баспагер өзгерту\",\"recreate\":\"Қайта қосу\",\"reCreate_items\":\"Дана қайта қосу\",\"type_of_supply\":\"Жеткізу түрі\",\"type_of_item\":\"Дана түрі\",\"quantity_items\":\"Дана саны\",\"quantity_titles\":\"Тақырып саны\",\"document_number\":\"Документ нөмірі\",\"contract_number\":\"Контракт нөмірі\",\"inventory_number\":\"Инвентарь нөмірі\",\"inv_id\":\"Инвентарь нөмірі\",\"types\":\"Түрлер\",\"filled_in\":\"Енгізілді\",\"made_actually\":\"Негізгі саны\",\"correct\":\"Дұрыс\",\"titles_no_match\":\"Тақырыптар саны сәйкес келмейді\",\"items_no_match\":\"Даналар саны сәйкес келмейді\",\"add_input\":\"Енгізуді қосу +\",\"status\":\"Статус\",\"invoice_date\":\"Жеткізген күні\",\"by_contract\":\"Контракт арқылы\",\"invoice_details\":\"Жеткізу деректері\",\"barcode\":\"Баркод\",\"isbn\":\"ISBN\",\"created_by\":\"Толтырылды\",\"edited_by\":\"Өзгертілді\",\"titles\":\"Атау | Атаулар\",\"title\":\"Атау\",\"author\":\"Автор\",\"year\":\"Жылы\",\"pub_year\":\"Баспа жылы\",\"pub_city\":\"Баспа қаласы\",\"location\":\"Орналасқан жері\",\"fill_date\":\"Толтырылған күні\",\"beginning\":\"Бастап\",\"end\":\"Дейін\",\"currency\":\"Валютасы\",\"author-title\":\"Автор - атауы\",\"name\":\"Аты\",\"name_by\":\"Атымен\",\"commercial_name\":\"Коммерциялық аты\",\"bin\":\"BIN / IIN\",\"contact\":\"Байланыстар\",\"address\":\"Мекен-жайы\",\"email\":\"Электрондық поштасы\",\"phone\":\"Телефон нөмірі\",\"fax\":\"Факс\",\"service_desk\":\"Қызмет көрсету\",\"users\":\"Пайдаланушылар\",\"books\":\"Кітаптар тарихы\",\"search_user\":\"Пайдаланушы іздеу\",\"type\":\"Түрі\",\"student\":\"Студент\",\"employee\":\"Қызметкер\",\"all\":\"Бәрі\",\"username\":\"Пайдаланушы аты\",\"user_id\":\"Пайдаланушы ID\",\"user_id_user\":\"Пайдаланушы ID (немесе аты || жөні)\",\"username_user\":\"Пайдаланушы аты (немесе аты || жөні)\",\"surname\":\"Тегі\",\"section\":\"Бөлімі\",\"serve\":\"Кітап беру\",\"check_in\":\"Беру\",\"search_material\":\"Материал іздеу\",\"user_info\":\"Пайдаланушы туралы ақпарат\",\"full_name\":\"Аты - тегі\",\"degree\":\"Дәрежесі\",\"class\":\"Оқу жылы\",\"faculty\":\"Факультеті\",\"program\":\"Бағдарламасы\",\"id\":\"ID\",\"mobile\":\"Телефон нөмірі\",\"more_info\":\"Толығырақ\",\"select_all\":\"Барлығын таңдау ( {num} таңдалды )\",\"delivery_date\":\"Жеткізілім уақыты\",\"due_date\":\"Мерзімнің өту күні\",\"issue_date\":\"Берілген күні\",\"borrow_date\":\"Қарызға алу күні\",\"last_user_borrowed\":\"Соңғы пайдаланушы\",\"give_material\":\"Материал беру\",\"hesab_id\":\"Партия ID\",\"batch_id\":\"Партия ID\",\"items_no\":\"Дана саны\",\"titles_no\":\"Тақырып саны\",\"receive_date\":\"Толтырылған күні\",\"supplier_id\":\"Жеткізуші ID\",\"supplier_name\":\"Жеткізущі аты\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"Баспагер ID\",\"com_name\":\"Коммерциялық аты\",\"reports\":\"Есептер\",\"attendance\":\"Қатысу\",\"mrbooks\":\"Көпшілігі оқитын кітаптар\",\"attendance_statistics\":\"Қатысушылардың виртуалды статистикасы\",\"show_for_week\":\"Бір апта бойынша көрсету\",\"show_for_month\":\"Бір ай бойынша көрсету\",\"in_lib_by_week\":\"Бір аптада кітапханада\",\"in_lib_by_month\":\"Бір жылда кітапханада\",\"print\":\"Баркодты басып шығару\",\"language\":\"Тілі\",\"duration\":\"Ұзақтығы\",\"issuance\":\"Беру\",\"return\":\"Қайтару\",\"history\":\"Тарих\",\"dept\":\"Мерзімі өткен\",\"borrowed\":\"Қарызға алынған\",\"returned\":\"Қайтарылған\",\"initialize\":\"Инициализациялау\",\"read_from_rfid\":\"RFID-ден оқу\"}");
+module.exports = JSON.parse("{\"ok\":\"Ну жарайд\",\"acquisitions\":\"Кітап қабылдау\",\"batches\":\"Партия | Партиялар\",\"items\":\"Дана | Даналар\",\"publishers\":\"Баспагер | Баспагерлер\",\"suppliers\":\"Жеткізуші | Жеткізушілер\",\"table\":\"Таблица\",\"logout\":\"Шығу\",\"search\":\"Іздеу\",\"searching\":\"Іздеу\",\"reset\":\"Қалпына келтіру\",\"load_all\":\"Барін көрсету\",\"count\":\"Сандар\",\"save\":\"Сақтау\",\"cancel\":\"Бас тарту\",\"cost\":\"Бағасы\",\"from\":\"Бастап\",\"until\":\"Дейін\",\"not_found\":\"Деректер табылмады\",\"create_date\":\"Форма толтырылған күні\",\"edit_date\":\"Форма өзгертілген күні\",\"results\":\"Нәтижелер\",\"results_of\":\"нәтиже табылды\",\"yes\":\"Ия\",\"no\":\"Жоқ\",\"edit\":\"Өзгерту\",\"delete\":\"Жою\",\"create\":\"Қосу\",\"show_more\":\"Көбірек\",\"more\":\"Көбірек ...\",\"confirmation\":\"Жойғыңыз келетініне сенімдісіз бе?\",\"sort_by\":\"Сұрыптау\",\"search_by\":\"{type} іздеу\",\"author_by\":\"Авторымен\",\"title_by\":\"Тақырырбымен\",\"barcode_by\":\"Баркодымен\",\"batch_id_by\":\"Партия нөмірімен\",\"id_by\":\"Инвентарь нөмірімен\",\"isbn_by\":\"ISBN-мен\",\"and\":\"Және\",\"or\":\"Немесе\",\"not\":\"Емес\",\"per_page\":\"Парақтагы нәтижелер саны\",\"apply\":\"Растау\",\"showing_pages\":\"{total} нәтиженің {from} - {to} көрсетілуде\",\"page\":\"Бет\",\"page_num\":\"{num} бет\",\"previous\":\"Артқа\",\"next\":\"Келесі\",\"move_to\":\"Өту\",\"asc\":\"Өсу\",\"desc\":\"Азаю\",\"refresh\":\"Жаңарту\",\"choose\":\"Таңдаңыз\",\"choose_search_mode\":\"Іздеу режимін таңдаңыз\",\"save_&_search\":\"Сақтау және іздеу\",\"error\":\"Қате !\",\"batch_filter\":\"Партиялық сүзгі\",\"item_filter\":\"Даналық сүзгі\",\"search_batches\":\"Партия іздеу\",\"search_items\":\"Дана іздеу\",\"search_barcodes\":\"Баркод іздеу\",\"batches_number\":\"Партия нөмірі\",\"batches_by\":\"Партия нөмірімен\",\"add_batch\":\"Партия қосу\",\"add_item\":\"Дана қосу\",\"create_batches\":\"Партия қосу\",\"create_items\":\"Дана қосу\",\"create_supplier\":\"Жеткізуші қосу\",\"create_publisher\":\"Баспагер қосу\",\"edit_batches\":\"Партия өзгерту\",\"edit_items\":\"Дана өзгерту\",\"edit_supplier\":\"Жеткізуші өзгерту\",\"edit_publisher\":\"Баспагер өзгерту\",\"recreate\":\"Қайта қосу\",\"reCreate_items\":\"Дана қайта қосу\",\"type_of_supply\":\"Жеткізу түрі\",\"type_of_item\":\"Дана түрі\",\"quantity_items\":\"Дана саны\",\"quantity_titles\":\"Тақырып саны\",\"document_number\":\"Документ нөмірі\",\"contract_number\":\"Контракт нөмірі\",\"inventory_number\":\"Инвентарь нөмірі\",\"inv_id\":\"Инвентарь нөмірі\",\"types\":\"Түрлер\",\"filled_in\":\"Енгізілді\",\"made_actually\":\"Негізгі саны\",\"correct\":\"Дұрыс\",\"titles_no_match\":\"Тақырыптар саны сәйкес келмейді\",\"items_no_match\":\"Даналар саны сәйкес келмейді\",\"add_input\":\"Енгізуді қосу +\",\"status\":\"Статус\",\"invoice_date\":\"Жеткізген күні\",\"by_contract\":\"Контракт арқылы\",\"invoice_details\":\"Жеткізу деректері\",\"barcode\":\"Баркод\",\"isbn\":\"ISBN\",\"created_by\":\"Толтырылды\",\"edited_by\":\"Өзгертілді\",\"titles\":\"Атау | Атаулар\",\"title\":\"Атау\",\"author\":\"Автор\",\"year\":\"Жылы\",\"pub_year\":\"Баспа жылы\",\"pub_city\":\"Баспа қаласы\",\"location\":\"Орналасқан жері\",\"fill_date\":\"Толтырылған күні\",\"beginning\":\"Бастап\",\"end\":\"Дейін\",\"currency\":\"Валютасы\",\"author-title\":\"Автор - атауы\",\"name\":\"Аты\",\"name_by\":\"Атымен\",\"commercial_name\":\"Коммерциялық аты\",\"bin\":\"BIN / IIN\",\"contact\":\"Байланыстар\",\"address\":\"Мекен-жайы\",\"email\":\"Электрондық поштасы\",\"phone\":\"Телефон нөмірі\",\"fax\":\"Факс\",\"service_desk\":\"Қызмет көрсету\",\"users\":\"Пайдаланушылар\",\"books\":\"Кітаптар тарихы\",\"search_user\":\"Пайдаланушы іздеу\",\"type\":\"Түрі\",\"student\":\"Студент\",\"employee\":\"Қызметкер\",\"all\":\"Бәрі\",\"username\":\"Пайдаланушы аты\",\"user_id\":\"Пайдаланушы ID\",\"user_id_user\":\"Пайдаланушы ID (немесе аты || жөні)\",\"username_user\":\"Пайдаланушы аты (немесе аты || жөні)\",\"surname\":\"Тегі\",\"section\":\"Бөлімі\",\"serve\":\"Кітап беру\",\"check_in\":\"Беру\",\"search_material\":\"Материал іздеу\",\"user_info\":\"Пайдаланушы туралы ақпарат\",\"full_name\":\"Аты - тегі\",\"degree\":\"Дәрежесі\",\"class\":\"Оқу жылы\",\"faculty\":\"Факультеті\",\"program\":\"Бағдарламасы\",\"id\":\"ID\",\"mobile\":\"Телефон нөмірі\",\"more_info\":\"Толығырақ\",\"select_all\":\"Барлығын таңдау ( {num} таңдалды )\",\"delivery_date\":\"Жеткізілім уақыты\",\"due_date\":\"Мерзімнің өту күні\",\"issue_date\":\"Берілген күні\",\"borrow_date\":\"Қарызға алу күні\",\"last_user_borrowed\":\"Соңғы пайдаланушы\",\"give_material\":\"Материал беру\",\"hesab_id\":\"Партия ID\",\"batch_id\":\"Партия ID\",\"items_no\":\"Дана саны\",\"titles_no\":\"Тақырып саны\",\"receive_date\":\"Толтырылған күні\",\"supplier_id\":\"Жеткізуші ID\",\"supplier_name\":\"Жеткізущі аты\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"Баспагер ID\",\"com_name\":\"Коммерциялық аты\",\"reports\":\"Есептер\",\"attendance\":\"Қатысу\",\"mrbooks\":\"Көпшілігі оқитын кітаптар\",\"attendance_statistics\":\"Қатысушылардың виртуалды статистикасы\",\"show_for_week\":\"Бір апта бойынша көрсету\",\"show_for_month\":\"Бір ай бойынша көрсету\",\"in_lib_by_week\":\"Бір аптада кітапханада\",\"in_lib_by_month\":\"Бір жылда кітапханада\",\"print\":\"Баркодты басып шығару\",\"language\":\"Тілі\",\"duration\":\"Ұзақтығы\",\"edit_duration\":\"Ұзақтықты өзгерту\",\"issuance\":\"Беру\",\"return\":\"Қайтару\",\"history\":\"Тарих\",\"dept\":\"Мерзімі өткен\",\"borrowed\":\"Қарызға алынған\",\"returned\":\"Қайтарылған\",\"initialize\":\"Инициализациялау\",\"read_from_rfid\":\"RFID-ден оқу\",\"init_status\":\"Инициализацияланған\",\"print_status\":\"Басылған\"}");
 
 /***/ }),
 
@@ -88915,7 +89249,7 @@ module.exports = JSON.parse("{\"ok\":\"Ну жарайд\",\"acquisitions\":\"К
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse("{\"ok\":\"OK\",\"acquisitions\":\"Комплектование\",\"batches\":\"Партия | Партии\",\"items\":\"Экземлпяр | Экземпляры\",\"publishers\":\"Издатель | Издатели\",\"suppliers\":\"Поставщик | Поставщики\",\"table\":\"Таблица\",\"logout\":\"Выйти\",\"search\":\"Найти\",\"searching\":\"Поиск\",\"reset\":\"Сброс\",\"load_all\":\"Загрузить все\",\"count\":\"Количество\",\"save\":\"Сохранить\",\"cancel\":\"Отменить\",\"cost\":\"Цена\",\"from\":\"От\",\"until\":\"До\",\"not_found\":\"Ничего не найдено\",\"create_date\":\"Дата заполнения формы\",\"edit_date\":\"Дата изменения формы\",\"results\":\"Результаты\",\"results_of\":\"результатов\",\"yes\":\"Да\",\"no\":\"Нет\",\"edit\":\"Изменить\",\"delete\":\"Удалить\",\"create\":\"Создать\",\"show_more\":\"Узнать больше\",\"more\":\"Больше ...\",\"confirmation\":\"Вы действительно хотите удалить?\",\"sort_by\":\"Сортировать по\",\"search_by\":\"Искать по {type}\",\"author_by\":\"автору\",\"title_by\":\"заглавию\",\"barcode_by\":\"баркоду\",\"batch_id_by\":\"номеру партии\",\"id_by\":\"номеру инвентаря\",\"isbn_by\":\"ISBN\",\"and\":\"И\",\"or\":\"Или\",\"not\":\"Не\",\"per_page\":\"Результатов на странице\",\"apply\":\"Подтвердить\",\"showing_pages\":\"{from} - {to} из {total}\",\"page\":\"Стр.\",\"page_num\":\"{num} страница\",\"previous\":\"Назад\",\"next\":\"Вперед\",\"move_to\":\"Перейти\",\"asc\":\"По возрастанию\",\"desc\":\"По убыванию\",\"refresh\":\"Обновить\",\"choose\":\"Выберите\",\"choose_search_mode\":\"Выберите режим поиска\",\"save_&_search\":\"Сохранить и искать\",\"error\":\"Ошибка !\",\"batch_filter\":\"Фильтр партий\",\"item_filter\":\"Фильтр экземпляров\",\"search_batches\":\"Искать партию\",\"search_items\":\"Искать экземпляр\",\"search_barcodes\":\"Искать баркоды\",\"batches_number\":\"Номер партии\",\"batches_by\":\"по номеру партии\",\"add_batch\":\"Добавить партию\",\"add_item\":\"Добавить экземпляр\",\"create_batches\":\"Создать партию\",\"create_items\":\"Создать экземпляр\",\"create_supplier\":\"Создать поставщика\",\"create_publisher\":\"Создать издателя\",\"edit_batches\":\"Изменить партию\",\"edit_items\":\"Изменить экземпляр\",\"edit_supplier\":\"Изменить поставщика\",\"edit_publisher\":\"Изменить издателя\",\"recreate\":\"Пересоздать\",\"reCreate_items\":\"Пересоздать экземпляр\",\"type_of_supply\":\"Тип поставки\",\"type_of_item\":\"Тип экземпляра\",\"quantity_items\":\"Количество экземпляров\",\"quantity_titles\":\"Количество заглавий\",\"document_number\":\"Номер документа\",\"contract_number\":\"Контрактный номер\",\"inventory_number\":\"Номер инвентаря\",\"inv_id\":\"Номер инвентаря\",\"types\":\"Types\",\"filled_in\":\"Введено\",\"made_actually\":\"Введено фактически\",\"correct\":\"Правильно\",\"titles_no_match\":\"Количество заглавий не совпадает\",\"items_no_match\":\"Количество экземпляров не совпадает\",\"add_input\":\"Добавить входные данные +\",\"status\":\"Статус\",\"invoice_date\":\"Дата счета-фактуры\",\"by_contract\":\"По контракту\",\"invoice_details\":\"Информация о счете-фактуре\",\"barcode\":\"Баркод\",\"isbn\":\"ISBN\",\"created_by\":\"Заполнено\",\"edited_by\":\"Изменено\",\"titles\":\"Заглавие | Заглавия\",\"title\":\"Заглавие\",\"author\":\"Автор\",\"year\":\"Год\",\"pub_year\":\"Год издания\",\"pub_city\":\"Город издания\",\"location\":\"Место расположения\",\"fill_date\":\"Дата заполнения\",\"beginning\":\"От\",\"end\":\"До\",\"currency\":\"Валюта\",\"author-title\":\"Автор - заглавие\",\"name\":\"Имя\",\"name_by\":\"по имени\",\"commercial_name\":\"Коммерческое имя\",\"bin\":\"BIN / IIN\",\"contact\":\"Контакты\",\"address\":\"Адресс\",\"email\":\"Электронная почта\",\"phone\":\"Номер телефона\",\"fax\":\"Факс\",\"service_desk\":\"Служба поддержки\",\"users\":\"Пользователи\",\"books\":\"История книг\",\"search_user\":\"Найти пользователя\",\"type\":\"Тип\",\"student\":\"Студент\",\"employee\":\"Работник\",\"all\":\"Все\",\"username\":\"Имя пользователя\",\"user_id\":\"ID пользователя\",\"user_id_user\":\"ID пользователя (или имя || фамилия)\",\"username_user\":\"Имя пользователя (или имя || фамилия)\",\"surname\":\"Фамилия\",\"section\":\"Раздел\",\"serve\":\"Выдача книг\",\"check_in\":\"Выдать\",\"search_material\":\"Поиск материала\",\"user_info\":\"Информация о пользователе\",\"full_name\":\"Имя - фамилия\",\"degree\":\"Степень\",\"class\":\"Год\",\"faculty\":\"Факультет\",\"program\":\"Программа\",\"id\":\"ID\",\"mobile\":\"Номер телефона\",\"more_info\":\"Подробнее\",\"select_all\":\"Выбрать все ( {num} выбрано )\",\"delivery_date\":\"Дата доставки\",\"due_date\":\"Дата сдачи\",\"issue_date\":\"Дата выпуска\",\"borrow_date\":\"Дата заимствования\",\"last_user_borrowed\":\"Последний пользователь\",\"give_material\":\"Дать материал\",\"hesab_id\":\"ID партии\",\"batch_id\":\"ID партии\",\"items_no\":\"Количество экземпляров\",\"titles_no\":\"Количество заглавий\",\"receive_date\":\"Дата заполнения\",\"supplier_id\":\"ID поставщика\",\"supplier_name\":\"Имя поставщика\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"ID издателя\",\"com_name\":\"Коммерческое имя\",\"reports\":\"Отчеты\",\"attendance\":\"Посещаемость\",\"mrbooks\":\"Самые читаемые книги\",\"attendance_statistics\":\"Статистика виртуальной посещаемости\",\"show_for_week\":\"Показать за неделю\",\"show_for_month\":\"Показать за месяц\",\"in_lib_by_week\":\"В библиотеке за неделю\",\"in_lib_by_month\":\"В библиотеке за год\",\"print\":\"Распечатать баркод\",\"language\":\"Язык\",\"duration\":\"Продолжительность\",\"issuance\":\"Выдача\",\"return\":\"Возврат\",\"history\":\"История\",\"dept\":\"Просроченный\",\"borrowed\":\"Взяли\",\"returned\":\"Вернули\",\"initialize\":\"Инициализировать\",\"read_from_rfid\":\"Читать из RFID\"}");
+module.exports = JSON.parse("{\"ok\":\"OK\",\"acquisitions\":\"Комплектование\",\"batches\":\"Партия | Партии\",\"items\":\"Экземлпяр | Экземпляры\",\"publishers\":\"Издатель | Издатели\",\"suppliers\":\"Поставщик | Поставщики\",\"table\":\"Таблица\",\"logout\":\"Выйти\",\"search\":\"Найти\",\"searching\":\"Поиск\",\"reset\":\"Сброс\",\"load_all\":\"Загрузить все\",\"count\":\"Количество\",\"save\":\"Сохранить\",\"cancel\":\"Отменить\",\"cost\":\"Цена\",\"from\":\"От\",\"until\":\"До\",\"not_found\":\"Ничего не найдено\",\"create_date\":\"Дата заполнения формы\",\"edit_date\":\"Дата изменения формы\",\"results\":\"Результаты\",\"results_of\":\"результатов\",\"yes\":\"Да\",\"no\":\"Нет\",\"edit\":\"Изменить\",\"delete\":\"Удалить\",\"create\":\"Создать\",\"show_more\":\"Узнать больше\",\"more\":\"Больше ...\",\"confirmation\":\"Вы действительно хотите удалить?\",\"sort_by\":\"Сортировать по\",\"search_by\":\"Искать по {type}\",\"author_by\":\"автору\",\"title_by\":\"заглавию\",\"barcode_by\":\"баркоду\",\"batch_id_by\":\"номеру партии\",\"id_by\":\"номеру инвентаря\",\"isbn_by\":\"ISBN\",\"and\":\"И\",\"or\":\"Или\",\"not\":\"Не\",\"per_page\":\"Результатов на странице\",\"apply\":\"Подтвердить\",\"showing_pages\":\"{from} - {to} из {total}\",\"page\":\"Стр.\",\"page_num\":\"{num} страница\",\"previous\":\"Назад\",\"next\":\"Вперед\",\"move_to\":\"Перейти\",\"asc\":\"По возрастанию\",\"desc\":\"По убыванию\",\"refresh\":\"Обновить\",\"choose\":\"Выберите\",\"choose_search_mode\":\"Выберите режим поиска\",\"save_&_search\":\"Сохранить и искать\",\"error\":\"Ошибка !\",\"batch_filter\":\"Фильтр партий\",\"item_filter\":\"Фильтр экземпляров\",\"search_batches\":\"Искать партию\",\"search_items\":\"Искать экземпляр\",\"search_barcodes\":\"Искать баркоды\",\"batches_number\":\"Номер партии\",\"batches_by\":\"по номеру партии\",\"add_batch\":\"Добавить партию\",\"add_item\":\"Добавить экземпляр\",\"create_batches\":\"Создать партию\",\"create_items\":\"Создать экземпляр\",\"create_supplier\":\"Создать поставщика\",\"create_publisher\":\"Создать издателя\",\"edit_batches\":\"Изменить партию\",\"edit_items\":\"Изменить экземпляр\",\"edit_supplier\":\"Изменить поставщика\",\"edit_publisher\":\"Изменить издателя\",\"recreate\":\"Пересоздать\",\"reCreate_items\":\"Пересоздать экземпляр\",\"type_of_supply\":\"Тип поставки\",\"type_of_item\":\"Тип экземпляра\",\"quantity_items\":\"Количество экземпляров\",\"quantity_titles\":\"Количество заглавий\",\"document_number\":\"Номер документа\",\"contract_number\":\"Контрактный номер\",\"inventory_number\":\"Номер инвентаря\",\"inv_id\":\"Номер инвентаря\",\"types\":\"Types\",\"filled_in\":\"Введено\",\"made_actually\":\"Введено фактически\",\"correct\":\"Правильно\",\"titles_no_match\":\"Количество заглавий не совпадает\",\"items_no_match\":\"Количество экземпляров не совпадает\",\"add_input\":\"Добавить входные данные +\",\"status\":\"Статус\",\"invoice_date\":\"Дата счета-фактуры\",\"by_contract\":\"По контракту\",\"invoice_details\":\"Информация о счете-фактуре\",\"barcode\":\"Баркод\",\"isbn\":\"ISBN\",\"created_by\":\"Заполнено\",\"edited_by\":\"Изменено\",\"titles\":\"Заглавие | Заглавия\",\"title\":\"Заглавие\",\"author\":\"Автор\",\"year\":\"Год\",\"pub_year\":\"Год издания\",\"pub_city\":\"Город издания\",\"location\":\"Место расположения\",\"fill_date\":\"Дата заполнения\",\"beginning\":\"От\",\"end\":\"До\",\"currency\":\"Валюта\",\"author-title\":\"Автор - заглавие\",\"name\":\"Имя\",\"name_by\":\"по имени\",\"commercial_name\":\"Коммерческое имя\",\"bin\":\"BIN / IIN\",\"contact\":\"Контакты\",\"address\":\"Адресс\",\"email\":\"Электронная почта\",\"phone\":\"Номер телефона\",\"fax\":\"Факс\",\"service_desk\":\"Служба поддержки\",\"users\":\"Пользователи\",\"books\":\"История книг\",\"search_user\":\"Найти пользователя\",\"type\":\"Тип\",\"student\":\"Студент\",\"employee\":\"Работник\",\"all\":\"Все\",\"username\":\"Имя пользователя\",\"user_id\":\"ID пользователя\",\"user_id_user\":\"ID пользователя (или имя || фамилия)\",\"username_user\":\"Имя пользователя (или имя || фамилия)\",\"surname\":\"Фамилия\",\"section\":\"Раздел\",\"serve\":\"Выдача книг\",\"check_in\":\"Выдать\",\"search_material\":\"Поиск материала\",\"user_info\":\"Информация о пользователе\",\"full_name\":\"Имя - фамилия\",\"degree\":\"Степень\",\"class\":\"Год\",\"faculty\":\"Факультет\",\"program\":\"Программа\",\"id\":\"ID\",\"mobile\":\"Номер телефона\",\"more_info\":\"Подробнее\",\"select_all\":\"Выбрать все ( {num} выбрано )\",\"delivery_date\":\"Дата доставки\",\"due_date\":\"Дата сдачи\",\"issue_date\":\"Дата выпуска\",\"borrow_date\":\"Дата заимствования\",\"last_user_borrowed\":\"Последний пользователь\",\"give_material\":\"Дать материал\",\"hesab_id\":\"ID партии\",\"batch_id\":\"ID партии\",\"items_no\":\"Количество экземпляров\",\"titles_no\":\"Количество заглавий\",\"receive_date\":\"Дата заполнения\",\"supplier_id\":\"ID поставщика\",\"supplier_name\":\"Имя поставщика\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"ID издателя\",\"com_name\":\"Коммерческое имя\",\"reports\":\"Отчеты\",\"attendance\":\"Посещаемость\",\"mrbooks\":\"Самые читаемые книги\",\"attendance_statistics\":\"Статистика виртуальной посещаемости\",\"show_for_week\":\"Показать за неделю\",\"show_for_month\":\"Показать за месяц\",\"in_lib_by_week\":\"В библиотеке за неделю\",\"in_lib_by_month\":\"В библиотеке за год\",\"print\":\"Распечатать баркод\",\"language\":\"Язык\",\"duration\":\"Продолжительность\",\"edit_duration\":\"Изменить продолжительность\",\"issuance\":\"Выдача\",\"return\":\"Возврат\",\"history\":\"История\",\"dept\":\"Просроченный\",\"borrowed\":\"Взяли\",\"returned\":\"Вернули\",\"initialize\":\"Инициализировать\",\"read_from_rfid\":\"Читать из RFID\",\"init_status\":\"Инициализирован\",\"print_status\":\"Распечатан\"}");
 
 /***/ })
 

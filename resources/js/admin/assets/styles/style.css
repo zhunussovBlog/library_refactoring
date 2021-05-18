@@ -304,7 +304,8 @@ input[type=date]~.placeholder {
 .outline-green,
 .outline-orange,
 .outline-black,
-.outline-red {
+.outline-red,
+.outline-blue {
     background-color: transparent;
     border: 1px solid;
 }
@@ -345,6 +346,16 @@ input[type=date]~.placeholder {
 
 .outline-black:hover {
     background-color: #333;
+    color: #F4F4F4;
+}
+
+.outline-blue {
+    color: #3F98EB;
+    border-color: #3F98EB;
+}
+
+.outline-blue:hover {
+    background-color: #3F98EB;
     color: #F4F4F4;
 }
 

@@ -142,7 +142,7 @@ export default{
 	/*fu.... so bad code .... HATE IT!*/
 	border-width:0.09375em;
 	z-index: 1;
-	rounded-lg: 0.3125em;
+	border-radius: 0.3125em;
 
 	/*never use !important ... do never!!!*/
 	border-left:0.09375em solid #ff9d29 !important;
