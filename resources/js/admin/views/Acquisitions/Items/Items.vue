@@ -30,7 +30,7 @@
 					</div>
 				</div>
 				<div class="d-flex align-items-center ml-5">
-					<button type="button" @click="$router.push({path:'print'})">
+					<button type="button" class="outline-blue" @click="$router.push({path:'print'})">
 						<span><Print /> &nbsp;</span>
 						<span>{{($t('print'))}}</span>
 					</button>
