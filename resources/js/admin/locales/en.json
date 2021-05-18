@@ -188,6 +188,7 @@
     "language": "Language",
 
     "duration": "Duration",
+    "edit_duration": "Edit duration",
     "issuance": "Issuance",
     "return": "Return",
     "history": "History",
@@ -196,5 +197,7 @@
     "returned": "Returned",
 
     "initialize": "Initialize",
-    "read_from_rfid": "Read from RFID"
+    "read_from_rfid": "Read from RFID",
+    "init_status": "Initialized",
+    "print_status": "Printed"
 }

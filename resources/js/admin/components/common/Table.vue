@@ -74,10 +74,11 @@
 						<!-- default data elements
 						for in heads  -->
 						<td v-for="(name,i) in heads" :key="i"
-							:class="{'cursor-pointer':service.available}" 
-							@click="service.available ? service.showMore(info) : ()=>{}"
+							:class="{'cursor-pointer':service.available || (edit_duration && name.link=='duration')}" 
+							@click="tdOnClick(info,name)"
 						>
 							{{name.is_date && info[name.link]!=null ? new Date(info[name.link]).toDateInputValue() : info[name.link]}}
+							<edit class="d-inline-block float-right" v-if="edit_duration && name.link=='duration'"/>
 						</td>
 						<!-- if there are clickable elements in table -> Show more, Edit, ReCreate, Delete or Service -->
 						<td class="text-center" v-if="clickables">
@@ -153,6 +154,7 @@ import DeleteModal from'./DeleteModal'
 import pagination from './Pagination'
 import Dropdown from './Dropdown'
 import Checkbox from './Checkbox'
+import EditDuration from './EditDuration'
 
 export default{
 	props:{
@@ -226,6 +228,12 @@ export default{
 			default(){
 				return true
 			}
+		},
+		edit_duration:{
+			type:Boolean,
+			default(){
+				return false
+			}
 		}
 	},
 	mixins:[showModal,last],
@@ -238,7 +246,8 @@ export default{
 		Refresh,
 		Dropdown,
 		Checkbox,
-		pagination
+		pagination,
+		EditDuration
 	},
 	computed:{
 		// for sort by
@@ -270,6 +279,14 @@ export default{
 		}
 	},
 	methods:{
+		tdOnClick(info,name){
+			if(this.service.available){
+				this.service.showMore(info)
+			}
+			if(this.edit_duration && name.link=='duration'){
+				this.showModal(EditDuration,{info});
+			}
+		},
 		showStatus(id){
 			this.$http.get('/batch/status/'+id).then(response=>{
 				this.showModal(this.ShowStatus,{id:id});

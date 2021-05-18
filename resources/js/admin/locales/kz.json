@@ -188,6 +188,7 @@
     "language": "Тілі",
 
     "duration": "Ұзақтығы",
+    "edit_duration": "Ұзақтықты өзгерту",
     "issuance": "Беру",
     "return": "Қайтару",
     "history": "Тарих",
@@ -196,5 +197,7 @@
     "returned": "Қайтарылған",
 
     "initialize": "Инициализациялау",
-    "read_from_rfid": "RFID-ден оқу"
+    "read_from_rfid": "RFID-ден оқу",
+    "init_status": "Инициализацияланған",
+    "print_status": "Басылған"
 }

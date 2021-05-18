@@ -49,6 +49,7 @@
 			:sortable="false"
 			:pagination="false"
 			:custom_func="custom_func"
+			:edit_duration="true"
 			/>
 		</div>
 	</div>
@@ -242,9 +243,17 @@ export default{
 				this.goTo('users');
 			})
 		},
+		addDurationToBooks(array){
+			array.forEach(book=>{
+				if(book.duration==null){
+					book.duration=this.user.duration;
+				}
+			})
+		},
 		search(){
 			this.$store.commit('setFullPageLoading',true);
 			this.$http.get('service/media/search/by-inventory?barcodes[]='+this.barcode).then(response=>{
+				this.addDurationToBooks(response.data.res);
 				this.addToBooks(response.data.res);
 				this.$store.commit('setFullPageLoading',false);
 			})
@@ -274,6 +283,12 @@ export default{
 					inv_id:selected[0].inv_id,
 					user_cid:this.user.info.user_cid,
 				};
+				if(selected[0].due_date){
+					info.due_date=selected[0].due_date;
+				}
+				else if ( selected[0].duration ){
+					info.duration=selected[0].duration;
+				}
 				// await this.readFromRfid('SetItemsCheckInOut','status=0');
 				await this.$http.post('service/media/give',info).then(response=>{
 					this.message_success('check_in ',response);
