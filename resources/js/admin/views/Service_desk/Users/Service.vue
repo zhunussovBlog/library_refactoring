@@ -304,7 +304,7 @@ export default{
 				else if ( selected[0].duration ){
 					info.duration=selected[0].duration;
 				}
-				// await this.readFromRfid('SetItemsCheckInOut','status=0');
+				await this.readFromRfid('SetItemsCheckInOut','status=0');
 				await this.$http.post('service/media/give',info).then(response=>{
 					this.message_success('check_in ',response);
 				});

@@ -6560,49 +6560,52 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
                   info.due_date = selected[0].due_date;
                 } else if (selected[0].duration) {
                   info.duration = selected[0].duration;
-                } // await this.readFromRfid('SetItemsCheckInOut','status=0');
-
+                }
 
                 _context2.next = 6;
+                return _this5.readFromRfid('SetItemsCheckInOut', 'status=0');
+
+              case 6:
+                _context2.next = 8;
                 return _this5.$http.post('service/media/give', info).then(function (response) {
                   _this5.message_success('check_in ', response);
                 });
 
-              case 6:
-                _context2.next = 8;
-                return _this5.getInfo();
-
               case 8:
                 _context2.next = 10;
-                return _this5.searchAllBarcodes();
+                return _this5.getInfo();
 
               case 10:
+                _context2.next = 12;
+                return _this5.searchAllBarcodes();
+
+              case 12:
                 _this5.$eventHub.$emit('selectRefresh');
 
-                _context2.next = 16;
+                _context2.next = 18;
                 break;
 
-              case 13:
-                _context2.prev = 13;
+              case 15:
+                _context2.prev = 15;
                 _context2.t0 = _context2["catch"](1);
 
                 if (_context2.t0 != "rfid problem") {
                   _this5.message_error('check_in', _context2.t0);
                 }
 
-              case 16:
-                _context2.prev = 16;
+              case 18:
+                _context2.prev = 18;
 
                 _this5.$store.commit('setFullPageLoading', false);
 
-                return _context2.finish(16);
+                return _context2.finish(18);
 
-              case 19:
+              case 21:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, null, [[1, 13, 16, 19]]);
+        }, _callee2, null, [[1, 15, 18, 21]]);
       }))();
     },
     checkOut: function checkOut(book) {
