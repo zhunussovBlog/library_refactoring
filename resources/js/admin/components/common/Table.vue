@@ -66,7 +66,7 @@
 						<!-- BATCHES ONLY -->
 						<td v-if="status"
 							class="cursor-pointer"
-							:class="info.status =='Open' ? 'red' : info.status=='Checked' ? 'yellow' :'green' "
+							:class="info.status =='Open' ? 'text-red' : info.status=='Checked' ? 'text-orange' :'text-green' "
 							@click="showStatus(info.id)"
 						>
 							{{info['status']}}
@@ -74,7 +74,7 @@
 						<!-- default data elements
 						for in heads  -->
 						<td v-for="(name,i) in heads" :key="i"
-							:class="{'cursor-pointer':service.available || (edit_duration && name.link=='duration')}" 
+							:class="[{'cursor-pointer':service.available || (edit_duration && name.link=='duration')},name.class_func? name.class_func(info,name):{}]" 
 							@click="tdOnClick(info,name)"
 						>
 							{{name.is_date && info[name.link]!=null ? new Date(info[name.link]).toDateInputValue() : info[name.link]}}
@@ -495,18 +495,6 @@ input{
 	top: 0;
 	border-top: none;
 	z-index: 1;
-}
-
-.red{
-	color:purple;
-}
-
-.yellow{
-	color: #FF9D29;
-}
-
-.green{
-	color: #00BB78;
 }
 
 .no-border-right{

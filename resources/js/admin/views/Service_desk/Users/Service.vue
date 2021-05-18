@@ -9,7 +9,7 @@
 				</div>
 				<div class="d-flex flex-column bg-lightgrey p-2 px-5 mt-auto">
 					<div class="d-flex justify-content-between imageWidth align-self-center" v-for="(value,key,index) in user.total" :key="index">
-						<div :class="[{'green':index==0},{'orange':index==1},{'red':index==2}]">{{$t(key)+':'}}</div>
+						<div :class="[{'text-green':index==0},{'text-orange':index==1},{'text-red':index==2}]">{{$t(key)+':'}}</div>
 						<div>{{value}}</div>
 					</div>
 				</div>
@@ -116,7 +116,8 @@ export default{
 					name:'author',link:'author'
 				},
 				{
-					name:'status',link:'status'
+					name:'status',link:'status',
+					class_func:this.status_class_func
 				}
 				]
 			}
@@ -157,7 +158,8 @@ export default{
 					name:'title',link:'title'
 				},
 				{
-					name:'status',link:'status'
+					name:'status',link:'status',
+					class_func:this.status_class_func
 				}
 				]
 			}
@@ -206,6 +208,19 @@ export default{
 		}
 	},
 	methods:{
+		status_class_func(info){
+			let res={};
+			if(info.status=='issued'){
+				res['text-orange']=true;
+			}
+			else if (info.status=='returned'){
+				res['text-green']=true;
+			}
+			else{
+				res['text-red']=true;
+			}
+			return res;
+		},
 		capitalize(string){
 			return capitalize(string);
 		},
@@ -356,15 +371,6 @@ export default{
 }
 .imageHeight{
 	height: calc(14em * 4/3);
-}
-.red{
-	color:#FF0000;
-}
-.orange{
-	color:#FF9D29;
-}
-.green{
-	color:#00BB78;
 }
 .info_table{
 	width: 100%;

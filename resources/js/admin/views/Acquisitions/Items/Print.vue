@@ -86,8 +86,8 @@ export default{
 			{name:'inventory_number',link:'id'},
 			{name:'titles',link:'title'},
 			{name:'author',link:'author'},
-			{name:'init_status',link:'init_status'},
-			{name:'print_status',link:'print_status'}
+			{name:'print_status',link:'print_status',class_func:this.print_class_func},
+			{name:'init_status',link:'init_status',class_func:this.init_class_func},
 			],
 			selectable:{
 				available:true,
@@ -107,6 +107,23 @@ export default{
 		}
 	},
 	methods:{
+		print_class_func(info){
+			let res={};
+			if(info.print_status=='not printed'){
+				res['text-blue']=true
+			}
+			return res
+		},
+		init_class_func(info){
+			let res={};
+			if(info.init_status=='not initialized'){
+				res['text-orange']=true
+			}
+			else{
+				res['text-green']=true
+			}
+			return res;
+		},
 		changeMode(mode){
 			this.type=mode;
 		},

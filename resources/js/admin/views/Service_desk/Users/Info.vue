@@ -14,7 +14,7 @@
 				</div>
 				<div class="py-2 mt-3 bg-lightgrey d-flex flex-column align-items-center">
 					<div class="imageWidth d-flex justify-content-between" v-for="(value,key,index) in user.total" :key="index">
-						<div :class="[{'green':index==0},{'orange':index==1},{'red':index==2}]">
+						<div :class="[{'text-green':index==0},{'text-orange':index==1},{'text-red':index==2}]">
 							{{$t(key)+":"}}
 						</div>
 						<div>
@@ -96,14 +96,5 @@ input:disabled{
 }
 .imageHeight{
 	height: calc(15.625em * 4/3);
-}
-.red{
-	color:#FF0000;
-}
-.orange{
-	color:#FF9D29;
-}
-.green{
-	color:#00BB78;
 }
 </style>

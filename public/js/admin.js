@@ -4481,11 +4481,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         name: 'titles',
         link: 'title'
       }, {
-        name: 'init_status',
-        link: 'init_status'
-      }, {
         name: 'print_status',
-        link: 'print_status'
+        link: 'print_status',
+        class_func: this.print_class_func
+      }, {
+        name: 'init_status',
+        link: 'init_status',
+        class_func: this.init_class_func
       }],
       editObj: {
         available: true,
@@ -4506,6 +4508,26 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     };
   },
   methods: {
+    print_class_func: function print_class_func(info) {
+      var res = {};
+
+      if (info.print_status == 'not printed') {
+        res['text-blue'] = true;
+      }
+
+      return res;
+    },
+    init_class_func: function init_class_func(info) {
+      var res = {};
+
+      if (info.init_status == 'not initialized') {
+        res['text-orange'] = true;
+      } else {
+        res['text-green'] = true;
+      }
+
+      return res;
+    },
     lastCreated: function lastCreated() {
       var _this = this;
 
@@ -4751,11 +4773,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         name: 'author',
         link: 'author'
       }, {
-        name: 'init_status',
-        link: 'init_status'
-      }, {
         name: 'print_status',
-        link: 'print_status'
+        link: 'print_status',
+        class_func: this.print_class_func
+      }, {
+        name: 'init_status',
+        link: 'init_status',
+        class_func: this.init_class_func
       }],
       selectable: {
         available: true,
@@ -4775,6 +4799,26 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     };
   },
   methods: {
+    print_class_func: function print_class_func(info) {
+      var res = {};
+
+      if (info.print_status == 'not printed') {
+        res['text-blue'] = true;
+      }
+
+      return res;
+    },
+    init_class_func: function init_class_func(info) {
+      var res = {};
+
+      if (info.init_status == 'not initialized') {
+        res['text-orange'] = true;
+      } else {
+        res['text-green'] = true;
+      }
+
+      return res;
+    },
     changeMode: function changeMode(mode) {
       this.type = mode;
     },
@@ -6263,7 +6307,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           link: 'author'
         }, {
           name: 'status',
-          link: 'status'
+          link: 'status',
+          class_func: this.status_class_func
         }];
       } else if (this.state == 'return') {
         heads = [{
@@ -6302,7 +6347,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           link: 'title'
         }, {
           name: 'status',
-          link: 'status'
+          link: 'status',
+          class_func: this.status_class_func
         }];
       }
 
@@ -6348,6 +6394,19 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     };
   },
   methods: {
+    status_class_func: function status_class_func(info) {
+      var res = {};
+
+      if (info.status == 'issued') {
+        res['text-orange'] = true;
+      } else if (info.status == 'returned') {
+        res['text-green'] = true;
+      } else {
+        res['text-red'] = true;
+      }
+
+      return res;
+    },
     capitalize: function (_capitalize) {
       function capitalize(_x) {
         return _capitalize.apply(this, arguments);
@@ -28315,7 +28374,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\ntable[data-v-539baf15] {\n\tborder-collapse: collapse;\n\twidth: 100%;\n}\ntd[data-v-539baf15], th[data-v-539baf15] {\n\tborder: 0.0625em solid #E8E8E8;\n\tpadding: 1em 1.25em;\n}\nth[data-v-539baf15]{\n\ttext-align: left;\n\tfont-weight: 500;\n}\ntbody tr[data-v-539baf15]:hover{\n\tbox-shadow: 0 0 0.4375em rgba(8, 38, 115, 0.2);\n}\ninput[data-v-539baf15]{\n\twidth:unset;\n\theight: unset;\n}\n.table[data-v-539baf15]{\n\tposition: relative;\n\tmax-height: max(68vh,31.25em);\n\toverflow: auto;\n\tborder-bottom:0.0625em solid #E8E8E8;\n\tborder-top:0.0625em solid #E8E8E8;\n}\n.header[data-v-539baf15]{\n\tposition: -webkit-sticky;\n\tposition: sticky;\n\ttop: 0;\n\tborder-top: none;\n\tz-index: 1;\n}\n.red[data-v-539baf15]{\n\tcolor:purple;\n}\n.yellow[data-v-539baf15]{\n\tcolor: #FF9D29;\n}\n.green[data-v-539baf15]{\n\tcolor: #00BB78;\n}\n.no-border-right[data-v-539baf15]{\n\tborder-right:none;\n}\n.selectable[data-v-539baf15]{\n\tpadding: 1em 1.25em;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\ntable[data-v-539baf15] {\n\tborder-collapse: collapse;\n\twidth: 100%;\n}\ntd[data-v-539baf15], th[data-v-539baf15] {\n\tborder: 0.0625em solid #E8E8E8;\n\tpadding: 1em 1.25em;\n}\nth[data-v-539baf15]{\n\ttext-align: left;\n\tfont-weight: 500;\n}\ntbody tr[data-v-539baf15]:hover{\n\tbox-shadow: 0 0 0.4375em rgba(8, 38, 115, 0.2);\n}\ninput[data-v-539baf15]{\n\twidth:unset;\n\theight: unset;\n}\n.table[data-v-539baf15]{\n\tposition: relative;\n\tmax-height: max(68vh,31.25em);\n\toverflow: auto;\n\tborder-bottom:0.0625em solid #E8E8E8;\n\tborder-top:0.0625em solid #E8E8E8;\n}\n.header[data-v-539baf15]{\n\tposition: -webkit-sticky;\n\tposition: sticky;\n\ttop: 0;\n\tborder-top: none;\n\tz-index: 1;\n}\n.no-border-right[data-v-539baf15]{\n\tborder-right:none;\n}\n.selectable[data-v-539baf15]{\n\tpadding: 1em 1.25em;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -28507,7 +28566,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.placeholder[data-v-bf8e509c]{\n\tbackground-color: white;\n}\ninput[data-v-bf8e509c]:disabled{\n\tcolor:black;\n}\n.image[data-v-bf8e509c]{\n\tbackground-repeat: no-repeat;\n\tbackground-size: 100% 100%;\n}\n.imageWidth[data-v-bf8e509c]{\n\twidth:15.625em;\n}\n.imageHeight[data-v-bf8e509c]{\n\theight: calc(15.625em * 4/3);\n}\n.red[data-v-bf8e509c]{\n\tcolor:#FF0000;\n}\n.orange[data-v-bf8e509c]{\n\tcolor:#FF9D29;\n}\n.green[data-v-bf8e509c]{\n\tcolor:#00BB78;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.placeholder[data-v-bf8e509c]{\n\tbackground-color: white;\n}\ninput[data-v-bf8e509c]:disabled{\n\tcolor:black;\n}\n.image[data-v-bf8e509c]{\n\tbackground-repeat: no-repeat;\n\tbackground-size: 100% 100%;\n}\n.imageWidth[data-v-bf8e509c]{\n\twidth:15.625em;\n}\n.imageHeight[data-v-bf8e509c]{\n\theight: calc(15.625em * 4/3);\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -28531,7 +28590,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.image[data-v-4b3707e1]{\n\tbackground-repeat: no-repeat;\n\tbackground-size: 100% 100%;\n}\n.imageWidth[data-v-4b3707e1]{\n\twidth:14em;\n}\n.imageHeight[data-v-4b3707e1]{\n\theight: calc(14em * 4/3);\n}\n.red[data-v-4b3707e1]{\n\tcolor:#FF0000;\n}\n.orange[data-v-4b3707e1]{\n\tcolor:#FF9D29;\n}\n.green[data-v-4b3707e1]{\n\tcolor:#00BB78;\n}\n.info_table[data-v-4b3707e1]{\n\twidth: 100%;\n\tborder-spacing: .625em 0;\n\tborder-collapse: separate;\n}\n.info_table > tr >td[data-v-4b3707e1]{\n\tvertical-align: top;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.image[data-v-4b3707e1]{\n\tbackground-repeat: no-repeat;\n\tbackground-size: 100% 100%;\n}\n.imageWidth[data-v-4b3707e1]{\n\twidth:14em;\n}\n.imageHeight[data-v-4b3707e1]{\n\theight: calc(14em * 4/3);\n}\n.info_table[data-v-4b3707e1]{\n\twidth: 100%;\n\tborder-spacing: .625em 0;\n\tborder-collapse: separate;\n}\n.info_table > tr >td[data-v-4b3707e1]{\n\tvertical-align: top;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -28676,7 +28735,7 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css?family=Roboto:400,400italic,500,500italic,700,700italic,900,900italic,300italic,300,100italic,100);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "/*defaults*/\n\n.tabs {\n    display: flex;\n}\n\n.tab {\n    margin-right: 2.5em;\n    font-weight: 500;\n    font-size: 1.5em;\n    line-height: 1.75em;\n    cursor: pointer;\n    transition: color .3s;\n}\n\n.line {\n    height: 0.3125em;\n    background: #FF9D29;\n    position: absolute;\n    transition: .5s;\n    /*emaa naugad*/\n    bottom: -0.625em;\n}\n\n\n/*main stuff...initialization*/\n\n\n/*firefox only*/\n\ndiv * {\n    scrollbar-color: #c5c5c5 #f4f4f4;\n    scrollbar-width: thin;\n}\n\n\n/*crossbd-flexser*/\n\n::-webkit-scrollbar {\n    width: 0.5em;\n    height: 0.5em;\n}\n\n::-webkit-scrollbar-thumb {\n    background: #c5c5c5;\n}\n\n::-webkit-scrollbar-track {\n    background: #f4f4f4;\n}\n\n* {\n    box-sizing: border-box;\n}\n\ninput,\nbutton,\nselect,\ntextarea {\n    background: none;\n    font-size: 1em;\n    color: #333;\n    white-space: nowrap;\n}\n\n*:focus {\n    outline: none !important;\n}\n\nhtml,\ntextarea {\n    font-family: 'Roboto', sans-serif;\n    font-style: normal;\n    font-weight: normal;\n    line-height: 1.1875em;\n}\n\nhtml {\n    -webkit-user-select: none;\n    /* Safari */\n    -moz-user-select: none;\n    /* Firefox */\n    -ms-user-select: none;\n    /* IE10+/Edge */\n    user-select: none;\n    /* Standard */\n    color: #333333;\n    font-size: 13px;\n}\n\nbody {\n    padding: 0;\n    margin: 0;\n    background-color: #F9F9F9;\n}\n\nbody,\nhtml,\n#app,\n#main,\n#main>.main {\n    max-height: 100vh;\n}\n\n#main>.main {\n    overflow: auto;\n}\n\n\n/*custom*/\n\n.select>select,\n.select>input {\n    appearance: none;\n    padding-right: 2em;\n}\n\n.select {\n    display: grid;\n    grid-template-areas: \"select\";\n    align-items: center;\n}\n\n.select>select,\n.select>input,\n.select:after {\n    grid-area: select;\n}\n\n.select::after {\n    content: \"\";\n    display: block;\n    width: 0.75em;\n    height: 0.375em;\n    margin-right: 1em;\n    background-color: black;\n    clip-path: polygon(100% 0%, 0 0%, 50% 100%);\n    justify-self: end;\n}\n\n.search_icon {\n    position: absolute;\n    right: 1em;\n}\n\n\n/*custom defaults*/\n\n#navbar,\n#sidebar {\n    position: sticky;\n    top: 0;\n}\n\n.sidebar_hidden {\n    width: 0!important;\n    min-width: 0!important;\n}\n\n.main_shown {\n    max-width: 100vw;\n}\n\n.link {\n    cursor: pointer;\n    transition: color .25s;\n    color: inherit;\n    text-decoration: inherit;\n}\n\n.dropdown {\n    position: absolute;\n    width: 12.75em;\n    max-height: 0;\n    overflow: auto;\n    z-index: 3;\n    top: 100%;\n}\n\n.dropdown-left {\n    left: 0;\n}\n\n.dropdown-right {\n    right: 0;\n}\n\n.overflow-hidden {\n    overflow: hidden;\n}\n\n\n/*inputs and buttons stuff*/\n\ninput,\nbutton,\nselect,\ntextarea {\n    width: 100%;\n    height: 100%;\n    border: 0.0625em solid #B5BAC7;\n    padding: 0.625em 1.25em;\n    border-radius: 0.3125em;\n}\n\ntextarea {\n    padding-top: .625em;\n    padding-bottom: .625em;\n    min-height: 6.25em;\n}\n\nbutton,\nselect {\n    cursor: pointer;\n}\n\ninput:disabled,\nselect:disabled {\n    border-color: red;\n    color: grey;\n}\n\ninput:disabled::placeholder,\nselect:disabled::placeholder {\n    color: lightgrey;\n}\n\ninput:disabled~.placeholder,\nselect:disabled~.placeholder {\n    color: grey;\n}\n\n::placeholder {\n    color: #9C9FA7;\n    opacity: 1;\n}\n\n:-ms-input-placeholder {\n    /* Internet Explorer 10-11 */\n    color: red;\n}\n\n::-ms-input-placeholder {\n    /* Microsoft Edge */\n    color: red;\n}\n\nselect,\noption {\n    overflow: hidden;\n}\n\noption {\n    width: 100%;\n    max-width: 30em;\n}\n\noption {\n    white-space: nowrap;\n    text-overflow: ellipsis;\n}\n\nbutton {\n    background-color: #FF9D29;\n    color: white;\n    border-color: transparent;\n    transition: .3s;\n}\n\nbutton:hover {\n    border: 1px solid white;\n}\n\n.required::before {\n    content: '* ';\n    color: red;\n}\n\n\n/*input's label float*/\n\n.placeholder {\n    position: absolute;\n    pointer-events: none;\n    background-color: white;\n    top: -0.5em;\n    left: 2em;\n    margin-left: -0.3125em;\n    padding: 0 0.3125em;\n    font-size: 0.8em;\n    color: #9C9FA7;\n}\n\n.select>.placeholder,\ninput[type=date]~.placeholder {\n    top: -0.8em;\n}\n\n\n/*bootstrap like stuff*/\n\n.outline-green,\n.outline-orange,\n.outline-black,\n.outline-red,\n.outline-blue {\n    background-color: transparent;\n    border: 1px solid;\n}\n\n.outline-green {\n    color: #00BB78;\n    border-color: #00BB78;\n}\n\n.outline-green:hover {\n    background-color: #00BB78;\n    color: white;\n}\n\n.outline-orange {\n    color: #FF9D29;\n    border-color: #FF9D29;\n}\n\n.outline-orange:hover {\n    background-color: #FF9D29;\n    color: white;\n}\n\n.outline-red {\n    color: #FF5756;\n    border-color: #FF5756;\n}\n\n.outline-red:hover {\n    background-color: #FF5756;\n    color: white;\n}\n\n.outline-black {\n    color: #333;\n}\n\n.outline-black:hover {\n    background-color: #333;\n    color: #F4F4F4;\n}\n\n.outline-blue {\n    color: #3F98EB;\n    border-color: #3F98EB;\n}\n\n.outline-blue:hover {\n    background-color: #3F98EB;\n    color: #F4F4F4;\n}\n\n.cancel-button {\n    background-color: #F4F4F4;\n    color: #333;\n}\n\n.cancel-button:hover {\n    border: 1px solid #333;\n}\n\n.text-choosable,\n.text-choosable * {\n    -webkit-user-select: text;\n    /* Safari */\n    -moz-user-select: text;\n    /* Firefox */\n    -ms-user-select: text;\n    /* IE10+/Edge */\n    user-select: text;\n    /* Standard */\n}\n\n.text-ellipsis {\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n\n.text-no-wrap,\n.text-no-wrap>* {\n    white-space: nowrap;\n}\n\n.title {\n    font-size: 1.5em;\n    margin: .5em 0;\n}\n\n.subtitle {\n    font-size: 1.25em;\n    margin: 0.5em 0;\n}\n\n.border-black {\n    border-color: black !important;\n}\n\n.border-grey {\n    border-color: #B5BAC7 !important;\n}\n\n.border-orange {\n    border-color: #FF9D29 !important;\n}\n\n.no_border_left {\n    border-left: none;\n    margin-left: -0.3125em;\n}\n\n.text-red {\n    color: red;\n}\n\n.text-lightgrey {\n    color: #B5BAC7;\n}\n\n.text-grey {\n    color: #9C9FA7;\n}\n\n.text-white {\n    color: white;\n}\n\n.text-black {\n    color: #333;\n}\n\n.text-blue {\n    color: blue;\n}\n\n.text-orange {\n    color: #FF9D29;\n}\n\n.caret-orange {\n    caret-color: #FF9D29;\n}\n\n.bg-transparent {\n    background-color: transparent;\n}\n\n.bg-white {\n    background-color: #FFFFFF;\n}\n\n.bg-bg {\n    background-color: #eef5ff;\n}\n\n.bg-darkgrey {\n    background-color: #B5BAC7;\n}\n\n.bg-grey {\n    background-color: #EDEDED;\n}\n\n.bg-lightgrey {\n    background-color: #F4F4F4;\n}\n\n.bg-orange {\n    background-color: #FF9D29;\n}\n\n.transition {\n    transition: .5s;\n}\n\n.cursor-pointer {\n    cursor: pointer;\n}\n\n.pad {\n    padding: 0.3125em !important;\n    position: relative;\n}\n\n.h-min-100 {\n    min-height: 100%;\n}\n\n.height-1 {\n    height: 0.0625em;\n}\n\n.width-unset {\n    width: unset;\n}\n\n.height-unset {\n    height: unset;\n}\n\n.font-weight-bold {\n    font-weight: 500 !important;\n}\n\n.font-size-24 {\n    font-size: 1.5em;\n}\n\n.font-size-20 {\n    font-size: 1.25em;\n}\n\n.font-size-18 {\n    font-size: 1.125em;\n}\n\n.font-size-14 {\n    font-size: 0.875em;\n    line-height: 1.04em;\n}\n\n.font-size-12 {\n    font-size: 0.75em;\n}\n\n.rotate {\n    transform: rotate(-180deg);\n}\n\n.z-index-1 {\n    z-index: 1;\n}\n\n.overflow-auto,\n.overflow-scroll {\n    overflow: auto;\n}\n\n.overflow-scroll {\n    border-bottom: 1px solid #E8E8E8;\n    scrollbar-width: .125em;\n    padding-right: .625em;\n    padding-bottom: .625em;\n}\n\n.overflow-scroll::-webkit-scrollbar {\n    width: 0.125em;\n}\n\n\n/*icons*/\n\nsvg:not(:root).svg-inline--fa {\n    overflow: visible;\n}\n\n.svg-inline--fa.fa-w-10 {\n    width: 0.625em;\n}\n\n.svg-inline--fa.fa-w-11 {\n    width: 0.6875em;\n}\n\n.svg-inline--fa.fa-w-14 {\n    width: 0.875em;\n}\n\n.svg-inline--fa.fa-w-16 {\n    width: 1em;\n}\n\n.svg-inline--fa.fa-w-18 {\n    width: 1.125em;\n}\n\n.svg-inline--fa {\n    display: inline-block;\n    font-size: inherit;\n    height: 1em;\n    overflow: visible;\n    vertical-align: -0.125em;\n}\n\n\n/*responsiveness*/\n\n@media screen and (min-width: 1440px) {\n    html {\n        font-size: 16px;\n    }\n}\n\n@media screen and (min-width: 2000px) {\n    html {\n        font-size: 18px;\n    }\n}\n\n\n/*: or :: changes*/\n\n.link:hover {\n    color: #FF9D29;\n}\n\n\n/*modal changes*/\n\ndiv.vm--overlay {\n    background-color: rgba(51, 51, 51, 0.3);\n}\n\ndiv.vm--container,\ndiv.vm--overlay {\n    transition: .5s;\n}\n\n\n/*cancellations*/\n\n.no-hover-color:hover {\n    color: initial;\n}\n\n.col,\n.col-1,\n.col-10,\n.col-11,\n.col-12,\n.col-2,\n.col-3,\n.col-4,\n.col-5,\n.col-6,\n.col-7,\n.col-8,\n.col-9,\n.col-auto,\n.col-lg,\n.col-lg-1,\n.col-lg-10,\n.col-lg-11,\n.col-lg-12,\n.col-lg-2,\n.col-lg-3,\n.col-lg-4,\n.col-lg-5,\n.col-lg-6,\n.col-lg-7,\n.col-lg-8,\n.col-lg-9,\n.col-lg-auto,\n.col-md,\n.col-md-1,\n.col-md-10,\n.col-md-11,\n.col-md-12,\n.col-md-2,\n.col-md-3,\n.col-md-4,\n.col-md-5,\n.col-md-6,\n.col-md-7,\n.col-md-8,\n.col-md-9,\n.col-md-auto,\n.col-sm,\n.col-sm-1,\n.col-sm-10,\n.col-sm-11,\n.col-sm-12,\n.col-sm-2,\n.col-sm-3,\n.col-sm-4,\n.col-sm-5,\n.col-sm-6,\n.col-sm-7,\n.col-sm-8,\n.col-sm-9,\n.col-sm-auto,\n.col-xl,\n.col-xl-1,\n.col-xl-10,\n.col-xl-11,\n.col-xl-12,\n.col-xl-2,\n.col-xl-3,\n.col-xl-4,\n.col-xl-5,\n.col-xl-6,\n.col-xl-7,\n.col-xl-8,\n.col-xl-9,\n.col-xl-auto {\n    padding-right: 0px;\n    padding-left: 0px;\n}\n\n.table thead th {\n    vertical-align: middle;\n}\n\n.table td,\n.table th {\n    vertical-align: middle;\n}\n\nlabel {\n    margin-bottom: unset;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "/*defaults*/\n\n.tabs {\n    display: flex;\n}\n\n.tab {\n    margin-right: 2.5em;\n    font-weight: 500;\n    font-size: 1.5em;\n    line-height: 1.75em;\n    cursor: pointer;\n    transition: color .3s;\n}\n\n.line {\n    height: 0.3125em;\n    background: #FF9D29;\n    position: absolute;\n    transition: .5s;\n    /*emaa naugad*/\n    bottom: -0.625em;\n}\n\n\n/*main stuff...initialization*/\n\n\n/*firefox only*/\n\ndiv * {\n    scrollbar-color: #c5c5c5 #f4f4f4;\n    scrollbar-width: thin;\n}\n\n\n/*crossbd-flexser*/\n\n::-webkit-scrollbar {\n    width: 0.5em;\n    height: 0.5em;\n}\n\n::-webkit-scrollbar-thumb {\n    background: #c5c5c5;\n}\n\n::-webkit-scrollbar-track {\n    background: #f4f4f4;\n}\n\n* {\n    box-sizing: border-box;\n}\n\ninput,\nbutton,\nselect,\ntextarea {\n    background: none;\n    font-size: 1em;\n    color: #333;\n    white-space: nowrap;\n}\n\n*:focus {\n    outline: none !important;\n}\n\nhtml,\ntextarea {\n    font-family: 'Roboto', sans-serif;\n    font-style: normal;\n    font-weight: normal;\n    line-height: 1.1875em;\n}\n\nhtml {\n    -webkit-user-select: none;\n    /* Safari */\n    -moz-user-select: none;\n    /* Firefox */\n    -ms-user-select: none;\n    /* IE10+/Edge */\n    user-select: none;\n    /* Standard */\n    color: #333333;\n    font-size: 13px;\n}\n\nbody {\n    padding: 0;\n    margin: 0;\n    background-color: #F9F9F9;\n}\n\nbody,\nhtml,\n#app,\n#main,\n#main>.main {\n    max-height: 100vh;\n}\n\n#main>.main {\n    overflow: auto;\n}\n\n\n/*custom*/\n\n.select>select,\n.select>input {\n    appearance: none;\n    padding-right: 2em;\n}\n\n.select {\n    display: grid;\n    grid-template-areas: \"select\";\n    align-items: center;\n}\n\n.select>select,\n.select>input,\n.select:after {\n    grid-area: select;\n}\n\n.select::after {\n    content: \"\";\n    display: block;\n    width: 0.75em;\n    height: 0.375em;\n    margin-right: 1em;\n    background-color: black;\n    clip-path: polygon(100% 0%, 0 0%, 50% 100%);\n    justify-self: end;\n}\n\n.search_icon {\n    position: absolute;\n    right: 1em;\n}\n\n\n/*custom defaults*/\n\n#navbar,\n#sidebar {\n    position: sticky;\n    top: 0;\n}\n\n.sidebar_hidden {\n    width: 0!important;\n    min-width: 0!important;\n}\n\n.main_shown {\n    max-width: 100vw;\n}\n\n.link {\n    cursor: pointer;\n    transition: color .25s;\n    color: inherit;\n    text-decoration: inherit;\n}\n\n.dropdown {\n    position: absolute;\n    width: 12.75em;\n    max-height: 0;\n    overflow: auto;\n    z-index: 3;\n    top: 100%;\n}\n\n.dropdown-left {\n    left: 0;\n}\n\n.dropdown-right {\n    right: 0;\n}\n\n.overflow-hidden {\n    overflow: hidden;\n}\n\n\n/*inputs and buttons stuff*/\n\ninput,\nbutton,\nselect,\ntextarea {\n    width: 100%;\n    height: 100%;\n    border: 0.0625em solid #B5BAC7;\n    padding: 0.625em 1.25em;\n    border-radius: 0.3125em;\n}\n\ntextarea {\n    padding-top: .625em;\n    padding-bottom: .625em;\n    min-height: 6.25em;\n}\n\nbutton,\nselect {\n    cursor: pointer;\n}\n\ninput:disabled,\nselect:disabled {\n    border-color: red;\n    color: grey;\n}\n\ninput:disabled::placeholder,\nselect:disabled::placeholder {\n    color: lightgrey;\n}\n\ninput:disabled~.placeholder,\nselect:disabled~.placeholder {\n    color: grey;\n}\n\n::placeholder {\n    color: #9C9FA7;\n    opacity: 1;\n}\n\n:-ms-input-placeholder {\n    /* Internet Explorer 10-11 */\n    color: red;\n}\n\n::-ms-input-placeholder {\n    /* Microsoft Edge */\n    color: red;\n}\n\nselect,\noption {\n    overflow: hidden;\n}\n\noption {\n    width: 100%;\n    max-width: 30em;\n}\n\noption {\n    white-space: nowrap;\n    text-overflow: ellipsis;\n}\n\nbutton {\n    background-color: #FF9D29;\n    color: white;\n    border-color: transparent;\n    transition: .3s;\n}\n\nbutton:hover {\n    border: 1px solid white;\n}\n\n.required::before {\n    content: '* ';\n    color: red;\n}\n\n\n/*input's label float*/\n\n.placeholder {\n    position: absolute;\n    pointer-events: none;\n    background-color: white;\n    top: -0.5em;\n    left: 2em;\n    margin-left: -0.3125em;\n    padding: 0 0.3125em;\n    font-size: 0.8em;\n    color: #9C9FA7;\n}\n\n.select>.placeholder,\ninput[type=date]~.placeholder {\n    top: -0.8em;\n}\n\n\n/*bootstrap like stuff*/\n\n.outline-green,\n.outline-orange,\n.outline-black,\n.outline-red,\n.outline-blue {\n    background-color: transparent;\n    border: 1px solid;\n}\n\n.outline-green {\n    color: #00BB78;\n    border-color: #00BB78;\n}\n\n.outline-green:hover {\n    background-color: #00BB78;\n    color: white;\n}\n\n.outline-orange {\n    color: #FF9D29;\n    border-color: #FF9D29;\n}\n\n.outline-orange:hover {\n    background-color: #FF9D29;\n    color: white;\n}\n\n.outline-red {\n    color: #FF5756;\n    border-color: #FF5756;\n}\n\n.outline-red:hover {\n    background-color: #FF5756;\n    color: white;\n}\n\n.outline-black {\n    color: #333;\n}\n\n.outline-black:hover {\n    background-color: #333;\n    color: #F4F4F4;\n}\n\n.outline-blue {\n    color: #3F98EB;\n    border-color: #3F98EB;\n}\n\n.outline-blue:hover {\n    background-color: #3F98EB;\n    color: #F4F4F4;\n}\n\n.cancel-button {\n    background-color: #F4F4F4;\n    color: #333;\n}\n\n.cancel-button:hover {\n    border: 1px solid #333;\n}\n\n.text-choosable,\n.text-choosable * {\n    -webkit-user-select: text;\n    /* Safari */\n    -moz-user-select: text;\n    /* Firefox */\n    -ms-user-select: text;\n    /* IE10+/Edge */\n    user-select: text;\n    /* Standard */\n}\n\n.text-ellipsis {\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n\n.text-no-wrap,\n.text-no-wrap>* {\n    white-space: nowrap;\n}\n\n.title {\n    font-size: 1.5em;\n    margin: .5em 0;\n}\n\n.subtitle {\n    font-size: 1.25em;\n    margin: 0.5em 0;\n}\n\n.border-black {\n    border-color: black !important;\n}\n\n.border-grey {\n    border-color: #B5BAC7 !important;\n}\n\n.border-orange {\n    border-color: #FF9D29 !important;\n}\n\n.no_border_left {\n    border-left: none;\n    margin-left: -0.3125em;\n}\n\n.text-red {\n    color: red;\n}\n\n.text-lightgrey {\n    color: #B5BAC7;\n}\n\n.text-grey {\n    color: #9C9FA7;\n}\n\n.text-white {\n    color: white;\n}\n\n.text-black {\n    color: #333;\n}\n\n.text-blue {\n    color: blue;\n}\n\n.text-green {\n    color: #00BB78;\n}\n\n.text-orange {\n    color: #FF9D29;\n}\n\n.caret-orange {\n    caret-color: #FF9D29;\n}\n\n.bg-transparent {\n    background-color: transparent;\n}\n\n.bg-white {\n    background-color: #FFFFFF;\n}\n\n.bg-bg {\n    background-color: #eef5ff;\n}\n\n.bg-darkgrey {\n    background-color: #B5BAC7;\n}\n\n.bg-grey {\n    background-color: #EDEDED;\n}\n\n.bg-lightgrey {\n    background-color: #F4F4F4;\n}\n\n.bg-orange {\n    background-color: #FF9D29;\n}\n\n.transition {\n    transition: .5s;\n}\n\n.cursor-pointer {\n    cursor: pointer;\n}\n\n.pad {\n    padding: 0.3125em !important;\n    position: relative;\n}\n\n.h-min-100 {\n    min-height: 100%;\n}\n\n.height-1 {\n    height: 0.0625em;\n}\n\n.width-unset {\n    width: unset;\n}\n\n.height-unset {\n    height: unset;\n}\n\n.font-weight-bold {\n    font-weight: 500 !important;\n}\n\n.font-size-24 {\n    font-size: 1.5em;\n}\n\n.font-size-20 {\n    font-size: 1.25em;\n}\n\n.font-size-18 {\n    font-size: 1.125em;\n}\n\n.font-size-14 {\n    font-size: 0.875em;\n    line-height: 1.04em;\n}\n\n.font-size-12 {\n    font-size: 0.75em;\n}\n\n.rotate {\n    transform: rotate(-180deg);\n}\n\n.z-index-1 {\n    z-index: 1;\n}\n\n.overflow-auto,\n.overflow-scroll {\n    overflow: auto;\n}\n\n.overflow-scroll {\n    border-bottom: 1px solid #E8E8E8;\n    scrollbar-width: .125em;\n    padding-right: .625em;\n    padding-bottom: .625em;\n}\n\n.overflow-scroll::-webkit-scrollbar {\n    width: 0.125em;\n}\n\n\n/*icons*/\n\nsvg:not(:root).svg-inline--fa {\n    overflow: visible;\n}\n\n.svg-inline--fa.fa-w-10 {\n    width: 0.625em;\n}\n\n.svg-inline--fa.fa-w-11 {\n    width: 0.6875em;\n}\n\n.svg-inline--fa.fa-w-14 {\n    width: 0.875em;\n}\n\n.svg-inline--fa.fa-w-16 {\n    width: 1em;\n}\n\n.svg-inline--fa.fa-w-18 {\n    width: 1.125em;\n}\n\n.svg-inline--fa {\n    display: inline-block;\n    font-size: inherit;\n    height: 1em;\n    overflow: visible;\n    vertical-align: -0.125em;\n}\n\n\n/*responsiveness*/\n\n@media screen and (min-width: 1440px) {\n    html {\n        font-size: 16px;\n    }\n}\n\n@media screen and (min-width: 2000px) {\n    html {\n        font-size: 18px;\n    }\n}\n\n\n/*: or :: changes*/\n\n.link:hover {\n    color: #FF9D29;\n}\n\n\n/*modal changes*/\n\ndiv.vm--overlay {\n    background-color: rgba(51, 51, 51, 0.3);\n}\n\ndiv.vm--container,\ndiv.vm--overlay {\n    transition: .5s;\n}\n\n\n/*cancellations*/\n\n.no-hover-color:hover {\n    color: initial;\n}\n\n.col,\n.col-1,\n.col-10,\n.col-11,\n.col-12,\n.col-2,\n.col-3,\n.col-4,\n.col-5,\n.col-6,\n.col-7,\n.col-8,\n.col-9,\n.col-auto,\n.col-lg,\n.col-lg-1,\n.col-lg-10,\n.col-lg-11,\n.col-lg-12,\n.col-lg-2,\n.col-lg-3,\n.col-lg-4,\n.col-lg-5,\n.col-lg-6,\n.col-lg-7,\n.col-lg-8,\n.col-lg-9,\n.col-lg-auto,\n.col-md,\n.col-md-1,\n.col-md-10,\n.col-md-11,\n.col-md-12,\n.col-md-2,\n.col-md-3,\n.col-md-4,\n.col-md-5,\n.col-md-6,\n.col-md-7,\n.col-md-8,\n.col-md-9,\n.col-md-auto,\n.col-sm,\n.col-sm-1,\n.col-sm-10,\n.col-sm-11,\n.col-sm-12,\n.col-sm-2,\n.col-sm-3,\n.col-sm-4,\n.col-sm-5,\n.col-sm-6,\n.col-sm-7,\n.col-sm-8,\n.col-sm-9,\n.col-sm-auto,\n.col-xl,\n.col-xl-1,\n.col-xl-10,\n.col-xl-11,\n.col-xl-12,\n.col-xl-2,\n.col-xl-3,\n.col-xl-4,\n.col-xl-5,\n.col-xl-6,\n.col-xl-7,\n.col-xl-8,\n.col-xl-9,\n.col-xl-auto {\n    padding-right: 0px;\n    padding-left: 0px;\n}\n\n.table thead th {\n    vertical-align: middle;\n}\n\n.table td,\n.table th {\n    vertical-align: middle;\n}\n\nlabel {\n    margin-bottom: unset;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -66059,10 +66118,10 @@ var render = function() {
                           staticClass: "cursor-pointer",
                           class:
                             info.status == "Open"
-                              ? "red"
+                              ? "text-red"
                               : info.status == "Checked"
-                              ? "yellow"
-                              : "green",
+                              ? "text-orange"
+                              : "text-green",
                           on: {
                             click: function($event) {
                               return _vm.showStatus(info.id)
@@ -66084,11 +66143,14 @@ var render = function() {
                       "td",
                       {
                         key: i,
-                        class: {
-                          "cursor-pointer":
-                            _vm.service.available ||
-                            (_vm.edit_duration && name.link == "duration")
-                        },
+                        class: [
+                          {
+                            "cursor-pointer":
+                              _vm.service.available ||
+                              (_vm.edit_duration && name.link == "duration")
+                          },
+                          name.class_func ? name.class_func(info, name) : {}
+                        ],
                         on: {
                           click: function($event) {
                             return _vm.tdOnClick(info, name)
@@ -70762,9 +70824,9 @@ var render = function() {
                   "div",
                   {
                     class: [
-                      { green: index == 0 },
-                      { orange: index == 1 },
-                      { red: index == 2 }
+                      { "text-green": index == 0 },
+                      { "text-orange": index == 1 },
+                      { "text-red": index == 2 }
                     ]
                   },
                   [
@@ -70880,9 +70942,9 @@ var render = function() {
                     "div",
                     {
                       class: [
-                        { green: index == 0 },
-                        { orange: index == 1 },
-                        { red: index == 2 }
+                        { "text-green": index == 0 },
+                        { "text-orange": index == 1 },
+                        { "text-red": index == 2 }
                       ]
                     },
                     [_vm._v(_vm._s(_vm.$t(key) + ":"))]

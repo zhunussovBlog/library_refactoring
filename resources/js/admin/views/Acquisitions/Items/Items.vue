@@ -102,8 +102,8 @@ export default{
 			{name:'batches_number',link:'batch_id'},
 			{name:'author',link:'author'},
 			{name:'titles',link:'title'},
-			{name:'init_status',link:'init_status'},
-			{name:'print_status',link:'print_status'}
+			{name:'print_status',link:'print_status',class_func:this.print_class_func},
+			{name:'init_status',link:'init_status',class_func:this.init_class_func},
 			],
 			editObj:{
 				available:true,
@@ -124,6 +124,23 @@ export default{
 		}
 	},
 	methods:{
+		print_class_func(info){
+			let res={};
+			if(info.print_status=='not printed'){
+				res['text-blue']=true
+			}
+			return res;
+		},
+		init_class_func(info){
+			let res={};
+			if(info.init_status=='not initialized'){
+				res['text-orange']=true
+			}
+			else{
+				res['text-green']=true
+			}
+			return res;
+		},
 		lastCreated(){
 			this.$http.get(this.link+'/last-created').then(response=>{
 				this.$store.dispatch('setStore',{label:this.commit,data:{data:response.data,searching:true}});
