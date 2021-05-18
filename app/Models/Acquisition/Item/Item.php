@@ -146,7 +146,11 @@ class Item extends Model implements DefaultQueryInterface
                             from lib_user_cards u where u.user_cid = i.edited_by) as edited_by"),
             'i.price as cost', 'i.currency', DB::raw("TO_CHAR(i.receive_date, 'YYYY-MM-DD') as create_date"),
             DB::raw("st.key||' - '||st.title_" . app()->getLocale() . " as location_title"),
-            'st.key as location', 'i.user_cid')
+            'st.key as location', 'i.user_cid',
+            DB::raw("(case when i.tag_printed = 1 then 'printed'
+                                       else 'not printed' end) as print_status"),
+            DB::raw("(case when i.tag_initialized = 1 then 'initialized'
+                                       else 'not initialized' end) as init_status"))
             ->leftJoin('sigle_types as st', 'st.key', '=', 'i.sigle_type');
     }
 }
