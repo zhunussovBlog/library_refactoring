@@ -189,6 +189,7 @@
     "language": "Язык",
 
     "duration": "Продолжительность",
+    "duration_in_days": "Продолжительность ( в днях )",
     "edit_duration": "Изменить продолжительность",
     "issuance": "Выдача",
     "return": "Возврат",
@@ -200,5 +201,7 @@
     "initialize": "Инициализировать",
     "read_from_rfid": "Читать из RFID",
     "init_status": "Инициализирован",
-    "print_status": "Распечатан"
+    "print_status": "Распечатан",
+    "date": "Дата",
+    "days": "Дни"
 }

@@ -1,10 +1,19 @@
 <template>
-    <div class="p-5">
+    <div class="p-3">
         <div class="font-size-20">{{$t('edit_duration')}}</div>
         <form class="d-flex justify-content-between my-4" @submit.prevent="confirm()">
-            <input type="text" v-model="duration" class="mr-4 height-unset" />
-            <input type="date" v-model="due_date" class="mr-4"/>
-            <div>
+
+            <div class="pad w-100">
+                <input type="text" v-model="duration" class="mr-4 height-unset" />
+				<label class="placeholder">{{$t('days')}}</label>
+            </div>
+
+            <div class="pad w-100">
+                <input type="date" v-model="due_date" class="mr-4"/>
+				<label class="placeholder">{{$t('date')}}</label>
+            </div>
+
+            <div class="pad w-100">
                 <button type="submit" class="bg-green" >{{$t('edit')}}</button>
             </div>
         </form>

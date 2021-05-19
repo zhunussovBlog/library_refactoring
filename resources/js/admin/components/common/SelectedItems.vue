@@ -1,7 +1,7 @@
 <template>
     <table-div
         :heads="heads"
-        :data="array_copy"
+        :data="array"
         :selectable="selectable_copy"
         :link="link"
         :commit="commit"
@@ -16,6 +16,7 @@ import TableDiv from "./Table";
 export default {
     props:{
         heads:Array,
+        // barcodes,selected -> data
         data:Array,
         selectable:Object,
         link:String,
@@ -24,20 +25,13 @@ export default {
         clickables:Boolean,
         sortable:Boolean,
         custom_func:Object,
-        changeSelected:Function,
-        func:Object
+        func:Function
     },
     components: { TableDiv },
     data(){
         return{
             array:JSON.parse(JSON.stringify(this.data)),
-            array_copy:JSON.parse(JSON.stringify(this.data)),
             selectable_copy:{},
-        }
-    },
-    watch:{
-        array(newVal){
-            this.changeSelected(newVal);
         }
     },
     created(){

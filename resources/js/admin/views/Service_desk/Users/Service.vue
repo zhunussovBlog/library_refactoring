@@ -9,7 +9,7 @@
 				</div>
 				<div class="d-flex flex-column bg-lightgrey p-2 px-5 mt-auto">
 					<div class="d-flex justify-content-between imageWidth align-self-center" v-for="(value,key,index) in user.total" :key="index">
-						<div :class="[{'green':index==0},{'orange':index==1},{'red':index==2}]">{{$t(key)+':'}}</div>
+						<div :class="[{'text-green':index==0},{'text-orange':index==1},{'text-red':index==2}]">{{$t(key)+':'}}</div>
 						<div>{{value}}</div>
 					</div>
 				</div>
@@ -107,7 +107,7 @@ export default{
 					name:'barcode',link:'barcode'
 				},
 				{
-					name:'duration',link:'duration'
+					name:'duration_in_days',link:'duration'
 				},
 				{
 					name:'title',link:'title'
@@ -116,12 +116,16 @@ export default{
 					name:'author',link:'author'
 				},
 				{
-					name:'status',link:'status'
+					name:'status',link:'status',
+					class_func:this.status_class_func
 				}
 				]
 			}
 			else if(this.state=='return'){
 				heads=[
+				{
+					name:'issue_date',link:'issue_date',is_date:true
+				},
 				{
 					name:'due_date',link:'due_date',is_date:true
 				},
@@ -142,6 +146,9 @@ export default{
 			else{
 				heads=[
 				{
+					name:'issue_date',link:'issue_date',is_date:true
+				},
+				{
 					name:'due_date',link:'due_date',is_date:true
 				},
 				{
@@ -157,7 +164,11 @@ export default{
 					name:'title',link:'title'
 				},
 				{
-					name:'status',link:'status'
+					name:'delivery_date',link:'delivery_date',is_date:true
+				},
+				{
+					name:'status',link:'status',
+					class_func:this.status_class_func
 				}
 				]
 			}
@@ -206,6 +217,19 @@ export default{
 		}
 	},
 	methods:{
+		status_class_func(info){
+			let res={};
+			if(info.status=='issued'){
+				res['text-orange']=true;
+			}
+			else if (info.status=='returned'){
+				res['text-green']=true;
+			}
+			else{
+				res['text-red']=true;
+			}
+			return res;
+		},
 		capitalize(string){
 			return capitalize(string);
 		},
@@ -289,7 +313,7 @@ export default{
 				else if ( selected[0].duration ){
 					info.duration=selected[0].duration;
 				}
-				// await this.readFromRfid('SetItemsCheckInOut','status=0');
+				await this.readFromRfid('SetItemsCheckInOut','status=0');
 				await this.$http.post('service/media/give',info).then(response=>{
 					this.message_success('check_in ',response);
 				});
@@ -312,7 +336,7 @@ export default{
 					inv_id:book.inv_id,
 					user_cid:this.user.info.user_cid
 				};
-				await this.readFromRfid('SetItemsCheckInOut','status=1');
+				// await this.readFromRfid('SetItemsCheckInOut','status=1');
 				await this.$http.post('service/media/back',info).then(response=>{
 					this.message_success('check_out',response);
 				});
@@ -356,15 +380,6 @@ export default{
 }
 .imageHeight{
 	height: calc(14em * 4/3);
-}
-.red{
-	color:#FF0000;
-}
-.orange{
-	color:#FF9D29;
-}
-.green{
-	color:#00BB78;
 }
 .info_table{
 	width: 100%;

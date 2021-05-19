@@ -441,6 +441,10 @@ input[type=date]~.placeholder {
     color: blue;
 }
 
+.text-green {
+    color: #00BB78;
+}
+
 .text-orange {
     color: #FF9D29;
 }

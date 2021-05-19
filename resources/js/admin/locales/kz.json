@@ -188,6 +188,7 @@
     "language": "Тілі",
 
     "duration": "Ұзақтығы",
+    "duration_in_days": "Ұзақтығы ( күндермен )",
     "edit_duration": "Ұзақтықты өзгерту",
     "issuance": "Беру",
     "return": "Қайтару",
@@ -199,5 +200,7 @@
     "initialize": "Инициализациялау",
     "read_from_rfid": "RFID-ден оқу",
     "init_status": "Инициализацияланған",
-    "print_status": "Басылған"
+    "print_status": "Басылған",
+    "date": "Дата",
+    "days": "Күндер"
 }

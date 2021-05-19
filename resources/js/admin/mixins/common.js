@@ -3,7 +3,7 @@ import { message_error, message_success } from './messages'
 export const getResults = {
     mixins: [message_error],
     methods: {
-        getResults(link, commit, after, s_link) {
+        getResults(link, commit, after, s_link, sort_by) {
             this.$store.commit('setFullPageLoading', true);
 
 
@@ -54,6 +54,11 @@ export const getResults = {
             request.page = store.page;
             request.add_options = add_options;
             request.search_options = search_options;
+
+            if (sort_by) {
+                // we need key and mode
+                request.order = sort_by;
+            }
 
             this.$http.post(link + '/search', request).then(response => {
                 let s_request = {

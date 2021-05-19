@@ -29,7 +29,7 @@
 				<div class="pad w-100 select">
 					<select v-model="batch.sup_id">
 						<option value=''>&nbsp;</option>
-						<option v-for="(supply,index) in suppliers" :value="supply.id">{{supply.name}}</option>
+						<option v-for="(supply,index) in suppliers" :value="supply.id" :key="index">{{supply.name}}</option>
 					</select>
 					<label class="placeholder">{{$tc('suppliers',1)}}</label>
 				</div>

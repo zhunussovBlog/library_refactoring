@@ -188,6 +188,7 @@
     "language": "Language",
 
     "duration": "Duration",
+    "duration_in_days": "Duration ( in days )",
     "edit_duration": "Edit duration",
     "issuance": "Issuance",
     "return": "Return",
@@ -199,5 +200,7 @@
     "initialize": "Initialize",
     "read_from_rfid": "Read from RFID",
     "init_status": "Initialized",
-    "print_status": "Printed"
+    "print_status": "Printed",
+    "date": "Date",
+    "days": "Days"
 }
