@@ -104,12 +104,14 @@ class Loan extends Model
             DB::raw("coalesce(i.book_id, i.j_issue_id, i.disc_id) as media_id"),
             'l.borrow_date as issue_date', 'l.due_date', 'l.delivery_date',
             DB::raw("(case when delivery_date is not null and i.status = 1 then 'returned'
-                            else (case 
+                            else (case
                                 when current_date <= due_date then 'issued'
                                 when current_date > due_date then 'overdue'
                                 end)
                                  end) as status"))
             ->leftJoin('lib_inventory as i', 'l.inv_id', '=', 'i.inv_id')
-            ->where('l.user_cid', '=', $userCID);
+            ->where('l.user_cid', '=', $userCID)
+            ->orderBy('due_date')
+            ->orderBy('status');
     }
 }

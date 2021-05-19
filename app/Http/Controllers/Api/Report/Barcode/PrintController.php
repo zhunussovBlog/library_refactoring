@@ -60,6 +60,7 @@ class PrintController extends Controller
             }
 
             $pdf->addPage();
+            $pdf->SetFont('freeserif','',10);
             $pdf->SetFontSize(8);
             $pdf->Cell(0, 0, $author);
             $pdf->Ln();
@@ -81,6 +82,6 @@ class PrintController extends Controller
         ]);
 
         $procedure->call();
-        return (int) $procedure->getOutputParams()['pRes'] === 1;
+        return ((int) $procedure->getOutputParams()['pRes']['value']) === 1;
     }
 }
