@@ -1,7 +1,7 @@
 <template>
-	<div class="position-relative flex-fill"  @submit.prevent="submitTotal" tabindex="1" @focusout="shown=false">
+	<div class="position-relative h-100"  @submit.prevent="submitTotal" tabindex="1" @focusout="shown=false">
 		<form class="position-relative h-100">
-			<input type="text" class="padding-right" :class="classes" v-model="text" @input="onInput()" :placeholder="placeholder"  />
+			<input type="text" class="pl-3" :class="classes" v-model="text" @input="onInput()" :placeholder="placeholder"  />
 			<span v-if="selectable.available" class="d-flex align-items-center icon cursor-pointer selectable">
 				<span @click="showList()">
 					<CaretUp class="down" />
@@ -17,7 +17,7 @@
 			</span>
 		</form>
 		<div class="results" :class="{shown:shown}">
-			<div class="result text-ellipsis" :class="{no_border_bottom:index==results.length-1}" v-for="(result,index) in results" @click="select(result)">{{$t(result[head])}}</div>
+			<div class="result text-ellipsis" :class="{no_border_bottom:index==results.length-1}" v-for="(result,index) in results" :key="index" @click="select(result)">{{$t(result[head])}}</div>
 		</div>
 	</div>
 </template>
@@ -154,6 +154,9 @@ export default{
 }
 </script>
 <style scoped>
+input{
+	padding:unset;
+}
 .icon{
 	font-size: 1.2em;
 	position: absolute;
@@ -166,7 +169,7 @@ export default{
 	right: .86em;
 }
 .padding-right{
-	padding-right: 2.3em;
+	padding-right: 2.3em !important;
 }
 .down{
 	transform: rotate(180deg);

@@ -13,7 +13,7 @@
 									</select>
 									<label class="placeholder">{{$t('type')}}</label>
 								</div>
-								<input-div class="flex-1" classes="border-grey no_border_left h-100" :search='true' :onSubmit="loadResults" v-model="input.value" :placeholder="$t('search_by',{type:$t(input.key+'_by')})"/>
+								<input-div class="flex-fill" classes="border-grey no_border_left h-100" :search='true' :onSubmit="loadResults" v-model="input.value" :placeholder="$t('search_by',{type:$t(input.key+'_by')})"/>
 							</div>
 							<div class="ml-1 d-flex">
 								<div class="select double-width mr-2" v-if="items.search.search_options.length>1 && index<items.search.search_options.length-1">

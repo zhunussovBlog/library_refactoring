@@ -5,7 +5,7 @@
 		<!-- everything else -->
 		<div class="mt-2 mx-2 bg-white rounded-lg flex-fill p-3">
 			<div class="d-flex align-items-center justify-content-between">
-				<div class="w-50 ">
+				<div class="w-50 align-self-stretch">
 					<input-div 
 					:placeholder="$t('search_by',{type:$t('batches_by')})"
 					:search='true'

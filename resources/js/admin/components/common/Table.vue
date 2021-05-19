@@ -113,10 +113,10 @@
 		<div class="bg-lightgrey selectable d-flex align-items-center justify-content-between" v-if="selectable.available">
 			<div class="d-flex align-items-center" :class="{'cursor-pointer':selectable.showSelected}" >
 				<Checkbox v-model="selectedAll" @change="selectAll()"/> &nbsp; &nbsp;
-				<span @click="selectable.showSelected ? selectable.showSelected(selected,(data)=>{selected=data;}) : ()=>{}">{{$t('select_all',{num:this.selected.length})}}</span>
+				<span @click="selectable.showSelected ? selectable.showSelected(selected) : ()=>{}">{{$t('select_all',{num:this.selected.length})}}</span>
 			</div>
 			<div class="pad">
-				<button type="button" class="outline-green" @click="selectable.func(selected,(data)=>{selected=data;})" v-if="selectable.func!=null">
+				<button type="button" class="outline-green" @click="selectable.func(selected)" v-if="selectable.func!=null">
 					{{$t(selectable.button_title)}}
 				</button>
 			</div>
@@ -271,11 +271,8 @@ export default{
 		}
 	},
 	watch:{
-		data(newVal,oldVal){
+		data(newVal){
 			this.array=newVal;
-		},
-		selected(){
-			this.$forceUpdate();
 		}
 	},
 	methods:{
@@ -321,7 +318,14 @@ export default{
 					this.statusReverse=false;
 				}
 			}
-			this.array.data.sort(this.sortBy(field,reverse));
+			let array=[];
+			if(this.pagination){
+				array=this.array.data;
+			}
+			else{
+				array=this.array;
+			}
+			array.sort(this.sortBy(field,reverse));
 			if(index!=null){
 				this.heads[index].reverse=!this.heads[index].reverse
 			}
@@ -401,7 +405,6 @@ export default{
 		// selecting
 		addSelection(info){
 			let selected = this.selected;
-			console.log(selected.find(elem=>JSON.stringify(elem)==JSON.stringify(info))!=null);
 			let found=false;
 			for(let i = 0;i<selected.length;i++){
 				if(JSON.stringify(selected[i])==JSON.stringify(info)){
@@ -423,7 +426,13 @@ export default{
 		},
 		selectAll(){
 			let array = this.pagination ? this.array.data : this.data;
-			this.selected=[];
+			let empty=(array)=>{
+				while(array.length>0){
+					array.pop();
+				}
+			}
+
+			empty(this.selected);
 
 			if(this.selectedAll){
 				try{
@@ -439,7 +448,7 @@ export default{
 						}
 					})
 				}catch(e){
-					this.selected=[];
+					empty(this.selected);
 				}
 			}
 		}

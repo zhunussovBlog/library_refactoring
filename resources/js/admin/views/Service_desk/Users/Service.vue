@@ -107,7 +107,7 @@ export default{
 					name:'barcode',link:'barcode'
 				},
 				{
-					name:'duration',link:'duration'
+					name:'duration_in_days',link:'duration'
 				},
 				{
 					name:'title',link:'title'
@@ -123,6 +123,9 @@ export default{
 			}
 			else if(this.state=='return'){
 				heads=[
+				{
+					name:'issue_date',link:'issue_date',is_date:true
+				},
 				{
 					name:'due_date',link:'due_date',is_date:true
 				},
@@ -143,6 +146,9 @@ export default{
 			else{
 				heads=[
 				{
+					name:'issue_date',link:'issue_date',is_date:true
+				},
+				{
 					name:'due_date',link:'due_date',is_date:true
 				},
 				{
@@ -156,6 +162,9 @@ export default{
 				},
 				{
 					name:'title',link:'title'
+				},
+				{
+					name:'delivery_date',link:'delivery_date',is_date:true
 				},
 				{
 					name:'status',link:'status',
@@ -327,7 +336,7 @@ export default{
 					inv_id:book.inv_id,
 					user_cid:this.user.info.user_cid
 				};
-				await this.readFromRfid('SetItemsCheckInOut','status=1');
+				// await this.readFromRfid('SetItemsCheckInOut','status=1');
 				await this.$http.post('service/media/back',info).then(response=>{
 					this.message_success('check_out',response);
 				});

@@ -141,10 +141,14 @@ export default{
 			});
 		},
 		loadResults(){
+			let sort_by={
+				key:'barcode',
+				mode:'asc'
+			}
 			this.$store.dispatch('setStore',{label:this.commit,data:{page:0}});
-			this.getResults(this.link,this.commit);
+			this.getResults(this.link,this.commit,null,null,sort_by);
 		},
-		showSelected(barcodes,changeSelected,func){
+		showSelected(barcodes,func){
 			let props={
 				heads:this.heads,
 				data:barcodes,
@@ -155,23 +159,23 @@ export default{
 				clickables:true,
 				sortable:false,
 				custom_func:this.custom_func,
-				changeSelected:changeSelected
 			}
 			if(func!=undefined){
 				props.func=func;
 			}
 			this.showModal(SelectedItems,props);
 		},
-		printIt(barcodes,changeSelected){
+		printIt(barcodes){
 			let print=(barcodes)=>{
 				let inventories=barcodes.map(barcode=>barcode.id);
 				this.$http.post(this.link+'/print',{inventories:inventories},{responseType:'blob'}).then(response=>{
 					this.download_file(response,'barcode','pdf');
 					this.last(this.link,this.commit);
+					this.$eventHub.$emit('selectRefresh');
 					this.$emit('close');
 				})
 			}
-			this.showSelected(barcodes,changeSelected,print);
+			this.showSelected(barcodes,print);
 		}
 	}
 }
