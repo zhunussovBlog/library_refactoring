@@ -5,7 +5,7 @@
 			<div class="text-grey cursor-pointer font-size-14" @click="reset(commit)">{{$t('reset')}}</div>
 		</div>
 		<div class="text-grey font-size-12 font-weight-bold mt-3">{{$t("status")}}:</div>
-		<div v-for="(status,index) in batches.statuses" class="d-flex justify-content-between align-items-center mt-2">
+		<div v-for="(status,index) in batches.statuses" :key="index" class="d-flex justify-content-between align-items-center mt-2">
 			<div class="font-size-14">{{status.status_title}}</div>
 			<div><Checkbox :checked="batches.search.add_options.status_key.includes(status.status)" @change="addStatus(status)"/></div>
 		</div>
@@ -16,7 +16,8 @@
 			v-model="batches.search.add_options.sup_id" 
 			head="name" 
 			body="id" 
-			class="mt-2" 
+			class="mt-2"
+			classes="py-2 px-3"
 		/>
 		<div class="text-grey font-size-12 font-weight-bold mt-3">{{$t('invoice_date')}}:</div>
 		<div class="mt-2 position-relative">

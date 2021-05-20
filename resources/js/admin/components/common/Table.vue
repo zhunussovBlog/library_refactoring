@@ -74,7 +74,7 @@
 						<!-- default data elements
 						for in heads  -->
 						<td v-for="(name,i) in heads" :key="i"
-							:class="[{'cursor-pointer':service.available || (edit_duration && name.link=='duration')},name.class_func? name.class_func(info,name):{}]" 
+							:class="[{'cursor-pointer':service.available || (edit_duration && name.link=='duration')},{'text-no-wrap':name.is_date},name.class_func? name.class_func(info,name):{}]" 
 							@click="tdOnClick(info,name)"
 						>
 							{{name.is_date && info[name.link]!=null ? new Date(info[name.link]).toDateInputValue() : info[name.link]}}
