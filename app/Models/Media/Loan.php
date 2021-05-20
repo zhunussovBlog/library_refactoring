@@ -111,7 +111,7 @@ class Loan extends Model
                                  end) as status"))
             ->leftJoin('lib_inventory as i', 'l.inv_id', '=', 'i.inv_id')
             ->where('l.user_cid', '=', $userCID)
-            ->orderBy('due_date')
-            ->orderBy('status');
+            ->orderBy(DB::raw("decode(status, 'overdue', 1, 'issued', 2, 'returned', 3)"))
+            ->orderBy('due_date');
     }
 }
