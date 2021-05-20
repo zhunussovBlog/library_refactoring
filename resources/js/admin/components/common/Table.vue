@@ -74,11 +74,18 @@
 						<!-- default data elements
 						for in heads  -->
 						<td v-for="(name,i) in heads" :key="i"
-							:class="[{'cursor-pointer':service.available || (edit_duration && name.link=='duration')},{'text-no-wrap':name.is_date},name.class_func? name.class_func(info,name):{}]" 
+							:class="[
+							{'cursor-pointer':service.available},
+							{'text-no-wrap':name.is_date},
+							name.class_func ? name.class_func(info,name):{}
+							]" 
 							@click="tdOnClick(info,name)"
 						>
-							{{name.is_date && info[name.link]!=null ? new Date(info[name.link]).toDateInputValue() : info[name.link]}}
-							<edit class="d-inline-block float-right" v-if="edit_duration && name.link=='duration'"/>
+							{{
+								name.display_func ? name.display_func(info,name) :
+								name.is_date && info[name.link]!=null ? new Date(info[name.link]).toDateInputValue() : info[name.link]
+							}}
+							<edit class="d-inline-block float-right" v-if="typeof name.edit_icon=='function' ? name.edit_icon(info,name) : name.edit_icon"/>
 						</td>
 						<!-- if there are clickable elements in table -> Show more, Edit, ReCreate, Delete or Service -->
 						<td class="text-center" v-if="clickables">
@@ -154,7 +161,6 @@ import DeleteModal from'./DeleteModal'
 import pagination from './Pagination'
 import Dropdown from './Dropdown'
 import Checkbox from './Checkbox'
-import EditDuration from './EditDuration'
 
 export default{
 	props:{
@@ -228,12 +234,6 @@ export default{
 			default(){
 				return true
 			}
-		},
-		edit_duration:{
-			type:Boolean,
-			default(){
-				return false
-			}
 		}
 	},
 	mixins:[showModal,last],
@@ -246,8 +246,7 @@ export default{
 		Refresh,
 		Dropdown,
 		Checkbox,
-		pagination,
-		EditDuration
+		pagination
 	},
 	computed:{
 		// for sort by
@@ -280,8 +279,8 @@ export default{
 			if(this.service.available){
 				this.service.showMore(info)
 			}
-			if(this.edit_duration && name.link=='duration'){
-				this.showModal(EditDuration,{info});
+			if(name.custom_func){
+				name.custom_func(info,name);
 			}
 		},
 		showStatus(id){

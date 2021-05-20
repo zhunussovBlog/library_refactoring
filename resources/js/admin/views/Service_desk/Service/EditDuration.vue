@@ -20,7 +20,7 @@
     </div>
 </template>
 <script>
-import {message_success,message_error} from '../../mixins/messages'
+import {message_success,message_error} from '../../../mixins/messages'
 export default {
     mixins:[
         message_success,

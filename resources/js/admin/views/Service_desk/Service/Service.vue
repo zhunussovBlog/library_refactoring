@@ -49,7 +49,6 @@
 			:sortable="false"
 			:pagination="false"
 			:custom_func="custom_func"
-			:edit_duration="true"
 			/>
 		</div>
 	</div>
@@ -60,14 +59,17 @@ import Back from '../../../components/common/Back'
 import TableDiv from '../../../components/common/Table'
 import Tabs from '../../../components/common/Tabs'
 import InputDiv from '../../../components/common/Input'
+import SelectedItems from '../../../components/common/SelectedItems'
 
+import EditDuration from './EditDuration'
 // mixins
 import readFromRfid from '../../../mixins/readFromRfid'
 import {message_success,message_error} from '../../../mixins/messages'
 import {goTo} from '../../../mixins/goTo'
+import showModal from '../../../mixins/showModal'
 export default{
-	components:{Back,TableDiv,Tabs,InputDiv},
-	mixins:[readFromRfid,message_success,message_error,goTo],
+	components:{Back,TableDiv,Tabs,InputDiv,SelectedItems},
+	mixins:[readFromRfid,message_success,message_error,goTo,showModal],
 	props:{
 		info:{
 			type:Object,
@@ -82,7 +84,8 @@ export default{
 				available:false,
 				button_title:'check_in',
 				func:this.checkIn,
-				if:this.selectable_if
+				if:this.selectable_if,
+				showSelected:this.showSelected
 			};
 			if(this.state=='issuance'){
 				selectable.available=true;
@@ -107,7 +110,12 @@ export default{
 					name:'barcode',link:'barcode'
 				},
 				{
-					name:'duration_in_days',link:'duration'
+					name:'duration_in_days',link:'duration',
+					class_func:this.duration_class_func,
+					edit_icon:this.duration_edit_icon_func,
+					display_func:this.duration_display_func,
+					custom_func:this.duration_edit_func
+					
 				},
 				{
 					name:'title',link:'title'
@@ -117,7 +125,7 @@ export default{
 				},
 				{
 					name:'status',link:'status',
-					class_func:this.status_class_func
+					class_func:this.issue_status_class_func
 				}
 				]
 			}
@@ -140,6 +148,10 @@ export default{
 				},
 				{
 					name:'title',link:'title'
+				},
+				{
+					name:'status',link:'status',
+					class_func:this.status_class_func
 				}
 				]
 			}
@@ -217,18 +229,66 @@ export default{
 		}
 	},
 	methods:{
-		status_class_func(info){
-			let res={};
-			if(info.status=='issued'){
-				res['text-orange']=true;
+		showSelected(books,func){
+			let props={
+				heads:this.heads,
+				data:books,
+				selectable:this.selectable,
+				commit:this.commit,
+				link:this.link,
+				pagination:false,
+				sortable:false
 			}
-			else if (info.status=='returned'){
+			if(func!=undefined){
+				props.func=func;
+			}
+			this.showModal(SelectedItems,props);
+		},
+		issue_status_class_func(info){
+			let res={};
+			if (info.status=='not borrowed'){
 				res['text-green']=true;
 			}
 			else{
 				res['text-red']=true;
 			}
 			return res;
+		},
+		status_class_func(info){
+			let res={};
+			if (info.status=='issued'){
+				res['text-orange']=true;
+			}
+			else if(info.status=='returned'){
+				res['text-green']=true;
+			}
+			else{
+				res['text-red']=true;
+			}
+			return res;
+		},
+		duration_class_func(info){
+			return{
+				'cursor-pointer':info.status!='borrowed'
+			}
+		},
+		duration_edit_icon_func(info){
+			return info.status!="borrowed";
+		},
+		duration_display_func(info){
+			let before = new Date();
+			let answer = ''
+			let duration=copy(info.duration);
+			before.setDate(before.getDate()+parseInt(duration));
+			
+			answer+=before.toDateInputValue() + ' ( '+duration+' ) ';
+			
+			return answer;
+		},
+		duration_edit_func(info){
+			if(info.status!='borrowed'){
+				this.showModal(EditDuration,{info});
+			}
 		},
 		capitalize(string){
 			return capitalize(string);
@@ -299,34 +359,37 @@ export default{
 		addToBooks(books){
 			this.books=this.books.concat(books);
 		},
-		async checkIn(selected){
-			this.$store.commit('setFullPageLoading',true);
-			try{
-				let info ={
-					loan_id:0,
-					inv_id:selected[0].inv_id,
-					user_cid:this.user.info.user_cid,
-				};
-				if(selected[0].due_date){
-					info.due_date=selected[0].due_date;
+		checkIn(selected){
+			let check_in=async (selected)=>{
+				this.$store.commit('setFullPageLoading',true);
+				try{
+					let info ={
+						loan_id:0,
+						inv_id:selected[0].inv_id,
+						user_cid:this.user.info.user_cid,
+					};
+					if(selected[0].due_date){
+						info.due_date=selected[0].due_date;
+					}
+					else if ( selected[0].duration ){
+						info.duration=selected[0].duration;
+					}
+					await this.readFromRfid('SetItemsCheckInOut','status=0');
+					await this.$http.post('service/media/give',info).then(response=>{
+						this.message_success('check_in ',response);
+					});
+					await this.getInfo();
+					await this.searchAllBarcodes();
+					this.$eventHub.$emit('selectRefresh');
+				}catch(e){
+					if(e!="rfid problem"){
+						this.message_error('check_in',e);
+					}
+				}finally{
+					this.$store.commit('setFullPageLoading',false);
 				}
-				else if ( selected[0].duration ){
-					info.duration=selected[0].duration;
-				}
-				await this.readFromRfid('SetItemsCheckInOut','status=0');
-				await this.$http.post('service/media/give',info).then(response=>{
-					this.message_success('check_in ',response);
-				});
-				await this.getInfo();
-				await this.searchAllBarcodes();
-				this.$eventHub.$emit('selectRefresh');
-			}catch(e){
-				if(e!="rfid problem"){
-					this.message_error('check_in',e);
-				}
-			}finally{
-				this.$store.commit('setFullPageLoading',false);
 			}
+			this.showSelected(selected,check_in);
 		},
 		async checkOut(book){
 			this.$store.commit('setFullPageLoading',true);

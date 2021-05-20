@@ -67,7 +67,9 @@ export default{
 			{name:'borrow_date',link:'borrow_date',is_date:true},
 			{name:'due_date',link:'due_date',is_date:true},
 			{name:'delivery_date',link:'delivery_date',is_date:true},
-			{name:'status',link:'status'},
+			{name:'status',link:'status',
+			class_func:this.status_class_func
+			},
 			{name:'last_user_borrowed',link:'username'},
 			],
 			link:'/book-history',
@@ -83,7 +85,20 @@ export default{
 		loadResults(){
 			this.$store.dispatch('setStore',{label:this.commit,data:{page:0}});
 			this.getResults(this.link,this.commit);
-		}
+		},
+		status_class_func(info){
+			let res={};
+			if (info.status=='issued'){
+				res['text-orange']=true;
+			}
+			else if(info.status=='returned'){
+				res['text-green']=true;
+			}
+			else{
+				res['text-red']=true;
+			}
+			return res;
+		},
 	},
 	created(){
 		this.getTypes();
