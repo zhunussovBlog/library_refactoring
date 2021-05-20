@@ -336,7 +336,7 @@ export default{
 					inv_id:book.inv_id,
 					user_cid:this.user.info.user_cid
 				};
-				// await this.readFromRfid('SetItemsCheckInOut','status=1');
+				await this.readFromRfid('SetItemsCheckInOut','status=1');
 				await this.$http.post('service/media/back',info).then(response=>{
 					this.message_success('check_out',response);
 				});

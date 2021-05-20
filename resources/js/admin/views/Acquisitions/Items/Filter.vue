@@ -9,11 +9,19 @@
 			<div class="mt-2 select">
 				<select v-model="search.add_options.user_cid">
 					<option :value="null">None</option>
-					<option v-for="(user,index) in support_data.users" :value="user.user_cid">{{user.username}}</option>
+					<option v-for="(user,index) in support_data.users" :key="index" :value="user.user_cid">{{user.username}}</option>
 				</select>
 			</div>
 			<div class="text-grey font-size-12 font-weight-bold mt-3">{{$tc('suppliers',1)}}:</div>
-			<input-div v-model="search.add_options.supplier_id" :selectable="{available:true,data:suppliers}" :head="'name'" :body="'id'" :autocomplete="{available:true,data:suppliers}" class="mt-2" />
+			<input-div 
+				v-model="search.add_options.supplier_id"
+				:selectable="{available:true,data:suppliers}"
+				:head="'name'"
+				:body="'id'"
+				:autocomplete="{available:true,data:suppliers}"
+				class="mt-2"
+				classes="py-2 px-3"
+			/>
 			<div class="text-grey font-size-12 font-weight-bold mt-3">{{$t('type_of_supply')}}:</div>
 			<div class="mt-2 select">
 				<select v-model="search.add_options.sup_type">
@@ -26,18 +34,26 @@
 			<div class="mt-2 select">
 				<select v-model="search.add_options.item_type">
 					<option :value="null">None</option>
-					<option v-for="(type,index) in support_data.types" :value="type.item_type_key">{{type.item_type}}</option>
+					<option v-for="(type,index) in support_data.types" :key="index" :value="type.item_type_key">{{type.item_type}}</option>
 				</select>
 			</div>
 			<div class="text-grey font-size-12 font-weight-bold mt-3">{{$t('location')}}:</div>
 			<div class="mt-2 select">
 				<select v-model="search.add_options.location">
 					<option :value="null">None</option>
-					<option v-for="(type,index) in support_data.locations" :value="type.location_key">{{type.location}}</option>
+					<option v-for="(type,index) in support_data.locations" :key="index" :value="type.location_key">{{type.location}}</option>
 				</select>
 			</div>
 			<div class="text-grey font-size-12 font-weight-bold mt-3">{{$tc('publishers',1)}}:</div>
-			<input-div v-model="search.add_options.publisher_id" :selectable="{available:true,data:publishers}" :head="'name'" :body="'id'" :autocomplete="{available:true,data:publishers}" class="mt-2" />
+			<input-div
+				v-model="search.add_options.publisher_id"
+				:selectable="{available:true,data:publishers}"
+				:head="'name'"
+				:body="'id'"
+				:autocomplete="{available:true,data:publishers}"
+				class="mt-2"
+				classes="py-2 px-3"
+			/>
 
 			<div class="text-grey font-size-12 font-weight-bold mt-3">{{$t('pub_year')}}:</div>
 			<div class="mt-2">

@@ -3824,6 +3824,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 // components
 
  // mixins
@@ -4237,6 +4238,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _components_common_Input__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../components/common/Input */ "./resources/js/admin/components/common/Input.vue");
 /* harmony import */ var _mixins_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../mixins/common */ "./resources/js/admin/mixins/common.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -6653,42 +6670,45 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
                   loan_id: book.loan_id,
                   inv_id: book.inv_id,
                   user_cid: _this6.user.info.user_cid
-                }; // await this.readFromRfid('SetItemsCheckInOut','status=1');
-
+                };
                 _context3.next = 5;
+                return _this6.readFromRfid('SetItemsCheckInOut', 'status=1');
+
+              case 5:
+                _context3.next = 7;
                 return _this6.$http.post('service/media/back', info).then(function (response) {
                   _this6.message_success('check_out', response);
                 });
 
-              case 5:
-                _context3.next = 7;
+              case 7:
+                _context3.next = 9;
                 return _this6.getInfo();
 
-              case 7:
-                _context3.next = 12;
+              case 9:
+                _context3.next = 14;
                 break;
 
-              case 9:
-                _context3.prev = 9;
+              case 11:
+                _context3.prev = 11;
                 _context3.t0 = _context3["catch"](1);
 
                 if (_context3.t0.message != "rfid problem") {
                   _this6.message_error('check_out', _context3.t0);
                 }
 
-              case 12:
-                _context3.prev = 12;
+              case 14:
+                _context3.prev = 14;
 
                 _this6.$store.commit('setFullPageLoading', false);
 
-                return _context3.finish(12);
+                return _context3.finish(14);
 
-              case 15:
+              case 17:
               case "end":
                 return _context3.stop();
             }
           }
-        }, _callee3, null, [[1, 9, 12, 15]]);
+        }, _callee3, null, [[1, 11, 14, 17]]);
       }))();
     },
     getRfidInfo: function getRfidInfo() {
@@ -66197,6 +66217,7 @@ var render = function() {
                               _vm.service.available ||
                               (_vm.edit_duration && name.link == "duration")
                           },
+                          { "text-no-wrap": name.is_date },
                           name.class_func ? name.class_func(info, name) : {}
                         ],
                         on: {
@@ -67209,6 +67230,7 @@ var render = function() {
         return _c(
           "div",
           {
+            key: index,
             staticClass:
               "d-flex justify-content-between align-items-center mt-2"
           },
@@ -67251,7 +67273,8 @@ var render = function() {
           autocomplete: { available: true, data: _vm.suppliers },
           selectable: { available: true, data: _vm.suppliers },
           head: "name",
-          body: "id"
+          body: "id",
+          classes: "py-2 px-3"
         },
         model: {
           value: _vm.batches.search.add_options.sup_id,
@@ -68386,9 +68409,11 @@ var render = function() {
               _c("option", { domProps: { value: null } }, [_vm._v("None")]),
               _vm._v(" "),
               _vm._l(_vm.support_data.users, function(user, index) {
-                return _c("option", { domProps: { value: user.user_cid } }, [
-                  _vm._v(_vm._s(user.username))
-                ])
+                return _c(
+                  "option",
+                  { key: index, domProps: { value: user.user_cid } },
+                  [_vm._v(_vm._s(user.username))]
+                )
               })
             ],
             2
@@ -68407,7 +68432,8 @@ var render = function() {
             selectable: { available: true, data: _vm.suppliers },
             head: "name",
             body: "id",
-            autocomplete: { available: true, data: _vm.suppliers }
+            autocomplete: { available: true, data: _vm.suppliers },
+            classes: "py-2 px-3"
           },
           model: {
             value: _vm.search.add_options.supplier_id,
@@ -68506,7 +68532,7 @@ var render = function() {
               _vm._l(_vm.support_data.types, function(type, index) {
                 return _c(
                   "option",
-                  { domProps: { value: type.item_type_key } },
+                  { key: index, domProps: { value: type.item_type_key } },
                   [_vm._v(_vm._s(type.item_type))]
                 )
               })
@@ -68557,7 +68583,7 @@ var render = function() {
               _vm._l(_vm.support_data.locations, function(type, index) {
                 return _c(
                   "option",
-                  { domProps: { value: type.location_key } },
+                  { key: index, domProps: { value: type.location_key } },
                   [_vm._v(_vm._s(type.location))]
                 )
               })
@@ -68578,7 +68604,8 @@ var render = function() {
             selectable: { available: true, data: _vm.publishers },
             head: "name",
             body: "id",
-            autocomplete: { available: true, data: _vm.publishers }
+            autocomplete: { available: true, data: _vm.publishers },
+            classes: "py-2 px-3"
           },
           model: {
             value: _vm.search.add_options.publisher_id,
