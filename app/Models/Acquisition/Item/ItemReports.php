@@ -59,9 +59,12 @@ trait ItemReports
                             then (select listagg(ba.name||ba.surname, ', ') within group(order by ba.name)
                                 from lib_book_authors ba where ba.disc_id = i.disc_id) end) as author"),
             'l.borrow_date', 'l.due_date', 'l.delivery_date',
-            DB::raw("(case when i.status = 0 and current_date <= l.due_date then 0
-                                 when i.status = 0 and current_date > l.due_date then -1
-                                 when delivery_date is not null and l.delivery_date <= l.due_date and i.status = 1 then 1 end) as status"),
+            DB::raw("(case when l.delivery_date is not null and i.status = 1 then 'returned'
+                            else (case
+                                when current_date <= l.due_date then 'issued'
+                                when current_date > l.due_date then 'overdue'
+                                end)
+                                 end) as status"),
             DB::raw("(select (case when u.stud_id is not null
                                         then (select t.name||' '||t.surname from dbmaster.students t where u.stud_id = t.stud_id)
                                         when u.emp_id is not null
