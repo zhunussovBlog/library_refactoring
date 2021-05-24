@@ -70,7 +70,15 @@ export default{
 				noChildren:{
 					name:"users"
 				}
-			}]
+			},
+			{
+				name:"cataloging",
+				shown:this.$route.matched[0] ? this.$route.matched[0].name=="cataloging_search" : false,
+				noChildren:{
+					name:"cataloging_search"
+				}
+			}
+			]
 		}
 	},
 	methods:{

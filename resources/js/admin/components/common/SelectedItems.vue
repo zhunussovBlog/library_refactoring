@@ -34,10 +34,16 @@ export default {
             selectable_copy:{},
         }
     },
+    methods:{
+        copy(selected){
+            let res={res:selected};
+			this.$store.dispatch('setStore',{label:this.commit,data:{ data:res , pagination:false }});
+        }
+    },
     created(){
         this.selectable_copy=copy(this.selectable);
-
         this.selectable_copy.selected=this.data;
+        this.selectable_copy.copy=this.copy;
         this.selectable_copy.func=this.func
     }
 };

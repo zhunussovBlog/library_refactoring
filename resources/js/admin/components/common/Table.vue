@@ -122,7 +122,11 @@
 				<Checkbox v-model="selectedAll" @change="selectAll()"/> &nbsp; &nbsp;
 				<span @click="selectable.showSelected ? selectable.showSelected(selected) : ()=>{}">{{$t('select_all',{num:this.selected.length})}}</span>
 			</div>
-			<div class="pad">
+			<div class="d-flex align-items-center pad">
+				<div class="d-flex align-items-center" v-if="selectable.selected">
+					<span class="text-no-wrap text-blue cursor-pointer" @click="selectable.copy(selected)" >{{$t('show_in_table')}}</span>
+					<span class="text-no-wrap text-blue cursor-pointer mx-3" @click="$eventHub.$emit('selectRefresh')">{{$t('clear_selected')}}</span>
+				</div>
 				<button type="button" class="outline-green" @click="selectable.func(selected)" v-if="selectable.func!=null">
 					{{$t(selectable.button_title)}}
 				</button>

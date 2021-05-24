@@ -103,7 +103,7 @@ export default{
 				title:'initialize',
 				func:this.initBarcode,
 				class:['outline-green']
-			},
+			}
 		}
 	},
 	methods:{

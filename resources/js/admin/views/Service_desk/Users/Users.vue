@@ -1,5 +1,5 @@
 <template>
-	<form class="d-flex" @submit.prevent="loadResults()">
+	<div class="d-flex">
 		<div class="bg-white mt-2 w-100 py-3 px-4">
 			<form class="d-flex align-items-center sections" @submit.prevent="loadResults()">
 				<!-- fu... luchshe sjuda ne smotret' -->
@@ -36,7 +36,7 @@
 				</div>
 			</div>
 		</div>
-	</form>
+	</div>
 </template>
 <script type="text/javascript">
 // components

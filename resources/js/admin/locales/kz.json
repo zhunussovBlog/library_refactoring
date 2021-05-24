@@ -203,5 +203,8 @@
     "init_status": "Инициализацияланған",
     "print_status": "Басылған",
     "date": "Дата",
-    "days": "Күндер"
+    "days": "Күндер",
+
+    "cataloging": "Каталогтау",
+    "search_cataloging": "ISBN || Атауы || Автор бойынша іздеу"
 }

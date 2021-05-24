@@ -339,8 +339,11 @@ export default{
 			this.$http.get('service/media/search/by-inventory?barcodes[]='+this.barcode).then(response=>{
 				this.addDurationToBooks(response.data.res);
 				this.addToBooks(response.data.res);
+			}).catch(e=>{
+				this.message_error('search',e);
+			}).then(()=>{
 				this.$store.commit('setFullPageLoading',false);
-			})
+			});
 		},
 		async searchAllBarcodes(){
 			this.$store.commit('setFullPageLoading',true);

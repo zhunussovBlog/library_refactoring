@@ -267,6 +267,7 @@ button {
     color: white;
     border-color: transparent;
     transition: .3s;
+    font-weight: 500;
 }
 
 button:hover {
@@ -291,6 +292,7 @@ button:hover {
     padding: 0 0.3125em;
     font-size: 0.8em;
     color: #9C9FA7;
+    white-space: nowrap;
 }
 
 .select>.placeholder,

@@ -5,17 +5,21 @@ import Items from '../views/Acquisitions/Items/Items'
 import Print from '../views/Acquisitions/Items/Print'
 import Publisher from '../views/Acquisitions/Publisher/Publisher'
 
-// service_desk
-import Users from '../views/Service_desk/Users/Users'
-import Info from '../views/Service_desk/Users/Info'
-import Service from '../views/Service_desk/Service/Service'
-
 // reports
 // no lazy load -> to use lazy load just comment out these two routes in here and in routes
 // lazy load future -- >  is good when u don't want to load a page in the beginning but only want to load when u need it
 import Attendance from '../views/Reports/Attendance/Attendance'
 import Books from '../views/Reports/BooksHistory/Books'
 import MRBooks from '../views/Reports/MostReadBooks/Books'
+
+// service_desk
+import Users from '../views/Service_desk/Users/Users'
+import Info from '../views/Service_desk/Users/Info'
+import Service from '../views/Service_desk/Service/Service'
+
+// catalogin
+import CatalogingSearch from '../views/Cataloging/Search/Search'
+import CataloginEdit from '../views/Cataloging/Edit/Edit'
 
 // router
 import Router from './Router'
@@ -103,6 +107,26 @@ export default [{
                 name: 'service',
                 props: true,
                 component: Service
+            }
+        ]
+    },
+    {
+        path: '/cataloging',
+        name: 'cataloging',
+        redirect: 'cataloging/search',
+        meta: {
+            noChildren: true
+        },
+        component: Router,
+        children: [{
+                path: 'search',
+                name: 'cataloging_search',
+                component: CatalogingSearch
+            },
+            {
+                path: 'edit',
+                name: 'cataloging_edit',
+                component: CataloginEdit
             }
         ]
     },
