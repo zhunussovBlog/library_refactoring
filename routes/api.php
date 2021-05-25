@@ -168,6 +168,14 @@ Route::middleware(['auth:api-student,api-employee'])->group(function () {
             Route::post('/media/back', 'Api\Service\ActionsController@backMaterial');
             Route::post('/media/give', 'Api\Service\ActionsController@giveMaterial');
         });
+
+        Route::group(['prefix' => 'cataloging'], function () {
+            Route::get('material/{id}', 'Api\Cataloging\ShowController@getMaterialById');
+            Route::get('material/edit-data', 'Api\Cataloging\ShowController@getEditData');
+            Route::get('material/search', 'Api\Cataloging\SearchController');
+
+            Route::post('material/edit', 'Api\Cataloging\ActionsController');
+        });
     });
 });
 

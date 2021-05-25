@@ -47,4 +47,18 @@ class Book extends Model implements DefaultQueryInterface
             DB::raw("(select r.status from lib_reserve_list r where b.book_id = r.book_id) as status"),
             DB::raw("(select count(i.inv_id) from lib_inventory i where i.book_id = b.book_id and i.status = 1) as availability"));
     }
+
+    public static function withAdditionalAttributes(Builder $builder): Builder
+    {
+        return $builder->addSelect(
+            'b.title_related_info',
+            'b.page_num as page_number',
+            'b.pub_city as city',
+            'b.parallel_title',
+            DB::raw("(select listagg(a.name||a.surname, ', ') within group(order by a.name)
+                            from lib_book_authors a where a.book_id = b.book_id and a.is_main = 1 group by a.book_id) as main_author"),
+            DB::raw("(select listagg(a.name||a.surname, ', ') within group(order by a.name)
+                            from lib_book_authors a where a.book_id = b.book_id and a.is_main = 0 group by a.book_id) as other_author")
+        );
+    }
 }

@@ -53,4 +53,18 @@ class Journal extends Model implements DefaultQueryInterface
             ->leftJoin('lib_journal_issues as ji', 'j.journal_id', '=', 'ji.journal_id')
             ->leftJoin('lib_publishers as p', 'p.publisher_id', '=', 'j.publisher_id');
     }
+
+    public static function withAdditionalAttributes(Builder $builder): Builder
+    {
+        return $builder->addSelect(
+            'j.title_related_info',
+            'j.page_num as page_number',
+            'j.pub_city as city',
+            'j.parallel_title',
+            DB::raw("(select listagg(a.name||a.surname, ', ') within group(order by a.name)
+                            from lib_book_authors a where a.j_issue_id = ji.j_issue_id and a.is_main = 1 group by a.j_issue_id) as main_author"),
+            DB::raw("(select listagg(a.name||a.surname, ', ') within group(order by a.name)
+                            from lib_book_authors a where a.j_issue_id = ji.j_issue_id and a.is_main = 0 group by a.j_issue_id) as other_author")
+        );
+    }
 }

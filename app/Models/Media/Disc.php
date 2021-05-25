@@ -41,4 +41,18 @@ class Disc extends Model implements DefaultQueryInterface
             DB::raw("(select r.status from lib_reserve_list r where d.disc_id = r.disc_id) as status"),
             DB::raw("(select count(i.inv_id) from lib_inventory i where i.disc_id = d.disc_id and i.status = 1) as availability"));
     }
+
+    public static function withAdditionalAttributes(Builder $builder): Builder
+    {
+        return $builder->addSelect(
+            DB::raw("null as title_related_info"),
+            DB::raw("null as page_number"),
+            'd.pub_city as city',
+            'd.parallel_title',
+            DB::raw("(select listagg(a.name||a.surname, ', ') within group(order by a.name)
+                            from lib_book_authors a where a.disc_id = d.disc_id and a.is_main = 1 group by a.disc_id) as main_author"),
+            DB::raw("(select listagg(a.name||a.surname, ', ') within group(order by a.name)
+                            from lib_book_authors a where a.disc_id = d.disc_id and a.is_main = 0 group by a.disc_id) as other_author")
+        );
+    }
 }
