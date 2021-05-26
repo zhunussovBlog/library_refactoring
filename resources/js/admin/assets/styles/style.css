@@ -483,6 +483,10 @@ input[type=date]~.placeholder {
     background-color: #FF9D29;
 }
 
+.bg-green {
+    background-color: #00BB78;
+}
+
 .transition {
     transition: .5s;
 }

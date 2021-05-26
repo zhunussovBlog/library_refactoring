@@ -19,7 +19,7 @@ import Service from '../views/Service_desk/Service/Service'
 
 // catalogin
 import CatalogingSearch from '../views/Cataloging/Search/Search'
-import CataloginEdit from '../views/Cataloging/Edit/Edit'
+import CatalogingEdit from '../views/Cataloging/Edit/Edit'
 
 // router
 import Router from './Router'
@@ -126,7 +126,7 @@ export default [{
             {
                 path: 'edit',
                 name: 'cataloging_edit',
-                component: CataloginEdit
+                component: CatalogingEdit
             }
         ]
     },

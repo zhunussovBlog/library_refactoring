@@ -206,5 +206,6 @@
     "days": "Күндер",
 
     "cataloging": "Каталогтау",
-    "search_cataloging": "ISBN || Атауы || Автор бойынша іздеу"
+    "search_cataloging": "ISBN || Атауы || Автор бойынша іздеу",
+    "edit_rec": "Жазбаны өңдеу"
 }

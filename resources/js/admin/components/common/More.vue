@@ -5,22 +5,27 @@
 			<div class="font-weight-bold cursor-pointer p-3" @click="close"><X /></div>
 		</div>
 		<table class="w-100">
-			<tr class="font-size-14" v-for="(head,index) in heads">
+			<tr class="font-size-14" v-for="(head,index) in heads" :key="index">
 				<td class="text-grey">{{$tc(head.name,1)}} :</td>
 				<td class="pl">{{data[head.link]}}</td>
 			</tr>
 		</table>
-		<div class="mt-3 d-flex">
-			<div class="pad ml-auto">
+		<div class="mt-3 d-flex justify-content-end">
+			<div class="pad" v-if="editObj">
 				<button type="button" class="outline-black" @click="editit()">
 					<span><Edit /></span>
 					{{$t('edit')}}
 				</button>
 			</div>
-			<div class="pad ml-2">
+			<div class="pad ml-2" v-if="deleteObj">
 				<button type="button" class="outline-black" @click="deleteit()">
 					<span><Delete /></span>
 					{{$t('delete')}}					
+				</button>
+			</div>
+			<div class="pad ml-2" v-if="custom_func">
+				<button type="button" class="outline-black" :class="custom_func.class" @click="custom_func.func(data)">
+					{{$t(custom_func.title)}}
 				</button>
 			</div>
 		</div>
@@ -52,6 +57,7 @@ export default{
 		},
 		editObj:Object,
 		deleteObj:Object,
+		custom_func:Object,
 		link:String,
 		commit:String
 	},

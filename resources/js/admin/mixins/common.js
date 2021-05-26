@@ -133,12 +133,16 @@ export const last = {
 
             if (store.request.mode == "post") {
                 changes = store.request.body
-                if (store.sort_by.order_by) {
-                    changes.order_by = store.sort_by.order_by;
+
+                if (store.sort_by) {
+                    if (store.sort_by.order_by) {
+                        changes.order_by = store.sort_by.order_by;
+                    }
+                    if (store.sort_by.order_mode) {
+                        changes.order_mode = store.sort_by.order_mode;
+                    }
                 }
-                if (store.sort_by.order_mode) {
-                    changes.order_mode = store.sort_by.order_mode;
-                }
+
                 if (store.per_page) {
                     changes.per_page = store.per_page;
                 }
@@ -154,18 +158,27 @@ export const last = {
             } else {
                 changes = '?'
 
-                if (store.sort_by.order_by) {
-                    changes += 'order_by=' + store.sort_by.order_by;
+                if (store.search.query) {
+                    changes += store.search.query.name + '=' + store.search.query.value
                 }
-                if (store.sort_by.order_mode) {
-                    changes += '&order_mode=' + store.sort_by.order_mode;
+
+                if (store.sort_by) {
+                    if (store.sort_by.order_by) {
+                        changes += 'order_by=' + store.sort_by.order_by;
+                    }
+                    if (store.sort_by.order_mode) {
+                        changes += '&order_mode=' + store.sort_by.order_mode;
+                    }
                 }
+
                 if (store.per_page) {
                     changes += '&per_page=' + store.per_page;
                 }
                 if (store.page) {
                     changes += '&page=' + store.page;
                 }
+
+                console.log(changes);
 
                 this.$http.get(link + store.request.link + changes).then(response => {
                     this.$store.dispatch('setStore', { label: commit, data: { data: response.data } });

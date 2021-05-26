@@ -170,9 +170,9 @@ Route::middleware(['auth:api-student,api-employee'])->group(function () {
         });
 
         Route::group(['prefix' => 'cataloging'], function () {
-            Route::get('material/{id}', 'Api\Cataloging\ShowController@getMaterialById');
-            Route::get('material/edit-data', 'Api\Cataloging\ShowController@getEditData');
             Route::get('material/search', 'Api\Cataloging\SearchController');
+            Route::get('material/edit-data', 'Api\Cataloging\ShowController@getEditData');
+            Route::get('material/{id}', 'Api\Cataloging\ShowController@getMaterialById');
 
             Route::post('material/edit', 'Api\Cataloging\ActionsController');
         });

@@ -75,7 +75,7 @@
 						for in heads  -->
 						<td v-for="(name,i) in heads" :key="i"
 							:class="[
-							{'cursor-pointer':service.available},
+							{'cursor-pointer':(service.available || showMore.available && showMore.title==undefined)},
 							{'text-no-wrap':name.is_date},
 							name.class_func ? name.class_func(info,name):{}
 							]" 
@@ -90,7 +90,7 @@
 						<!-- if there are clickable elements in table -> Show more, Edit, ReCreate, Delete or Service -->
 						<td class="text-center" v-if="clickables">
 							<div class="d-flex align-items-center justify-content-around">
-								<button type="button" class="outline-green" @click="showMore.func(info)"  v-if="showMore.available">
+								<button type="button" class="outline-green" @click="showMore.func(info)"  v-if="showMore.available && showMore.title!=undefined">
 									{{$t(showMore.title)}}
 								</button>
 								<div class="icon" :class="{'ml-4':showMore.available}" @click="editit(info,false)"  v-if="editObj.available">
@@ -281,7 +281,10 @@ export default{
 	methods:{
 		tdOnClick(info,name){
 			if(this.service.available){
-				this.service.showMore(info)
+				this.service.showMore(info);
+			}
+			if(this.showMore.available && this.showMore.title == undefined){
+				this.showMore.func(info);
 			}
 			if(name.custom_func){
 				name.custom_func(info,name);

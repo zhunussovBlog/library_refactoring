@@ -207,5 +207,6 @@
     "days": "Дни",
 
     "cataloging": "Каталогизация",
-    "search_cataloging": "Поиск по ISBN || Название || Автор"
+    "search_cataloging": "Поиск по ISBN || Название || Автор",
+    "edit_rec": "Редактировать запись"
 }
