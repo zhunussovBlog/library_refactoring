@@ -46,10 +46,55 @@
                     <div class="text-grey font-size-14 py-2 my-1">
                         Section tag
                     </div>
+                    <div class="d-flex">
+                        <div class="rounded px-3 py-2 bg-orange text-white font-weight-bold">
+                            020
+                        </div>
+                        <div class="rounded px-3 py-2 bg-lightgrey ml-2 text-grey font-weight-bold">
+                            050
+                        </div>
+                        <div class="rounded px-3 py-2 bg-lightgrey ml-2 text-grey font-weight-bold">
+                            080
+                        </div>
+                    </div>
                     <div class="text-center font-weight-bold">
                         INTERNATIONAL STANDARTE
                     </div>
                     <table class="table">
+                        <thead>
+                            <tr>
+                                <th colspan="3" class="tline">
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    haha
+                                </th>
+                                <th>
+                                    muahaha
+                                </th>
+                                <th>
+                                    mew
+                                </th>
+                            </tr>
+                            <tr>
+                                <th colspan="3" class="tline">
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    Bro
+                                </td>
+                                <td>
+                                    Che tam
+                                </td>
+                                <td>
+                                    Che tam bro
+                                </td>
+                            </tr>
+                        </tbody>
                     </table>
                     <div class="d-flex">
                         <button class="ml-auto width-unset">
@@ -78,5 +123,27 @@ export default {
 }
 </script>
 <style scoped>
+table {
+	border-collapse: separate;
+    border-spacing:2em .875em;
+}
 
+td{
+	border: 0.0625em solid #9C9FA7 !important;
+    border-radius: .3125em;
+    
+	padding: 1em 1.25em;
+}
+
+th {
+	text-align: left;
+	font-weight: 500;
+    border: none !important;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+.tline{
+    border-top:0.0625em solid #E8E8E8 !important;
+    padding:0;
+}
 </style>
