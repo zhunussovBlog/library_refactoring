@@ -51,15 +51,21 @@ window.copy = (object) => {
 window.capitalize = (s) => {
     let string = s.slice();
     if (typeof string !== 'string') return ''
-    return string.charAt(0).toUpperCase() + string.slice(1)
+        return string.charAt(0).toUpperCase() + string.slice(1)
 }
 
 // returns you an object without a key  ( deletes a key from an object )
 window.objectWithoutKey = (object, key) => {
-    const {
-        [key]: deletedKey, ...otherKeys
-    } = object;
-    return otherKeys;
+    if(Array.isArray(key)){
+        key.forEach(str=>{
+          object = objectWithoutKey(object,str);
+      })
+        return object;
+    }
+    else{
+        const {[key]: deletedKey, ...otherKeys} = object;
+        return otherKeys;
+    }
 }
 
 // turns string date into date value for an input type date

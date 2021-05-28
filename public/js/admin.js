@@ -7850,10 +7850,18 @@ window.capitalize = function (s) {
 
 
 window.objectWithoutKey = function (object, key) {
-  var deletedKey = object[key],
-      otherKeys = _objectWithoutProperties(object, [key].map(_toPropertyKey));
+  if (Array.isArray(key)) {
+    key.forEach(function (str) {
+      object = objectWithoutKey(object, str);
+    });
+    return object;
+  } else {
+    var _object = object,
+        deletedKey = _object[key],
+        otherKeys = _objectWithoutProperties(_object, [key].map(_toPropertyKey));
 
-  return otherKeys;
+    return otherKeys;
+  }
 }; // turns string date into date value for an input type date
 
 

@@ -39,8 +39,16 @@ Number.prototype.pad=(n)=> {
 
 // returns you an object without a key  ( deletes a key from an object )
 window.objectWithoutKey = (object, key) => {
-  const {[key]: deletedKey, ...otherKeys} = object;
-  return otherKeys;
+  if(Array.isArray(key)){
+    key.forEach(str=>{
+      object = objectWithoutKey(object,str);
+    })
+    return object;
+  }
+  else{
+    const {[key]: deletedKey, ...otherKeys} = object;
+    return otherKeys;
+  }
 }
 
 // capitalizes any string ( only first letter )

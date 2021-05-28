@@ -27,14 +27,17 @@
 </template>
 <script type="text/javascript">
 	import Checkbox from '../../../../components/checkbox'
+	import Full from './Full'
+
 	import {getBookImage} from '../../../../mixins/search'
+	import showModal from '../../../../mixins/modal'
 
 	import {mapGetters} from 'vuex'
 	export default{
 		components:{
 			Checkbox
 		},
-		mixins:[getBookImage],
+		mixins:[getBookImage,showModal],
 		props:{
 			data:Object
 		},
@@ -66,7 +69,8 @@
 				}
 			},
 			showMore(){
-				this.$router.push({ path: 'full', query: { id: this.data.id }});
+				this.showModal(Full,{id:this.data.id,width:'100%',height:'100%',styles:'overflow:hidden'});
+				document.documentElement.classList.add("overflow-hidden");
 			}
 		},
 		created(){

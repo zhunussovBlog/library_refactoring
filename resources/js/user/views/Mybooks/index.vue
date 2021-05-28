@@ -70,7 +70,7 @@ export default {
         getInfo(){
 			this.$http.get('/user/my-books').then(response=>{
 				this.user=response.data.res;
-				this.user.info=objectWithoutKey(objectWithoutKey(this.user.info,'id'),'user_cid');
+				this.user.info=objectWithoutKey(this.user.info,['id','user_cid']);
                 this.data=this.user.history;
 			}).catch(e=>{
 				this.goTo('users');
