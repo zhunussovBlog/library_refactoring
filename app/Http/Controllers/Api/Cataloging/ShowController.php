@@ -2,45 +2,41 @@
 
 namespace App\Http\Controllers\Api\Cataloging;
 
+use App\Common\Fields\Cataloging\MediaFields;
+use App\Common\Helpers\Show\SearchFields;
+use App\Http\Controllers\Api\Cataloging\Handler\MarcFieldsHandler;
 use App\Http\Controllers\Controller;
-use App\Models\Media\Book;
-use App\Models\Media\Disc;
-use App\Models\Media\Journal;
+use App\Models\Media\MaterialTypeFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
 class ShowController extends Controller
 {
-    public function getMaterialById(int $materialId): JsonResponse
+    public function getMaterialById(string $type, int $materialId): JsonResponse
     {
-        $material = Book::withAdditionalAttributes(Book::defaultQuery())->where('b.book_id', $materialId)->first();
+        $keyName = explode('.', MaterialTypeFactory::getMaterialClass($type)->getKeyName());
 
-        if (empty($material)) {
-            $material = Disc::withAdditionalAttributes(Disc::defaultQuery())->where('d.disc_id', $materialId)->first();
-        }
-
-        if (empty($material)) {
-            $material = Journal::withAdditionalAttributes(Journal::defaultQuery())->where('j.journal_id', $materialId)->first();
-        }
+        $marcData = DB::table('view_marc_data')->select()->where($keyName[1] ?? $keyName[0], $materialId)->orderBy('id')->get()->toArray();
+        $result = MarcFieldsHandler::generateArray($marcData);
 
         return response()->json([
-            'res' => $material
+            'res' => $result
         ]);
     }
 
-    public function getEditData(): JsonResponse
+    public function getTypes(): JsonResponse
     {
-        $types = DB::table('lib_material_types')
-            ->select('key as type_key', 'title_' . app()->getLocale() . ' as type')->get()->toArray();
-
-        $languages = DB::table('language')
-            ->select('lang_code as lang_key', 'lang_full_name as name', 'lang_name_' . app()->getLocale() . ' as language')->get()->toArray();
-
         return response()->json([
-            'res' => [
-                'types' => $types,
-                'languages' => $languages
-            ],
+            'res' => DB::table('lib_material_types')
+                ->select('key as type', 'title_' . app()->getLocale() . ' as type_title')
+                ->get()->toArray(),
+        ]);
+    }
+
+    public function searchFields(): JsonResponse
+    {
+        return response()->json([
+            'res' => SearchFields::searchFields(new MediaFields())
         ]);
     }
 }

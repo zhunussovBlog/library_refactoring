@@ -6,15 +6,19 @@ use App\Common\Helpers\Controller\CustomPaginate;
 use App\Common\Helpers\Models\Media\GetModels;
 use App\Common\Helpers\Query\QueryHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SearchRequest;
+use App\Models\Media\MaterialTypeFactory;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class SearchController extends Controller
 {
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(SearchRequest $request): JsonResponse
     {
-        $query = mb_strtolower($request->get('query', ''));
+        $validated = $request->validated();
+
+        $type = $validated['search_options'][0]['value'];
+        $query = mb_strtolower($validated['search_options'][1]['value']);
         $perPage = $request->get('per_page', 10);
 
         if (empty($query)) {
@@ -24,7 +28,13 @@ class SearchController extends Controller
             ]);
         }
 
-        $materials = QueryHelper::unionAll(...GetModels::getModels())
+        if ($type !== 'all') {
+            $materials = QueryHelper::nestedQuery(MaterialTypeFactory::getMaterialClass($type));
+        } else {
+            $materials = QueryHelper::unionAll(...GetModels::getModels());
+        }
+
+        $materials = $materials
             ->where(DB::raw("lower(isbn)"), 'like', $query . '%')
             ->orWhere(DB::raw("lower(title)"), 'like', $query . '%')
             ->orWhere(DB::raw("lower(author)"), 'like', $query . '%')
