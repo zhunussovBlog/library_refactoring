@@ -17,8 +17,8 @@ class SearchController extends Controller
     {
         $validated = $request->validated();
 
-        $type = $validated['search_options'][0]['value'];
-        $query = mb_strtolower($validated['search_options'][1]['value']);
+        $type = $validated['add_options'][0]['value'];
+        $query = mb_strtolower($validated['add_options'][1]['value']);
         $perPage = $request->get('per_page', 10);
 
         if (empty($query)) {
