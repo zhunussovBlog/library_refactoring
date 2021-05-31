@@ -174,7 +174,8 @@ Route::middleware(['auth:api-student,api-employee'])->group(function () {
             Route::get('material/search-fields', 'Api\Cataloging\ShowController@searchFields');
             Route::get('material/types', 'Api\Cataloging\ShowController@getTypes');
             Route::get('material/{type}/{id}', 'Api\Cataloging\ShowController@getMaterialById');
-            Route::post('material/{id}/edit', 'Api\Cataloging\EditMaterialController');
+            Route::get('material/export/{type}/{id}', 'Api\Cataloging\ShowController@exportXml');
+            Route::post('material/{type}/{id}/edit', 'Api\Cataloging\EditMaterialController');
         });
     });
 });

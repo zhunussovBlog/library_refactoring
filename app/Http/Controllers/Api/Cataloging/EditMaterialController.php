@@ -11,21 +11,22 @@ use App\Http\Controllers\Api\Cataloging\Handler\MarcFieldsXmlHandler;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Cataloging\EditMaterialRequest;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\File;
 
 class EditMaterialController extends Controller
 {
     /**
      * @throws ReturnResponseException
      */
-    public function __invoke(EditMaterialRequest $request, int $id): JsonResponse
+    public function __invoke(EditMaterialRequest $request, string $type, int $id): JsonResponse
     {
         $input = $request->validated()['data'];
         $template = (new MarcFieldsHandler($input))->getTemplate();
         $xml = (new MarcFieldsXmlHandler($template))->getXml();
 
-        /*if ((int)EditMaterialProcedure::edit($this->getEditMaterialProcedureInput($input))['pRes'] !== 1) {
+        if ((int)EditMaterialProcedure::edit($this->getEditMaterialProcedureInput($input, $type, $id))['pRes'] !== 1) {
             throw new ReturnResponseException('Process error', 100);
-        }*/
+        }
 
         if ((int)EditMaterialProcedure::loadXml([
                 'id' => $id,
@@ -44,9 +45,11 @@ class EditMaterialController extends Controller
 
     /**
      * @param array $data
+     * @param string $type
+     * @param int $id
      * @return array
      */
-    private function getEditMaterialProcedureInput(array $data): array
+    private function getEditMaterialProcedureInput(array $data, string $type, int $id): array
     {
         $input = [];
         $input['call_number'] = $this->getFieldData('010.a', $data);
@@ -56,12 +59,13 @@ class EditMaterialController extends Controller
         $input['year'] = $this->getFieldData('260.c', $data);
         $input['city'] = $this->getFieldData('260.a', $data);
         $input['language'] = $this->getFieldData('546.a', $data);
-        $input['main_author'] = '';
-        $input['other_author'] = '';
-        $input['page_number'] = '';
-        $input['parallel_title'] = '';
-        $input['title_related_info'] = '';
-        $input['type'] = '';
+        $input['main_author'] = $this->getFieldData('100.a', $data);
+        $input['other_author'] = $this->getFieldData('600.a', $data);
+        $input['page_number'] = $this->getFieldData('300.a', $data);
+        $input['parallel_title'] = $this->getFieldData('245.b', $data);
+        $input['title_related_info'] = $this->getFieldData('245.c', $data);
+        $input['type'] = $type;
+        $input['id'] = $id;
 
         return $input;
     }
@@ -69,14 +73,23 @@ class EditMaterialController extends Controller
     /**
      * @param string $key
      * @param array $data
-     * @return string
+     * @return mixed
      */
-    private function getFieldData(string $key, array $data): string
+    private function getFieldData(string $key, array $data): mixed
     {
-        $index = array_search($key, array_column($data, 'id'));
+        $indexes = array_keys(array_column($data, 'id'), $key);
 
-        if ($index !== false) {
-            return $data[$index]['data'];
+        if (!empty($indexes)) {
+            switch (count($indexes)) {
+                case 1:
+                    return $data[$indexes[0]]['data'];
+                default:
+                    foreach ($indexes as $index) {
+                        if (!empty($data[$index]['repeatable'])) {
+                            return $data[$index]['data'];
+                        }
+                    }
+            }
         }
 
         return '';

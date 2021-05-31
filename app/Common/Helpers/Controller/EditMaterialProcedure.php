@@ -42,7 +42,7 @@ class EditMaterialProcedure
             'pBookId' => ['value' => $validated['id'], 'type' => PDO::PARAM_INT],
             'pJournalId' => ['value' => $validated['id'], 'type' => PDO::PARAM_INT],
             'pDiscId' => ['value' => $validated['id'], 'type' => PDO::PARAM_INT],
-            'pBibliographicInfo' => ['value' => $validated['xml'], 'type' => PDO::PARAM_STR],
+            'pBibliographicInfo' => ['value' => $validated['xml'], 'type' => OCI_B_CLOB],
             'pAppLog' => ['value' => 0, 'type' => PDO::PARAM_INT],
             'pRes' => ['value' => 0, 'isOut' => true, 'type' => PDO::PARAM_INT],
         ]);
