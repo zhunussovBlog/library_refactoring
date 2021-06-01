@@ -91,6 +91,8 @@ final class MarcFieldsHandler
         $id = -1;
         $lastParentId = -1;
 
+        self::mergeTemplateWithInput($template, $input);
+
         foreach ($template as $field) {
             $id++;
 
@@ -100,17 +102,6 @@ final class MarcFieldsHandler
 
             $lastParentId = $field['pid'] ? $lastParentId === -1 ? ($id - 1) : $lastParentId : -1;
 
-            $fieldData = $field['data'];
-            $index = array_search($field['id'], array_column($input, 'id'));
-
-            if ($index !== false) {
-                if ($input[$index] instanceof stdClass)  {
-                    $input[$index] = json_decode(json_encode($input[$index]), true);
-                }
-
-                $fieldData = $input[$index]['data'];
-            }
-
             $cells = [
                 $this->generateCell($field['id']),
                 $this->generateCell($field['pid'], 2),
@@ -118,7 +109,7 @@ final class MarcFieldsHandler
                 $this->generateCell($field['ind1'], 4),
                 $this->generateCell($field['ind2'], 5),
                 $this->generateCell($field['title'], 6),
-                $this->generateCell($fieldData, 7),
+                $this->generateCell($field['data'], 7),
                 $this->generateCell(null, 8),
                 $this->generateCell(null, 9),
                 $this->generateCell($field['repeatable'], 10, true),
@@ -145,12 +136,12 @@ final class MarcFieldsHandler
     }
 
     /**
-     * @param string|null $value
+     * @param mixed $value
      * @param int $count
      * @param bool $isNumeric
      * @return array
      */
-    private function generateCell(?string $value, int $count = 1, bool $isNumeric = false): array
+    private function generateCell(mixed $value, int $count = 1, bool $isNumeric = false): array
     {
         $cell = [];
         $cell['key'] = "__custom:Cell:$count";
@@ -161,14 +152,14 @@ final class MarcFieldsHandler
                     '_attributes' => [
                         'xsi:type' => 'decimal'
                     ],
-                    '_value' => $value
+                    '_value' => $value ?? ''
                 ];
             } else {
                 $cell['value'] = [
                     '_attributes' => [
                         'xsi:type' => 'string'
                     ],
-                    '_value' => $value
+                    '_value' => $value ?? ''
                 ];
             }
 
@@ -193,6 +184,27 @@ final class MarcFieldsHandler
         return DB::table('marc_fields')->select()->get()->toArray();
     }
 
+    private static function mergeTemplateWithInput(array &$template, array $input)
+    {
+        $seenFields = [];
+
+        foreach($input as $field) {
+            $indexes = array_keys(array_column($input, 'id'), $field->id);
+            $indexOfTemplate = array_search($field->id, array_column($template, 'id'));
+
+            $template[$indexOfTemplate] = $input[$indexes[0]];
+
+            if (count($indexes) > 1) {
+                if (!in_array($field->id, $seenFields)) {
+                    $seenFields[] = $field->id;
+                    foreach (array_slice($indexes, 1) as $index) {
+                        $template[] = $input[$index];
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * @param array $input
      * @return array
@@ -201,15 +213,10 @@ final class MarcFieldsHandler
     {
         $marcFields = self::getMarcFields();
 
+        self::mergeTemplateWithInput($marcFields, $input);
+
         foreach ($marcFields as &$field) {
             $field = json_decode(json_encode($field), true);
-            $index = array_search($field['id'], array_column($input, 'id'));
-            if ($index !== false) {
-                if ($input[$index] instanceof stdClass)  {
-                    $input[$index] = json_decode(json_encode($input[$index]), true);
-                }
-                $field['data'] = $input[$index]['data'];
-            }
         }
 
         return $marcFields;

@@ -48,7 +48,7 @@ class ShowController extends Controller
         $keyName = explode('.', MaterialTypeFactory::getMaterialClass($type)->getKeyName());
 
         $marcData = DB::table('view_marc_data')->select()->where($keyName[1] ?? $keyName[0], $materialId)->orderBy('id')->get()->toArray();
-        $template = (new MarcFieldsHandler($marcData))->getTemplate();
+        $template = (new MarcFieldsHandler([], $marcData))->getTemplate();
         $xml = (new MarcFieldsXmlHandler($template))->getXml();
 
         File::put(storage_path('') . "/material_{$materialId}.xml", $xml);
