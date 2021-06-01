@@ -6,7 +6,7 @@ export default {
             const request = new XMLHttpRequest();
             let error_m = 'read_from_rfid';
 
-            const url = 'https://localhost:44379/LibraryWebService.asmx/' + link;
+            const url = 'https://localhost/LibraryWebService/LibraryWebService.asmx/' + link;
             request.open('POST', url, false);
             request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             request.addEventListener("readystatechange", () => {

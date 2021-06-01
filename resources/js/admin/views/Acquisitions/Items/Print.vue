@@ -9,22 +9,22 @@
 						<span class="font-weight-bold mt-3">{{$t('barcode')}}</span>
 						<div class="d-flex flex-fill mt-2">
 							<div class="position-relative flex-fill">
-								<input type="text" v-model="print_barcode.search.search_options[0].value.from"/>
+								<input type="text" v-model="print_barcode.search.add_options.barcode.from"/>
 								<label class="placeholder">{{$t('from')}}</label>
 							</div>
 							<div class="position-relative  ml-2 flex-fill">
-								<input type="text" v-model="print_barcode.search.search_options[0].value.to"/>
+								<input type="text" v-model="print_barcode.search.add_options.barcode.to"/>
 								<label class="placeholder">{{$t('until')}}</label>
 							</div>
 						</div>
 						<span class="font-weight-bold mt-3">{{$t('author-title')}}</span>
 						<div class="d-flex flex-fill mt-2">
 							<div class="position-relative flex-fill">
-								<input type="text" v-model="print_barcode.search.search_options[1].value"/>
+								<input type="text" v-model="print_barcode.search.add_options.title"/>
 								<label class="placeholder">{{$t('title',1)}}</label>
 							</div>
 							<div class="position-relative ml-2 flex-fill">
-								<input type="text" v-model="print_barcode.search.search_options[2].value"/>
+								<input type="text" v-model="print_barcode.search.add_options.author"/>
 								<label class="placeholder">{{$t('author')}}</label>
 							</div>
 						</div>

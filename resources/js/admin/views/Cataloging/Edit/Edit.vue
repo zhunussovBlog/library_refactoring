@@ -5,7 +5,7 @@
                 <back />
             </div>
             <div class="d-flex justify-content-between">
-                <div>Management au mau</div>
+                <div>Management: {{info.title}}</div>
                 <div class="d-flex">
                     <button class="outline-black mx-3">
                         Print au mau
@@ -22,83 +22,93 @@
                 </div>
             </div>
             <div class="d-flex mt-5">
-                <div class="text-center p-1 py-3 border rounded">
+                <div class="text-center px-2 py-3 border rounded">
                     <div class="text-grey font-size-14 py-2 my-1">
                         Section
                     </div>
-                    <div class="py-2 my-1 cursor-pointer px-3 border rounded border-orange text-orange">
-                        Section
+                    <div class="py-2 my-1 cursor-pointer"
+                        :class="{'px-3 border rounded border-orange text-orange':sectionSelected==index}"
+                        @click="sectionSelected=section.section;tagSelected={}"
+                        v-for="(section,index) in sectioned" :key="index">
+                            {{section.section}}
                     </div>
-                    <div class="py-2 my-1 cursor-pointer ">
-                        Section
-                    </div>
-                    <div class="py-2 my-1 cursor-pointer ">
-                        Section
-                    </div>
-                    <div class="py-2 my-1 cursor-pointer ">
-                        Section
-                    </div>
-                    <div class="py-2 my-1 cursor-pointer ">
-                        Section
-                    </div>  
                 </div>
                 <div class="p-3 ml-3 border rounded flex-fill ">
                     <div class="text-grey font-size-14 py-2 my-1">
                         Section tag
                     </div>
                     <div class="d-flex">
-                        <div class="rounded px-3 py-2 bg-orange text-white font-weight-bold">
-                            020
-                        </div>
-                        <div class="rounded px-3 py-2 bg-lightgrey ml-2 text-grey font-weight-bold">
-                            050
-                        </div>
-                        <div class="rounded px-3 py-2 bg-lightgrey ml-2 text-grey font-weight-bold">
-                            080
+                        <div class="rounded px-3 py-2 font-weight-bold bg-lightgrey text-grey"
+                            :class="[{'bg-orange text-white':tagSelected.field_code==tag.field_code},{'ml-2':index!=0}]"
+                            @click="tagSelected=tag"
+                            v-for="(tag,index) in sectioned[sectionSelected].tags" :key="index">
+                                {{tag.field_code}}
                         </div>
                     </div>
                     <div class="text-center font-weight-bold">
-                        INTERNATIONAL STANDARTE
+                        {{tagSelected.title}}
                     </div>
-                    <table class="table">
+                    <table class="table mt-3">
                         <thead>
-                            <tr>
-                                <th colspan="3" class="tline">
-                                </th>
-                            </tr>
+                            <!-- <tr>
+                                <th colspan="5" class="tline" />
+                            </tr> -->
                             <tr>
                                 <th>
-                                    haha
+                                    {{$t('title')}}
                                 </th>
                                 <th>
-                                    muahaha
+                                    {{$t('subtags')}}
                                 </th>
                                 <th>
-                                    mew
+                                    {{$t('ind1')}}
+                                </th>
+                                <th>
+                                    {{$t('ind2')}}
+                                </th>
+                                <th>
+                                    {{$t('data')}}
+                                </th>
+                                <th>
+                                    &nbsp;
                                 </th>
                             </tr>
-                            <tr>
-                                <th colspan="3" class="tline">
-                                </th>
-                            </tr>
+                            <!-- <tr>
+                                <th colspan="5" class="tline" />
+                            </tr> -->
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>
-                                    Bro
+                            <tr v-for="(info,index) in tagSelected.data" :key="index">
+                                <td class="td_no_input w-25">
+                                    <div v-if="info.is_added">
+                                        &nbsp;
+                                    </div>
+                                    <div v-else>
+                                        {{info.title}}
+                                    </div>
+                                </td>
+                                <td class="little_td">
+                                    <input type="text" class="little_input" v-model="info.field_code" disabled/>
+                                </td>
+                                <td class="little_td">
+                                    <input type="text" class="little_input" v-model="info.ind1"/>
+                                </td>
+                                <td class="little_td">
+                                    <input type="text" class="little_input" v-model="info.ind2"/>
+                                </td>
+                                <td class="w-50">
+                                    <input type="text" class="w-100" v-model="info.data"/>
                                 </td>
                                 <td>
-                                    Che tam
-                                </td>
-                                <td>
-                                    Che tam bro
+                                    <button class="outline-blue" @click="removeSubtag(index)" v-if="info.is_added">-</button>
+                                    <button class="outline-blue" @click="addSubtag(info,index)" v-else>+</button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                     <div class="d-flex">
-                        <button class="ml-auto width-unset">
-                            Save
+                        <button class="ml-auto width-unset" @click="save()">
+                            {{$t('save')}}
                         </button>
                     </div>
                 </div>
@@ -108,42 +118,173 @@
 </template>
 <script>
 import Back from '../../../components/common/Back.vue'
+import {goTo} from '../../../mixins/goTo';
+import {message_success,message_error} from '../../../mixins/messages';
 export default {
-  components: { Back },
-  methods:{
-      getEditInfo(){
-          this.$http.get('cataloging/material/edit-data').then(response=>{
-              console.log(response);
-          })
-      }
-  },
-  created(){
-      this.getEditInfo();
-  }
+    mixins:[goTo,message_error,message_success],
+    props:{
+        info:Object
+    },
+    components: { Back },
+    data(){
+        return{
+            edit_info:[],
+            sectioned:[],
+            commit:'cataloging',
+            link:'cataloging/material',
+            sectionSelected:0,
+            tagSelected:{}
+        }
+    },
+    methods:{
+        getEditInfo(){
+            // +this.info.id
+            // +this.info.type_key+
+            this.$store.commit('setFullPageLoading',true);
+            this.$http.get(this.link+'/'+this.info.type_key+'/'+this.info.id).then(response=>{
+                this.edit_info=response.data.res;
+                this.divideIntoSections();
+                this.divideIntoSubsections();
+                this.$store.commit('setFullPageLoading',false);
+            })
+        },
+        divideIntoSections(){
+            let sections=[];
+
+            //functions
+            let findByChar=(array,char,toSearch)=>{
+                for(let i =0; i<array.length;i++){
+                    let elem=array[i];
+                    if(elem[toSearch]==char){
+                        return true
+                    }
+                }
+                return false;
+            }
+
+            for(let i=0;i<this.edit_info.length;i++){
+
+                let info=this.edit_info[i];
+                let char=info.id.charAt(0);
+
+                if(!findByChar(sections,char,'section')){
+                    let section={section:char,info:[info]};
+                    sections.push(section);
+                }
+                else{
+                    sections[char].info.push(info);
+                }
+            }
+
+            this.sectioned=sections;
+        },
+        divideIntoSubsections(){
+            this.sectioned.forEach(section=>{
+                section.tags=section.info.filter(elem=>elem.pid==undefined);
+                section.tags.forEach(tag=>{
+                    tag.selected=false;
+                    tag.data=section.info.filter(elem=>elem.pid==tag.field_code)
+                })
+            })
+        },
+        addSubtag(info,index){
+            let new_data=copy(info);
+            new_data.ind1=''
+            new_data.ind2=''
+            new_data.data=''
+            new_data.is_added=true;
+            
+            this.tagSelected.data.splice(index+1, 0, new_data);
+            
+            let lindex=this.sectioned[this.sectionSelected].info.indexOf(info);
+            
+            this.sectioned[this.sectionSelected].info.splice(lindex+1,0,new_data);
+        },
+        removeSubtag(index){
+            this.tagSelected.data.splice(index, 1);
+        },
+        save(){
+            this.$store.commit('sestFullPageLoading',true);
+            let joinSections=()=>{
+                let res=[];
+                this.sectioned.forEach(section=>{
+                    section.info.forEach(data=>{
+                        if(data.is_added){
+                            delete data.is_added;
+                            console.log(data);
+                        }
+                    })
+                    res.concat(section.info);
+                    console.log(res);
+                })
+                return res
+            };
+            let res = joinSections();
+            console.log(res);
+
+            // this.$http.post(this.link+'/'+this.info.type_key+'/'+this.info.id+'/edit',res).then(response=>{
+            //     this.message_success('edit',response);
+            //     this.tagSelected={};
+            //     this.getEditInfo();
+            // }).catch(e=>{
+            //     this.message_error('edit',e);
+            // }).then(()=>{
+            //     this.$store.commit('sestFullPageLoading',false);
+            // })
+        }
+    },
+    created(){
+        if(!this.info){
+            this.goTo('cataloging_search');
+        }else{
+            this.getEditInfo();
+        }
+    }
 }
 </script>
 <style scoped>
-table {
+/* table {
 	border-collapse: separate;
     border-spacing:2em .875em;
-}
+} */
 
 td{
-	border: 0.0625em solid #9C9FA7 !important;
-    border-radius: .3125em;
+	border: none;
+    /* border-radius: .3125em;
     
-	padding: 1em 1.25em;
+	padding: 1em 1.25em; */
 }
 
 th {
 	text-align: left;
 	font-weight: 500;
-    border: none !important;
-    padding-top: 0;
-    padding-bottom: 0;
+    border: 1px solid #E8E8E8 !important;
+    border-left:none !important;
+    border-right:none !important;
 }
-.tline{
+/* .tline{
     border-top:0.0625em solid #E8E8E8 !important;
     padding:0;
+} */
+input{
+    width:unset;
+}
+input,input:disabled{
+    border-color: inherit;
+}
+.little_td{
+    width:7%;
+}
+.little_input{
+    width:2.5em;
+    padding-left: .125em;
+    padding-right: .125em;
+    text-align: center;
+}
+.td_no_input{
+    border:1px solid #E8E8E8;
+    border-left:none;
+    border-radius: .3125em;
+	padding: 1em 1.25em;
 }
 </style>

@@ -74,17 +74,12 @@ export default {
     },
     print_barcode: {
         search: {
-            search_options: [
-                { key: 'barcode', value: {} },
-                { key: 'title' },
-                { key: 'author' }
-            ]
+            add_options: {
+                barcode: {},
+                title: '',
+                author: ''
+            }
         },
-        search_default: [
-            { key: 'barcode', value: {} },
-            { key: 'title' },
-            { key: 'author' }
-        ],
         data: [],
         searching: false,
         sort_by: {},
@@ -215,9 +210,9 @@ export default {
     // cataloging
     cataloging: {
         search: {
-            query: {
-                name: '',
-                value: ''
+            add_options: {
+                type: 'BK',
+                query: ''
             }
         },
         data: [],

@@ -125,6 +125,7 @@ export default [{
             },
             {
                 path: 'edit',
+                props: true,
                 name: 'cataloging_edit',
                 component: CatalogingEdit
             }
