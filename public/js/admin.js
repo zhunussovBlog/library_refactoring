@@ -8577,7 +8577,7 @@ __webpack_require__.r(__webpack_exports__);
 
       var request = new XMLHttpRequest();
       var error_m = 'read_from_rfid';
-      var url = 'https://localhost/LibraryWebService/LibraryWebService.asmx/' + link;
+      var url = 'http://localhost/LibraryWebService/LibraryWebService.asmx/' + link;
       request.open('POST', url, false);
       request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
       request.addEventListener("readystatechange", function () {
