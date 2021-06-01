@@ -8,16 +8,17 @@
                 <div>Management: {{info.title}}</div>
                 <div class="d-flex">
                     <button class="outline-black mx-3">
-                        Print au mau
+                        <Print class="mr-2" />
+                        Print call number
                     </button>
                     <button class="outline-black">
-                        Previews    
+                        Preview
                     </button>
                     <button class="outline-black mx-3">
-                        Import from Worldcats
+                        Import from WorldCat
                     </button>
-                    <button class="bg-green color-white">
-                        XML
+                    <button class="outline-black" @click="saveXML()">
+                        Export to XML
                     </button>
                 </div>
             </div>
@@ -100,8 +101,10 @@
                                     <input type="text" class="w-100" v-model="info.data"/>
                                 </td>
                                 <td>
-                                    <button class="outline-blue" @click="removeSubtag(index)" v-if="info.is_added">-</button>
-                                    <button class="outline-blue" @click="addSubtag(info,index)" v-else>+</button>
+                                    <div v-if="info.repeatable==1">
+                                        <button class="outline-blue" @click="removeSubtag(index)" v-if="info.is_added || info.repeateable==undefined">-</button>
+                                        <button class="outline-blue" @click="addSubtag(info,index)" v-else>+</button>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -117,15 +120,21 @@
     </div>
 </template>
 <script>
+// components
 import Back from '../../../components/common/Back.vue'
+import Print from '../../../assets/icons/Print.vue'
+
+// mixins
 import {goTo} from '../../../mixins/goTo';
 import {message_success,message_error} from '../../../mixins/messages';
+import {download_file} from '../../../mixins/common';
+
 export default {
-    mixins:[goTo,message_error,message_success],
+    mixins:[goTo,message_error,message_success,download_file],
     props:{
         info:Object
     },
-    components: { Back },
+    components: { Back,Print },
     data(){
         return{
             edit_info:[],
@@ -213,24 +222,30 @@ export default {
                             delete data.is_added;
                             console.log(data);
                         }
+                        if(data.pid==undefined){
+                            data.data=null;
+                        }
                     })
-                    res.concat(section.info);
-                    console.log(res);
+                    res=res.concat(section.info);
                 })
                 return res
             };
             let res = joinSections();
-            console.log(res);
 
-            // this.$http.post(this.link+'/'+this.info.type_key+'/'+this.info.id+'/edit',res).then(response=>{
-            //     this.message_success('edit',response);
-            //     this.tagSelected={};
-            //     this.getEditInfo();
-            // }).catch(e=>{
-            //     this.message_error('edit',e);
-            // }).then(()=>{
-            //     this.$store.commit('sestFullPageLoading',false);
-            // })
+            this.$http.post(this.link+'/'+this.info.type_key+'/'+this.info.id+'/edit',{data:res}).then(response=>{
+                this.message_success('edit',response);
+                this.tagSelected={};
+                this.getEditInfo();
+            }).catch(e=>{
+                this.message_error('edit',e);
+            }).then(()=>{
+                this.$store.commit('sestFullPageLoading',false);
+            })
+        },
+        saveXML(){
+            this.$http.get(this.link+'/export/'+this.info.type_key+'/'+this.info.id).then(response=>{
+                this.download_file('xml_'+response,this.info.title,'xml');
+            })
         }
     },
     created(){
