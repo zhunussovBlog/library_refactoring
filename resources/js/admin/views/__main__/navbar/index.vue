@@ -15,7 +15,7 @@
 
 					<div class="dropdown rounded-lg bg-white shadow-sm pl-3 mt-3" :class="{shown:first_shown}">
 						<!-- routes only with a name are to be shown... so if you want to hide a route - you should just delete it's name -->
-						<div class="link" v-for="(route,index) in allParentRoutes.filter(route=>route.name!=undefined)" @click="linkGoTo(route.name,0)">
+						<div class="link" v-for="(route,index) in allParentRoutes.filter(route=>route.name!=undefined)" :key="index" @click="linkGoTo(route.name,0)">
 							{{$t(route.name)}}
 						</div>
 
@@ -33,7 +33,7 @@
 					<span class="link font-weight-bold" @click="show(1)">{{$tc(currentRoute.name,10)}}</span>
 
 					<div class="dropdown rounded-lg bg-white shadow-sm pl-3 mt-3" :class="{shown:second_shown}">
-						<div class="link" v-for="(route,index) in allParentRoutes.filter(route=>route.name==parentRoute.name)[0].children" @click="linkGoTo(route.name,1)">
+						<div class="link" v-for="(route,index) in allParentRoutes.filter(route=>route.name==parentRoute.name)[0].children" :key="index" @click="linkGoTo(route.name,1)">
 							{{$tc(route.name,10)}}
 						</div>
 					</div>
