@@ -195,6 +195,7 @@ final class MarcFieldsHandler
             $template[$indexOfTemplate] = $input[$indexes[0]];
 
             if (count($indexes) > 1) {
+                $template[$indexOfTemplate]->repeatable = 1;
                 if (!in_array($field->id, $seenFields)) {
                     $seenFields[] = $field->id;
                     foreach (array_slice($indexes, 1) as $index) {
