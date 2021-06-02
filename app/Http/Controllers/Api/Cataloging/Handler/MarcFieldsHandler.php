@@ -198,6 +198,7 @@ final class MarcFieldsHandler
                 if (!in_array($field->id, $seenFields)) {
                     $seenFields[] = $field->id;
                     foreach (array_slice($indexes, 1) as $index) {
+                        $input[$index]->repeatable = null;
                         $template[] = $input[$index];
                     }
                 }
