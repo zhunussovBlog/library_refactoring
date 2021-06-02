@@ -123,13 +123,15 @@
 				<span @click="selectable.showSelected ? selectable.showSelected(selected) : ()=>{}">{{$t('select_all',{num:this.selected.length})}}</span>
 			</div>
 			<div class="d-flex align-items-center pad">
-				<div class="d-flex align-items-center" v-if="selectable.selected">
-					<span class="text-no-wrap text-blue cursor-pointer" @click="selectable.copy(selected)" >{{$t('show_in_table')}}</span>
-					<span class="text-no-wrap text-blue cursor-pointer mx-3" @click="$eventHub.$emit('selectRefresh')">{{$t('clear_selected')}}</span>
-				</div>
-				<button type="button" class="outline-green" @click="selectable.func(selected)" v-if="selectable.func!=null">
+				<button type="button" class="outline-black" @click="selectable.func(selected)" v-if="selectable.func!=null">
 					{{$t(selectable.button_title)}}
 				</button>
+
+				<div class="d-flex align-items-center" v-if="selectable.selected">
+					<button class="outline-black mx-3" @click="selectable.copy(selected)" >{{$t('show_in_table')}}</button>
+					<button class="outline-black" @click="$eventHub.$emit('selectRefresh')">{{$t('clear_selected')}}</button>
+				</div>
+				
 			</div>
 		</div>
 		<!-- If there's a pagination -> then, there is a pagination : ) -->

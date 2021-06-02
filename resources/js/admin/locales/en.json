@@ -187,6 +187,8 @@
 
     "print": "Print barcode",
     "language": "Language",
+    "show_in_table": "Show in table",
+    "clear_selected": "Clear selected",
 
     "duration": "Duration",
     "duration_in_days": "Duration ( in days )",
