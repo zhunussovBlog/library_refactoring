@@ -11,7 +11,7 @@
                         <Print class="mr-2" />
                         Print call number
                     </button>
-                    <button class="outline-black">
+                    <button class="outline-black" @click="preview()">
                         Preview
                     </button>
                     <button class="outline-black mx-3">
@@ -118,17 +118,20 @@
     </div>
 </template>
 <script>
-// components
-import Back from '../../../components/common/Back.vue'
-import Print from '../../../assets/icons/Print.vue'
-
 // mixins
 import {goTo} from '../../../mixins/goTo';
 import {message_success,message_error} from '../../../mixins/messages';
 import {download_file} from '../../../mixins/common';
+import showModal from '../../../mixins/showModal';
+
+// components
+import Back from '../../../components/common/Back.vue'
+import Print from '../../../assets/icons/Print.vue'
+
+import Preview from './Preview'
 
 export default {
-    mixins:[goTo,message_error,message_success,download_file],
+    mixins:[goTo,message_error,message_success,download_file,showModal],
     props:{
         info:Object
     },
@@ -200,7 +203,7 @@ export default {
             new_data.ind2=''
             new_data.data=''
             new_data.is_added=true;
-            new_data.repeatable=0;
+            new_data.repeatable=null;
             
             this.tagSelected.data.splice(index+1, 0, new_data);
             
@@ -216,7 +219,7 @@ export default {
             this.sectioned[this.sectionSelected].info.splice(lindex,1);
         },
         save(){
-            this.$store.commit('sestFullPageLoading',true);
+            this.$store.commit('setFullPageLoading',true);
             let joinSections=()=>{
                 let res=[];
                 this.sectioned.forEach(section=>{
@@ -242,13 +245,16 @@ export default {
             }).catch(e=>{
                 this.message_error('edit',e);
             }).then(()=>{
-                this.$store.commit('sestFullPageLoading',false);
+                this.$store.commit('setFullPageLoading',false);
             })
         },
         saveXML(){
             this.$http.get(this.link+'/export/'+this.info.type_key+'/'+this.info.id).then(response=>{
                 this.download_file('xml_'+response,this.info.title,'xml');
             })
+        },
+        preview(){
+            this.showModal(Preview,{})
         }
     },
     created(){
