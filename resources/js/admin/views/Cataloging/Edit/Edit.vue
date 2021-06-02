@@ -11,7 +11,7 @@
                         <Print class="mr-2" />
                         Print call number
                     </button>
-                    <button class="outline-black">
+                    <button class="outline-black" @click="preview()">
                         Preview
                     </button>
                     <button class="outline-black mx-3">
@@ -51,9 +51,6 @@
                     </div>
                     <table class="table mt-3">
                         <thead>
-                            <!-- <tr>
-                                <th colspan="5" class="tline" />
-                            </tr> -->
                             <tr>
                                 <th>
                                     {{$t('title')}}
@@ -74,9 +71,6 @@
                                     &nbsp;
                                 </th>
                             </tr>
-                            <!-- <tr>
-                                <th colspan="5" class="tline" />
-                            </tr> -->
                         </thead>
                         <tbody>
                             <tr v-for="(info,index) in tagSelected.data" :key="index">
@@ -118,17 +112,20 @@
     </div>
 </template>
 <script>
-// components
-import Back from '../../../components/common/Back.vue'
-import Print from '../../../assets/icons/Print.vue'
-
 // mixins
 import {goTo} from '../../../mixins/goTo';
 import {message_success,message_error} from '../../../mixins/messages';
 import {download_file} from '../../../mixins/common';
+import showModal from '../../../mixins/showModal';
+
+// components
+import Back from '../../../components/common/Back.vue'
+import Print from '../../../assets/icons/Print.vue'
+
+import Preview from './Preview'
 
 export default {
-    mixins:[goTo,message_error,message_success,download_file],
+    mixins:[goTo,message_error,message_success,download_file,showModal],
     props:{
         info:Object
     },
@@ -145,8 +142,6 @@ export default {
     },
     methods:{
         getEditInfo(){
-            // +this.info.id
-            // +this.info.type_key+
             this.$store.commit('setFullPageLoading',true);
             this.$http.get(this.link+'/'+this.info.type_key+'/'+this.info.id).then(response=>{
                 this.edit_info=response.data.res;
@@ -200,7 +195,7 @@ export default {
             new_data.ind2=''
             new_data.data=''
             new_data.is_added=true;
-            new_data.repeatable=0;
+            new_data.repeatable=null;
             
             this.tagSelected.data.splice(index+1, 0, new_data);
             
@@ -216,7 +211,7 @@ export default {
             this.sectioned[this.sectionSelected].info.splice(lindex,1);
         },
         save(){
-            this.$store.commit('sestFullPageLoading',true);
+            this.$store.commit('setFullPageLoading',true);
             let joinSections=()=>{
                 let res=[];
                 this.sectioned.forEach(section=>{
@@ -242,13 +237,17 @@ export default {
             }).catch(e=>{
                 this.message_error('edit',e);
             }).then(()=>{
-                this.$store.commit('sestFullPageLoading',false);
+                this.$store.commit('setFullPageLoading',false);
             })
         },
         saveXML(){
             this.$http.get(this.link+'/export/'+this.info.type_key+'/'+this.info.id).then(response=>{
                 this.download_file('xml_'+response,this.info.title,'xml');
             })
+        },
+        preview(){
+            this.showModal(Preview,{info:this.sectioned,width:'100%',height:'100%',styles:'overflow:hidden'});
+            document.documentElement.classList.add("overflow-hidden");
         }
     },
     created(){
@@ -261,16 +260,8 @@ export default {
 }
 </script>
 <style scoped>
-/* table {
-	border-collapse: separate;
-    border-spacing:2em .875em;
-} */
-
 td{
 	border: none;
-    /* border-radius: .3125em;
-    
-	padding: 1em 1.25em; */
 }
 
 th {
@@ -280,10 +271,6 @@ th {
     border-left:none !important;
     border-right:none !important;
 }
-/* .tline{
-    border-top:0.0625em solid #E8E8E8 !important;
-    padding:0;
-} */
 input{
     width:unset;
 }
