@@ -188,6 +188,8 @@
 
     "print": "Распечатать баркод",
     "language": "Язык",
+    "show_in_table": "",
+    "clear_selected": "",
 
     "duration": "Продолжительность",
     "duration_in_days": "Продолжительность ( в днях )",

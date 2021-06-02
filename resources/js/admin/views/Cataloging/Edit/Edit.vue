@@ -102,7 +102,7 @@
                                 </td>
                                 <td>
                                     <div v-if="info.repeatable==1">
-                                        <button class="outline-blue" @click="removeSubtag(index)" v-if="info.is_added || info.repeateable==undefined">-</button>
+                                        <button class="outline-blue" @click="removeSubtag(index)" v-if="info.is_added || info.repeatable==undefined">-</button>
                                         <button class="outline-blue" @click="addSubtag(info,index)" v-else>+</button>
                                     </div>
                                 </td>
