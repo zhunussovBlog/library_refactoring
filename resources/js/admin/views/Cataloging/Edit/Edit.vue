@@ -51,9 +51,6 @@
                     </div>
                     <table class="table mt-3">
                         <thead>
-                            <!-- <tr>
-                                <th colspan="5" class="tline" />
-                            </tr> -->
                             <tr>
                                 <th>
                                     {{$t('title')}}
@@ -74,9 +71,6 @@
                                     &nbsp;
                                 </th>
                             </tr>
-                            <!-- <tr>
-                                <th colspan="5" class="tline" />
-                            </tr> -->
                         </thead>
                         <tbody>
                             <tr v-for="(info,index) in tagSelected.data" :key="index">
@@ -148,8 +142,6 @@ export default {
     },
     methods:{
         getEditInfo(){
-            // +this.info.id
-            // +this.info.type_key+
             this.$store.commit('setFullPageLoading',true);
             this.$http.get(this.link+'/'+this.info.type_key+'/'+this.info.id).then(response=>{
                 this.edit_info=response.data.res;
@@ -254,7 +246,8 @@ export default {
             })
         },
         preview(){
-            this.showModal(Preview,{})
+            this.showModal(Preview,{info:this.sectioned,width:'100%',height:'100%',styles:'overflow:hidden'});
+            document.documentElement.classList.add("overflow-hidden");
         }
     },
     created(){
@@ -267,16 +260,8 @@ export default {
 }
 </script>
 <style scoped>
-/* table {
-	border-collapse: separate;
-    border-spacing:2em .875em;
-} */
-
 td{
 	border: none;
-    /* border-radius: .3125em;
-    
-	padding: 1em 1.25em; */
 }
 
 th {
@@ -286,10 +271,6 @@ th {
     border-left:none !important;
     border-right:none !important;
 }
-/* .tline{
-    border-top:0.0625em solid #E8E8E8 !important;
-    padding:0;
-} */
 input{
     width:unset;
 }
