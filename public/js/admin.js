@@ -2803,7 +2803,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 // mixins 
 
  // icons
@@ -5539,8 +5538,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 // components
 
  // mixins
@@ -5636,12 +5633,15 @@ __webpack_require__.r(__webpack_exports__);
       new_data.ind2 = '';
       new_data.data = '';
       new_data.is_added = true;
+      new_data.repeatable = 0;
       this.tagSelected.data.splice(index + 1, 0, new_data);
       var lindex = this.sectioned[this.sectionSelected].info.indexOf(info);
       this.sectioned[this.sectionSelected].info.splice(lindex + 1, 0, new_data);
     },
-    removeSubtag: function removeSubtag(index) {
+    removeSubtag: function removeSubtag(info, index) {
       this.tagSelected.data.splice(index, 1);
+      var lindex = this.sectioned[this.sectionSelected].info.indexOf(info);
+      this.sectioned[this.sectionSelected].info.splice(lindex, 1);
     },
     save: function save() {
       var _this2 = this;
@@ -29270,7 +29270,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* table {\n\tborder-collapse: separate;\n    border-spacing:2em .875em;\n} */\ntd[data-v-e49fe630]{\n\tborder: none;\n    /* border-radius: .3125em;\n    \n\tpadding: 1em 1.25em; */\n}\nth[data-v-e49fe630] {\n\ttext-align: left;\n\tfont-weight: 500;\n    border: 1px solid #E8E8E8 !important;\n    border-left:none !important;\n    border-right:none !important;\n}\n/* .tline{\n    border-top:0.0625em solid #E8E8E8 !important;\n    padding:0;\n} */\ninput[data-v-e49fe630]{\n    width:unset;\n}\ninput[data-v-e49fe630],input[data-v-e49fe630]:disabled{\n    border-color: inherit;\n}\n.little_td[data-v-e49fe630]{\n    width:7%;\n}\n.little_input[data-v-e49fe630]{\n    width:2.5em;\n    padding-left: .125em;\n    padding-right: .125em;\n    text-align: center;\n}\n.td_no_input[data-v-e49fe630]{\n    border:1px solid #E8E8E8;\n    border-left:none;\n    border-radius: .3125em;\n\tpadding: 1em 1.25em;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* table {\n\tborder-collapse: separate;\n    border-spacing:2em .875em;\n} */\ntd[data-v-e49fe630]{\n\tborder: none;\n    /* border-radius: .3125em;\n    \n\tpadding: 1em 1.25em; */\n}\nth[data-v-e49fe630] {\n\ttext-align: left;\n\tfont-weight: 500;\n    border: 1px solid #E8E8E8 !important;\n    border-left:none !important;\n    border-right:none !important;\n}\n/* .tline{\n    border-top:0.0625em solid #E8E8E8 !important;\n    padding:0;\n} */\ninput[data-v-e49fe630]{\n    width:unset;\n}\ninput[data-v-e49fe630],input[data-v-e49fe630]:disabled{\n    border-color: inherit;\n}\n.little_td[data-v-e49fe630]{\n    width:7%;\n}\n.little_input[data-v-e49fe630]{\n    width:2.5em;\n    padding-left: .125em;\n    padding-right: .125em;\n    text-align: center;\n}\n.td_no_input[data-v-e49fe630]{\n    border:1px solid #E8E8E8;\n    border-left:none;\n    border-radius: .3125em;\n\tpadding: 1em 1.25em;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -67249,6 +67249,36 @@ var render = function() {
             ),
             _vm._v(" "),
             _c("div", { staticClass: "d-flex align-items-center pad" }, [
+              _vm.selectable.selected
+                ? _c("div", { staticClass: "d-flex align-items-center" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "outline-black",
+                        on: {
+                          click: function($event) {
+                            return _vm.selectable.copy(_vm.selected)
+                          }
+                        }
+                      },
+                      [_vm._v(_vm._s(_vm.$t("show_in_table")))]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "outline-black mx-3",
+                        on: {
+                          click: function($event) {
+                            return _vm.$eventHub.$emit("selectRefresh")
+                          }
+                        }
+                      },
+                      [_vm._v(_vm._s(_vm.$t("clear_selected")))]
+                    )
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
               _vm.selectable.func != null
                 ? _c(
                     "button",
@@ -67269,36 +67299,6 @@ var render = function() {
                       )
                     ]
                   )
-                : _vm._e(),
-              _vm._v(" "),
-              _vm.selectable.selected
-                ? _c("div", { staticClass: "d-flex align-items-center" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "outline-black mx-3",
-                        on: {
-                          click: function($event) {
-                            return _vm.selectable.copy(_vm.selected)
-                          }
-                        }
-                      },
-                      [_vm._v(_vm._s(_vm.$t("show_in_table")))]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "outline-black",
-                        on: {
-                          click: function($event) {
-                            return _vm.$eventHub.$emit("selectRefresh")
-                          }
-                        }
-                      },
-                      [_vm._v(_vm._s(_vm.$t("clear_selected")))]
-                    )
-                  ])
                 : _vm._e()
             ])
           ]
@@ -71284,34 +71284,34 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("td", [
+                    info.is_added || info.repeatable == undefined
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "outline-blue",
+                            on: {
+                              click: function($event) {
+                                return _vm.removeSubtag(info, index)
+                              }
+                            }
+                          },
+                          [_vm._v("-")]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
                     info.repeatable == 1
-                      ? _c("div", [
-                          info.is_added || info.repeatable == undefined
-                            ? _c(
-                                "button",
-                                {
-                                  staticClass: "outline-blue",
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.removeSubtag(index)
-                                    }
-                                  }
-                                },
-                                [_vm._v("-")]
-                              )
-                            : _c(
-                                "button",
-                                {
-                                  staticClass: "outline-blue",
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.addSubtag(info, index)
-                                    }
-                                  }
-                                },
-                                [_vm._v("+")]
-                              )
-                        ])
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "outline-blue",
+                            on: {
+                              click: function($event) {
+                                return _vm.addSubtag(info, index)
+                              }
+                            }
+                          },
+                          [_vm._v("+")]
+                        )
                       : _vm._e()
                   ])
                 ])
@@ -90808,7 +90808,7 @@ module.exports = JSON.parse("{\"back\":\"Back\",\"ok\":\"OK\",\"acquisitions\":\
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse("{\"back\":\"Артқа\",\"ok\":\"ОК\",\"acquisitions\":\"Кітап қабылдау\",\"batches\":\"Партия | Партиялар\",\"items\":\"Дана | Даналар\",\"publishers\":\"Баспагер | Баспагерлер\",\"suppliers\":\"Жеткізуші | Жеткізушілер\",\"table\":\"Таблица\",\"logout\":\"Шығу\",\"search\":\"Іздеу\",\"searching\":\"Іздеу\",\"reset\":\"Қалпына келтіру\",\"load_all\":\"Барін көрсету\",\"count\":\"Сандар\",\"save\":\"Сақтау\",\"cancel\":\"Бас тарту\",\"cost\":\"Бағасы\",\"from\":\"Бастап\",\"until\":\"Дейін\",\"not_found\":\"Деректер табылмады\",\"create_date\":\"Форма толтырылған күні\",\"edit_date\":\"Форма өзгертілген күні\",\"results\":\"Нәтижелер\",\"results_of\":\"нәтиже табылды\",\"yes\":\"Ия\",\"no\":\"Жоқ\",\"edit\":\"Өзгерту\",\"delete\":\"Жою\",\"create\":\"Қосу\",\"show_more\":\"Көбірек\",\"more\":\"Көбірек ...\",\"confirmation\":\"Жойғыңыз келетініне сенімдісіз бе?\",\"sort_by\":\"Сұрыптау\",\"search_by\":\"{type} іздеу\",\"author_by\":\"Авторымен\",\"title_by\":\"Тақырырбымен\",\"barcode_by\":\"Баркодымен\",\"batch_id_by\":\"Партия нөмірімен\",\"id_by\":\"Инвентарь нөмірімен\",\"isbn_by\":\"ISBN-мен\",\"and\":\"Және\",\"or\":\"Немесе\",\"not\":\"Емес\",\"per_page\":\"Парақтагы нәтижелер саны\",\"apply\":\"Растау\",\"showing_pages\":\"{total} нәтиженің {from} - {to} көрсетілуде\",\"page\":\"Бет\",\"page_num\":\"{num} бет\",\"previous\":\"Артқа\",\"next\":\"Келесі\",\"move_to\":\"Өту\",\"asc\":\"Өсу\",\"desc\":\"Азаю\",\"refresh\":\"Жаңарту\",\"choose\":\"Таңдаңыз\",\"choose_search_mode\":\"Іздеу режимін таңдаңыз\",\"save_&_search\":\"Сақтау және іздеу\",\"error\":\"Қате !\",\"batch_filter\":\"Партиялық сүзгі\",\"item_filter\":\"Даналық сүзгі\",\"search_batches\":\"Партия іздеу\",\"search_items\":\"Дана іздеу\",\"search_barcodes\":\"Баркод іздеу\",\"batches_number\":\"Партия нөмірі\",\"batches_by\":\"Партия нөмірімен\",\"add_batch\":\"Партия қосу\",\"add_item\":\"Дана қосу\",\"create_batches\":\"Партия қосу\",\"create_items\":\"Дана қосу\",\"create_supplier\":\"Жеткізуші қосу\",\"create_publisher\":\"Баспагер қосу\",\"edit_batches\":\"Партия өзгерту\",\"edit_items\":\"Дана өзгерту\",\"edit_supplier\":\"Жеткізуші өзгерту\",\"edit_publisher\":\"Баспагер өзгерту\",\"recreate\":\"Қайта қосу\",\"reCreate_items\":\"Дана қайта қосу\",\"type_of_supply\":\"Жеткізу түрі\",\"type_of_item\":\"Дана түрі\",\"quantity_items\":\"Дана саны\",\"quantity_titles\":\"Тақырып саны\",\"document_number\":\"Документ нөмірі\",\"contract_number\":\"Контракт нөмірі\",\"inventory_number\":\"Инвентарь нөмірі\",\"inv_id\":\"Инвентарь нөмірі\",\"types\":\"Түрлер\",\"filled_in\":\"Енгізілді\",\"made_actually\":\"Негізгі саны\",\"correct\":\"Дұрыс\",\"titles_no_match\":\"Тақырыптар саны сәйкес келмейді\",\"items_no_match\":\"Даналар саны сәйкес келмейді\",\"add_input\":\"Енгізуді қосу +\",\"status\":\"Статус\",\"invoice_date\":\"Жеткізген күні\",\"by_contract\":\"Контракт арқылы\",\"invoice_details\":\"Жеткізу деректері\",\"barcode\":\"Баркод\",\"isbn\":\"ISBN\",\"created_by\":\"Толтырылды\",\"edited_by\":\"Өзгертілді\",\"titles\":\"Атау | Атаулар\",\"title\":\"Атау\",\"author\":\"Автор\",\"year\":\"Жылы\",\"pub_year\":\"Баспа жылы\",\"pub_city\":\"Баспа қаласы\",\"location\":\"Орналасқан жері\",\"fill_date\":\"Толтырылған күні\",\"beginning\":\"Бастап\",\"end\":\"Дейін\",\"currency\":\"Валютасы\",\"author-title\":\"Автор - атауы\",\"name\":\"Аты\",\"name_by\":\"Атымен\",\"commercial_name\":\"Коммерциялық аты\",\"bin\":\"BIN / IIN\",\"contact\":\"Байланыстар\",\"address\":\"Мекен-жайы\",\"email\":\"Электрондық поштасы\",\"phone\":\"Телефон нөмірі\",\"fax\":\"Факс\",\"service_desk\":\"Қызмет көрсету\",\"users\":\"Пайдаланушылар\",\"books\":\"Кітаптар тарихы\",\"search_user\":\"Пайдаланушы іздеу\",\"type\":\"Түрі\",\"student\":\"Студент\",\"employee\":\"Қызметкер\",\"all\":\"Бәрі\",\"username\":\"Пайдаланушы аты\",\"user_id\":\"Пайдаланушы ID\",\"user_id_user\":\"Пайдаланушы ID (немесе аты || жөні)\",\"username_user\":\"Пайдаланушы аты (немесе аты || жөні)\",\"surname\":\"Тегі\",\"section\":\"Бөлімі\",\"serve\":\"Кітап беру\",\"check_in\":\"Беру\",\"search_material\":\"Материал іздеу\",\"user_info\":\"Пайдаланушы туралы ақпарат\",\"full_name\":\"Аты - тегі\",\"degree\":\"Дәрежесі\",\"class\":\"Оқу жылы\",\"faculty\":\"Факультеті\",\"program\":\"Бағдарламасы\",\"id\":\"ID\",\"mobile\":\"Телефон нөмірі\",\"more_info\":\"Толығырақ\",\"select_all\":\"Барлығын таңдау ( {num} таңдалды )\",\"delivery_date\":\"Жеткізілім уақыты\",\"due_date\":\"Мерзімнің өту күні\",\"issue_date\":\"Берілген күні\",\"borrow_date\":\"Қарызға алу күні\",\"last_user_borrowed\":\"Соңғы пайдаланушы\",\"give_material\":\"Материал беру\",\"hesab_id\":\"Партия ID\",\"batch_id\":\"Партия ID\",\"items_no\":\"Дана саны\",\"titles_no\":\"Тақырып саны\",\"receive_date\":\"Толтырылған күні\",\"supplier_id\":\"Жеткізуші ID\",\"supplier_name\":\"Жеткізущі аты\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"Баспагер ID\",\"com_name\":\"Коммерциялық аты\",\"reports\":\"Есептер\",\"attendance\":\"Қатысу\",\"mrbooks\":\"Көпшілігі оқитын кітаптар\",\"attendance_statistics\":\"Қатысушылардың виртуалды статистикасы\",\"show_for_week\":\"Бір апта бойынша көрсету\",\"show_for_month\":\"Бір ай бойынша көрсету\",\"in_lib_by_week\":\"Бір аптада кітапханада\",\"in_lib_by_month\":\"Бір жылда кітапханада\",\"print\":\"Баркодты басып шығару\",\"language\":\"Тілі\",\"show_in_table\":\"\",\"clear_selected\":\"\",\"duration\":\"Ұзақтығы\",\"duration_in_days\":\"Ұзақтығы ( күндермен )\",\"edit_duration\":\"Ұзақтықты өзгерту\",\"issuance\":\"Беру\",\"return\":\"Қайтару\",\"history\":\"Тарих\",\"dept\":\"Мерзімі өткен\",\"borrowed\":\"Қарызға алынған\",\"returned\":\"Қайтарылған\",\"initialize\":\"Инициализациялау\",\"read_from_rfid\":\"RFID-ден оқу\",\"init_status\":\"Инициализацияланған\",\"print_status\":\"Басылған\",\"date\":\"Дата\",\"days\":\"Күндер\",\"cataloging\":\"Каталогтау\",\"search_cataloging\":\"ISBN || Атауы || Автор бойынша іздеу\",\"edit_rec\":\"Жазбаны өңдеу\"}");
+module.exports = JSON.parse("{\"back\":\"Артқа\",\"ok\":\"ОК\",\"acquisitions\":\"Кітап қабылдау\",\"batches\":\"Партия | Партиялар\",\"items\":\"Дана | Даналар\",\"publishers\":\"Баспагер | Баспагерлер\",\"suppliers\":\"Жеткізуші | Жеткізушілер\",\"table\":\"Таблица\",\"logout\":\"Шығу\",\"search\":\"Іздеу\",\"searching\":\"Іздеу\",\"reset\":\"Қалпына келтіру\",\"load_all\":\"Барін көрсету\",\"count\":\"Сандар\",\"save\":\"Сақтау\",\"cancel\":\"Бас тарту\",\"cost\":\"Бағасы\",\"from\":\"Бастап\",\"until\":\"Дейін\",\"not_found\":\"Деректер табылмады\",\"create_date\":\"Форма толтырылған күні\",\"edit_date\":\"Форма өзгертілген күні\",\"results\":\"Нәтижелер\",\"results_of\":\"нәтиже табылды\",\"yes\":\"Ия\",\"no\":\"Жоқ\",\"edit\":\"Өзгерту\",\"delete\":\"Жою\",\"create\":\"Қосу\",\"show_more\":\"Көбірек\",\"more\":\"Көбірек ...\",\"confirmation\":\"Жойғыңыз келетініне сенімдісіз бе?\",\"sort_by\":\"Сұрыптау\",\"search_by\":\"{type} іздеу\",\"author_by\":\"Авторымен\",\"title_by\":\"Тақырырбымен\",\"barcode_by\":\"Баркодымен\",\"batch_id_by\":\"Партия нөмірімен\",\"id_by\":\"Инвентарь нөмірімен\",\"isbn_by\":\"ISBN-мен\",\"and\":\"Және\",\"or\":\"Немесе\",\"not\":\"Емес\",\"per_page\":\"Парақтагы нәтижелер саны\",\"apply\":\"Растау\",\"showing_pages\":\"{total} нәтиженің {from} - {to} көрсетілуде\",\"page\":\"Бет\",\"page_num\":\"{num} бет\",\"previous\":\"Артқа\",\"next\":\"Келесі\",\"move_to\":\"Өту\",\"asc\":\"Өсу\",\"desc\":\"Азаю\",\"refresh\":\"Жаңарту\",\"choose\":\"Таңдаңыз\",\"choose_search_mode\":\"Іздеу режимін таңдаңыз\",\"save_&_search\":\"Сақтау және іздеу\",\"error\":\"Қате !\",\"batch_filter\":\"Партиялық сүзгі\",\"item_filter\":\"Даналық сүзгі\",\"search_batches\":\"Партия іздеу\",\"search_items\":\"Дана іздеу\",\"search_barcodes\":\"Баркод іздеу\",\"batches_number\":\"Партия нөмірі\",\"batches_by\":\"Партия нөмірімен\",\"add_batch\":\"Партия қосу\",\"add_item\":\"Дана қосу\",\"create_batches\":\"Партия қосу\",\"create_items\":\"Дана қосу\",\"create_supplier\":\"Жеткізуші қосу\",\"create_publisher\":\"Баспагер қосу\",\"edit_batches\":\"Партия өзгерту\",\"edit_items\":\"Дана өзгерту\",\"edit_supplier\":\"Жеткізуші өзгерту\",\"edit_publisher\":\"Баспагер өзгерту\",\"recreate\":\"Қайта қосу\",\"reCreate_items\":\"Дана қайта қосу\",\"type_of_supply\":\"Жеткізу түрі\",\"type_of_item\":\"Дана түрі\",\"quantity_items\":\"Дана саны\",\"quantity_titles\":\"Тақырып саны\",\"document_number\":\"Документ нөмірі\",\"contract_number\":\"Контракт нөмірі\",\"inventory_number\":\"Инвентарь нөмірі\",\"inv_id\":\"Инвентарь нөмірі\",\"types\":\"Түрлер\",\"filled_in\":\"Енгізілді\",\"made_actually\":\"Негізгі саны\",\"correct\":\"Дұрыс\",\"titles_no_match\":\"Тақырыптар саны сәйкес келмейді\",\"items_no_match\":\"Даналар саны сәйкес келмейді\",\"add_input\":\"Енгізуді қосу +\",\"status\":\"Статус\",\"invoice_date\":\"Жеткізген күні\",\"by_contract\":\"Контракт арқылы\",\"invoice_details\":\"Жеткізу деректері\",\"barcode\":\"Баркод\",\"isbn\":\"ISBN\",\"created_by\":\"Толтырылды\",\"edited_by\":\"Өзгертілді\",\"titles\":\"Атау | Атаулар\",\"title\":\"Атау\",\"author\":\"Автор\",\"year\":\"Жылы\",\"pub_year\":\"Баспа жылы\",\"pub_city\":\"Баспа қаласы\",\"location\":\"Орналасқан жері\",\"fill_date\":\"Толтырылған күні\",\"beginning\":\"Бастап\",\"end\":\"Дейін\",\"currency\":\"Валютасы\",\"author-title\":\"Автор - атауы\",\"name\":\"Аты\",\"name_by\":\"Атымен\",\"commercial_name\":\"Коммерциялық аты\",\"bin\":\"BIN / IIN\",\"contact\":\"Байланыстар\",\"address\":\"Мекен-жайы\",\"email\":\"Электрондық поштасы\",\"phone\":\"Телефон нөмірі\",\"fax\":\"Факс\",\"service_desk\":\"Қызмет көрсету\",\"users\":\"Пайдаланушылар\",\"books\":\"Кітаптар тарихы\",\"search_user\":\"Пайдаланушы іздеу\",\"type\":\"Түрі\",\"student\":\"Студент\",\"employee\":\"Қызметкер\",\"all\":\"Бәрі\",\"username\":\"Пайдаланушы аты\",\"user_id\":\"Пайдаланушы ID\",\"user_id_user\":\"Пайдаланушы ID (немесе аты || жөні)\",\"username_user\":\"Пайдаланушы аты (немесе аты || жөні)\",\"surname\":\"Тегі\",\"section\":\"Бөлімі\",\"serve\":\"Кітап беру\",\"check_in\":\"Беру\",\"search_material\":\"Материал іздеу\",\"user_info\":\"Пайдаланушы туралы ақпарат\",\"full_name\":\"Аты - тегі\",\"degree\":\"Дәрежесі\",\"class\":\"Оқу жылы\",\"faculty\":\"Факультеті\",\"program\":\"Бағдарламасы\",\"id\":\"ID\",\"mobile\":\"Телефон нөмірі\",\"more_info\":\"Толығырақ\",\"select_all\":\"Барлығын таңдау ( {num} таңдалды )\",\"delivery_date\":\"Жеткізілім уақыты\",\"due_date\":\"Мерзімнің өту күні\",\"issue_date\":\"Берілген күні\",\"borrow_date\":\"Қарызға алу күні\",\"last_user_borrowed\":\"Соңғы пайдаланушы\",\"give_material\":\"Материал беру\",\"hesab_id\":\"Партия ID\",\"batch_id\":\"Партия ID\",\"items_no\":\"Дана саны\",\"titles_no\":\"Тақырып саны\",\"receive_date\":\"Толтырылған күні\",\"supplier_id\":\"Жеткізуші ID\",\"supplier_name\":\"Жеткізущі аты\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"Баспагер ID\",\"com_name\":\"Коммерциялық аты\",\"reports\":\"Есептер\",\"attendance\":\"Қатысу\",\"mrbooks\":\"Көпшілігі оқитын кітаптар\",\"attendance_statistics\":\"Қатысушылардың виртуалды статистикасы\",\"show_for_week\":\"Бір апта бойынша көрсету\",\"show_for_month\":\"Бір ай бойынша көрсету\",\"in_lib_by_week\":\"Бір аптада кітапханада\",\"in_lib_by_month\":\"Бір жылда кітапханада\",\"print\":\"Баркодты басып шығару\",\"language\":\"Тілі\",\"show_in_table\":\"Кестеде көрсету\",\"clear_selected\":\"Таңдалғандарды жою\",\"duration\":\"Ұзақтығы\",\"duration_in_days\":\"Ұзақтығы ( күндермен )\",\"edit_duration\":\"Ұзақтықты өзгерту\",\"issuance\":\"Беру\",\"return\":\"Қайтару\",\"history\":\"Тарих\",\"dept\":\"Мерзімі өткен\",\"borrowed\":\"Қарызға алынған\",\"returned\":\"Қайтарылған\",\"initialize\":\"Инициализациялау\",\"read_from_rfid\":\"RFID-ден оқу\",\"init_status\":\"Инициализацияланған\",\"print_status\":\"Басылған\",\"date\":\"Дата\",\"days\":\"Күндер\",\"cataloging\":\"Каталогтау\",\"search_cataloging\":\"ISBN || Атауы || Автор бойынша іздеу\",\"edit_rec\":\"Жазбаны өңдеу\"}");
 
 /***/ }),
 
@@ -90819,7 +90819,7 @@ module.exports = JSON.parse("{\"back\":\"Артқа\",\"ok\":\"ОК\",\"acquisit
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse("{\"back\":\"Назад\",\"ok\":\"OK\",\"acquisitions\":\"Комплектование\",\"batches\":\"Партия | Партии\",\"items\":\"Экземлпяр | Экземпляры\",\"publishers\":\"Издатель | Издатели\",\"suppliers\":\"Поставщик | Поставщики\",\"table\":\"Таблица\",\"logout\":\"Выйти\",\"search\":\"Найти\",\"searching\":\"Поиск\",\"reset\":\"Сброс\",\"load_all\":\"Загрузить все\",\"count\":\"Количество\",\"save\":\"Сохранить\",\"cancel\":\"Отменить\",\"cost\":\"Цена\",\"from\":\"От\",\"until\":\"До\",\"not_found\":\"Ничего не найдено\",\"create_date\":\"Дата заполнения формы\",\"edit_date\":\"Дата изменения формы\",\"results\":\"Результаты\",\"results_of\":\"результатов\",\"yes\":\"Да\",\"no\":\"Нет\",\"edit\":\"Изменить\",\"delete\":\"Удалить\",\"create\":\"Создать\",\"show_more\":\"Узнать больше\",\"more\":\"Больше ...\",\"confirmation\":\"Вы действительно хотите удалить?\",\"sort_by\":\"Сортировать по\",\"search_by\":\"Искать по {type}\",\"author_by\":\"автору\",\"title_by\":\"заглавию\",\"barcode_by\":\"баркоду\",\"batch_id_by\":\"номеру партии\",\"id_by\":\"номеру инвентаря\",\"isbn_by\":\"ISBN\",\"and\":\"И\",\"or\":\"Или\",\"not\":\"Не\",\"per_page\":\"Результатов на странице\",\"apply\":\"Подтвердить\",\"showing_pages\":\"{from} - {to} из {total}\",\"page\":\"Стр.\",\"page_num\":\"{num} страница\",\"previous\":\"Назад\",\"next\":\"Вперед\",\"move_to\":\"Перейти\",\"asc\":\"По возрастанию\",\"desc\":\"По убыванию\",\"refresh\":\"Обновить\",\"choose\":\"Выберите\",\"choose_search_mode\":\"Выберите режим поиска\",\"save_&_search\":\"Сохранить и искать\",\"error\":\"Ошибка !\",\"batch_filter\":\"Фильтр партий\",\"item_filter\":\"Фильтр экземпляров\",\"search_batches\":\"Искать партию\",\"search_items\":\"Искать экземпляр\",\"search_barcodes\":\"Искать баркоды\",\"batches_number\":\"Номер партии\",\"batches_by\":\"по номеру партии\",\"add_batch\":\"Добавить партию\",\"add_item\":\"Добавить экземпляр\",\"create_batches\":\"Создать партию\",\"create_items\":\"Создать экземпляр\",\"create_supplier\":\"Создать поставщика\",\"create_publisher\":\"Создать издателя\",\"edit_batches\":\"Изменить партию\",\"edit_items\":\"Изменить экземпляр\",\"edit_supplier\":\"Изменить поставщика\",\"edit_publisher\":\"Изменить издателя\",\"recreate\":\"Пересоздать\",\"reCreate_items\":\"Пересоздать экземпляр\",\"type_of_supply\":\"Тип поставки\",\"type_of_item\":\"Тип экземпляра\",\"quantity_items\":\"Количество экземпляров\",\"quantity_titles\":\"Количество заглавий\",\"document_number\":\"Номер документа\",\"contract_number\":\"Контрактный номер\",\"inventory_number\":\"Номер инвентаря\",\"inv_id\":\"Номер инвентаря\",\"types\":\"Types\",\"filled_in\":\"Введено\",\"made_actually\":\"Введено фактически\",\"correct\":\"Правильно\",\"titles_no_match\":\"Количество заглавий не совпадает\",\"items_no_match\":\"Количество экземпляров не совпадает\",\"add_input\":\"Добавить входные данные +\",\"status\":\"Статус\",\"invoice_date\":\"Дата счета-фактуры\",\"by_contract\":\"По контракту\",\"invoice_details\":\"Информация о счете-фактуре\",\"barcode\":\"Баркод\",\"isbn\":\"ISBN\",\"created_by\":\"Заполнено\",\"edited_by\":\"Изменено\",\"titles\":\"Заглавие | Заглавия\",\"title\":\"Заглавие\",\"author\":\"Автор\",\"year\":\"Год\",\"pub_year\":\"Год издания\",\"pub_city\":\"Город издания\",\"location\":\"Место расположения\",\"fill_date\":\"Дата заполнения\",\"beginning\":\"От\",\"end\":\"До\",\"currency\":\"Валюта\",\"author-title\":\"Автор - заглавие\",\"name\":\"Имя\",\"name_by\":\"по имени\",\"commercial_name\":\"Коммерческое имя\",\"bin\":\"BIN / IIN\",\"contact\":\"Контакты\",\"address\":\"Адресс\",\"email\":\"Электронная почта\",\"phone\":\"Номер телефона\",\"fax\":\"Факс\",\"service_desk\":\"Служба поддержки\",\"users\":\"Пользователи\",\"books\":\"История книг\",\"search_user\":\"Найти пользователя\",\"type\":\"Тип\",\"student\":\"Студент\",\"employee\":\"Работник\",\"all\":\"Все\",\"username\":\"Имя пользователя\",\"user_id\":\"ID пользователя\",\"user_id_user\":\"ID пользователя (или имя || фамилия)\",\"username_user\":\"Имя пользователя (или имя || фамилия)\",\"surname\":\"Фамилия\",\"section\":\"Раздел\",\"serve\":\"Выдача книг\",\"check_in\":\"Выдать\",\"search_material\":\"Поиск материала\",\"user_info\":\"Информация о пользователе\",\"full_name\":\"Имя - фамилия\",\"degree\":\"Степень\",\"class\":\"Год\",\"faculty\":\"Факультет\",\"program\":\"Программа\",\"id\":\"ID\",\"mobile\":\"Номер телефона\",\"more_info\":\"Подробнее\",\"select_all\":\"Выбрать все ( {num} выбрано )\",\"delivery_date\":\"Дата доставки\",\"due_date\":\"Дата сдачи\",\"issue_date\":\"Дата выпуска\",\"borrow_date\":\"Дата заимствования\",\"last_user_borrowed\":\"Последний пользователь\",\"give_material\":\"Дать материал\",\"hesab_id\":\"ID партии\",\"batch_id\":\"ID партии\",\"items_no\":\"Количество экземпляров\",\"titles_no\":\"Количество заглавий\",\"receive_date\":\"Дата заполнения\",\"supplier_id\":\"ID поставщика\",\"supplier_name\":\"Имя поставщика\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"ID издателя\",\"com_name\":\"Коммерческое имя\",\"reports\":\"Отчеты\",\"attendance\":\"Посещаемость\",\"mrbooks\":\"Самые читаемые книги\",\"attendance_statistics\":\"Статистика виртуальной посещаемости\",\"show_for_week\":\"Показать за неделю\",\"show_for_month\":\"Показать за месяц\",\"in_lib_by_week\":\"В библиотеке за неделю\",\"in_lib_by_month\":\"В библиотеке за год\",\"print\":\"Распечатать баркод\",\"language\":\"Язык\",\"show_in_table\":\"\",\"clear_selected\":\"\",\"duration\":\"Продолжительность\",\"duration_in_days\":\"Продолжительность ( в днях )\",\"edit_duration\":\"Изменить продолжительность\",\"issuance\":\"Выдача\",\"return\":\"Возврат\",\"history\":\"История\",\"dept\":\"Просроченный\",\"borrowed\":\"Взяли\",\"returned\":\"Вернули\",\"initialize\":\"Инициализировать\",\"read_from_rfid\":\"Читать из RFID\",\"init_status\":\"Инициализирован\",\"print_status\":\"Распечатан\",\"date\":\"Дата\",\"days\":\"Дни\",\"cataloging\":\"Каталогизация\",\"search_cataloging\":\"Поиск по ISBN || Название || Автор\",\"edit_rec\":\"Редактировать запись\"}");
+module.exports = JSON.parse("{\"back\":\"Назад\",\"ok\":\"OK\",\"acquisitions\":\"Комплектование\",\"batches\":\"Партия | Партии\",\"items\":\"Экземлпяр | Экземпляры\",\"publishers\":\"Издатель | Издатели\",\"suppliers\":\"Поставщик | Поставщики\",\"table\":\"Таблица\",\"logout\":\"Выйти\",\"search\":\"Найти\",\"searching\":\"Поиск\",\"reset\":\"Сброс\",\"load_all\":\"Загрузить все\",\"count\":\"Количество\",\"save\":\"Сохранить\",\"cancel\":\"Отменить\",\"cost\":\"Цена\",\"from\":\"От\",\"until\":\"До\",\"not_found\":\"Ничего не найдено\",\"create_date\":\"Дата заполнения формы\",\"edit_date\":\"Дата изменения формы\",\"results\":\"Результаты\",\"results_of\":\"результатов\",\"yes\":\"Да\",\"no\":\"Нет\",\"edit\":\"Изменить\",\"delete\":\"Удалить\",\"create\":\"Создать\",\"show_more\":\"Узнать больше\",\"more\":\"Больше ...\",\"confirmation\":\"Вы действительно хотите удалить?\",\"sort_by\":\"Сортировать по\",\"search_by\":\"Искать по {type}\",\"author_by\":\"автору\",\"title_by\":\"заглавию\",\"barcode_by\":\"баркоду\",\"batch_id_by\":\"номеру партии\",\"id_by\":\"номеру инвентаря\",\"isbn_by\":\"ISBN\",\"and\":\"И\",\"or\":\"Или\",\"not\":\"Не\",\"per_page\":\"Результатов на странице\",\"apply\":\"Подтвердить\",\"showing_pages\":\"{from} - {to} из {total}\",\"page\":\"Стр.\",\"page_num\":\"{num} страница\",\"previous\":\"Назад\",\"next\":\"Вперед\",\"move_to\":\"Перейти\",\"asc\":\"По возрастанию\",\"desc\":\"По убыванию\",\"refresh\":\"Обновить\",\"choose\":\"Выберите\",\"choose_search_mode\":\"Выберите режим поиска\",\"save_&_search\":\"Сохранить и искать\",\"error\":\"Ошибка !\",\"batch_filter\":\"Фильтр партий\",\"item_filter\":\"Фильтр экземпляров\",\"search_batches\":\"Искать партию\",\"search_items\":\"Искать экземпляр\",\"search_barcodes\":\"Искать баркоды\",\"batches_number\":\"Номер партии\",\"batches_by\":\"по номеру партии\",\"add_batch\":\"Добавить партию\",\"add_item\":\"Добавить экземпляр\",\"create_batches\":\"Создать партию\",\"create_items\":\"Создать экземпляр\",\"create_supplier\":\"Создать поставщика\",\"create_publisher\":\"Создать издателя\",\"edit_batches\":\"Изменить партию\",\"edit_items\":\"Изменить экземпляр\",\"edit_supplier\":\"Изменить поставщика\",\"edit_publisher\":\"Изменить издателя\",\"recreate\":\"Пересоздать\",\"reCreate_items\":\"Пересоздать экземпляр\",\"type_of_supply\":\"Тип поставки\",\"type_of_item\":\"Тип экземпляра\",\"quantity_items\":\"Количество экземпляров\",\"quantity_titles\":\"Количество заглавий\",\"document_number\":\"Номер документа\",\"contract_number\":\"Контрактный номер\",\"inventory_number\":\"Номер инвентаря\",\"inv_id\":\"Номер инвентаря\",\"types\":\"Types\",\"filled_in\":\"Введено\",\"made_actually\":\"Введено фактически\",\"correct\":\"Правильно\",\"titles_no_match\":\"Количество заглавий не совпадает\",\"items_no_match\":\"Количество экземпляров не совпадает\",\"add_input\":\"Добавить входные данные +\",\"status\":\"Статус\",\"invoice_date\":\"Дата счета-фактуры\",\"by_contract\":\"По контракту\",\"invoice_details\":\"Информация о счете-фактуре\",\"barcode\":\"Баркод\",\"isbn\":\"ISBN\",\"created_by\":\"Заполнено\",\"edited_by\":\"Изменено\",\"titles\":\"Заглавие | Заглавия\",\"title\":\"Заглавие\",\"author\":\"Автор\",\"year\":\"Год\",\"pub_year\":\"Год издания\",\"pub_city\":\"Город издания\",\"location\":\"Место расположения\",\"fill_date\":\"Дата заполнения\",\"beginning\":\"От\",\"end\":\"До\",\"currency\":\"Валюта\",\"author-title\":\"Автор - заглавие\",\"name\":\"Имя\",\"name_by\":\"по имени\",\"commercial_name\":\"Коммерческое имя\",\"bin\":\"BIN / IIN\",\"contact\":\"Контакты\",\"address\":\"Адресс\",\"email\":\"Электронная почта\",\"phone\":\"Номер телефона\",\"fax\":\"Факс\",\"service_desk\":\"Служба поддержки\",\"users\":\"Пользователи\",\"books\":\"История книг\",\"search_user\":\"Найти пользователя\",\"type\":\"Тип\",\"student\":\"Студент\",\"employee\":\"Работник\",\"all\":\"Все\",\"username\":\"Имя пользователя\",\"user_id\":\"ID пользователя\",\"user_id_user\":\"ID пользователя (или имя || фамилия)\",\"username_user\":\"Имя пользователя (или имя || фамилия)\",\"surname\":\"Фамилия\",\"section\":\"Раздел\",\"serve\":\"Выдача книг\",\"check_in\":\"Выдать\",\"search_material\":\"Поиск материала\",\"user_info\":\"Информация о пользователе\",\"full_name\":\"Имя - фамилия\",\"degree\":\"Степень\",\"class\":\"Год\",\"faculty\":\"Факультет\",\"program\":\"Программа\",\"id\":\"ID\",\"mobile\":\"Номер телефона\",\"more_info\":\"Подробнее\",\"select_all\":\"Выбрать все ( {num} выбрано )\",\"delivery_date\":\"Дата доставки\",\"due_date\":\"Дата сдачи\",\"issue_date\":\"Дата выпуска\",\"borrow_date\":\"Дата заимствования\",\"last_user_borrowed\":\"Последний пользователь\",\"give_material\":\"Дать материал\",\"hesab_id\":\"ID партии\",\"batch_id\":\"ID партии\",\"items_no\":\"Количество экземпляров\",\"titles_no\":\"Количество заглавий\",\"receive_date\":\"Дата заполнения\",\"supplier_id\":\"ID поставщика\",\"supplier_name\":\"Имя поставщика\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"ID издателя\",\"com_name\":\"Коммерческое имя\",\"reports\":\"Отчеты\",\"attendance\":\"Посещаемость\",\"mrbooks\":\"Самые читаемые книги\",\"attendance_statistics\":\"Статистика виртуальной посещаемости\",\"show_for_week\":\"Показать за неделю\",\"show_for_month\":\"Показать за месяц\",\"in_lib_by_week\":\"В библиотеке за неделю\",\"in_lib_by_month\":\"В библиотеке за год\",\"print\":\"Распечатать баркод\",\"language\":\"Язык\",\"show_in_table\":\"Показать в таблице\",\"clear_selected\":\"Очистить выбранные\",\"duration\":\"Продолжительность\",\"duration_in_days\":\"Продолжительность ( в днях )\",\"edit_duration\":\"Изменить продолжительность\",\"issuance\":\"Выдача\",\"return\":\"Возврат\",\"history\":\"История\",\"dept\":\"Просроченный\",\"borrowed\":\"Взяли\",\"returned\":\"Вернули\",\"initialize\":\"Инициализировать\",\"read_from_rfid\":\"Читать из RFID\",\"init_status\":\"Инициализирован\",\"print_status\":\"Распечатан\",\"date\":\"Дата\",\"days\":\"Дни\",\"cataloging\":\"Каталогизация\",\"search_cataloging\":\"Поиск по ISBN || Название || Автор\",\"edit_rec\":\"Редактировать запись\"}");
 
 /***/ })
 

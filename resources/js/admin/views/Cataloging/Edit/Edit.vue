@@ -101,10 +101,8 @@
                                     <input type="text" class="w-100" v-model="info.data"/>
                                 </td>
                                 <td>
-                                    <div v-if="info.repeatable==1">
-                                        <button class="outline-blue" @click="removeSubtag(index)" v-if="info.is_added || info.repeatable==undefined">-</button>
-                                        <button class="outline-blue" @click="addSubtag(info,index)" v-else>+</button>
-                                    </div>
+                                    <button class="outline-blue" @click="removeSubtag(info,index)" v-if="info.is_added || info.repeatable==undefined">-</button>
+                                    <button class="outline-blue" @click="addSubtag(info,index)" v-if="info.repeatable==1">+</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -202,6 +200,7 @@ export default {
             new_data.ind2=''
             new_data.data=''
             new_data.is_added=true;
+            new_data.repeatable=0;
             
             this.tagSelected.data.splice(index+1, 0, new_data);
             
@@ -209,8 +208,12 @@ export default {
             
             this.sectioned[this.sectionSelected].info.splice(lindex+1,0,new_data);
         },
-        removeSubtag(index){
+        removeSubtag(info,index){
             this.tagSelected.data.splice(index, 1);
+
+            let lindex=this.sectioned[this.sectionSelected].info.indexOf(info);
+            
+            this.sectioned[this.sectionSelected].info.splice(lindex,1);
         },
         save(){
             this.$store.commit('sestFullPageLoading',true);

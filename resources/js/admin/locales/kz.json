@@ -187,8 +187,8 @@
 
     "print": "Баркодты басып шығару",
     "language": "Тілі",
-    "show_in_table": "",
-    "clear_selected": "",
+    "show_in_table": "Кестеде көрсету",
+    "clear_selected": "Таңдалғандарды жою",
 
     "duration": "Ұзақтығы",
     "duration_in_days": "Ұзақтығы ( күндермен )",
