@@ -143,6 +143,7 @@ export default {
     methods:{
         getEditInfo(){
             this.$store.commit('setFullPageLoading',true);
+            this.sectionSelected=0;
             this.$http.get(this.link+'/'+this.info.type_key+'/'+this.info.id).then(response=>{
                 this.edit_info=response.data.res.sort((a,b)=>{
                     if(a.id<b.id){

@@ -5567,6 +5567,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.$store.commit('setFullPageLoading', true);
+      this.sectionSelected = 0;
       this.$http.get(this.link + '/' + this.info.type_key + '/' + this.info.id).then(function (response) {
         _this.edit_info = response.data.res.sort(function (a, b) {
           if (a.id < b.id) {
