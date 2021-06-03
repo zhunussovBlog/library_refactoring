@@ -5568,12 +5568,22 @@ __webpack_require__.r(__webpack_exports__);
 
       this.$store.commit('setFullPageLoading', true);
       this.$http.get(this.link + '/' + this.info.type_key + '/' + this.info.id).then(function (response) {
-        _this.edit_info = response.data.res;
+        _this.edit_info = response.data.res.sort(function (a, b) {
+          if (a.id < b.id) {
+            return -1;
+          }
+
+          if (a.id > b.id) {
+            return 1;
+          }
+
+          return 0;
+        });
 
         _this.divideIntoSections();
 
         _this.divideIntoSubsections();
-
+      })["catch"](function (e) {}).then(function () {
         _this.$store.commit('setFullPageLoading', false);
       });
     },
@@ -5616,12 +5626,16 @@ __webpack_require__.r(__webpack_exports__);
           return elem.pid == undefined;
         });
         section.tags.forEach(function (tag) {
-          tag.selected = false;
           tag.data = section.info.filter(function (elem) {
             return elem.pid == tag.field_code;
           });
         });
       });
+      this.tagSelected = this.sectioned[0].tags[0];
+    },
+    selectSection: function selectSection(section) {
+      this.sectionSelected = section.section;
+      this.tagSelected = section.tags[0];
     },
     addSubtag: function addSubtag(info, index) {
       var new_data = copy(info);
@@ -5683,7 +5697,16 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       this.$http.get(this.link + '/export/' + this.info.type_key + '/' + this.info.id).then(function (response) {
-        _this3.download_file('xml_' + response, _this3.info.title, 'xml');
+        _this3.download_file(response, 'xml_' + _this3.info.title, 'xml');
+      });
+    },
+    saveCallNumber: function saveCallNumber() {
+      var _this4 = this;
+
+      this.$http.get(this.link + '/print/' + this.info.type_key + '/' + this.info.id, {
+        responseType: 'blob'
+      }).then(function (response) {
+        _this4.download_file(response, 'call_number_' + _this4.info.title, 'pdf');
       });
     },
     preview: function preview() {
@@ -71246,7 +71269,14 @@ var render = function() {
         _c("div", { staticClass: "d-flex" }, [
           _c(
             "button",
-            { staticClass: "outline-black mx-3" },
+            {
+              staticClass: "outline-black mx-3",
+              on: {
+                click: function($event) {
+                  return _vm.saveCallNumber()
+                }
+              }
+            },
             [
               _c("Print", { staticClass: "mr-2" }),
               _vm._v(
@@ -71315,8 +71345,7 @@ var render = function() {
                   },
                   on: {
                     click: function($event) {
-                      _vm.sectionSelected = section.section
-                      _vm.tagSelected = {}
+                      return _vm.selectSection(section)
                     }
                   }
                 },
@@ -71352,7 +71381,7 @@ var render = function() {
                 {
                   key: index,
                   staticClass:
-                    "rounded px-3 py-2 font-weight-bold bg-lightgrey text-grey",
+                    "rounded px-3 py-2 font-weight-bold bg-lightgrey text-grey cursor-pointer",
                   class: [
                     {
                       "bg-orange text-white":
@@ -71442,7 +71471,7 @@ var render = function() {
               _vm._l(_vm.tagSelected.data, function(info, index) {
                 return _c("tr", { key: index }, [
                   _c("td", { staticClass: "td_no_input w-25" }, [
-                    info.is_added
+                    info.is_added || info.repeatable == undefined
                       ? _c("div", [
                           _vm._v(
                             "\n                                         \n                                    "
