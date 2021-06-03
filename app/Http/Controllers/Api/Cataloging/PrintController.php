@@ -31,29 +31,12 @@ class PrintController extends Controller
         $pdf->setMargins(5, 5, 5);
         $pdf->SetAutoPageBreak(false);
 
-        $style = [
-            'position' => '',
-            'align' => 'C',
-            'stretch' => false,
-            'fitwidth' => true,
-            'cellfitalign' => '',
-            'border' => false,
-            'hpadding' => 'auto',
-            'vpadding' => 'auto',
-            'fgcolor' => array(0, 0, 0),
-            'bgcolor' => false,
-            'text' => true,
-            'font' => 'helvetica',
-            'fontsize' => 8,
-            'stretchtext' => 4
-        ];
-
         $pdf->addPage();
-        $pdf->SetFont('freeserif', '', 10);
+        $pdf->SetFont('helvetica', 'B', 10);
         $pdf->SetFontSize(14);
 
         foreach ($data as $field) {
-            $pdf->Cell(0, 0, $field);
+            $pdf->Cell(0, 0, $field, 0, 0, 'C');
             $pdf->Ln();
         }
 
