@@ -29,17 +29,17 @@ class QuerySearchBuilder
 
     public static function like(EBuilder|Builder|ECollection|Collection $builder, string $column, ?string $query): EBuilder|Builder|ECollection|Collection
     {
-        return $builder->where(DB::raw("lower({$column})"), 'like', mb_strtolower($query) . '%');
+        return $builder->where(DB::raw("lower({$column})"), 'like', '%' . mb_strtolower($query) . '%');
     }
 
     public static function orLike(EBuilder|Builder|ECollection|Collection $builder, string $column, ?string $query): EBuilder|Builder|ECollection|Collection
     {
-        return $builder->orWhere(DB::raw("lower({$column})"), 'like', mb_strtolower($query) . '%');
+        return $builder->orWhere(DB::raw("lower({$column})"), 'like', '%' . mb_strtolower($query) . '%');
     }
 
     public static function notLike(EBuilder|Builder|ECollection|Collection $builder, string $column, ?string $query): EBuilder|Builder|ECollection|Collection
     {
-        return $builder->where(DB::raw("lower({$column})"), 'not like', mb_strtolower($query) . '%');
+        return $builder->where(DB::raw("lower({$column})"), 'not like', '%' . mb_strtolower($query) . '%');
     }
 
     public static function in(EBuilder|Builder|ECollection|Collection $builder, string $column, ?array $query): EBuilder|Builder|ECollection|Collection
