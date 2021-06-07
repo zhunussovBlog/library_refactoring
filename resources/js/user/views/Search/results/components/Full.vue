@@ -106,6 +106,7 @@
 					description:'',
 					content:''
 				},
+				link:window.location.protocol+'//'+window.location.hostname+'/full?id='+this.id
 			}
 		},
 		methods:{
@@ -122,19 +123,19 @@
 				this.$store.commit('setFullPageLoading',true);
 				this.$http.get('media/show/'+this.id).then(response=>{
 					this.data= this.importFromXML(response);
+					this.data.link=this.link;
 					this.data.array_data=this.convertToArray(objectWithoutKey(this.data,['id','type_key','issn','status','availability','description','content']));
-					this.data.array_data.push({lin});
 					try{
 						this.getBookImage(this.data,!this.data.description);
 					}catch(e){}
 				}).catch(error=>{
 					console.error(error);
-					// this.goTo('home');
 				}).then(()=>{
 					this.$store.commit('setFullPageLoading',false);
 				});
 			},
 			importFromXML(response){
+				// need to have image in data
 				let data=response.data.res;
 				let xml=response.data.xmlInfo;
 				if(!xml){
@@ -167,13 +168,18 @@
 			},
 			copyLink(){
 				var copyText = document.createElement('input');
-				copyText.value=window.location.protocol+'//'+window.location.hostname+'/full?id='+this.id;
+				copyText.value=this.link;
 				document.body.appendChild(copyText);
 
 				copyText.select();
 				copyText.setSelectionRange(0, 99999); /* For mobile devices */
-
-				document.execCommand("copy");
+				try{
+					document.execCommand("copy");
+					alert('Copied successfully');
+				}catch(e){
+					alert('Something went wrong');
+				}
+				
 				document.body.removeChild(copyText);
 			},
 			printPage(){

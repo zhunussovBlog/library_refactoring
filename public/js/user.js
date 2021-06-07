@@ -2666,7 +2666,8 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         isbn: '',
         description: '',
         content: ''
-      }
+      },
+      link: window.location.protocol + '//' + window.location.hostname + '/full?id=' + this.id
     };
   },
   methods: {
@@ -2687,22 +2688,20 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       this.$store.commit('setFullPageLoading', true);
       this.$http.get('media/show/' + this.id).then(function (response) {
         _this.data = _this.importFromXML(response);
+        _this.data.link = _this.link;
         _this.data.array_data = _this.convertToArray(objectWithoutKey(_this.data, ['id', 'type_key', 'issn', 'status', 'availability', 'description', 'content']));
-
-        _this.data.array_data.push({
-          lin: lin
-        });
 
         try {
           _this.getBookImage(_this.data, !_this.data.description);
         } catch (e) {}
       })["catch"](function (error) {
-        console.error(error); // this.goTo('home');
+        console.error(error);
       }).then(function () {
         _this.$store.commit('setFullPageLoading', false);
       });
     },
     importFromXML: function importFromXML(response) {
+      // need to have image in data
       var data = response.data.res;
       var xml = response.data.xmlInfo;
 
@@ -2740,13 +2739,19 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     },
     copyLink: function copyLink() {
       var copyText = document.createElement('input');
-      copyText.value = window.location.protocol + '//' + window.location.hostname + '/full?id=' + this.id;
+      copyText.value = this.link;
       document.body.appendChild(copyText);
       copyText.select();
       copyText.setSelectionRange(0, 99999);
       /* For mobile devices */
 
-      document.execCommand("copy");
+      try {
+        document.execCommand("copy");
+        alert('Copied successfully');
+      } catch (e) {
+        alert('Something went wrong');
+      }
+
       document.body.removeChild(copyText);
     },
     printPage: function printPage() {
