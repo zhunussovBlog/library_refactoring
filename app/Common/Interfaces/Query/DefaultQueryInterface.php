@@ -9,4 +9,6 @@ use Illuminate\Database\Eloquent\Builder;
 interface DefaultQueryInterface
 {
     public static function defaultQuery(): Builder;
+
+    public function getKeyName();
 }

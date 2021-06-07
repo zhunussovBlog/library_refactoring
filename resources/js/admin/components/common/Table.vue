@@ -124,10 +124,11 @@
 			</div>
 			<div class="d-flex align-items-center pad">
 				<div class="d-flex align-items-center" v-if="selectable.selected">
-					<span class="text-no-wrap text-blue cursor-pointer" @click="selectable.copy(selected)" >{{$t('show_in_table')}}</span>
-					<span class="text-no-wrap text-blue cursor-pointer mx-3" @click="$eventHub.$emit('selectRefresh')">{{$t('clear_selected')}}</span>
+					<button class="outline-black" @click="selectable.copy(selected)" >{{$t('show_in_table')}}</button>
+					<button class="outline-black mx-3" @click="$eventHub.$emit('selectRefresh')">{{$t('clear_selected')}}</button>
 				</div>
-				<button type="button" class="outline-green" @click="selectable.func(selected)" v-if="selectable.func!=null">
+
+				<button type="button" class="outline-black" @click="selectable.func(selected)" v-if="selectable.func!=null">
 					{{$t(selectable.button_title)}}
 				</button>
 			</div>

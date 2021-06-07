@@ -2802,6 +2802,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 // mixins 
 
  // icons
@@ -5413,7 +5414,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _components_common_Back_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../components/common/Back.vue */ "./resources/js/admin/components/common/Back.vue");
+/* harmony import */ var _mixins_goTo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../mixins/goTo */ "./resources/js/admin/mixins/goTo.js");
+/* harmony import */ var _mixins_messages__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../mixins/messages */ "./resources/js/admin/mixins/messages.js");
+/* harmony import */ var _mixins_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../mixins/common */ "./resources/js/admin/mixins/common.js");
+/* harmony import */ var _mixins_showModal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../mixins/showModal */ "./resources/js/admin/mixins/showModal.js");
+/* harmony import */ var _components_common_Back_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../components/common/Back.vue */ "./resources/js/admin/components/common/Back.vue");
+/* harmony import */ var _assets_icons_Print_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../assets/icons/Print.vue */ "./resources/js/admin/assets/icons/Print.vue");
+/* harmony import */ var _Preview__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Preview */ "./resources/js/admin/views/Cataloging/Edit/Preview.vue");
 //
 //
 //
@@ -5522,29 +5529,212 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+// mixins
+
+
+
+ // components
+
+
+
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  mixins: [_mixins_goTo__WEBPACK_IMPORTED_MODULE_0__.goTo, _mixins_messages__WEBPACK_IMPORTED_MODULE_1__.message_error, _mixins_messages__WEBPACK_IMPORTED_MODULE_1__.message_success, _mixins_common__WEBPACK_IMPORTED_MODULE_2__.download_file, _mixins_showModal__WEBPACK_IMPORTED_MODULE_3__.default],
+  props: {
+    info: Object
+  },
   components: {
-    Back: _components_common_Back_vue__WEBPACK_IMPORTED_MODULE_0__.default
+    Back: _components_common_Back_vue__WEBPACK_IMPORTED_MODULE_4__.default,
+    Print: _assets_icons_Print_vue__WEBPACK_IMPORTED_MODULE_5__.default
+  },
+  data: function data() {
+    return {
+      edit_info: [],
+      sectioned: [],
+      commit: 'cataloging',
+      link: 'cataloging/material',
+      sectionSelected: 0,
+      tagSelected: {}
+    };
   },
   methods: {
     getEditInfo: function getEditInfo() {
-      this.$http.get('cataloging/material/edit-data').then(function (response) {
-        console.log(response);
+      var _this = this;
+
+      this.$store.commit('setFullPageLoading', true);
+      this.sectionSelected = 0;
+      this.$http.get(this.link + '/' + this.info.type_key + '/' + this.info.id).then(function (response) {
+        _this.edit_info = response.data.res.sort(function (a, b) {
+          if (a.id < b.id) {
+            return -1;
+          }
+
+          if (a.id > b.id) {
+            return 1;
+          }
+
+          return 0;
+        });
+
+        _this.divideIntoSections();
+
+        _this.divideIntoSubsections();
+      })["catch"](function (e) {}).then(function () {
+        _this.$store.commit('setFullPageLoading', false);
       });
+    },
+    divideIntoSections: function divideIntoSections() {
+      var sections = []; //functions
+
+      var findByChar = function findByChar(array, _char, toSearch) {
+        for (var i = 0; i < array.length; i++) {
+          var elem = array[i];
+
+          if (elem[toSearch] == _char) {
+            return true;
+          }
+        }
+
+        return false;
+      };
+
+      for (var i = 0; i < this.edit_info.length; i++) {
+        var info = this.edit_info[i];
+
+        var _char2 = info.id.charAt(0);
+
+        if (!findByChar(sections, _char2, 'section')) {
+          var section = {
+            section: _char2,
+            info: [info]
+          };
+          sections.push(section);
+        } else {
+          sections[_char2].info.push(info);
+        }
+      }
+
+      this.sectioned = sections;
+    },
+    divideIntoSubsections: function divideIntoSubsections() {
+      this.sectioned.forEach(function (section) {
+        section.tags = section.info.filter(function (elem) {
+          return elem.pid == undefined;
+        });
+        section.tags.forEach(function (tag) {
+          tag.data = section.info.filter(function (elem) {
+            return elem.pid == tag.field_code;
+          });
+        });
+      });
+      this.tagSelected = this.sectioned[0].tags[0];
+    },
+    selectSection: function selectSection(section) {
+      this.sectionSelected = section.section;
+      this.tagSelected = section.tags[0];
+    },
+    addSubtag: function addSubtag(info, index) {
+      var new_data = copy(info);
+      new_data.ind1 = '';
+      new_data.ind2 = '';
+      new_data.data = '';
+      new_data.is_added = true;
+      new_data.repeatable = null;
+      this.tagSelected.data.splice(index + 1, 0, new_data);
+      var lindex = this.sectioned[this.sectionSelected].info.indexOf(info);
+      this.sectioned[this.sectionSelected].info.splice(lindex + 1, 0, new_data);
+    },
+    removeSubtag: function removeSubtag(info, index) {
+      this.tagSelected.data.splice(index, 1);
+      var lindex = this.sectioned[this.sectionSelected].info.indexOf(info);
+      this.sectioned[this.sectionSelected].info.splice(lindex, 1);
+    },
+    save: function save() {
+      var _this2 = this;
+
+      this.$store.commit('setFullPageLoading', true);
+
+      var joinSections = function joinSections() {
+        var res = [];
+
+        _this2.sectioned.forEach(function (section) {
+          section.info.forEach(function (data) {
+            if (data.is_added) {
+              delete data.is_added;
+              console.log(data);
+            }
+
+            if (data.pid == undefined) {
+              data.data = null;
+            }
+          });
+          res = res.concat(section.info);
+        });
+
+        return res;
+      };
+
+      var res = joinSections();
+      this.$http.post(this.link + '/' + this.info.type_key + '/' + this.info.id + '/edit', {
+        data: res
+      }).then(function (response) {
+        _this2.message_success('edit', response);
+
+        _this2.tagSelected = {};
+
+        _this2.getEditInfo();
+      })["catch"](function (e) {
+        _this2.message_error('edit', e);
+      }).then(function () {
+        _this2.$store.commit('setFullPageLoading', false);
+      });
+    },
+    saveXML: function saveXML() {
+      var _this3 = this;
+
+      this.$http.get(this.link + '/export/' + this.info.type_key + '/' + this.info.id).then(function (response) {
+        _this3.download_file(response, 'xml_' + _this3.info.title, 'xml');
+      });
+    },
+    saveCallNumber: function saveCallNumber() {
+      var _this4 = this;
+
+      this.$http.get(this.link + '/print/' + this.info.type_key + '/' + this.info.id, {
+        responseType: 'blob'
+      }).then(function (response) {
+        _this4.download_file(response, 'call_number_' + _this4.info.title, 'pdf');
+      });
+    },
+    preview: function preview() {
+      this.showModal(_Preview__WEBPACK_IMPORTED_MODULE_6__.default, {
+        info: this.sectioned,
+        width: '100%',
+        height: '100%',
+        styles: 'overflow:hidden'
+      });
+      document.documentElement.classList.add("overflow-hidden");
     }
   },
   created: function created() {
-    this.getEditInfo();
+    if (!this.info) {
+      this.goTo('cataloging_search');
+    } else {
+      this.getEditInfo();
+    }
   }
 });
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Cataloging/Search/MoreInfo.vue?vue&type=script&lang=js&":
-/*!**********************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Cataloging/Search/MoreInfo.vue?vue&type=script&lang=js& ***!
-  \**********************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Cataloging/Edit/Preview.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Cataloging/Edit/Preview.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -5552,6 +5742,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _mixins_goTo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../mixins/goTo */ "./resources/js/admin/mixins/goTo.js");
+/* harmony import */ var _assets_icons_X__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../assets/icons/X */ "./resources/js/admin/assets/icons/X.vue");
 //
 //
 //
@@ -5559,11 +5751,93 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
-    info: Object
+    info: Array
   },
-  created: function created() {}
+  mixins: [_mixins_goTo__WEBPACK_IMPORTED_MODULE_0__.goTo],
+  components: {
+    X: _assets_icons_X__WEBPACK_IMPORTED_MODULE_1__.default
+  },
+  data: function data() {
+    return {
+      sections: []
+    };
+  },
+  methods: {
+    makeSections: function makeSections() {
+      var arr = [];
+      this.info.forEach(function (section) {
+        section.tags.forEach(function (tag) {
+          var sec = {
+            tag: tag.field_code,
+            data: tag.data
+          };
+          arr.push(sec);
+        });
+      });
+      this.sections = arr;
+    },
+    closeModal: function closeModal() {
+      this.$emit('close');
+      document.documentElement.classList.remove('overflow-hidden');
+    }
+  },
+  created: function created() {
+    this.makeSections();
+  }
 });
 
 /***/ }),
@@ -5584,8 +5858,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_common_Table__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../components/common/Table */ "./resources/js/admin/components/common/Table.vue");
 /* harmony import */ var _components_common_More__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../components/common/More */ "./resources/js/admin/components/common/More.vue");
 /* harmony import */ var _mixins_showModal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../mixins/showModal */ "./resources/js/admin/mixins/showModal.js");
-/* harmony import */ var _mixins_goTo__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../mixins/goTo */ "./resources/js/admin/mixins/goTo.js");
-/* harmony import */ var _MoreInfo__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./MoreInfo */ "./resources/js/admin/views/Cataloging/Search/MoreInfo.vue");
+/* harmony import */ var _mixins_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../mixins/common */ "./resources/js/admin/mixins/common.js");
+/* harmony import */ var _mixins_goTo__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../mixins/goTo */ "./resources/js/admin/mixins/goTo.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -5639,7 +5913,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     InputDiv: _components_common_Input_vue__WEBPACK_IMPORTED_MODULE_0__.default,
     TableDiv: _components_common_Table__WEBPACK_IMPORTED_MODULE_1__.default
   },
-  mixins: [_mixins_showModal__WEBPACK_IMPORTED_MODULE_3__.default, _mixins_goTo__WEBPACK_IMPORTED_MODULE_4__.goTo],
+  mixins: [_mixins_common__WEBPACK_IMPORTED_MODULE_4__.getResults, _mixins_showModal__WEBPACK_IMPORTED_MODULE_3__.default, _mixins_goTo__WEBPACK_IMPORTED_MODULE_5__.goTo],
   computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_6__.mapGetters)(['cataloging'])),
   data: function data() {
     return {
@@ -5647,19 +5921,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         name: 'isbn',
         link: 'isbn'
       }, {
+        name: 'call_number',
+        link: 'call_number'
+      }, {
         name: 'title',
         link: 'title'
       }, {
         name: 'author',
         link: 'author'
       }, {
-        name: 'publisher',
+        name: 'publishers',
         link: 'publisher'
       }, {
         name: 'year',
         link: 'year'
       }],
-      link: 'cataloging/material',
+      link: '/cataloging/material',
       commit: 'cataloging',
       showMore: {
         available: true,
@@ -5671,34 +5948,26 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         func: this.editRec,
         title: 'edit_rec'
       },
-      MoreInfo: _MoreInfo__WEBPACK_IMPORTED_MODULE_5__.default,
+      types: [],
       More: _components_common_More__WEBPACK_IMPORTED_MODULE_2__.default
     };
   },
   methods: {
-    search: function search() {
+    getSearchTypes: function getSearchTypes() {
       var _this = this;
 
-      this.$store.commit('setFullPageLoading', true);
-      this.$store.state[this.commit].search.query.name = 'query';
-      var q = this.cataloging.search.query.value;
-      this.$http.get(this.link + '/search?query=' + q).then(function (response) {
-        var s_request = {
-          mode: 'get',
-          link: '/search'
-        };
-
-        _this.$store.dispatch('setStore', {
-          label: _this.commit,
-          data: {
-            searching: true,
-            data: response.data,
-            request: s_request
-          }
-        });
-
-        _this.$store.commit('setFullPageLoading', false);
+      this.$http.get(this.link + '/types').then(function (response) {
+        _this.types = response.data.res;
       });
+    },
+    loadResults: function loadResults() {
+      this.$store.dispatch('setStore', {
+        label: this.commit,
+        data: {
+          page: 0
+        }
+      });
+      this.getResults(this.link, this.commit);
     },
     showit: function showit(info) {
       var heads = [{
@@ -5739,6 +6008,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         info: info
       });
     }
+  },
+  created: function created() {
+    this.getSearchTypes();
   }
 });
 
@@ -8482,7 +8754,7 @@ __webpack_require__.r(__webpack_exports__);
 
       var request = new XMLHttpRequest();
       var error_m = 'read_from_rfid';
-      var url = 'https://localhost:44379/LibraryWebService.asmx/' + link;
+      var url = 'http://localhost/LibraryWebService/LibraryWebService.asmx/' + link;
       request.open('POST', url, false);
       request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
       request.addEventListener("readystatechange", function () {
@@ -8562,13 +8834,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   methods: {
     showModal: function showModal(component, props) {
-      var _props$width;
+      var _props$width, _props$height, _props$styles;
 
       var width = props ? (_props$width = props.width) !== null && _props$width !== void 0 ? _props$width : '66.5%' : '66.5%';
+      var height = props ? (_props$height = props.height) !== null && _props$height !== void 0 ? _props$height : 'auto' : 'auto';
+      var styles = props ? (_props$styles = props.styles) !== null && _props$styles !== void 0 ? _props$styles : 'padding:0.9375em;' : 'padding:0.9375em;';
       this.$modal.show(component, props, {
         width: width,
-        classes: ['bigger-rounded-lg'],
-        styles: 'padding:1.5em;',
+        height: height,
+        classes: ['rounded'],
+        styles: styles,
         shiftY: 0.3
       }, {});
     }
@@ -8774,6 +9049,7 @@ __webpack_require__.r(__webpack_exports__);
     component: _views_Cataloging_Search_Search__WEBPACK_IMPORTED_MODULE_11__.default
   }, {
     path: 'edit',
+    props: true,
     name: 'cataloging_edit',
     component: _views_Cataloging_Edit_Edit__WEBPACK_IMPORTED_MODULE_12__.default
   }]
@@ -9020,23 +9296,12 @@ __webpack_require__.r(__webpack_exports__);
   },
   print_barcode: {
     search: {
-      search_options: [{
-        key: 'barcode',
-        value: {}
-      }, {
-        key: 'title'
-      }, {
-        key: 'author'
-      }]
+      add_options: {
+        barcode: {},
+        title: '',
+        author: ''
+      }
     },
-    search_default: [{
-      key: 'barcode',
-      value: {}
-    }, {
-      key: 'title'
-    }, {
-      key: 'author'
-    }],
     data: [],
     searching: false,
     sort_by: {},
@@ -9161,9 +9426,9 @@ __webpack_require__.r(__webpack_exports__);
   // cataloging
   cataloging: {
     search: {
-      query: {
-        name: '',
-        value: ''
+      add_options: {
+        type: 'BK',
+        query: ''
       }
     },
     data: [],
@@ -29159,7 +29424,31 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\ntable[data-v-e49fe630] {\n\tborder-collapse: separate;\n    border-spacing:2em .875em;\n}\ntd[data-v-e49fe630]{\n\tborder: 0.0625em solid #9C9FA7 !important;\n    border-radius: .3125em;\n    \n\tpadding: 1em 1.25em;\n}\nth[data-v-e49fe630] {\n\ttext-align: left;\n\tfont-weight: 500;\n    border: none !important;\n    padding-top: 0;\n    padding-bottom: 0;\n}\n.tline[data-v-e49fe630]{\n    border-top:0.0625em solid #E8E8E8 !important;\n    padding:0;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\ntd[data-v-e49fe630]{\n\tborder: none;\n}\nth[data-v-e49fe630] {\n\ttext-align: left;\n\tfont-weight: 500;\n    border: 1px solid #E8E8E8 !important;\n    border-left:none !important;\n    border-right:none !important;\n}\ninput[data-v-e49fe630]{\n    width:unset;\n}\ninput[data-v-e49fe630],input[data-v-e49fe630]:disabled{\n    border-color: inherit;\n}\n.little_td[data-v-e49fe630]{\n    width:7%;\n}\n.little_input[data-v-e49fe630]{\n    width:2.5em;\n    padding-left: .125em;\n    padding-right: .125em;\n    text-align: center;\n}\n.td_no_input[data-v-e49fe630]{\n    border:1px solid #E8E8E8;\n    border-left:none;\n    border-radius: .3125em;\n\tpadding: 1em 1.25em;\n}\n", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Cataloging/Edit/Preview.vue?vue&type=style&index=0&id=a26eb94c&scoped=true&lang=css&":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Cataloging/Edit/Preview.vue?vue&type=style&index=0&id=a26eb94c&scoped=true&lang=css& ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "\n.outline-orange[data-v-a26eb94c]:hover{\n    color:inherit;\n    border:inherit;\n}\n.padding[data-v-a26eb94c]{\n\tpadding-right: 11vw;\n\tpadding-left: 11vw;\n\ttransition: padding .3s;\n}\n.bg-greyer[data-v-a26eb94c]{\n\tbackground: #a2a6a8;\n}\n.exit[data-v-a26eb94c]{\n\tcolor:white;\n\tposition: absolute;\n\ttop:10%;\n\tright:4%;\n    font-size: 4em;\n}\n.mh-100[data-v-a26eb94c]{\n\tmin-height: 100%;\n}\n.min-vh-100[data-v-a26eb94c]{\n\tpadding-top: 5% !important;\n}\ntd[data-v-a26eb94c]{\n\tborder-top: 1px solid #E8E8E8;\n}\nth[data-v-a26eb94c] {\n\ttext-align: left;\n\tfont-weight: 500;\n    border: none !important;\n}\n.little_td[data-v-a26eb94c]{\n    width:7%;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -54727,6 +55016,36 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Cataloging/Edit/Preview.vue?vue&type=style&index=0&id=a26eb94c&scoped=true&lang=css&":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Cataloging/Edit/Preview.vue?vue&type=style&index=0&id=a26eb94c&scoped=true&lang=css& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Preview_vue_vue_type_style_index_0_id_a26eb94c_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Preview.vue?vue&type=style&index=0&id=a26eb94c&scoped=true&lang=css& */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Cataloging/Edit/Preview.vue?vue&type=style&index=0&id=a26eb94c&scoped=true&lang=css&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Preview_vue_vue_type_style_index_0_id_a26eb94c_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__.default, options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Preview_vue_vue_type_style_index_0_id_a26eb94c_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__.default.locals || {});
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Service_desk/Service/Service.vue?vue&type=style&index=0&id=0c283b64&scoped=true&lang=css&":
 /*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Service_desk/Service/Service.vue?vue&type=style&index=0&id=0c283b64&scoped=true&lang=css& ***!
@@ -62496,10 +62815,10 @@ component.options.__file = "resources/js/admin/views/Cataloging/Edit/Edit.vue"
 
 /***/ }),
 
-/***/ "./resources/js/admin/views/Cataloging/Search/MoreInfo.vue":
-/*!*****************************************************************!*\
-  !*** ./resources/js/admin/views/Cataloging/Search/MoreInfo.vue ***!
-  \*****************************************************************/
+/***/ "./resources/js/admin/views/Cataloging/Edit/Preview.vue":
+/*!**************************************************************!*\
+  !*** ./resources/js/admin/views/Cataloging/Edit/Preview.vue ***!
+  \**************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -62507,30 +62826,32 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _MoreInfo_vue_vue_type_template_id_7bf0743a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MoreInfo.vue?vue&type=template&id=7bf0743a& */ "./resources/js/admin/views/Cataloging/Search/MoreInfo.vue?vue&type=template&id=7bf0743a&");
-/* harmony import */ var _MoreInfo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MoreInfo.vue?vue&type=script&lang=js& */ "./resources/js/admin/views/Cataloging/Search/MoreInfo.vue?vue&type=script&lang=js&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _Preview_vue_vue_type_template_id_a26eb94c_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Preview.vue?vue&type=template&id=a26eb94c&scoped=true& */ "./resources/js/admin/views/Cataloging/Edit/Preview.vue?vue&type=template&id=a26eb94c&scoped=true&");
+/* harmony import */ var _Preview_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Preview.vue?vue&type=script&lang=js& */ "./resources/js/admin/views/Cataloging/Edit/Preview.vue?vue&type=script&lang=js&");
+/* harmony import */ var _Preview_vue_vue_type_style_index_0_id_a26eb94c_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Preview.vue?vue&type=style&index=0&id=a26eb94c&scoped=true&lang=css& */ "./resources/js/admin/views/Cataloging/Edit/Preview.vue?vue&type=style&index=0&id=a26eb94c&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
+;
 
 
 /* normalize component */
-;
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
-  _MoreInfo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
-  _MoreInfo_vue_vue_type_template_id_7bf0743a___WEBPACK_IMPORTED_MODULE_0__.render,
-  _MoreInfo_vue_vue_type_template_id_7bf0743a___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__.default)(
+  _Preview_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
+  _Preview_vue_vue_type_template_id_a26eb94c_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render,
+  _Preview_vue_vue_type_template_id_a26eb94c_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
   false,
   null,
-  null,
+  "a26eb94c",
   null
   
 )
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/admin/views/Cataloging/Search/MoreInfo.vue"
+component.options.__file = "resources/js/admin/views/Cataloging/Edit/Preview.vue"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
 
 /***/ }),
@@ -63479,10 +63800,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/admin/views/Cataloging/Search/MoreInfo.vue?vue&type=script&lang=js&":
-/*!******************************************************************************************!*\
-  !*** ./resources/js/admin/views/Cataloging/Search/MoreInfo.vue?vue&type=script&lang=js& ***!
-  \******************************************************************************************/
+/***/ "./resources/js/admin/views/Cataloging/Edit/Preview.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/admin/views/Cataloging/Edit/Preview.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -63490,8 +63811,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MoreInfo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./MoreInfo.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Cataloging/Search/MoreInfo.vue?vue&type=script&lang=js&");
- /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MoreInfo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Preview_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Preview.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Cataloging/Edit/Preview.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Preview_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
 
 /***/ }),
 
@@ -63949,6 +64270,19 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Edit_vue_vue_type_style_index_0_id_e49fe630_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/style-loader/dist/cjs.js!../../../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Edit.vue?vue&type=style&index=0&id=e49fe630&scoped=true&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Cataloging/Edit/Edit.vue?vue&type=style&index=0&id=e49fe630&scoped=true&lang=css&");
+
+
+/***/ }),
+
+/***/ "./resources/js/admin/views/Cataloging/Edit/Preview.vue?vue&type=style&index=0&id=a26eb94c&scoped=true&lang=css&":
+/*!***********************************************************************************************************************!*\
+  !*** ./resources/js/admin/views/Cataloging/Edit/Preview.vue?vue&type=style&index=0&id=a26eb94c&scoped=true&lang=css& ***!
+  \***********************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Preview_vue_vue_type_style_index_0_id_a26eb94c_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/style-loader/dist/cjs.js!../../../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Preview.vue?vue&type=style&index=0&id=a26eb94c&scoped=true&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Cataloging/Edit/Preview.vue?vue&type=style&index=0&id=a26eb94c&scoped=true&lang=css&");
 
 
 /***/ }),
@@ -64824,19 +65158,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/admin/views/Cataloging/Search/MoreInfo.vue?vue&type=template&id=7bf0743a&":
-/*!************************************************************************************************!*\
-  !*** ./resources/js/admin/views/Cataloging/Search/MoreInfo.vue?vue&type=template&id=7bf0743a& ***!
-  \************************************************************************************************/
+/***/ "./resources/js/admin/views/Cataloging/Edit/Preview.vue?vue&type=template&id=a26eb94c&scoped=true&":
+/*!*********************************************************************************************************!*\
+  !*** ./resources/js/admin/views/Cataloging/Edit/Preview.vue?vue&type=template&id=a26eb94c&scoped=true& ***!
+  \*********************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MoreInfo_vue_vue_type_template_id_7bf0743a___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MoreInfo_vue_vue_type_template_id_7bf0743a___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Preview_vue_vue_type_template_id_a26eb94c_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Preview_vue_vue_type_template_id_a26eb94c_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MoreInfo_vue_vue_type_template_id_7bf0743a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./MoreInfo.vue?vue&type=template&id=7bf0743a& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Cataloging/Search/MoreInfo.vue?vue&type=template&id=7bf0743a&");
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Preview_vue_vue_type_template_id_a26eb94c_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Preview.vue?vue&type=template&id=a26eb94c&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Cataloging/Edit/Preview.vue?vue&type=template&id=a26eb94c&scoped=true&");
 
 
 /***/ }),
@@ -67213,9 +67547,9 @@ var render = function() {
               _vm.selectable.selected
                 ? _c("div", { staticClass: "d-flex align-items-center" }, [
                     _c(
-                      "span",
+                      "button",
                       {
-                        staticClass: "text-no-wrap text-blue cursor-pointer",
+                        staticClass: "outline-black",
                         on: {
                           click: function($event) {
                             return _vm.selectable.copy(_vm.selected)
@@ -67226,10 +67560,9 @@ var render = function() {
                     ),
                     _vm._v(" "),
                     _c(
-                      "span",
+                      "button",
                       {
-                        staticClass:
-                          "text-no-wrap text-blue cursor-pointer mx-3",
+                        staticClass: "outline-black mx-3",
                         on: {
                           click: function($event) {
                             return _vm.$eventHub.$emit("selectRefresh")
@@ -67245,7 +67578,7 @@ var render = function() {
                 ? _c(
                     "button",
                     {
-                      staticClass: "outline-green",
+                      staticClass: "outline-black",
                       attrs: { type: "button" },
                       on: {
                         click: function($event) {
@@ -70001,16 +70334,14 @@ var render = function() {
                           name: "model",
                           rawName: "v-model",
                           value:
-                            _vm.print_barcode.search.search_options[0].value
-                              .from,
+                            _vm.print_barcode.search.add_options.barcode.from,
                           expression:
-                            "print_barcode.search.search_options[0].value.from"
+                            "print_barcode.search.add_options.barcode.from"
                         }
                       ],
                       attrs: { type: "text" },
                       domProps: {
-                        value:
-                          _vm.print_barcode.search.search_options[0].value.from
+                        value: _vm.print_barcode.search.add_options.barcode.from
                       },
                       on: {
                         input: function($event) {
@@ -70018,7 +70349,7 @@ var render = function() {
                             return
                           }
                           _vm.$set(
-                            _vm.print_barcode.search.search_options[0].value,
+                            _vm.print_barcode.search.add_options.barcode,
                             "from",
                             $event.target.value
                           )
@@ -70041,16 +70372,14 @@ var render = function() {
                             name: "model",
                             rawName: "v-model",
                             value:
-                              _vm.print_barcode.search.search_options[0].value
-                                .to,
+                              _vm.print_barcode.search.add_options.barcode.to,
                             expression:
-                              "print_barcode.search.search_options[0].value.to"
+                              "print_barcode.search.add_options.barcode.to"
                           }
                         ],
                         attrs: { type: "text" },
                         domProps: {
-                          value:
-                            _vm.print_barcode.search.search_options[0].value.to
+                          value: _vm.print_barcode.search.add_options.barcode.to
                         },
                         on: {
                           input: function($event) {
@@ -70058,7 +70387,7 @@ var render = function() {
                               return
                             }
                             _vm.$set(
-                              _vm.print_barcode.search.search_options[0].value,
+                              _vm.print_barcode.search.add_options.barcode,
                               "to",
                               $event.target.value
                             )
@@ -70084,15 +70413,13 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value:
-                            _vm.print_barcode.search.search_options[1].value,
-                          expression:
-                            "print_barcode.search.search_options[1].value"
+                          value: _vm.print_barcode.search.add_options.title,
+                          expression: "print_barcode.search.add_options.title"
                         }
                       ],
                       attrs: { type: "text" },
                       domProps: {
-                        value: _vm.print_barcode.search.search_options[1].value
+                        value: _vm.print_barcode.search.add_options.title
                       },
                       on: {
                         input: function($event) {
@@ -70100,8 +70427,8 @@ var render = function() {
                             return
                           }
                           _vm.$set(
-                            _vm.print_barcode.search.search_options[1],
-                            "value",
+                            _vm.print_barcode.search.add_options,
+                            "title",
                             $event.target.value
                           )
                         }
@@ -70122,16 +70449,14 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value:
-                              _vm.print_barcode.search.search_options[2].value,
+                            value: _vm.print_barcode.search.add_options.author,
                             expression:
-                              "print_barcode.search.search_options[2].value"
+                              "print_barcode.search.add_options.author"
                           }
                         ],
                         attrs: { type: "text" },
                         domProps: {
-                          value:
-                            _vm.print_barcode.search.search_options[2].value
+                          value: _vm.print_barcode.search.add_options.author
                         },
                         on: {
                           input: function($event) {
@@ -70139,8 +70464,8 @@ var render = function() {
                               return
                             }
                             _vm.$set(
-                              _vm.print_barcode.search.search_options[2],
-                              "value",
+                              _vm.print_barcode.search.add_options,
+                              "author",
                               $event.target.value
                             )
                           }
@@ -70949,204 +71274,418 @@ var render = function() {
     _c("div", { staticClass: "bg-white mt-2 w-100 py-3 px-4" }, [
       _c("div", { staticClass: "mb-3" }, [_c("back")], 1),
       _vm._v(" "),
-      _vm._m(0),
-      _vm._v(" "),
-      _vm._m(1)
-    ])
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "d-flex justify-content-between" }, [
-      _c("div", [_vm._v("Management au mau")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "d-flex" }, [
-        _c("button", { staticClass: "outline-black mx-3" }, [
-          _vm._v("\n                        Print au mau\n                    ")
+      _c("div", { staticClass: "d-flex justify-content-between" }, [
+        _c("div", [
+          _vm._v(_vm._s(_vm.$t("management", { info: _vm.info.title })))
         ]),
         _vm._v(" "),
-        _c("button", { staticClass: "outline-black" }, [
-          _vm._v("\n                        Previews    \n                    ")
-        ]),
-        _vm._v(" "),
-        _c("button", { staticClass: "outline-black mx-3" }, [
-          _vm._v(
-            "\n                        Import from Worldcats\n                    "
+        _c("div", { staticClass: "d-flex" }, [
+          _c(
+            "button",
+            {
+              staticClass: "outline-black mx-3",
+              on: {
+                click: function($event) {
+                  return _vm.saveCallNumber()
+                }
+              }
+            },
+            [
+              _c("Print", { staticClass: "mr-2" }),
+              _vm._v(
+                "\n                        " +
+                  _vm._s(_vm.$t("print_call_number")) +
+                  "\n                    "
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "outline-black",
+              on: {
+                click: function($event) {
+                  return _vm.preview()
+                }
+              }
+            },
+            [
+              _vm._v(
+                "\n                        " +
+                  _vm._s(_vm.$t("preview")) +
+                  "\n                    "
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c("button", { staticClass: "outline-black mx-3" }, [
+            _vm._v(
+              "\n                        " +
+                _vm._s(_vm.$t("import_from_worldcat")) +
+                "\n                    "
+            )
+          ]),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "outline-black",
+              on: {
+                click: function($event) {
+                  return _vm.saveXML()
+                }
+              }
+            },
+            [
+              _vm._v(
+                "\n                        " +
+                  _vm._s(_vm.$t("export_to_xml")) +
+                  "\n                    "
+              )
+            ]
           )
-        ]),
-        _vm._v(" "),
-        _c("button", { staticClass: "bg-green color-white" }, [
-          _vm._v("\n                        XML\n                    ")
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "d-flex mt-5" }, [
-      _c("div", { staticClass: "text-center p-1 py-3 border rounded" }, [
-        _c("div", { staticClass: "text-grey font-size-14 py-2 my-1" }, [
-          _vm._v("\n                        Section\n                    ")
-        ]),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass:
-              "py-2 my-1 cursor-pointer px-3 border rounded border-orange text-orange"
-          },
-          [_vm._v("\n                        Section\n                    ")]
-        ),
-        _vm._v(" "),
-        _c("div", { staticClass: "py-2 my-1 cursor-pointer " }, [
-          _vm._v("\n                        Section\n                    ")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "py-2 my-1 cursor-pointer " }, [
-          _vm._v("\n                        Section\n                    ")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "py-2 my-1 cursor-pointer " }, [
-          _vm._v("\n                        Section\n                    ")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "py-2 my-1 cursor-pointer " }, [
-          _vm._v("\n                        Section\n                    ")
         ])
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "p-3 ml-3 border rounded flex-fill " }, [
-        _c("div", { staticClass: "text-grey font-size-14 py-2 my-1" }, [
-          _vm._v("\n                        Section tag\n                    ")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "d-flex" }, [
-          _c(
-            "div",
-            {
-              staticClass:
-                "rounded px-3 py-2 bg-orange text-white font-weight-bold"
-            },
-            [
+      _c("div", { staticClass: "d-flex mt-5" }, [
+        _c(
+          "div",
+          { staticClass: "text-center px-2 py-3 border rounded" },
+          [
+            _c("div", { staticClass: "text-grey font-size-14 py-2 my-1" }, [
               _vm._v(
-                "\n                            020\n                        "
+                "\n                        " +
+                  _vm._s(_vm.$t("section")) +
+                  "\n                    "
               )
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass:
-                "rounded px-3 py-2 bg-lightgrey ml-2 text-grey font-weight-bold"
-            },
-            [
-              _vm._v(
-                "\n                            050\n                        "
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass:
-                "rounded px-3 py-2 bg-lightgrey ml-2 text-grey font-weight-bold"
-            },
-            [
-              _vm._v(
-                "\n                            080\n                        "
-              )
-            ]
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "text-center font-weight-bold" }, [
-          _vm._v(
-            "\n                        INTERNATIONAL STANDARTE\n                    "
-          )
-        ]),
-        _vm._v(" "),
-        _c("table", { staticClass: "table" }, [
-          _c("thead", [
-            _c("tr", [
-              _c("th", { staticClass: "tline", attrs: { colspan: "3" } })
             ]),
             _vm._v(" "),
-            _c("tr", [
-              _c("th", [
-                _vm._v(
-                  "\n                                    haha\n                                "
-                )
-              ]),
-              _vm._v(" "),
-              _c("th", [
-                _vm._v(
-                  "\n                                    muahaha\n                                "
-                )
-              ]),
-              _vm._v(" "),
-              _c("th", [
-                _vm._v(
-                  "\n                                    mew\n                                "
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c("tr", [
-              _c("th", { staticClass: "tline", attrs: { colspan: "3" } })
-            ])
+            _vm._l(_vm.sectioned, function(section, index) {
+              return _c(
+                "div",
+                {
+                  key: index,
+                  staticClass: "py-2 my-1 cursor-pointer",
+                  class: {
+                    "px-3 border rounded border-orange text-orange":
+                      _vm.sectionSelected == index
+                  },
+                  on: {
+                    click: function($event) {
+                      return _vm.selectSection(section)
+                    }
+                  }
+                },
+                [
+                  _vm._v(
+                    "\n                            " +
+                      _vm._s(section.section) +
+                      "\n                    "
+                  )
+                ]
+              )
+            })
+          ],
+          2
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "p-3 ml-3 border rounded flex-fill " }, [
+          _c("div", { staticClass: "text-grey font-size-14 py-2 my-1" }, [
+            _vm._v(
+              "\n                        " +
+                _vm._s(_vm.$t("section_tag")) +
+                "\n                    "
+            )
           ]),
           _vm._v(" "),
-          _c("tbody", [
-            _c("tr", [
-              _c("td", [
-                _vm._v(
-                  "\n                                    Bro\n                                "
-                )
-              ]),
-              _vm._v(" "),
-              _c("td", [
-                _vm._v(
-                  "\n                                    Che tam\n                                "
-                )
-              ]),
-              _vm._v(" "),
-              _c("td", [
-                _vm._v(
-                  "\n                                    Che tam bro\n                                "
-                )
-              ])
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "d-flex" }, [
-          _c("button", { staticClass: "ml-auto width-unset" }, [
+          _c(
+            "div",
+            { staticClass: "d-flex" },
+            _vm._l(_vm.sectioned[_vm.sectionSelected].tags, function(
+              tag,
+              index
+            ) {
+              return _c(
+                "div",
+                {
+                  key: index,
+                  staticClass:
+                    "rounded px-3 py-2 font-weight-bold bg-lightgrey text-grey cursor-pointer",
+                  class: [
+                    {
+                      "bg-orange text-white":
+                        _vm.tagSelected.field_code == tag.field_code
+                    },
+                    { "ml-2": index != 0 }
+                  ],
+                  on: {
+                    click: function($event) {
+                      _vm.tagSelected = tag
+                    }
+                  }
+                },
+                [
+                  _vm._v(
+                    "\n                                " +
+                      _vm._s(tag.field_code) +
+                      "\n                        "
+                  )
+                ]
+              )
+            }),
+            0
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "text-center font-weight-bold" }, [
             _vm._v(
-              "\n                            Save\n                        "
+              "\n                        " +
+                _vm._s(_vm.tagSelected.title) +
+                "\n                    "
+            )
+          ]),
+          _vm._v(" "),
+          _c("table", { staticClass: "table mt-3" }, [
+            _c("thead", [
+              _c("tr", [
+                _c("th", [
+                  _vm._v(
+                    "\n                                    " +
+                      _vm._s(_vm.$t("title")) +
+                      "\n                                "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("th", [
+                  _vm._v(
+                    "\n                                    " +
+                      _vm._s(_vm.$t("subtags")) +
+                      "\n                                "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("th", [
+                  _vm._v(
+                    "\n                                    " +
+                      _vm._s(_vm.$t("ind1")) +
+                      "\n                                "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("th", [
+                  _vm._v(
+                    "\n                                    " +
+                      _vm._s(_vm.$t("ind2")) +
+                      "\n                                "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("th", [
+                  _vm._v(
+                    "\n                                    " +
+                      _vm._s(_vm.$t("data")) +
+                      "\n                                "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("th", [
+                  _vm._v(
+                    "\n                                     \n                                "
+                  )
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.tagSelected.data, function(info, index) {
+                return _c("tr", { key: index }, [
+                  _c("td", { staticClass: "td_no_input w-25" }, [
+                    info.is_added || info.repeatable == undefined
+                      ? _c("div", [
+                          _vm._v(
+                            "\n                                         \n                                    "
+                          )
+                        ])
+                      : _c("div", [
+                          _vm._v(
+                            "\n                                        " +
+                              _vm._s(info.title) +
+                              "\n                                    "
+                          )
+                        ])
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "little_td" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: info.field_code,
+                          expression: "info.field_code"
+                        }
+                      ],
+                      staticClass: "little_input",
+                      attrs: { type: "text", disabled: "" },
+                      domProps: { value: info.field_code },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(info, "field_code", $event.target.value)
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "little_td" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: info.ind1,
+                          expression: "info.ind1"
+                        }
+                      ],
+                      staticClass: "little_input",
+                      attrs: { type: "text" },
+                      domProps: { value: info.ind1 },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(info, "ind1", $event.target.value)
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "little_td" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: info.ind2,
+                          expression: "info.ind2"
+                        }
+                      ],
+                      staticClass: "little_input",
+                      attrs: { type: "text" },
+                      domProps: { value: info.ind2 },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(info, "ind2", $event.target.value)
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "w-50" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: info.data,
+                          expression: "info.data"
+                        }
+                      ],
+                      staticClass: "w-100",
+                      attrs: { type: "text" },
+                      domProps: { value: info.data },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(info, "data", $event.target.value)
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    info.is_added || info.repeatable == undefined
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "outline-blue",
+                            on: {
+                              click: function($event) {
+                                return _vm.removeSubtag(info, index)
+                              }
+                            }
+                          },
+                          [_vm._v("-")]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    info.repeatable == 1
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "outline-blue",
+                            on: {
+                              click: function($event) {
+                                return _vm.addSubtag(info, index)
+                              }
+                            }
+                          },
+                          [_vm._v("+")]
+                        )
+                      : _vm._e()
+                  ])
+                ])
+              }),
+              0
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "d-flex" }, [
+            _c(
+              "button",
+              {
+                staticClass: "ml-auto width-unset",
+                on: {
+                  click: function($event) {
+                    return _vm.save()
+                  }
+                }
+              },
+              [
+                _vm._v(
+                  "\n                            " +
+                    _vm._s(_vm.$t("save")) +
+                    "\n                        "
+                )
+              ]
             )
           ])
         ])
       ])
     ])
-  }
-]
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Cataloging/Search/MoreInfo.vue?vue&type=template&id=7bf0743a&":
-/*!***************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Cataloging/Search/MoreInfo.vue?vue&type=template&id=7bf0743a& ***!
-  \***************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Cataloging/Edit/Preview.vue?vue&type=template&id=a26eb94c&scoped=true&":
+/*!************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Cataloging/Edit/Preview.vue?vue&type=template&id=a26eb94c&scoped=true& ***!
+  \************************************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -71159,16 +71698,150 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "bg-greyer padding mh-100 overflow-auto" }, [
+    _c(
+      "div",
+      { staticClass: "d-flex flex-column bg-white py-4 px-5 min-vh-100" },
+      [
+        _c(
+          "div",
+          { staticClass: "align-self-center font-size-24 font-weight-bolder" },
+          [_vm._v(_vm._s(_vm.$t("preview").toUpperCase()))]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "text-grey font-size-12 mr-3" }, [
+          _vm._v(_vm._s(_vm.$t("section_tag")))
+        ]),
+        _vm._v(" "),
+        _vm._l(_vm.sections, function(section, index) {
+          return _c(
+            "div",
+            { key: index, staticClass: "d-flex align-items-start my-2" },
+            [
+              _c(
+                "div",
+                { staticClass: "outline-orange px-3 py-2 rounded mr-3" },
+                [_vm._v(_vm._s(section.tag))]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "flex-fill border rounded py-2 px-4" }, [
+                _c("table", { staticClass: "table" }, [
+                  _c("thead", [
+                    _c("tr", [
+                      _c("th", [
+                        _vm._v(
+                          "\n                                    " +
+                            _vm._s(_vm.$t("title")) +
+                            "\n                                "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("th", [
+                        _vm._v(
+                          "\n                                    " +
+                            _vm._s(_vm.$t("subtags")) +
+                            "\n                                "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("th", [
+                        _vm._v(
+                          "\n                                    " +
+                            _vm._s(_vm.$t("ind1")) +
+                            "\n                                "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("th", [
+                        _vm._v(
+                          "\n                                    " +
+                            _vm._s(_vm.$t("ind2")) +
+                            "\n                                "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("th", [
+                        _vm._v(
+                          "\n                                    " +
+                            _vm._s(_vm.$t("data")) +
+                            "\n                                "
+                        )
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "tbody",
+                    _vm._l(section.data, function(info, index) {
+                      return _c("tr", { key: index }, [
+                        _c("td", { staticClass: "w-25" }, [
+                          _vm._v(
+                            "\n                                    " +
+                              _vm._s(info.title) +
+                              "\n                                "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "little_td" }, [
+                          _vm._v(
+                            "\n                                    " +
+                              _vm._s(info.field_code) +
+                              "\n                                "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "little_td" }, [
+                          _vm._v(
+                            "\n                                    " +
+                              _vm._s(info.ind1) +
+                              "\n                                "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "little_td" }, [
+                          _vm._v(
+                            "\n                                    " +
+                              _vm._s(info.ind2) +
+                              "\n                                "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "w-25" }, [
+                          _vm._v(
+                            "\n                                    " +
+                              _vm._s(info.data) +
+                              "\n                                "
+                          )
+                        ])
+                      ])
+                    }),
+                    0
+                  )
+                ])
+              ])
+            ]
+          )
+        })
+      ],
+      2
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "exit cursor-pointer",
+        on: {
+          click: function($event) {
+            return _vm.closeModal()
+          }
+        }
+      },
+      [_c("X")],
+      1
+    )
+  ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [_c("h1", [_vm._v("\n        Hello\n    ")])])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -71200,15 +71873,51 @@ var render = function() {
           on: {
             submit: function($event) {
               $event.preventDefault()
-              return _vm.search()
+              return _vm.loadResults()
             }
           }
         },
         [
           _c("div", { staticClass: "select position-relative" }, [
-            _c("select", { staticClass: "no_border_right h-100" }, [
-              _c("option", [_vm._v(_vm._s(_vm.$t("a? a gde vse types?")))])
-            ]),
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.cataloging.search.add_options.type,
+                    expression: "cataloging.search.add_options.type"
+                  }
+                ],
+                staticClass: "no_border_right h-100",
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.$set(
+                      _vm.cataloging.search.add_options,
+                      "type",
+                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                    )
+                  }
+                }
+              },
+              _vm._l(_vm.types, function(type, index) {
+                return _c(
+                  "option",
+                  { key: index, domProps: { value: type.type } },
+                  [_vm._v(_vm._s(type.type_title))]
+                )
+              }),
+              0
+            ),
             _vm._v(" "),
             _c("label", { staticClass: "placeholder" }, [
               _vm._v(_vm._s(_vm.$t("type")))
@@ -71223,14 +71932,14 @@ var render = function() {
                 attrs: {
                   search: true,
                   placeholder: _vm.$t("search_cataloging"),
-                  onSubmit: _vm.search
+                  onSubmit: _vm.loadResults
                 },
                 model: {
-                  value: _vm.cataloging.search.query.value,
+                  value: _vm.cataloging.search.add_options.query,
                   callback: function($$v) {
-                    _vm.$set(_vm.cataloging.search.query, "value", $$v)
+                    _vm.$set(_vm.cataloging.search.add_options, "query", $$v)
                   },
-                  expression: "cataloging.search.query.value"
+                  expression: "cataloging.search.add_options.query"
                 }
               })
             ],
@@ -72802,6 +73511,7 @@ var render = function() {
                     return _c(
                       "div",
                       {
+                        key: index,
                         staticClass: "link",
                         on: {
                           click: function($event) {
@@ -72874,6 +73584,7 @@ var render = function() {
                         return _c(
                           "div",
                           {
+                            key: index,
                             staticClass: "link",
                             on: {
                               click: function($event) {
@@ -90582,7 +91293,7 @@ module.exports = function(xml, userOptions) {
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse("{\"back\":\"Back\",\"ok\":\"OK\",\"acquisitions\":\"Acquisitions\",\"batches\":\"Batch | Batches\",\"items\":\"Item | Items\",\"publishers\":\"Publisher | Publishers\",\"suppliers\":\"Supplier | Suppliers\",\"table\":\"Table\",\"logout\":\"Logout\",\"search\":\"Search\",\"searching\":\"Search\",\"reset\":\"Reset\",\"load_all\":\"Load all data\",\"count\":\"Count\",\"save\":\"Save\",\"cancel\":\"Cancel\",\"cost\":\"Cost\",\"from\":\"From\",\"until\":\"Until\",\"not_found\":\"No data found\",\"create_date\":\"Form fill date\",\"edit_date\":\"Form edit date\",\"results\":\"Results\",\"results_of\":\"results\",\"yes\":\"Yes\",\"no\":\"No\",\"edit\":\"Edit\",\"delete\":\"Delete\",\"create\":\"Create\",\"show_more\":\"Details\",\"more\":\"More ...\",\"confirmation\":\"Are you sure you want to delete?\",\"sort_by\":\"Sort by\",\"search_by\":\"Search by {type}\",\"author_by\":\"author\",\"title_by\":\"title\",\"barcode_by\":\"barcode\",\"batch_id_by\":\"batch number\",\"id_by\":\"inventory number\",\"isbn_by\":\"isbn\",\"and\":\"And\",\"or\":\"Or\",\"not\":\"Not\",\"per_page\":\"Results per page\",\"apply\":\"Apply\",\"showing_pages\":\"{from} - {to} out of {total}\",\"page\":\"Page\",\"page_num\":\"Page {num}\",\"previous\":\"Prev\",\"next\":\"Next\",\"move_to\":\"Move\",\"asc\":\"Ascending\",\"desc\":\"Descending\",\"refresh\":\"Refresh\",\"choose\":\"Choose\",\"choose_search_mode\":\"Choose search mode\",\"save_&_search\":\"Save and search\",\"error\":\"Error !\",\"batch_filter\":\"Batches filter\",\"item_filter\":\"Items filter\",\"search_batches\":\"Search batches\",\"search_items\":\"Search items\",\"search_barcodes\":\"Search barcodes\",\"batches_number\":\"Batch number\",\"batches_by\":\"batch number\",\"add_batch\":\"Add batch\",\"add_item\":\"Add item\",\"create_batches\":\"Create batch\",\"create_items\":\"Create item\",\"create_supplier\":\"Create supplier\",\"create_publisher\":\"Create publisher\",\"edit_batches\":\"Edit batch\",\"edit_items\":\"Edit item\",\"edit_supplier\":\"Edit supplier\",\"edit_publisher\":\"Edit publisher\",\"recreate\":\"Re-create\",\"reCreate_items\":\"Re-create item\",\"type_of_supply\":\"Type of supply\",\"type_of_item\":\"Type of item\",\"quantity_items\":\"Quantity of items\",\"quantity_titles\":\"Quantity of titles\",\"document_number\":\"Document number\",\"contract_number\":\"Contract number\",\"inventory_number\":\"Inventory number\",\"inv_id\":\"Inventory number\",\"types\":\"Types\",\"filled_in\":\"Filled in\",\"made_actually\":\"Made acutally\",\"correct\":\"Correct\",\"titles_no_match\":\"The number of titles does not match\",\"items_no_match\":\"The number of items does not match\",\"add_input\":\"Add input +\",\"status\":\"Status\",\"invoice_date\":\"Invoice date\",\"by_contract\":\"By contract\",\"invoice_details\":\"Invoice details\",\"barcode\":\"Barcode\",\"isbn\":\"ISBN\",\"created_by\":\"Form filled by\",\"edited_by\":\"Form edited by\",\"titles\":\"Title | Titles\",\"title\":\"Title\",\"author\":\"Author\",\"year\":\"Year\",\"pub_year\":\"Publisher year\",\"pub_city\":\"Publisher city\",\"location\":\"Location\",\"fill_date\":\"Form fill date\",\"beginning\":\"Start\",\"end\":\"End\",\"currency\":\"Currency\",\"author-title\":\"Author - title\",\"name\":\"Name\",\"name_by\":\"name\",\"commercial_name\":\"Commercial name\",\"bin\":\"BIN / IIN\",\"contact\":\"Contacts\",\"address\":\"Address\",\"email\":\"E-mail\",\"phone\":\"Phone number\",\"fax\":\"Fax\",\"service_desk\":\"Service desk\",\"users\":\"Users\",\"books\":\"Books history\",\"search_user\":\"Search user\",\"type\":\"Type\",\"student\":\"Student\",\"employee\":\"Staff\",\"all\":\"All\",\"username\":\"Username\",\"user_id\":\"User ID\",\"user_id_user\":\"User ID (or name || surname)\",\"username_user\":\"Username (or name || surname)\",\"surname\":\"Surname\",\"section\":\"Section\",\"serve\":\"Book issuance\",\"check_in\":\"Issue\",\"search_material\":\"Search material\",\"user_info\":\"User information\",\"full_name\":\"Full name\",\"degree\":\"Degree\",\"class\":\"Year\",\"faculty\":\"Faculty\",\"program\":\"Program\",\"id\":\"ID\",\"mobile\":\"Phone number\",\"more_info\":\"More details\",\"select_all\":\"Select all ( {num} selected )\",\"delivery_date\":\"Delivery date\",\"due_date\":\"Due date\",\"issue_date\":\"Issue date\",\"borrow_date\":\"Borrow date\",\"last_user_borrowed\":\"Last user\",\"give_material\":\"Give material\",\"hesab_id\":\"Batch ID\",\"batch_id\":\"Batch Id\",\"items_no\":\"Quantity of items\",\"titles_no\":\"Quantity of titles\",\"receive_date\":\"Form fill date\",\"supplier_id\":\"Supplier ID\",\"supplier_name\":\"Supplier name\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"Publisher ID\",\"com_name\":\"Commercial name\",\"reports\":\"Reports\",\"attendance\":\"Attendance\",\"mrbooks\":\"Most read books\",\"attendance_statistics\":\"Virtual attendance statistics\",\"show_for_week\":\"Show for week\",\"show_for_month\":\"Show for month\",\"in_lib_by_week\":\"In library by week\",\"in_lib_by_month\":\"In library by year\",\"print\":\"Print barcode\",\"language\":\"Language\",\"duration\":\"Duration\",\"duration_in_days\":\"Duration ( in days )\",\"edit_duration\":\"Edit duration\",\"issuance\":\"Issuance\",\"return\":\"Return\",\"history\":\"History\",\"dept\":\"Overdue\",\"borrowed\":\"Borrowed\",\"returned\":\"Returned\",\"initialize\":\"Initialize\",\"read_from_rfid\":\"Read from RFID\",\"init_status\":\"Initialized\",\"print_status\":\"Printed\",\"date\":\"Date\",\"days\":\"Days\",\"cataloging\":\"Cataloging\",\"search_cataloging\":\"Search by ISBN || Title || Author\",\"edit_rec\":\"Edit record\"}");
+module.exports = JSON.parse("{\"back\":\"Back\",\"ok\":\"OK\",\"acquisitions\":\"Acquisitions\",\"batches\":\"Batch | Batches\",\"items\":\"Item | Items\",\"publishers\":\"Publisher | Publishers\",\"suppliers\":\"Supplier | Suppliers\",\"table\":\"Table\",\"logout\":\"Logout\",\"search\":\"Search\",\"searching\":\"Search\",\"reset\":\"Reset\",\"load_all\":\"Load all data\",\"count\":\"Count\",\"save\":\"Save\",\"cancel\":\"Cancel\",\"cost\":\"Cost\",\"from\":\"From\",\"until\":\"Until\",\"not_found\":\"No data found\",\"create_date\":\"Form fill date\",\"edit_date\":\"Form edit date\",\"results\":\"Results\",\"results_of\":\"results\",\"yes\":\"Yes\",\"no\":\"No\",\"edit\":\"Edit\",\"delete\":\"Delete\",\"create\":\"Create\",\"show_more\":\"Details\",\"more\":\"More ...\",\"confirmation\":\"Are you sure you want to delete?\",\"sort_by\":\"Sort by\",\"search_by\":\"Search by {type}\",\"author_by\":\"author\",\"title_by\":\"title\",\"barcode_by\":\"barcode\",\"batch_id_by\":\"batch number\",\"id_by\":\"inventory number\",\"isbn_by\":\"isbn\",\"and\":\"And\",\"or\":\"Or\",\"not\":\"Not\",\"per_page\":\"Results per page\",\"apply\":\"Apply\",\"showing_pages\":\"{from} - {to} out of {total}\",\"page\":\"Page\",\"page_num\":\"Page {num}\",\"previous\":\"Prev\",\"next\":\"Next\",\"move_to\":\"Move\",\"asc\":\"Ascending\",\"desc\":\"Descending\",\"refresh\":\"Refresh\",\"choose\":\"Choose\",\"choose_search_mode\":\"Choose search mode\",\"save_&_search\":\"Save and search\",\"error\":\"Error !\",\"batch_filter\":\"Batches filter\",\"item_filter\":\"Items filter\",\"search_batches\":\"Search batches\",\"search_items\":\"Search items\",\"search_barcodes\":\"Search barcodes\",\"batches_number\":\"Batch number\",\"batches_by\":\"batch number\",\"add_batch\":\"Add batch\",\"add_item\":\"Add item\",\"create_batches\":\"Create batch\",\"create_items\":\"Create item\",\"create_supplier\":\"Create supplier\",\"create_publisher\":\"Create publisher\",\"edit_batches\":\"Edit batch\",\"edit_items\":\"Edit item\",\"edit_supplier\":\"Edit supplier\",\"edit_publisher\":\"Edit publisher\",\"recreate\":\"Re-create\",\"reCreate_items\":\"Re-create item\",\"type_of_supply\":\"Type of supply\",\"type_of_item\":\"Type of item\",\"quantity_items\":\"Quantity of items\",\"quantity_titles\":\"Quantity of titles\",\"document_number\":\"Document number\",\"contract_number\":\"Contract number\",\"inventory_number\":\"Inventory number\",\"inv_id\":\"Inventory number\",\"types\":\"Types\",\"filled_in\":\"Filled in\",\"made_actually\":\"Made acutally\",\"correct\":\"Correct\",\"titles_no_match\":\"The number of titles does not match\",\"items_no_match\":\"The number of items does not match\",\"add_input\":\"Add input +\",\"status\":\"Status\",\"invoice_date\":\"Invoice date\",\"by_contract\":\"By contract\",\"invoice_details\":\"Invoice details\",\"barcode\":\"Barcode\",\"isbn\":\"ISBN\",\"created_by\":\"Form filled by\",\"edited_by\":\"Form edited by\",\"titles\":\"Title | Titles\",\"title\":\"Title\",\"author\":\"Author\",\"year\":\"Year\",\"call_number\":\"Call number\",\"pub_year\":\"Publisher year\",\"pub_city\":\"Publisher city\",\"location\":\"Location\",\"fill_date\":\"Form fill date\",\"beginning\":\"Start\",\"end\":\"End\",\"currency\":\"Currency\",\"author-title\":\"Author - title\",\"name\":\"Name\",\"name_by\":\"name\",\"commercial_name\":\"Commercial name\",\"bin\":\"BIN / IIN\",\"contact\":\"Contacts\",\"address\":\"Address\",\"email\":\"E-mail\",\"phone\":\"Phone number\",\"fax\":\"Fax\",\"service_desk\":\"Service desk\",\"users\":\"Users\",\"books\":\"Books history\",\"search_user\":\"Search user\",\"type\":\"Type\",\"student\":\"Student\",\"employee\":\"Staff\",\"all\":\"All\",\"username\":\"Username\",\"user_id\":\"User ID\",\"user_id_user\":\"User ID (or name || surname)\",\"username_user\":\"Username (or name || surname)\",\"surname\":\"Surname\",\"section\":\"Section\",\"serve\":\"Book issuance\",\"check_in\":\"Issue\",\"search_material\":\"Search material\",\"user_info\":\"User information\",\"full_name\":\"Full name\",\"degree\":\"Degree\",\"class\":\"Year\",\"faculty\":\"Faculty\",\"program\":\"Program\",\"id\":\"ID\",\"mobile\":\"Phone number\",\"more_info\":\"More details\",\"select_all\":\"Select all ( {num} selected )\",\"delivery_date\":\"Delivery date\",\"due_date\":\"Due date\",\"issue_date\":\"Issue date\",\"borrow_date\":\"Borrow date\",\"last_user_borrowed\":\"Last user\",\"give_material\":\"Give material\",\"hesab_id\":\"Batch ID\",\"batch_id\":\"Batch Id\",\"items_no\":\"Quantity of items\",\"titles_no\":\"Quantity of titles\",\"receive_date\":\"Form fill date\",\"supplier_id\":\"Supplier ID\",\"supplier_name\":\"Supplier name\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"Publisher ID\",\"com_name\":\"Commercial name\",\"reports\":\"Reports\",\"attendance\":\"Attendance\",\"mrbooks\":\"Most read books\",\"attendance_statistics\":\"Virtual attendance statistics\",\"show_for_week\":\"Show for week\",\"show_for_month\":\"Show for month\",\"in_lib_by_week\":\"In library by week\",\"in_lib_by_month\":\"In library by year\",\"print\":\"Print barcode\",\"language\":\"Language\",\"show_in_table\":\"Show in table\",\"clear_selected\":\"Clear selected\",\"duration\":\"Duration\",\"duration_in_days\":\"Duration ( in days )\",\"edit_duration\":\"Edit duration\",\"issuance\":\"Issuance\",\"return\":\"Return\",\"history\":\"History\",\"dept\":\"Overdue\",\"borrowed\":\"Borrowed\",\"returned\":\"Returned\",\"initialize\":\"Initialize\",\"read_from_rfid\":\"Read from RFID\",\"init_status\":\"Initialized\",\"print_status\":\"Printed\",\"date\":\"Date\",\"days\":\"Days\",\"cataloging\":\"Cataloging\",\"search_cataloging\":\"Search by ISBN || Title || Author\",\"edit_rec\":\"Edit record\",\"management\":\"Management: {info}\",\"print_call_number\":\"Print call number\",\"preview\":\"Preview\",\"import_from_worldcat\":\"Import from WorldCat\",\"export_to_xml\":\"Export to XML\",\"section_tag\":\"Section tag\",\"subtags\":\"SubTags\",\"ind1\":\"IND1\",\"ind2\":\"IND2\",\"data\":\"Data\"}");
 
 /***/ }),
 
@@ -90593,7 +91304,7 @@ module.exports = JSON.parse("{\"back\":\"Back\",\"ok\":\"OK\",\"acquisitions\":\
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse("{\"back\":\"Артқа\",\"ok\":\"ОК\",\"acquisitions\":\"Кітап қабылдау\",\"batches\":\"Партия | Партиялар\",\"items\":\"Дана | Даналар\",\"publishers\":\"Баспагер | Баспагерлер\",\"suppliers\":\"Жеткізуші | Жеткізушілер\",\"table\":\"Таблица\",\"logout\":\"Шығу\",\"search\":\"Іздеу\",\"searching\":\"Іздеу\",\"reset\":\"Қалпына келтіру\",\"load_all\":\"Барін көрсету\",\"count\":\"Сандар\",\"save\":\"Сақтау\",\"cancel\":\"Бас тарту\",\"cost\":\"Бағасы\",\"from\":\"Бастап\",\"until\":\"Дейін\",\"not_found\":\"Деректер табылмады\",\"create_date\":\"Форма толтырылған күні\",\"edit_date\":\"Форма өзгертілген күні\",\"results\":\"Нәтижелер\",\"results_of\":\"нәтиже табылды\",\"yes\":\"Ия\",\"no\":\"Жоқ\",\"edit\":\"Өзгерту\",\"delete\":\"Жою\",\"create\":\"Қосу\",\"show_more\":\"Көбірек\",\"more\":\"Көбірек ...\",\"confirmation\":\"Жойғыңыз келетініне сенімдісіз бе?\",\"sort_by\":\"Сұрыптау\",\"search_by\":\"{type} іздеу\",\"author_by\":\"Авторымен\",\"title_by\":\"Тақырырбымен\",\"barcode_by\":\"Баркодымен\",\"batch_id_by\":\"Партия нөмірімен\",\"id_by\":\"Инвентарь нөмірімен\",\"isbn_by\":\"ISBN-мен\",\"and\":\"Және\",\"or\":\"Немесе\",\"not\":\"Емес\",\"per_page\":\"Парақтагы нәтижелер саны\",\"apply\":\"Растау\",\"showing_pages\":\"{total} нәтиженің {from} - {to} көрсетілуде\",\"page\":\"Бет\",\"page_num\":\"{num} бет\",\"previous\":\"Артқа\",\"next\":\"Келесі\",\"move_to\":\"Өту\",\"asc\":\"Өсу\",\"desc\":\"Азаю\",\"refresh\":\"Жаңарту\",\"choose\":\"Таңдаңыз\",\"choose_search_mode\":\"Іздеу режимін таңдаңыз\",\"save_&_search\":\"Сақтау және іздеу\",\"error\":\"Қате !\",\"batch_filter\":\"Партиялық сүзгі\",\"item_filter\":\"Даналық сүзгі\",\"search_batches\":\"Партия іздеу\",\"search_items\":\"Дана іздеу\",\"search_barcodes\":\"Баркод іздеу\",\"batches_number\":\"Партия нөмірі\",\"batches_by\":\"Партия нөмірімен\",\"add_batch\":\"Партия қосу\",\"add_item\":\"Дана қосу\",\"create_batches\":\"Партия қосу\",\"create_items\":\"Дана қосу\",\"create_supplier\":\"Жеткізуші қосу\",\"create_publisher\":\"Баспагер қосу\",\"edit_batches\":\"Партия өзгерту\",\"edit_items\":\"Дана өзгерту\",\"edit_supplier\":\"Жеткізуші өзгерту\",\"edit_publisher\":\"Баспагер өзгерту\",\"recreate\":\"Қайта қосу\",\"reCreate_items\":\"Дана қайта қосу\",\"type_of_supply\":\"Жеткізу түрі\",\"type_of_item\":\"Дана түрі\",\"quantity_items\":\"Дана саны\",\"quantity_titles\":\"Тақырып саны\",\"document_number\":\"Документ нөмірі\",\"contract_number\":\"Контракт нөмірі\",\"inventory_number\":\"Инвентарь нөмірі\",\"inv_id\":\"Инвентарь нөмірі\",\"types\":\"Түрлер\",\"filled_in\":\"Енгізілді\",\"made_actually\":\"Негізгі саны\",\"correct\":\"Дұрыс\",\"titles_no_match\":\"Тақырыптар саны сәйкес келмейді\",\"items_no_match\":\"Даналар саны сәйкес келмейді\",\"add_input\":\"Енгізуді қосу +\",\"status\":\"Статус\",\"invoice_date\":\"Жеткізген күні\",\"by_contract\":\"Контракт арқылы\",\"invoice_details\":\"Жеткізу деректері\",\"barcode\":\"Баркод\",\"isbn\":\"ISBN\",\"created_by\":\"Толтырылды\",\"edited_by\":\"Өзгертілді\",\"titles\":\"Атау | Атаулар\",\"title\":\"Атау\",\"author\":\"Автор\",\"year\":\"Жылы\",\"pub_year\":\"Баспа жылы\",\"pub_city\":\"Баспа қаласы\",\"location\":\"Орналасқан жері\",\"fill_date\":\"Толтырылған күні\",\"beginning\":\"Бастап\",\"end\":\"Дейін\",\"currency\":\"Валютасы\",\"author-title\":\"Автор - атауы\",\"name\":\"Аты\",\"name_by\":\"Атымен\",\"commercial_name\":\"Коммерциялық аты\",\"bin\":\"BIN / IIN\",\"contact\":\"Байланыстар\",\"address\":\"Мекен-жайы\",\"email\":\"Электрондық поштасы\",\"phone\":\"Телефон нөмірі\",\"fax\":\"Факс\",\"service_desk\":\"Қызмет көрсету\",\"users\":\"Пайдаланушылар\",\"books\":\"Кітаптар тарихы\",\"search_user\":\"Пайдаланушы іздеу\",\"type\":\"Түрі\",\"student\":\"Студент\",\"employee\":\"Қызметкер\",\"all\":\"Бәрі\",\"username\":\"Пайдаланушы аты\",\"user_id\":\"Пайдаланушы ID\",\"user_id_user\":\"Пайдаланушы ID (немесе аты || жөні)\",\"username_user\":\"Пайдаланушы аты (немесе аты || жөні)\",\"surname\":\"Тегі\",\"section\":\"Бөлімі\",\"serve\":\"Кітап беру\",\"check_in\":\"Беру\",\"search_material\":\"Материал іздеу\",\"user_info\":\"Пайдаланушы туралы ақпарат\",\"full_name\":\"Аты - тегі\",\"degree\":\"Дәрежесі\",\"class\":\"Оқу жылы\",\"faculty\":\"Факультеті\",\"program\":\"Бағдарламасы\",\"id\":\"ID\",\"mobile\":\"Телефон нөмірі\",\"more_info\":\"Толығырақ\",\"select_all\":\"Барлығын таңдау ( {num} таңдалды )\",\"delivery_date\":\"Жеткізілім уақыты\",\"due_date\":\"Мерзімнің өту күні\",\"issue_date\":\"Берілген күні\",\"borrow_date\":\"Қарызға алу күні\",\"last_user_borrowed\":\"Соңғы пайдаланушы\",\"give_material\":\"Материал беру\",\"hesab_id\":\"Партия ID\",\"batch_id\":\"Партия ID\",\"items_no\":\"Дана саны\",\"titles_no\":\"Тақырып саны\",\"receive_date\":\"Толтырылған күні\",\"supplier_id\":\"Жеткізуші ID\",\"supplier_name\":\"Жеткізущі аты\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"Баспагер ID\",\"com_name\":\"Коммерциялық аты\",\"reports\":\"Есептер\",\"attendance\":\"Қатысу\",\"mrbooks\":\"Көпшілігі оқитын кітаптар\",\"attendance_statistics\":\"Қатысушылардың виртуалды статистикасы\",\"show_for_week\":\"Бір апта бойынша көрсету\",\"show_for_month\":\"Бір ай бойынша көрсету\",\"in_lib_by_week\":\"Бір аптада кітапханада\",\"in_lib_by_month\":\"Бір жылда кітапханада\",\"print\":\"Баркодты басып шығару\",\"language\":\"Тілі\",\"duration\":\"Ұзақтығы\",\"duration_in_days\":\"Ұзақтығы ( күндермен )\",\"edit_duration\":\"Ұзақтықты өзгерту\",\"issuance\":\"Беру\",\"return\":\"Қайтару\",\"history\":\"Тарих\",\"dept\":\"Мерзімі өткен\",\"borrowed\":\"Қарызға алынған\",\"returned\":\"Қайтарылған\",\"initialize\":\"Инициализациялау\",\"read_from_rfid\":\"RFID-ден оқу\",\"init_status\":\"Инициализацияланған\",\"print_status\":\"Басылған\",\"date\":\"Дата\",\"days\":\"Күндер\",\"cataloging\":\"Каталогтау\",\"search_cataloging\":\"ISBN || Атауы || Автор бойынша іздеу\",\"edit_rec\":\"Жазбаны өңдеу\"}");
+module.exports = JSON.parse("{\"back\":\"Артқа\",\"ok\":\"ОК\",\"acquisitions\":\"Кітап қабылдау\",\"batches\":\"Партия | Партиялар\",\"items\":\"Дана | Даналар\",\"publishers\":\"Баспагер | Баспагерлер\",\"suppliers\":\"Жеткізуші | Жеткізушілер\",\"table\":\"Таблица\",\"logout\":\"Шығу\",\"search\":\"Іздеу\",\"searching\":\"Іздеу\",\"reset\":\"Қалпына келтіру\",\"load_all\":\"Барін көрсету\",\"count\":\"Сандар\",\"save\":\"Сақтау\",\"cancel\":\"Бас тарту\",\"cost\":\"Бағасы\",\"from\":\"Бастап\",\"until\":\"Дейін\",\"not_found\":\"Деректер табылмады\",\"create_date\":\"Форма толтырылған күні\",\"edit_date\":\"Форма өзгертілген күні\",\"results\":\"Нәтижелер\",\"results_of\":\"нәтиже табылды\",\"yes\":\"Ия\",\"no\":\"Жоқ\",\"edit\":\"Өзгерту\",\"delete\":\"Жою\",\"create\":\"Қосу\",\"show_more\":\"Көбірек\",\"more\":\"Көбірек ...\",\"confirmation\":\"Жойғыңыз келетініне сенімдісіз бе?\",\"sort_by\":\"Сұрыптау\",\"search_by\":\"{type} іздеу\",\"author_by\":\"Авторымен\",\"title_by\":\"Тақырырбымен\",\"barcode_by\":\"Баркодымен\",\"batch_id_by\":\"Партия нөмірімен\",\"id_by\":\"Инвентарь нөмірімен\",\"isbn_by\":\"ISBN-мен\",\"and\":\"Және\",\"or\":\"Немесе\",\"not\":\"Емес\",\"per_page\":\"Парақтагы нәтижелер саны\",\"apply\":\"Растау\",\"showing_pages\":\"{total} нәтиженің {from} - {to} көрсетілуде\",\"page\":\"Бет\",\"page_num\":\"{num} бет\",\"previous\":\"Артқа\",\"next\":\"Келесі\",\"move_to\":\"Өту\",\"asc\":\"Өсу\",\"desc\":\"Азаю\",\"refresh\":\"Жаңарту\",\"choose\":\"Таңдаңыз\",\"choose_search_mode\":\"Іздеу режимін таңдаңыз\",\"save_&_search\":\"Сақтау және іздеу\",\"error\":\"Қате !\",\"batch_filter\":\"Партиялық сүзгі\",\"item_filter\":\"Даналық сүзгі\",\"search_batches\":\"Партия іздеу\",\"search_items\":\"Дана іздеу\",\"search_barcodes\":\"Баркод іздеу\",\"batches_number\":\"Партия нөмірі\",\"batches_by\":\"Партия нөмірімен\",\"add_batch\":\"Партия қосу\",\"add_item\":\"Дана қосу\",\"create_batches\":\"Партия қосу\",\"create_items\":\"Дана қосу\",\"create_supplier\":\"Жеткізуші қосу\",\"create_publisher\":\"Баспагер қосу\",\"edit_batches\":\"Партия өзгерту\",\"edit_items\":\"Дана өзгерту\",\"edit_supplier\":\"Жеткізуші өзгерту\",\"edit_publisher\":\"Баспагер өзгерту\",\"recreate\":\"Қайта қосу\",\"reCreate_items\":\"Дана қайта қосу\",\"type_of_supply\":\"Жеткізу түрі\",\"type_of_item\":\"Дана түрі\",\"quantity_items\":\"Дана саны\",\"quantity_titles\":\"Тақырып саны\",\"document_number\":\"Документ нөмірі\",\"contract_number\":\"Контракт нөмірі\",\"inventory_number\":\"Инвентарь нөмірі\",\"inv_id\":\"Инвентарь нөмірі\",\"types\":\"Түрлер\",\"filled_in\":\"Енгізілді\",\"made_actually\":\"Негізгі саны\",\"correct\":\"Дұрыс\",\"titles_no_match\":\"Тақырыптар саны сәйкес келмейді\",\"items_no_match\":\"Даналар саны сәйкес келмейді\",\"add_input\":\"Енгізуді қосу +\",\"status\":\"Статус\",\"invoice_date\":\"Жеткізген күні\",\"by_contract\":\"Контракт арқылы\",\"invoice_details\":\"Жеткізу деректері\",\"barcode\":\"Баркод\",\"isbn\":\"ISBN\",\"created_by\":\"Толтырылды\",\"edited_by\":\"Өзгертілді\",\"titles\":\"Атау | Атаулар\",\"title\":\"Атау\",\"author\":\"Автор\",\"year\":\"Жылы\",\"call_number\":\"Нөмірі\",\"pub_year\":\"Баспа жылы\",\"pub_city\":\"Баспа қаласы\",\"location\":\"Орналасқан жері\",\"fill_date\":\"Толтырылған күні\",\"beginning\":\"Бастап\",\"end\":\"Дейін\",\"currency\":\"Валютасы\",\"author-title\":\"Автор - атауы\",\"name\":\"Аты\",\"name_by\":\"Атымен\",\"commercial_name\":\"Коммерциялық аты\",\"bin\":\"BIN / IIN\",\"contact\":\"Байланыстар\",\"address\":\"Мекен-жайы\",\"email\":\"Электрондық поштасы\",\"phone\":\"Телефон нөмірі\",\"fax\":\"Факс\",\"service_desk\":\"Қызмет көрсету\",\"users\":\"Пайдаланушылар\",\"books\":\"Кітаптар тарихы\",\"search_user\":\"Пайдаланушы іздеу\",\"type\":\"Түрі\",\"student\":\"Студент\",\"employee\":\"Қызметкер\",\"all\":\"Бәрі\",\"username\":\"Пайдаланушы аты\",\"user_id\":\"Пайдаланушы ID\",\"user_id_user\":\"Пайдаланушы ID (немесе аты || жөні)\",\"username_user\":\"Пайдаланушы аты (немесе аты || жөні)\",\"surname\":\"Тегі\",\"section\":\"Бөлімі\",\"serve\":\"Кітап беру\",\"check_in\":\"Беру\",\"search_material\":\"Материал іздеу\",\"user_info\":\"Пайдаланушы туралы ақпарат\",\"full_name\":\"Аты - тегі\",\"degree\":\"Дәрежесі\",\"class\":\"Оқу жылы\",\"faculty\":\"Факультеті\",\"program\":\"Бағдарламасы\",\"id\":\"ID\",\"mobile\":\"Телефон нөмірі\",\"more_info\":\"Толығырақ\",\"select_all\":\"Барлығын таңдау ( {num} таңдалды )\",\"delivery_date\":\"Жеткізілім уақыты\",\"due_date\":\"Мерзімнің өту күні\",\"issue_date\":\"Берілген күні\",\"borrow_date\":\"Қарызға алу күні\",\"last_user_borrowed\":\"Соңғы пайдаланушы\",\"give_material\":\"Материал беру\",\"hesab_id\":\"Партия ID\",\"batch_id\":\"Партия ID\",\"items_no\":\"Дана саны\",\"titles_no\":\"Тақырып саны\",\"receive_date\":\"Толтырылған күні\",\"supplier_id\":\"Жеткізуші ID\",\"supplier_name\":\"Жеткізущі аты\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"Баспагер ID\",\"com_name\":\"Коммерциялық аты\",\"reports\":\"Есептер\",\"attendance\":\"Қатысу\",\"mrbooks\":\"Көпшілігі оқитын кітаптар\",\"attendance_statistics\":\"Қатысушылардың виртуалды статистикасы\",\"show_for_week\":\"Бір апта бойынша көрсету\",\"show_for_month\":\"Бір ай бойынша көрсету\",\"in_lib_by_week\":\"Бір аптада кітапханада\",\"in_lib_by_month\":\"Бір жылда кітапханада\",\"print\":\"Баркодты басып шығару\",\"language\":\"Тілі\",\"show_in_table\":\"Кестеде көрсету\",\"clear_selected\":\"Таңдалғандарды жою\",\"duration\":\"Ұзақтығы\",\"duration_in_days\":\"Ұзақтығы ( күндермен )\",\"edit_duration\":\"Ұзақтықты өзгерту\",\"issuance\":\"Беру\",\"return\":\"Қайтару\",\"history\":\"Тарих\",\"dept\":\"Мерзімі өткен\",\"borrowed\":\"Қарызға алынған\",\"returned\":\"Қайтарылған\",\"initialize\":\"Инициализациялау\",\"read_from_rfid\":\"RFID-ден оқу\",\"init_status\":\"Инициализацияланған\",\"print_status\":\"Басылған\",\"date\":\"Дата\",\"days\":\"Күндер\",\"cataloging\":\"Каталогтау\",\"search_cataloging\":\"ISBN || Атауы || Автор бойынша іздеу\",\"edit_rec\":\"Жазбаны өңдеу\",\"management\":\"Басқару: {info}\",\"print_call_number\":\"Нөмірін басып шығару\",\"preview\":\"Алдын ала қарау\",\"import_from_worldcat\":\"WorldCat-тан импорттау\",\"export_to_xml\":\"XML-ге экспорттау\",\"section_tag\":\"Бөлім тегі\",\"subtags\":\"Қосымша белгілер\",\"ind1\":\"IND1\",\"ind2\":\"IND2\",\"data\":\"Деректер\"}");
 
 /***/ }),
 
@@ -90604,7 +91315,7 @@ module.exports = JSON.parse("{\"back\":\"Артқа\",\"ok\":\"ОК\",\"acquisit
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse("{\"back\":\"Назад\",\"ok\":\"OK\",\"acquisitions\":\"Комплектование\",\"batches\":\"Партия | Партии\",\"items\":\"Экземлпяр | Экземпляры\",\"publishers\":\"Издатель | Издатели\",\"suppliers\":\"Поставщик | Поставщики\",\"table\":\"Таблица\",\"logout\":\"Выйти\",\"search\":\"Найти\",\"searching\":\"Поиск\",\"reset\":\"Сброс\",\"load_all\":\"Загрузить все\",\"count\":\"Количество\",\"save\":\"Сохранить\",\"cancel\":\"Отменить\",\"cost\":\"Цена\",\"from\":\"От\",\"until\":\"До\",\"not_found\":\"Ничего не найдено\",\"create_date\":\"Дата заполнения формы\",\"edit_date\":\"Дата изменения формы\",\"results\":\"Результаты\",\"results_of\":\"результатов\",\"yes\":\"Да\",\"no\":\"Нет\",\"edit\":\"Изменить\",\"delete\":\"Удалить\",\"create\":\"Создать\",\"show_more\":\"Узнать больше\",\"more\":\"Больше ...\",\"confirmation\":\"Вы действительно хотите удалить?\",\"sort_by\":\"Сортировать по\",\"search_by\":\"Искать по {type}\",\"author_by\":\"автору\",\"title_by\":\"заглавию\",\"barcode_by\":\"баркоду\",\"batch_id_by\":\"номеру партии\",\"id_by\":\"номеру инвентаря\",\"isbn_by\":\"ISBN\",\"and\":\"И\",\"or\":\"Или\",\"not\":\"Не\",\"per_page\":\"Результатов на странице\",\"apply\":\"Подтвердить\",\"showing_pages\":\"{from} - {to} из {total}\",\"page\":\"Стр.\",\"page_num\":\"{num} страница\",\"previous\":\"Назад\",\"next\":\"Вперед\",\"move_to\":\"Перейти\",\"asc\":\"По возрастанию\",\"desc\":\"По убыванию\",\"refresh\":\"Обновить\",\"choose\":\"Выберите\",\"choose_search_mode\":\"Выберите режим поиска\",\"save_&_search\":\"Сохранить и искать\",\"error\":\"Ошибка !\",\"batch_filter\":\"Фильтр партий\",\"item_filter\":\"Фильтр экземпляров\",\"search_batches\":\"Искать партию\",\"search_items\":\"Искать экземпляр\",\"search_barcodes\":\"Искать баркоды\",\"batches_number\":\"Номер партии\",\"batches_by\":\"по номеру партии\",\"add_batch\":\"Добавить партию\",\"add_item\":\"Добавить экземпляр\",\"create_batches\":\"Создать партию\",\"create_items\":\"Создать экземпляр\",\"create_supplier\":\"Создать поставщика\",\"create_publisher\":\"Создать издателя\",\"edit_batches\":\"Изменить партию\",\"edit_items\":\"Изменить экземпляр\",\"edit_supplier\":\"Изменить поставщика\",\"edit_publisher\":\"Изменить издателя\",\"recreate\":\"Пересоздать\",\"reCreate_items\":\"Пересоздать экземпляр\",\"type_of_supply\":\"Тип поставки\",\"type_of_item\":\"Тип экземпляра\",\"quantity_items\":\"Количество экземпляров\",\"quantity_titles\":\"Количество заглавий\",\"document_number\":\"Номер документа\",\"contract_number\":\"Контрактный номер\",\"inventory_number\":\"Номер инвентаря\",\"inv_id\":\"Номер инвентаря\",\"types\":\"Types\",\"filled_in\":\"Введено\",\"made_actually\":\"Введено фактически\",\"correct\":\"Правильно\",\"titles_no_match\":\"Количество заглавий не совпадает\",\"items_no_match\":\"Количество экземпляров не совпадает\",\"add_input\":\"Добавить входные данные +\",\"status\":\"Статус\",\"invoice_date\":\"Дата счета-фактуры\",\"by_contract\":\"По контракту\",\"invoice_details\":\"Информация о счете-фактуре\",\"barcode\":\"Баркод\",\"isbn\":\"ISBN\",\"created_by\":\"Заполнено\",\"edited_by\":\"Изменено\",\"titles\":\"Заглавие | Заглавия\",\"title\":\"Заглавие\",\"author\":\"Автор\",\"year\":\"Год\",\"pub_year\":\"Год издания\",\"pub_city\":\"Город издания\",\"location\":\"Место расположения\",\"fill_date\":\"Дата заполнения\",\"beginning\":\"От\",\"end\":\"До\",\"currency\":\"Валюта\",\"author-title\":\"Автор - заглавие\",\"name\":\"Имя\",\"name_by\":\"по имени\",\"commercial_name\":\"Коммерческое имя\",\"bin\":\"BIN / IIN\",\"contact\":\"Контакты\",\"address\":\"Адресс\",\"email\":\"Электронная почта\",\"phone\":\"Номер телефона\",\"fax\":\"Факс\",\"service_desk\":\"Служба поддержки\",\"users\":\"Пользователи\",\"books\":\"История книг\",\"search_user\":\"Найти пользователя\",\"type\":\"Тип\",\"student\":\"Студент\",\"employee\":\"Работник\",\"all\":\"Все\",\"username\":\"Имя пользователя\",\"user_id\":\"ID пользователя\",\"user_id_user\":\"ID пользователя (или имя || фамилия)\",\"username_user\":\"Имя пользователя (или имя || фамилия)\",\"surname\":\"Фамилия\",\"section\":\"Раздел\",\"serve\":\"Выдача книг\",\"check_in\":\"Выдать\",\"search_material\":\"Поиск материала\",\"user_info\":\"Информация о пользователе\",\"full_name\":\"Имя - фамилия\",\"degree\":\"Степень\",\"class\":\"Год\",\"faculty\":\"Факультет\",\"program\":\"Программа\",\"id\":\"ID\",\"mobile\":\"Номер телефона\",\"more_info\":\"Подробнее\",\"select_all\":\"Выбрать все ( {num} выбрано )\",\"delivery_date\":\"Дата доставки\",\"due_date\":\"Дата сдачи\",\"issue_date\":\"Дата выпуска\",\"borrow_date\":\"Дата заимствования\",\"last_user_borrowed\":\"Последний пользователь\",\"give_material\":\"Дать материал\",\"hesab_id\":\"ID партии\",\"batch_id\":\"ID партии\",\"items_no\":\"Количество экземпляров\",\"titles_no\":\"Количество заглавий\",\"receive_date\":\"Дата заполнения\",\"supplier_id\":\"ID поставщика\",\"supplier_name\":\"Имя поставщика\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"ID издателя\",\"com_name\":\"Коммерческое имя\",\"reports\":\"Отчеты\",\"attendance\":\"Посещаемость\",\"mrbooks\":\"Самые читаемые книги\",\"attendance_statistics\":\"Статистика виртуальной посещаемости\",\"show_for_week\":\"Показать за неделю\",\"show_for_month\":\"Показать за месяц\",\"in_lib_by_week\":\"В библиотеке за неделю\",\"in_lib_by_month\":\"В библиотеке за год\",\"print\":\"Распечатать баркод\",\"language\":\"Язык\",\"duration\":\"Продолжительность\",\"duration_in_days\":\"Продолжительность ( в днях )\",\"edit_duration\":\"Изменить продолжительность\",\"issuance\":\"Выдача\",\"return\":\"Возврат\",\"history\":\"История\",\"dept\":\"Просроченный\",\"borrowed\":\"Взяли\",\"returned\":\"Вернули\",\"initialize\":\"Инициализировать\",\"read_from_rfid\":\"Читать из RFID\",\"init_status\":\"Инициализирован\",\"print_status\":\"Распечатан\",\"date\":\"Дата\",\"days\":\"Дни\",\"cataloging\":\"Каталогизация\",\"search_cataloging\":\"Поиск по ISBN || Название || Автор\",\"edit_rec\":\"Редактировать запись\"}");
+module.exports = JSON.parse("{\"back\":\"Назад\",\"ok\":\"OK\",\"acquisitions\":\"Комплектование\",\"batches\":\"Партия | Партии\",\"items\":\"Экземлпяр | Экземпляры\",\"publishers\":\"Издатель | Издатели\",\"suppliers\":\"Поставщик | Поставщики\",\"table\":\"Таблица\",\"logout\":\"Выйти\",\"search\":\"Найти\",\"searching\":\"Поиск\",\"reset\":\"Сброс\",\"load_all\":\"Загрузить все\",\"count\":\"Количество\",\"save\":\"Сохранить\",\"cancel\":\"Отменить\",\"cost\":\"Цена\",\"from\":\"От\",\"until\":\"До\",\"not_found\":\"Ничего не найдено\",\"create_date\":\"Дата заполнения формы\",\"edit_date\":\"Дата изменения формы\",\"results\":\"Результаты\",\"results_of\":\"результатов\",\"yes\":\"Да\",\"no\":\"Нет\",\"edit\":\"Изменить\",\"delete\":\"Удалить\",\"create\":\"Создать\",\"show_more\":\"Узнать больше\",\"more\":\"Больше ...\",\"confirmation\":\"Вы действительно хотите удалить?\",\"sort_by\":\"Сортировать по\",\"search_by\":\"Искать по {type}\",\"author_by\":\"автору\",\"title_by\":\"заглавию\",\"barcode_by\":\"баркоду\",\"batch_id_by\":\"номеру партии\",\"id_by\":\"номеру инвентаря\",\"isbn_by\":\"ISBN\",\"and\":\"И\",\"or\":\"Или\",\"not\":\"Не\",\"per_page\":\"Результатов на странице\",\"apply\":\"Подтвердить\",\"showing_pages\":\"{from} - {to} из {total}\",\"page\":\"Стр.\",\"page_num\":\"{num} страница\",\"previous\":\"Назад\",\"next\":\"Вперед\",\"move_to\":\"Перейти\",\"asc\":\"По возрастанию\",\"desc\":\"По убыванию\",\"refresh\":\"Обновить\",\"choose\":\"Выберите\",\"choose_search_mode\":\"Выберите режим поиска\",\"save_&_search\":\"Сохранить и искать\",\"error\":\"Ошибка !\",\"batch_filter\":\"Фильтр партий\",\"item_filter\":\"Фильтр экземпляров\",\"search_batches\":\"Искать партию\",\"search_items\":\"Искать экземпляр\",\"search_barcodes\":\"Искать баркоды\",\"batches_number\":\"Номер партии\",\"batches_by\":\"по номеру партии\",\"add_batch\":\"Добавить партию\",\"add_item\":\"Добавить экземпляр\",\"create_batches\":\"Создать партию\",\"create_items\":\"Создать экземпляр\",\"create_supplier\":\"Создать поставщика\",\"create_publisher\":\"Создать издателя\",\"edit_batches\":\"Изменить партию\",\"edit_items\":\"Изменить экземпляр\",\"edit_supplier\":\"Изменить поставщика\",\"edit_publisher\":\"Изменить издателя\",\"recreate\":\"Пересоздать\",\"reCreate_items\":\"Пересоздать экземпляр\",\"type_of_supply\":\"Тип поставки\",\"type_of_item\":\"Тип экземпляра\",\"quantity_items\":\"Количество экземпляров\",\"quantity_titles\":\"Количество заглавий\",\"document_number\":\"Номер документа\",\"contract_number\":\"Контрактный номер\",\"inventory_number\":\"Номер инвентаря\",\"inv_id\":\"Номер инвентаря\",\"types\":\"Types\",\"filled_in\":\"Введено\",\"made_actually\":\"Введено фактически\",\"correct\":\"Правильно\",\"titles_no_match\":\"Количество заглавий не совпадает\",\"items_no_match\":\"Количество экземпляров не совпадает\",\"add_input\":\"Добавить входные данные +\",\"status\":\"Статус\",\"invoice_date\":\"Дата счета-фактуры\",\"by_contract\":\"По контракту\",\"invoice_details\":\"Информация о счете-фактуре\",\"barcode\":\"Баркод\",\"isbn\":\"ISBN\",\"created_by\":\"Заполнено\",\"edited_by\":\"Изменено\",\"titles\":\"Заглавие | Заглавия\",\"title\":\"Заглавие\",\"author\":\"Автор\",\"year\":\"Год\",\"call_number\":\"Номер\",\"pub_year\":\"Год издания\",\"pub_city\":\"Город издания\",\"location\":\"Место расположения\",\"fill_date\":\"Дата заполнения\",\"beginning\":\"От\",\"end\":\"До\",\"currency\":\"Валюта\",\"author-title\":\"Автор - заглавие\",\"name\":\"Имя\",\"name_by\":\"по имени\",\"commercial_name\":\"Коммерческое имя\",\"bin\":\"BIN / IIN\",\"contact\":\"Контакты\",\"address\":\"Адресс\",\"email\":\"Электронная почта\",\"phone\":\"Номер телефона\",\"fax\":\"Факс\",\"service_desk\":\"Служба поддержки\",\"users\":\"Пользователи\",\"books\":\"История книг\",\"search_user\":\"Найти пользователя\",\"type\":\"Тип\",\"student\":\"Студент\",\"employee\":\"Работник\",\"all\":\"Все\",\"username\":\"Имя пользователя\",\"user_id\":\"ID пользователя\",\"user_id_user\":\"ID пользователя (или имя || фамилия)\",\"username_user\":\"Имя пользователя (или имя || фамилия)\",\"surname\":\"Фамилия\",\"section\":\"Раздел\",\"serve\":\"Выдача книг\",\"check_in\":\"Выдать\",\"search_material\":\"Поиск материала\",\"user_info\":\"Информация о пользователе\",\"full_name\":\"Имя - фамилия\",\"degree\":\"Степень\",\"class\":\"Год\",\"faculty\":\"Факультет\",\"program\":\"Программа\",\"id\":\"ID\",\"mobile\":\"Номер телефона\",\"more_info\":\"Подробнее\",\"select_all\":\"Выбрать все ( {num} выбрано )\",\"delivery_date\":\"Дата доставки\",\"due_date\":\"Дата сдачи\",\"issue_date\":\"Дата выпуска\",\"borrow_date\":\"Дата заимствования\",\"last_user_borrowed\":\"Последний пользователь\",\"give_material\":\"Дать материал\",\"hesab_id\":\"ID партии\",\"batch_id\":\"ID партии\",\"items_no\":\"Количество экземпляров\",\"titles_no\":\"Количество заглавий\",\"receive_date\":\"Дата заполнения\",\"supplier_id\":\"ID поставщика\",\"supplier_name\":\"Имя поставщика\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"ID издателя\",\"com_name\":\"Коммерческое имя\",\"reports\":\"Отчеты\",\"attendance\":\"Посещаемость\",\"mrbooks\":\"Самые читаемые книги\",\"attendance_statistics\":\"Статистика виртуальной посещаемости\",\"show_for_week\":\"Показать за неделю\",\"show_for_month\":\"Показать за месяц\",\"in_lib_by_week\":\"В библиотеке за неделю\",\"in_lib_by_month\":\"В библиотеке за год\",\"print\":\"Распечатать баркод\",\"language\":\"Язык\",\"show_in_table\":\"Показать в таблице\",\"clear_selected\":\"Очистить выбранные\",\"duration\":\"Продолжительность\",\"duration_in_days\":\"Продолжительность ( в днях )\",\"edit_duration\":\"Изменить продолжительность\",\"issuance\":\"Выдача\",\"return\":\"Возврат\",\"history\":\"История\",\"dept\":\"Просроченный\",\"borrowed\":\"Взяли\",\"returned\":\"Вернули\",\"initialize\":\"Инициализировать\",\"read_from_rfid\":\"Читать из RFID\",\"init_status\":\"Инициализирован\",\"print_status\":\"Распечатан\",\"date\":\"Дата\",\"days\":\"Дни\",\"cataloging\":\"Каталогизация\",\"search_cataloging\":\"Поиск по ISBN || Название || Автор\",\"edit_rec\":\"Редактировать запись\",\"management\":\"Управление: {info}\",\"print_call_number\":\"Распечатать номер\",\"preview\":\"Предварительный просмотр\",\"import_from_worldcat\":\"Внести из WorldCat\",\"export_to_xml\":\"Вывести в XML\",\"section_tag\":\"Тег раздела\",\"subtags\":\"Подтеги\",\"ind1\":\"IND1\",\"ind2\":\"IND2\",\"data\":\"Данные\"}");
 
 /***/ })
 

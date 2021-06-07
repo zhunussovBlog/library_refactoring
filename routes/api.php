@@ -170,11 +170,13 @@ Route::middleware(['auth:api-student,api-employee'])->group(function () {
         });
 
         Route::group(['prefix' => 'cataloging'], function () {
-            Route::get('material/search', 'Api\Cataloging\SearchController');
-            Route::get('material/edit-data', 'Api\Cataloging\ShowController@getEditData');
-            Route::get('material/{id}', 'Api\Cataloging\ShowController@getMaterialById');
-
-            Route::post('material/edit', 'Api\Cataloging\ActionsController');
+            Route::post('material/search', 'Api\Cataloging\SearchController');
+            Route::get('material/search-fields', 'Api\Cataloging\ShowController@searchFields');
+            Route::get('material/types', 'Api\Cataloging\ShowController@getTypes');
+            Route::get('material/{type}/{id}', 'Api\Cataloging\ShowController@getMaterialById');
+            Route::get('material/export/{type}/{id}', 'Api\Cataloging\ShowController@exportXml');
+            Route::get('material/print/{type}/{id}', 'Api\Cataloging\PrintController');
+            Route::post('material/{type}/{id}/edit', 'Api\Cataloging\EditMaterialController');
         });
     });
 });

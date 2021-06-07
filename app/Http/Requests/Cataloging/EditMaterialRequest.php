@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Cataloging;
 
 use Illuminate\Foundation\Http\FormRequest;
+use JetBrains\PhpStorm\ArrayShape;
 
 class EditMaterialRequest extends FormRequest
 {
@@ -21,23 +22,11 @@ class EditMaterialRequest extends FormRequest
      *
      * @return array
      */
+    #[ArrayShape(['data' => "string"])]
     public function rules(): array
     {
         return [
-            'call_number' => 'required|string',
-            'isbn' => 'required|string',
-            'title' => 'required|string',
-            'main_author' => 'required|string',
-            'other_author' => 'required|string',
-            'publisher' => 'required|string',
-            'year' => 'required|integer',
-            'city' => 'required|string',
-            'page_number' => 'required|integer',
-            'parallel_title' => 'required|string',
-            'title_related_info' => 'required|string',
-            'lang_key' => 'required|string',
-            'type_key' => 'required|string',
-            'id' => 'required|integer',
+            'data' => 'required|array',
         ];
     }
 }
