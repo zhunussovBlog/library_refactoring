@@ -63,7 +63,8 @@ import SelectedItems from '../../../components/common/SelectedItems'
 import PulseLoader from 'vue-spinner/src/PulseLoader'
 
 //mixins
-import {getResults,download_file,last} from '../../../mixins/common'
+import {getResults,last} from '../../../mixins/common'
+import {print_file} from '../../../mixins/files'
 import {message_success,message_error} from '../../../mixins/messages'
 import readFromRfid from '../../../mixins/readFromRfid'
 import showModal from '../../../mixins/showModal'
@@ -72,7 +73,7 @@ import showModal from '../../../mixins/showModal'
 import {mapGetters} from 'vuex'
 
 export default{
-	mixins:[getResults,download_file,readFromRfid,message_success,message_error,showModal,last],
+	mixins:[getResults,print_file,readFromRfid,message_success,message_error,showModal,last],
 	components:{Back,Dropdown,'table-div':Table,PulseLoader},
 	computed:{
 		...mapGetters(['print_barcode'])
@@ -169,7 +170,7 @@ export default{
 			let print=(barcodes)=>{
 				let inventories=barcodes.map(barcode=>barcode.id);
 				this.$http.post(this.link+'/print',{inventories:inventories},{responseType:'blob'}).then(response=>{
-					this.download_file(response,'barcode','pdf');
+					this.print_file(response);
 					this.last(this.link,this.commit);
 					this.$eventHub.$emit('selectRefresh');
 					this.$emit('close');

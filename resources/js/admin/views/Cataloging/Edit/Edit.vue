@@ -7,7 +7,7 @@
             <div class="d-flex justify-content-between">
                 <div>{{$t('management',{info:info.title})}}</div>
                 <div class="d-flex">
-                    <button class="outline-black mx-3" @click="saveCallNumber()">
+                    <button class="outline-black mx-3" @click="printCallNumber()">
                         <Print class="mr-2" />
                         {{$t('print_call_number')}}
                     </button>
@@ -17,7 +17,7 @@
                     <button class="outline-black mx-3">
                         {{$t('import_from_worldcat')}}
                     </button>
-                    <button class="outline-black" @click="saveXML()">
+                    <button class="outline-black" @click="exportXML()">
                         {{$t('export_to_xml')}}
                     </button>
                 </div>
@@ -115,7 +115,7 @@
 // mixins
 import {goTo} from '../../../mixins/goTo';
 import {message_success,message_error} from '../../../mixins/messages';
-import {download_file} from '../../../mixins/common';
+import {download_file,print_file} from '../../../mixins/files';
 import showModal from '../../../mixins/showModal';
 
 // components
@@ -125,7 +125,7 @@ import Print from '../../../assets/icons/Print.vue'
 import Preview from './Preview'
 
 export default {
-    mixins:[goTo,message_error,message_success,download_file,showModal],
+    mixins:[goTo,message_error,message_success,download_file,print_file,showModal],
     props:{
         info:Object
     },
@@ -254,14 +254,20 @@ export default {
                 this.$store.commit('setFullPageLoading',false);
             })
         },
-        saveXML(){
+        exportXML(){
+            this.$store.commit('setFullPageLoading',true);
             this.$http.get(this.link+'/export/'+this.info.type_key+'/'+this.info.id).then(response=>{
                 this.download_file(response,'xml_'+this.info.title,'xml');
+            }).catch(e=>{}).then(()=>{
+                this.$store.commit('setFullPageLoading',false);
             })
         },
-        saveCallNumber(){
+        printCallNumber(){
+            this.$store.commit('setFullPageLoading',true);
             this.$http.get(this.link+'/print/'+this.info.type_key+'/'+this.info.id,{responseType:'blob'}).then(response=>{
-                this.download_file(response,'call_number_'+this.info.title,'pdf');
+                this.print_file(response,'call_number_'+this.info.title,'pdf');
+            }).catch(e=>{}).then(()=>{
+                this.$store.commit('setFullPageLoading',false);
             })
         },
         preview(){

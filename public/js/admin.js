@@ -4648,10 +4648,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_common_SelectedItems__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../components/common/SelectedItems */ "./resources/js/admin/components/common/SelectedItems.vue");
 /* harmony import */ var vue_spinner_src_PulseLoader__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue-spinner/src/PulseLoader */ "./node_modules/vue-spinner/src/PulseLoader.vue");
 /* harmony import */ var _mixins_common__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../mixins/common */ "./resources/js/admin/mixins/common.js");
-/* harmony import */ var _mixins_messages__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../mixins/messages */ "./resources/js/admin/mixins/messages.js");
-/* harmony import */ var _mixins_readFromRfid__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../mixins/readFromRfid */ "./resources/js/admin/mixins/readFromRfid.js");
-/* harmony import */ var _mixins_showModal__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../mixins/showModal */ "./resources/js/admin/mixins/showModal.js");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _mixins_files__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../mixins/files */ "./resources/js/admin/mixins/files.js");
+/* harmony import */ var _mixins_messages__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../mixins/messages */ "./resources/js/admin/mixins/messages.js");
+/* harmony import */ var _mixins_readFromRfid__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../mixins/readFromRfid */ "./resources/js/admin/mixins/readFromRfid.js");
+/* harmony import */ var _mixins_showModal__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../../mixins/showModal */ "./resources/js/admin/mixins/showModal.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -4729,18 +4730,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
  // libraries
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  mixins: [_mixins_common__WEBPACK_IMPORTED_MODULE_6__.getResults, _mixins_common__WEBPACK_IMPORTED_MODULE_6__.download_file, _mixins_readFromRfid__WEBPACK_IMPORTED_MODULE_8__.default, _mixins_messages__WEBPACK_IMPORTED_MODULE_7__.message_success, _mixins_messages__WEBPACK_IMPORTED_MODULE_7__.message_error, _mixins_showModal__WEBPACK_IMPORTED_MODULE_9__.default, _mixins_common__WEBPACK_IMPORTED_MODULE_6__.last],
+  mixins: [_mixins_common__WEBPACK_IMPORTED_MODULE_6__.getResults, _mixins_files__WEBPACK_IMPORTED_MODULE_7__.print_file, _mixins_readFromRfid__WEBPACK_IMPORTED_MODULE_9__.default, _mixins_messages__WEBPACK_IMPORTED_MODULE_8__.message_success, _mixins_messages__WEBPACK_IMPORTED_MODULE_8__.message_error, _mixins_showModal__WEBPACK_IMPORTED_MODULE_10__.default, _mixins_common__WEBPACK_IMPORTED_MODULE_6__.last],
   components: {
     Back: _components_common_Back__WEBPACK_IMPORTED_MODULE_1__.default,
     Dropdown: _components_common_Dropdown__WEBPACK_IMPORTED_MODULE_2__.default,
     'table-div': _components_common_Table__WEBPACK_IMPORTED_MODULE_3__.default,
     PulseLoader: vue_spinner_src_PulseLoader__WEBPACK_IMPORTED_MODULE_5__.default
   },
-  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_10__.mapGetters)(['print_barcode'])),
+  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_11__.mapGetters)(['print_barcode'])),
   data: function data() {
     return {
       types: [],
@@ -4902,7 +4904,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }, {
           responseType: 'blob'
         }).then(function (response) {
-          _this4.download_file(response, 'barcode', 'pdf');
+          _this4.print_file(response);
 
           _this4.last(_this4.link, _this4.commit);
 
@@ -5416,7 +5418,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _mixins_goTo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../mixins/goTo */ "./resources/js/admin/mixins/goTo.js");
 /* harmony import */ var _mixins_messages__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../mixins/messages */ "./resources/js/admin/mixins/messages.js");
-/* harmony import */ var _mixins_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../mixins/common */ "./resources/js/admin/mixins/common.js");
+/* harmony import */ var _mixins_files__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../mixins/files */ "./resources/js/admin/mixins/files.js");
 /* harmony import */ var _mixins_showModal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../mixins/showModal */ "./resources/js/admin/mixins/showModal.js");
 /* harmony import */ var _components_common_Back_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../components/common/Back.vue */ "./resources/js/admin/components/common/Back.vue");
 /* harmony import */ var _assets_icons_Print_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../assets/icons/Print.vue */ "./resources/js/admin/assets/icons/Print.vue");
@@ -5544,7 +5546,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  mixins: [_mixins_goTo__WEBPACK_IMPORTED_MODULE_0__.goTo, _mixins_messages__WEBPACK_IMPORTED_MODULE_1__.message_error, _mixins_messages__WEBPACK_IMPORTED_MODULE_1__.message_success, _mixins_common__WEBPACK_IMPORTED_MODULE_2__.download_file, _mixins_showModal__WEBPACK_IMPORTED_MODULE_3__.default],
+  mixins: [_mixins_goTo__WEBPACK_IMPORTED_MODULE_0__.goTo, _mixins_messages__WEBPACK_IMPORTED_MODULE_1__.message_error, _mixins_messages__WEBPACK_IMPORTED_MODULE_1__.message_success, _mixins_files__WEBPACK_IMPORTED_MODULE_2__.download_file, _mixins_files__WEBPACK_IMPORTED_MODULE_2__.print_file, _mixins_showModal__WEBPACK_IMPORTED_MODULE_3__.default],
   props: {
     info: Object
   },
@@ -5694,20 +5696,26 @@ __webpack_require__.r(__webpack_exports__);
         _this2.$store.commit('setFullPageLoading', false);
       });
     },
-    saveXML: function saveXML() {
+    exportXML: function exportXML() {
       var _this3 = this;
 
+      this.$store.commit('setFullPageLoading', true);
       this.$http.get(this.link + '/export/' + this.info.type_key + '/' + this.info.id).then(function (response) {
         _this3.download_file(response, 'xml_' + _this3.info.title, 'xml');
+      })["catch"](function (e) {}).then(function () {
+        _this3.$store.commit('setFullPageLoading', false);
       });
     },
-    saveCallNumber: function saveCallNumber() {
+    printCallNumber: function printCallNumber() {
       var _this4 = this;
 
+      this.$store.commit('setFullPageLoading', true);
       this.$http.get(this.link + '/print/' + this.info.type_key + '/' + this.info.id, {
         responseType: 'blob'
       }).then(function (response) {
-        _this4.download_file(response, 'call_number_' + _this4.info.title, 'pdf');
+        _this4.print_file(response, 'call_number_' + _this4.info.title, 'pdf');
+      })["catch"](function (e) {}).then(function () {
+        _this4.$store.commit('setFullPageLoading', false);
       });
     },
     preview: function preview() {
@@ -6392,7 +6400,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_common_Table__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../components/common/Table */ "./resources/js/admin/components/common/Table.vue");
 /* harmony import */ var vue_spinner_src_PulseLoader__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-spinner/src/PulseLoader */ "./node_modules/vue-spinner/src/PulseLoader.vue");
 /* harmony import */ var _mixins_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../mixins/common */ "./resources/js/admin/mixins/common.js");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _mixins_files__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../mixins/files */ "./resources/js/admin/mixins/files.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -6443,13 +6452,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  mixins: [_mixins_common__WEBPACK_IMPORTED_MODULE_2__.getResults, _mixins_common__WEBPACK_IMPORTED_MODULE_2__.download_file, _mixins_common__WEBPACK_IMPORTED_MODULE_2__.reset],
+  mixins: [_mixins_common__WEBPACK_IMPORTED_MODULE_2__.getResults, _mixins_files__WEBPACK_IMPORTED_MODULE_3__.print_file, _mixins_files__WEBPACK_IMPORTED_MODULE_3__.download_file, _mixins_common__WEBPACK_IMPORTED_MODULE_2__.reset],
   components: {
     'table-div': _components_common_Table__WEBPACK_IMPORTED_MODULE_0__.default,
     PulseLoader: vue_spinner_src_PulseLoader__WEBPACK_IMPORTED_MODULE_1__.default
   },
-  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapGetters)(['books_inv_number'])),
+  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_4__.mapGetters)(['books_inv_number'])),
   data: function data() {
     return {
       loading: false,
@@ -6508,7 +6518,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }, {
         responseType: 'blob'
       }).then(function (response) {
-        _this.download_file(response, 'inventory_number', 'pdf');
+        _this.print_file(response);
 
         _this.$store.commit('setFullPageLoading', false);
       });
@@ -8261,7 +8271,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "last_created": () => (/* binding */ last_created),
 /* harmony export */   "create_it": () => (/* binding */ create_it),
 /* harmony export */   "edit_it": () => (/* binding */ edit_it),
-/* harmony export */   "download_file": () => (/* binding */ download_file),
 /* harmony export */   "reset": () => (/* binding */ reset)
 /* harmony export */ });
 /* harmony import */ var _messages__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./messages */ "./resources/js/admin/mixins/messages.js");
@@ -8602,20 +8611,6 @@ var edit_it = {
     }
   }
 };
-var download_file = {
-  methods: {
-    download_file: function download_file(response, name, extension) {
-      var now = new Date();
-      name += '_' + now.getFullYear() + '.' + now.getMonth() + '.' + now.getDate() + '_' + now.getHours() + '.' + now.getMinutes() + '.' + extension;
-      var url = window.URL.createObjectURL(new Blob([response.data]));
-      var link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', name);
-      document.querySelector('#app').appendChild(link);
-      link.click();
-    }
-  }
-};
 var reset = {
   methods: {
     reset: function reset(commit) {
@@ -8636,6 +8631,46 @@ var reset = {
       if (store.search.search_options) {
         store.search.search_options = store.search_default;
       }
+    }
+  }
+};
+
+/***/ }),
+
+/***/ "./resources/js/admin/mixins/files.js":
+/*!********************************************!*\
+  !*** ./resources/js/admin/mixins/files.js ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "download_file": () => (/* binding */ download_file),
+/* harmony export */   "print_file": () => (/* binding */ print_file)
+/* harmony export */ });
+var download_file = {
+  methods: {
+    download_file: function download_file(response, name, extension) {
+      var now = new Date();
+      name += '_' + now.getFullYear() + '.' + now.getMonth() + '.' + now.getDate() + '_' + now.getHours() + '.' + now.getMinutes() + '.' + extension;
+      var url = window.URL.createObjectURL(new Blob([response.data]));
+      var link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', name);
+      document.querySelector('#app').appendChild(link);
+      link.click();
+    }
+  }
+};
+var print_file = {
+  methods: {
+    print_file: function print_file(response) {
+      var url = window.URL.createObjectURL(new Blob([response.data], {
+        type: "application/pdf"
+      }));
+      var w = window.open(url);
+      w.print();
     }
   }
 };
@@ -71286,7 +71321,7 @@ var render = function() {
               staticClass: "outline-black mx-3",
               on: {
                 click: function($event) {
-                  return _vm.saveCallNumber()
+                  return _vm.printCallNumber()
                 }
               }
             },
@@ -71334,7 +71369,7 @@ var render = function() {
               staticClass: "outline-black",
               on: {
                 click: function($event) {
-                  return _vm.saveXML()
+                  return _vm.exportXML()
                 }
               }
             },

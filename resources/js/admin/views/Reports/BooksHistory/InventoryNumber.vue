@@ -43,11 +43,12 @@ import Table from '../../../components/common/Table'
 import PulseLoader from 'vue-spinner/src/PulseLoader'
 
 //mixins
-import {getResults,download_file,reset} from '../../../mixins/common'
+import {getResults,reset} from '../../../mixins/common'
+import {print_file,download_file} from '../../../mixins/files'
 
 import {mapGetters} from 'vuex'
 export default{
-	mixins:[getResults,download_file,reset],
+	mixins:[getResults,print_file,download_file,reset],
 	components:{'table-div':Table,PulseLoader},
 	computed:{
 		...mapGetters(['books_inv_number'])
@@ -79,7 +80,7 @@ export default{
 		print(){
 			this.$store.commit('setFullPageLoading',true);	
 			this.$http.post(this.link+'/print',{inventories:this.books_inv_number.all},{responseType:'blob'}).then(response=>{
-				this.download_file(response,'inventory_number','pdf');
+				this.print_file(response);
 				this.$store.commit('setFullPageLoading',false);	
 			})
 		},

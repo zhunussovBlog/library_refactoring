@@ -2,7 +2,15 @@
 	<div class="bg-greyer padding mh-100 overflow-auto">
 		<div class="d-flex align-items-start bg-white border-top py-4 px-5 min-vh-100">
 			<div class="mr-5">
-				<div class="image rounded bg-grey" :style="'background-image: url('+this.info.image+')'"></div>
+				<div class="image rounded bg-grey" :style="'background-image: url('+this.data.image+')'"></div>
+				<div class="d-flex align-items-center cursor-pointer py-2 mt-2" @click="copyLink()">
+					<Save />
+					<span class="ml-2">{{$t('copy_link')}}</span>
+				</div>
+				<div class="d-flex align-items-center cursor-pointer py-2" @click="printPage()">
+					<Print />
+					<span class="ml-2">{{$t('print_page')}}</span>
+				</div>
 			</div>
 			<div class="flex-fill">
 				<div class="d-flex flex-fill">
@@ -23,20 +31,19 @@
 						</div>
 					</div>
 				</div>
-				<div class="mt-3" v-if="info.description">
+				<div class="mt-3" v-if="data.description">
 					<div class="text-grey font-size-14">
 						{{$t('description')}}
 					</div>
-					<div class="mt-1" >
-						{{info.description}}
+					<div class="mt-1" v-html="data.description">
 					</div>
 				</div>
-				<div class="mt-3" v-if="info.content">
+				<div class="mt-3" v-if="data.content">
 					<div class="text-grey font-size-14">
 						{{$t('content')}}
 					</div>
 					<div class="mt-1" >
-						{{info.content}}
+						{{data.content}}
 					</div>
 				</div>
 				<div class="title mt-4">
@@ -47,21 +54,21 @@
 				</div>
 				<table class="table">
 					<tbody>
-						<tr v-for="(info,index) in new Array(Math.ceil(array_data.length/2))" :key="index">
-							<td :colspan="array_data[(index*2)+1]==undefined ? '2':null">
+						<tr v-for="(info,index) in new Array(Math.ceil(data.array_data.length/2))" :key="index">
+							<td :colspan="data.array_data[(index*2)+1]==undefined ? '2':null">
 								<div class="text-grey">
-									{{$t(array_data[index*2].key)}}:
+									{{$t(data.array_data[index*2].key)}}:
 								</div>
 								<div>
-									{{array_data[index*2].value!=undefined ? array_data[index*2].value:$t('undefined')}}
+									{{data.array_data[index*2].value!=undefined ? data.array_data[index*2].value:$t('undefined')}}
 								</div>
 							</td>
-							<td v-if="array_data[(index*2)+1]!=undefined">
+							<td v-if="data.array_data[(index*2)+1]!=undefined">
 								<div class="text-grey">
-									{{$t(array_data[(index*2)+1].key)}}:
+									{{$t(data.array_data[(index*2)+1].key)}}:
 								</div>
 								<div>
-									{{array_data[(index*2)+1].value!=undefined ? array_data[(index*2)+1].value:$t('undefined')}}
+									{{data.array_data[(index*2)+1].value!=undefined ? data.array_data[(index*2)+1].value:$t('undefined')}}
 								</div>
 							</td>
 						</tr>
@@ -81,23 +88,24 @@
 
 	import RightLittle from '../../../../assets/icons/RightLittle'
 	import X from '../../../../assets/icons/X'
+	import Save from '../../../../assets/icons/Save'
+	import Print from '../../../../assets/icons/Print'
 
 	export default{
 		props:{
 			id:[String,Number]
 		},
 		mixins:[goTo,getBookImage],
-		components:{RightLittle,X},
+		components:{RightLittle,X,Save,Print},
 		data(){
 			return{
-				data:{},
-				info:{
+				data:{
+					array_data:[],
 					image:'',
 					isbn:'',
 					description:'',
 					content:''
 				},
-				array_data:[]
 			}
 		},
 		methods:{
@@ -113,18 +121,37 @@
 			loadData(){
 				this.$store.commit('setFullPageLoading',true);
 				this.$http.get('media/show/'+this.id).then(response=>{
-					this.data=response.data.res;
-					this.array_data=this.convertToArray(objectWithoutKey(this.data,['id','type_key']));
-					this.info.isbn=this.data.isbn
+					this.data= this.importFromXML(response);
+					this.data.array_data=this.convertToArray(objectWithoutKey(this.data,['id','type_key','issn','status','availability','description','content']));
+					this.data.array_data.push({lin});
 					try{
-						this.getBookImage(this.info,true);
+						this.getBookImage(this.data,!this.data.description);
 					}catch(e){}
 				}).catch(error=>{
-					console.log(error);
+					console.error(error);
 					// this.goTo('home');
 				}).then(()=>{
 					this.$store.commit('setFullPageLoading',false);
 				});
+			},
+			importFromXML(response){
+				let data=response.data.res;
+				let xml=response.data.xmlInfo;
+				if(!xml){
+					return data;
+				}
+				else{
+					data.description=this.getFromCatalog(xml,'520.a');
+					data.content=this.getFromCatalog(xml,'520.b');
+					data.attribution=this.getFromCatalog(xml,'245.c');
+					
+					return data;
+				}
+				
+			},
+			getFromCatalog(xml,code){
+				let data=xml.find(elem=>elem.id==code);
+				return data ? data.data : null;
 			},
 			convertToArray(object){
 				var arr=[];
@@ -137,6 +164,34 @@
 			closeModal(){
 				this.$emit('close');
 				document.documentElement.classList.remove('overflow-hidden');
+			},
+			copyLink(){
+				var copyText = document.createElement('input');
+				copyText.value=window.location.protocol+'//'+window.location.hostname+'/full?id='+this.id;
+				document.body.appendChild(copyText);
+
+				copyText.select();
+				copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+				document.execCommand("copy");
+				document.body.removeChild(copyText);
+			},
+			printPage(){
+				let elem = document.getElementById('modals-container');
+				var domClone = elem.cloneNode(true);
+
+				var printSection = document.getElementById("printSection");
+
+				if (!printSection) {
+					var printSection = document.createElement("div");
+					printSection.id = "printSection";
+					document.body.appendChild(printSection);
+				}
+
+				printSection.innerHTML = "";
+				printSection.appendChild(domClone);
+				window.print();
+				document.body.removeChild(printSection);
 			}
 		},
 		created(){

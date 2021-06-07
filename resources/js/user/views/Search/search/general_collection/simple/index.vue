@@ -66,9 +66,6 @@
 					this.warn('simple',true);
 				}
 			}
-		},
-		created(){
-			this.search()
 		}
 	}
 </script>
