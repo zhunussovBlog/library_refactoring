@@ -1,8 +1,8 @@
 <template>
 	<div class="bg-greyer padding mh-100 overflow-auto">
 		<div class="d-flex flex-column bg-white py-4 px-5 min-vh-100">
-            <div class="align-self-center font-size-24 font-weight-bolder">PREVIEW</div>
-            <div class="text-grey font-size-12 mr-3">Section Tag</div>
+            <div class="align-self-center font-size-24 font-weight-bolder">{{$t('preview').toUpperCase()}}</div>
+            <div class="text-grey font-size-12 mr-3">{{$t('section_tag')}}</div>
             <div class="d-flex align-items-start my-2" v-for="(section,index) in sections" :key="index">
                 <div class="outline-orange px-3 py-2 rounded mr-3">{{section.tag}}</div>
                 <div class="flex-fill border rounded py-2 px-4">
@@ -81,7 +81,6 @@
                         arr.push(sec);
                     })
                 })
-                console.log(arr);
                 this.sections=arr;
             },
 			closeModal(){

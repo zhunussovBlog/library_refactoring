@@ -5,27 +5,27 @@
                 <back />
             </div>
             <div class="d-flex justify-content-between">
-                <div>Management: {{info.title}}</div>
+                <div>{{$t('management',{info:info.title})}}</div>
                 <div class="d-flex">
                     <button class="outline-black mx-3" @click="saveCallNumber()">
                         <Print class="mr-2" />
-                        Print call number
+                        {{$t('print_call_number')}}
                     </button>
                     <button class="outline-black" @click="preview()">
-                        Preview
+                        {{$t('preview')}}
                     </button>
                     <button class="outline-black mx-3">
-                        Import from WorldCat
+                        {{$t('import_from_worldcat')}}
                     </button>
                     <button class="outline-black" @click="saveXML()">
-                        Export to XML
+                        {{$t('export_to_xml')}}
                     </button>
                 </div>
             </div>
             <div class="d-flex mt-5">
                 <div class="text-center px-2 py-3 border rounded">
                     <div class="text-grey font-size-14 py-2 my-1">
-                        Section
+                        {{$t('section')}}
                     </div>
                     <div class="py-2 my-1 cursor-pointer"
                         :class="{'px-3 border rounded border-orange text-orange':sectionSelected==index}"
@@ -36,7 +36,7 @@
                 </div>
                 <div class="p-3 ml-3 border rounded flex-fill ">
                     <div class="text-grey font-size-14 py-2 my-1">
-                        Section tag
+                        {{$t('section_tag')}}
                     </div>
                     <div class="d-flex">
                         <div class="rounded px-3 py-2 font-weight-bold bg-lightgrey text-grey cursor-pointer"

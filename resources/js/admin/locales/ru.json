@@ -106,6 +106,7 @@
     "title": "Заглавие",
     "author": "Автор",
     "year": "Год",
+    "call_number": "Номер",
     "pub_year": "Год издания",
     "pub_city": "Город издания",
     "location": "Место расположения",
@@ -210,5 +211,15 @@
 
     "cataloging": "Каталогизация",
     "search_cataloging": "Поиск по ISBN || Название || Автор",
-    "edit_rec": "Редактировать запись"
+    "edit_rec": "Редактировать запись",
+    "management": "Управление: {info}",
+    "print_call_number": "Распечатать номер",
+    "preview": "Предварительный просмотр",
+    "import_from_worldcat": "Внести из WorldCat",
+    "export_to_xml": "Вывести в XML",
+    "section_tag": "Тег раздела",
+    "subtags": "Подтеги",
+    "ind1": "IND1",
+    "ind2": "IND2",
+    "data": "Данные"
 }
