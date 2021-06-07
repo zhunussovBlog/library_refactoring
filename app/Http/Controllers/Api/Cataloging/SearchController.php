@@ -35,9 +35,9 @@ class SearchController extends Controller
         }
 
         $materials = $materials
-            ->where(DB::raw("lower(isbn)"), 'like', $query . '%')
-            ->orWhere(DB::raw("lower(title)"), 'like', $query . '%')
-            ->orWhere(DB::raw("lower(author)"), 'like', $query . '%')
+            ->where(DB::raw("lower(isbn)"), 'like', '%'. $query . '%')
+            ->orWhere(DB::raw("lower(title)"), 'like', '%'. $query . '%')
+            ->orWhere(DB::raw("lower(author)"), 'like', '%'. $query . '%')
             ->get();
 
         return response()->json([
