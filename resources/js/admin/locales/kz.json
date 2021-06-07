@@ -106,6 +106,7 @@
     "title": "Атау",
     "author": "Автор",
     "year": "Жылы",
+    "call_number": "Нөмірі",
     "pub_year": "Баспа жылы",
     "pub_city": "Баспа қаласы",
     "location": "Орналасқан жері",
@@ -209,5 +210,15 @@
 
     "cataloging": "Каталогтау",
     "search_cataloging": "ISBN || Атауы || Автор бойынша іздеу",
-    "edit_rec": "Жазбаны өңдеу"
+    "edit_rec": "Жазбаны өңдеу",
+    "management": "Басқару: {info}",
+    "print_call_number": "Нөмірін басып шығару",
+    "preview": "Алдын ала қарау",
+    "import_from_worldcat": "WorldCat-тан импорттау",
+    "export_to_xml": "XML-ге экспорттау",
+    "section_tag": "Бөлім тегі",
+    "subtags": "Қосымша белгілер",
+    "ind1": "IND1",
+    "ind2": "IND2",
+    "data": "Деректер"
 }

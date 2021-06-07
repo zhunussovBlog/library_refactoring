@@ -53,10 +53,11 @@ export default{
         return{
             heads:[
             {name:'isbn',link:'isbn'},
+            {name:'call_number',link:'call_number'},
             {name:'title',link:'title'},
             {name:'author',link:'author'},
-            {name:'publisher',link:'publisher'},
-            {name:'year',link:'year'},
+            {name:'publishers',link:'publisher'},
+            {name:'year',link:'year'}
             ],
             link:'/cataloging/material',
             commit:'cataloging',

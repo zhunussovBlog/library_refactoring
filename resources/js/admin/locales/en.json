@@ -106,6 +106,7 @@
     "title": "Title",
     "author": "Author",
     "year": "Year",
+    "call_number": "Call number",
     "pub_year": "Publisher year",
     "pub_city": "Publisher city",
     "location": "Location",
@@ -209,5 +210,15 @@
 
     "cataloging": "Cataloging",
     "search_cataloging": "Search by ISBN || Title || Author",
-    "edit_rec": "Edit record"
+    "edit_rec": "Edit record",
+    "management": "Management: {info}",
+    "print_call_number": "Print call number",
+    "preview": "Preview",
+    "import_from_worldcat": "Import from WorldCat",
+    "export_to_xml": "Export to XML",
+    "section_tag": "Section tag",
+    "subtags": "SubTags",
+    "ind1": "IND1",
+    "ind2": "IND2",
+    "data": "Data"
 }
