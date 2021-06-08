@@ -144,5 +144,12 @@ export default {
     "issue_date": "Берілген күні",
     "inv_id": "Инвентарь нөмірі",
     "barcode": "Баркод",
-    "details": "Ақпарат"
+    "details": "Ақпарат",
+    "content": "Мазмұны",
+    "link": "Сілтеме",
+    "language": "Тіл",
+    "attribution": "Атрибут",
+    "copy_link": "Сілтемені көшіру",
+    "print_page": "Бетті басып шығару",
+    "undefined": ""
 }

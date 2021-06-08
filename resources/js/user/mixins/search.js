@@ -62,29 +62,32 @@ export const getBookImage = {
     methods: {
         getBookImage(info, description) {
             // we use fetch() because there's cors mistake when use this.$http
+            this.$store.commit('setFullPageLoading', true);
             fetch("https://www.googleapis.com/books/v1/volumes?q=isbn:" + info.isbn).then(response => {
-                response.json().then(data => {
+                response.json().then(async data => {
                     try {
                         if (description) {
                             info.description = data.items[0].volumeInfo.description;
                         }
                         info.image = data.items[0].volumeInfo.imageLinks.thumbnail;
-                        console.log(info.image);
+                        console.log(description);
                     } catch (e) {
-                        console.error(e);
-                        fetch("https://www.googleapis.com/books/v1/volumes?q=isbn:0" + info.isbn).then(response => {
+                        await fetch("https://www.googleapis.com/books/v1/volumes?q=isbn:0" + info.isbn).then(response => {
                             response.json().then(data => {
                                 try {
-                                    info.image = data.items[0].volumeInfo.imageLinks.thumbnail;
                                     if (description) {
                                         info.description = data.items[0].volumeInfo.description;
                                     }
+
+                                    info.image = data.items[0].volumeInfo.imageLinks.thumbnail;
                                 } catch (e) {
                                     info.image = '';
                                 }
                             })
                         })
                     }
+                }).catch(e => { console.error(e) }).finally(() => {
+                    this.$store.commit('setFullPageLoading', false)
                 })
             })
         }

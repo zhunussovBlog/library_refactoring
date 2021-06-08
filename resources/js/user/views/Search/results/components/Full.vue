@@ -35,16 +35,13 @@
 					<div class="text-grey font-size-14">
 						{{$t('description')}}
 					</div>
-					<div class="mt-1" v-html="data.description">
-					</div>
+					<div class="mt-1" v-html="data.description" />
 				</div>
 				<div class="mt-3" v-if="data.content">
 					<div class="text-grey font-size-14">
 						{{$t('content')}}
 					</div>
-					<div class="mt-1" >
-						{{data.content}}
-					</div>
+					<div class="mt-1" v-html="data.content" />
 				</div>
 				<div class="title mt-4">
 					<div class="text">
@@ -122,12 +119,13 @@
 			loadData(){
 				this.$store.commit('setFullPageLoading',true);
 				this.$http.get('media/show/'+this.id).then(response=>{
-					this.data= this.importFromXML(response);
+					this.data= Object.assign(this.data,this.importFromXML(response));
 					this.data.link=this.link;
-					this.data.array_data=this.convertToArray(objectWithoutKey(this.data,['id','type_key','issn','status','availability','description','content']));
+					this.data.array_data=this.convertToArray(objectWithoutKey(this.data,['id','type_key','issn','status','availability','description','content','array_data','image']));
 					try{
 						this.getBookImage(this.data,!this.data.description);
 					}catch(e){}
+					console.log(this.data);
 				}).catch(error=>{
 					console.error(error);
 				}).then(()=>{
@@ -138,17 +136,20 @@
 				// need to have image in data
 				let data=response.data.res;
 				let xml=response.data.xmlInfo;
-				if(!xml){
-					return data;
-				}
-				else{
+				if(xml){
 					data.description=this.getFromCatalog(xml,'520.a');
-					data.content=this.getFromCatalog(xml,'520.b');
-					data.attribution=this.getFromCatalog(xml,'245.c');
-					
-					return data;
+					let moreDescription=this.getFromCatalog(xml,'520.b');
+					if(moreDescription){
+						data.description+='<br>'+moreDescription;
+					}
+					data.content=this.getFromCatalog(xml,'505.a');
+					if(data.content){
+						data.content=data.content.split('--').join('<br>');
+					}
+					data.attribution=this.getFromCatalog(xml,'245.c');				
 				}
 				
+				return data;
 			},
 			getFromCatalog(xml,code){
 				let data=xml.find(elem=>elem.id==code);

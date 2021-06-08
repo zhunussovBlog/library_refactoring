@@ -142,5 +142,12 @@ export default {
     "issue_date": "Issue date",
     "inv_id": "Inventory number",
     "barcode": "Barcode",
-    "details": "Details"
+    "details": "Details",
+    "content": "Content",
+    "link": "Link",
+    "language": "Language",
+    "attribution": "Attribution",
+    "copy_link": "Copy link",
+    "print_page": "Print page",
+    "undefined": ""
 }

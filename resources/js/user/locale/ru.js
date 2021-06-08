@@ -144,5 +144,12 @@ export default {
     "issue_date": "Дата выпуска",
     "inv_id": "Номер инвентаря",
     "barcode": "Баркод",
-    "details": "Детали"
+    "details": "Детали",
+    "content": "Содержание",
+    "link": "Ссылка",
+    "language": "Язык",
+    "attribution": "Атрибуция",
+    "copy_link": "Скопировать ссылку",
+    "print_page": "Распечатать страницу",
+    "undefined": ""
 }
