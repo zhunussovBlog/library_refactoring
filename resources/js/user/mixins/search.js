@@ -70,7 +70,6 @@ export const getBookImage = {
                             info.description = data.items[0].volumeInfo.description;
                         }
                         info.image = data.items[0].volumeInfo.imageLinks.thumbnail;
-                        console.log(description);
                     } catch (e) {
                         await fetch("https://www.googleapis.com/books/v1/volumes?q=isbn:0" + info.isbn).then(response => {
                             response.json().then(data => {

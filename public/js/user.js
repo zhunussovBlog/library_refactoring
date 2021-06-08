@@ -2552,12 +2552,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _mixins_goTo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../mixins/goTo */ "./resources/js/user/mixins/goTo.js");
-/* harmony import */ var _mixins_search__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../mixins/search */ "./resources/js/user/mixins/search.js");
-/* harmony import */ var _assets_icons_RightLittle__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../assets/icons/RightLittle */ "./resources/js/user/assets/icons/RightLittle.vue");
-/* harmony import */ var _assets_icons_X__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../assets/icons/X */ "./resources/js/user/assets/icons/X.vue");
-/* harmony import */ var _assets_icons_Save__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../assets/icons/Save */ "./resources/js/user/assets/icons/Save.vue");
-/* harmony import */ var _assets_icons_Print__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../../assets/icons/Print */ "./resources/js/user/assets/icons/Print.vue");
+/* harmony import */ var _mixins_search__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../mixins/search */ "./resources/js/user/mixins/search.js");
+/* harmony import */ var _assets_icons_RightLittle__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../assets/icons/RightLittle */ "./resources/js/user/assets/icons/RightLittle.vue");
+/* harmony import */ var _assets_icons_X__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../assets/icons/X */ "./resources/js/user/assets/icons/X.vue");
+/* harmony import */ var _assets_icons_Save__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../assets/icons/Save */ "./resources/js/user/assets/icons/Save.vue");
+/* harmony import */ var _assets_icons_Print__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../assets/icons/Print */ "./resources/js/user/assets/icons/Print.vue");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
@@ -2649,7 +2648,10 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 //
 //
 //
-
+//
+//
+//
+//
 
 
 
@@ -2659,99 +2661,38 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
   props: {
     id: [String, Number]
   },
-  mixins: [_mixins_goTo__WEBPACK_IMPORTED_MODULE_0__.goTo, _mixins_search__WEBPACK_IMPORTED_MODULE_1__.getBookImage],
+  mixins: [_mixins_search__WEBPACK_IMPORTED_MODULE_0__.getBookImage],
   components: {
-    RightLittle: _assets_icons_RightLittle__WEBPACK_IMPORTED_MODULE_2__.default,
-    X: _assets_icons_X__WEBPACK_IMPORTED_MODULE_3__.default,
-    Save: _assets_icons_Save__WEBPACK_IMPORTED_MODULE_4__.default,
-    Print: _assets_icons_Print__WEBPACK_IMPORTED_MODULE_5__.default
+    RightLittle: _assets_icons_RightLittle__WEBPACK_IMPORTED_MODULE_1__.default,
+    X: _assets_icons_X__WEBPACK_IMPORTED_MODULE_2__.default,
+    Save: _assets_icons_Save__WEBPACK_IMPORTED_MODULE_3__.default,
+    Print: _assets_icons_Print__WEBPACK_IMPORTED_MODULE_4__.default
   },
   data: function data() {
     return {
       data: {
-        array_data: [],
         image: '',
         isbn: '',
         description: '',
         content: ''
       },
-      link: window.location.protocol + '//' + window.location.hostname + '/full?id=' + this.id
+      array_data: [],
+      xml: [],
+      link: window.location.protocol + '//' + window.location.hostname + '/full?id=' + this.id,
+      contentExpanded: false
     };
   },
   methods: {
-    capitalize: function capitalize(s) {
-      var string = s.slice();
-      if (typeof string !== 'string') return '';
-      return string.charAt(0).toUpperCase() + string.slice(1);
-    },
-    objectWithoutKey: function objectWithoutKey(object, key) {
-      var deletedKey = object[key],
-          otherKeys = _objectWithoutProperties(object, [key].map(_toPropertyKey));
-
-      return otherKeys;
-    },
-    loadData: function loadData() {
-      var _this = this;
-
-      this.$store.commit('setFullPageLoading', true);
-      this.$http.get('media/show/' + this.id).then(function (response) {
-        _this.data = Object.assign(_this.data, _this.importFromXML(response));
-        _this.data.link = _this.link;
-        _this.data.array_data = _this.convertToArray(objectWithoutKey(_this.data, ['id', 'type_key', 'issn', 'status', 'availability', 'description', 'content', 'array_data', 'image']));
-
-        try {
-          _this.getBookImage(_this.data, !_this.data.description);
-        } catch (e) {}
-
-        console.log(_this.data);
-      })["catch"](function (error) {
-        console.error(error);
-      }).then(function () {
-        _this.$store.commit('setFullPageLoading', false);
-      });
-    },
-    importFromXML: function importFromXML(response) {
-      // need to have image in data
-      var data = response.data.res;
-      var xml = response.data.xmlInfo;
-
-      if (xml) {
-        data.description = this.getFromCatalog(xml, '520.a');
-        var moreDescription = this.getFromCatalog(xml, '520.b');
-
-        if (moreDescription) {
-          data.description += '<br>' + moreDescription;
+    expandContent: function expandContent(data, bool) {
+      if (this.xml && data.content) {
+        if (bool) {
+          data.content = this.getFromCatalog(this.xml, '505.a').split('--').join('<br>');
+          this.contentExpanded = true;
+        } else {
+          data.content = data.content.split(/--|<br>/).splice(0, 2).join('--');
+          this.contentExpanded = false;
         }
-
-        data.content = this.getFromCatalog(xml, '505.a');
-
-        if (data.content) {
-          data.content = data.content.split('--').join('<br>');
-        }
-
-        data.attribution = this.getFromCatalog(xml, '245.c');
       }
-
-      return data;
-    },
-    getFromCatalog: function getFromCatalog(xml, code) {
-      var data = xml.find(function (elem) {
-        return elem.id == code;
-      });
-      return data ? data.data : null;
-    },
-    convertToArray: function convertToArray(object) {
-      var arr = [];
-
-      for (var key in object) {
-        var obj = {
-          key: key,
-          value: object[key]
-        };
-        arr.push(obj);
-      }
-
-      return arr;
     },
     closeModal: function closeModal() {
       this.$emit('close');
@@ -2789,6 +2730,75 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       printSection.appendChild(domClone);
       window.print();
       document.body.removeChild(printSection);
+    },
+    capitalize: function capitalize(s) {
+      var string = s.slice();
+      if (typeof string !== 'string') return '';
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    },
+    objectWithoutKey: function objectWithoutKey(object, key) {
+      var deletedKey = object[key],
+          otherKeys = _objectWithoutProperties(object, [key].map(_toPropertyKey));
+
+      return otherKeys;
+    },
+    loadData: function loadData() {
+      var _this = this;
+
+      this.$store.commit('setFullPageLoading', true);
+      this.$http.get('media/show/' + this.id).then(function (response) {
+        _this.xml = response.data.xmlInfo;
+        _this.data = Object.assign(_this.data, _this.importFromXML(response));
+        _this.data.link = _this.link;
+        _this.array_data = _this.convertToArray(objectWithoutKey(_this.data, ['id', 'type_key', 'issn', 'status', 'availability', 'image', 'description', 'content']));
+
+        try {
+          _this.getBookImage(_this.data, !_this.data.description);
+        } catch (e) {}
+      })["catch"](function (error) {
+        console.error(error);
+      }).then(function () {
+        _this.$store.commit('setFullPageLoading', false);
+      });
+    },
+    importFromXML: function importFromXML(response) {
+      // need to have image in data
+      var data = response.data.res;
+      var xml = response.data.xmlInfo;
+
+      if (xml) {
+        data.description = this.getFromCatalog(xml, '520.a');
+        var moreDescription = this.getFromCatalog(xml, '520.b');
+
+        if (moreDescription) {
+          data.description += '<br>' + moreDescription;
+        }
+
+        data.content = this.getFromCatalog(xml, '505.a');
+        this.expandContent(data, false);
+        data.attribution = this.getFromCatalog(xml, '245.c');
+      }
+
+      return data;
+    },
+    getFromCatalog: function getFromCatalog(xml, code) {
+      var data = xml.find(function (elem) {
+        return elem.id == code;
+      });
+      return data ? data.data : null;
+    },
+    convertToArray: function convertToArray(object) {
+      var arr = [];
+
+      for (var key in object) {
+        var obj = {
+          key: key,
+          value: object[key]
+        };
+        arr.push(obj);
+      }
+
+      return arr;
     }
   },
   created: function created() {
@@ -4984,14 +4994,13 @@ var getBookImage = {
                     }
 
                     info.image = data.items[0].volumeInfo.imageLinks.thumbnail;
-                    console.log(description);
-                    _context.next = 10;
+                    _context.next = 9;
                     break;
 
-                  case 6:
-                    _context.prev = 6;
+                  case 5:
+                    _context.prev = 5;
                     _context.t0 = _context["catch"](0);
-                    _context.next = 10;
+                    _context.next = 9;
                     return fetch("https://www.googleapis.com/books/v1/volumes?q=isbn:0" + info.isbn).then(function (response) {
                       response.json().then(function (data) {
                         try {
@@ -5006,12 +5015,12 @@ var getBookImage = {
                       });
                     });
 
-                  case 10:
+                  case 9:
                   case "end":
                     return _context.stop();
                 }
               }
-            }, _callee, null, [[0, 6]]);
+            }, _callee, null, [[0, 5]]);
           }));
 
           return function (_x) {
@@ -5169,6 +5178,12 @@ __webpack_require__.r(__webpack_exports__);
   path: '/mybooks',
   name: 'mybooks',
   component: _views_Mybooks__WEBPACK_IMPORTED_MODULE_2__.default
+}, {
+  path: '/full',
+  name: 'full',
+  component: function component() {
+    return __webpack_require__.e(/*! import() */ "resources_js_user_views_Full_index_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../views/Full */ "./resources/js/user/views/Full/index.vue"));
+  }
 }, {
   path: '*',
   redirect: {
@@ -6007,7 +6022,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.image[data-v-3e9ac9c2]{\n\tmin-width:12em;\n\tmax-width:12em;\n\tmin-height:15em;\n\tmax-height:15em;\n\tbackground-repeat: no-repeat;\n\tbackground-size: 100% 100%;\n}\n.bg-greyer[data-v-3e9ac9c2]{\n\tbackground: #a2a6a8 !important;\n}\n.exit[data-v-3e9ac9c2]{\n\tcolor:white;\n\tposition: absolute;\n\ttop:10%;\n\tright:4%;\n}\n.title[data-v-3e9ac9c2]{\n\tdisplay:flex;\n\talign-items:flex-end;\n}\n.title>.text[data-v-3e9ac9c2]{\n\tpadding-right:.3125em;\n\tfont-size:1.5em;\n}\n.title>.tline[data-v-3e9ac9c2]{\n\theight:1px;\n\tflex:1;\n\tbackground:#DADADA;\n\tmargin-bottom:.5em;\n}\ntd[data-v-3e9ac9c2]{\n\tborder-top: none;\n\tpadding-left: 0;\n}\n.mh-100[data-v-3e9ac9c2]{\n\tmin-height: 100%;\n}\n.min-vh-100[data-v-3e9ac9c2]{\n\tpadding-top: 5% !important;\n}\n\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.image[data-v-3e9ac9c2]{\n\tmin-width:12em;\n\tmax-width:12em;\n\tmin-height:15em;\n\tmax-height:15em;\n\tbackground-repeat: no-repeat;\n\tbackground-size: 100% 100%;\n}\n.bg-greyer[data-v-3e9ac9c2]{\n\tbackground: #a2a6a8 !important;\n}\n.exit[data-v-3e9ac9c2]{\n\tcolor:white;\n\tposition: absolute;\n\ttop:10%;\n\tright:4%;\n}\n.title[data-v-3e9ac9c2]{\n\tdisplay:flex;\n\talign-items:flex-end;\n}\n.title>.text[data-v-3e9ac9c2]{\n\tpadding-right:.3125em;\n\tfont-size:1.5em;\n}\n.title>.tline[data-v-3e9ac9c2]{\n\theight:1px;\n\tflex:1;\n\tbackground:#DADADA;\n\tmargin-bottom:.5em;\n}\ntd[data-v-3e9ac9c2]{\n\tborder-top: none;\n\tpadding-left: 0;\n}\n.mh-100[data-v-3e9ac9c2]{\n\tmin-height: 100%;\n}\n.content[data-v-3e9ac9c2]{\n\tpadding-top: 5% !important;\n\tmax-width:1120px;\n\twidth:100%;\n\tmin-height: 100vh;\n\theight:100%;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -17304,210 +17319,232 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "bg-greyer padding mh-100 overflow-auto" }, [
-    _c(
-      "div",
-      {
-        staticClass:
-          "d-flex align-items-start bg-white border-top py-4 px-5 min-vh-100"
-      },
-      [
-        _c("div", { staticClass: "mr-5" }, [
-          _c("div", {
-            staticClass: "image rounded bg-grey",
-            style: "background-image: url(" + this.data.image + ")"
-          }),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "d-flex align-items-center cursor-pointer py-2 mt-2",
-              on: {
-                click: function($event) {
-                  return _vm.copyLink()
+  return _c(
+    "div",
+    {
+      staticClass:
+        "d-flex justify-content-center bg-greyer padding mh-100 overflow-auto"
+    },
+    [
+      _c(
+        "div",
+        {
+          staticClass:
+            "d-flex align-items-start content bg-white border-top py-4 px-5"
+        },
+        [
+          _c("div", { staticClass: "mr-5" }, [
+            _c("div", {
+              staticClass: "image rounded bg-grey",
+              style: "background-image: url(" + this.data.image + ")"
+            }),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "d-flex align-items-center cursor-pointer py-2 mt-2",
+                on: {
+                  click: function($event) {
+                    return _vm.copyLink()
+                  }
                 }
-              }
-            },
-            [
-              _c("Save"),
-              _vm._v(" "),
-              _c("span", { staticClass: "ml-2" }, [
-                _vm._v(_vm._s(_vm.$t("copy_link")))
-              ])
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "d-flex align-items-center cursor-pointer py-2",
-              on: {
-                click: function($event) {
-                  return _vm.printPage()
+              },
+              [
+                _c("Save"),
+                _vm._v(" "),
+                _c("span", { staticClass: "ml-2" }, [
+                  _vm._v(_vm._s(_vm.$t("copy_link")))
+                ])
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "d-flex align-items-center cursor-pointer py-2",
+                on: {
+                  click: function($event) {
+                    return _vm.printPage()
+                  }
                 }
-              }
-            },
-            [
-              _c("Print"),
-              _vm._v(" "),
-              _c("span", { staticClass: "ml-2" }, [
-                _vm._v(_vm._s(_vm.$t("print_page")))
-              ])
-            ],
-            1
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "flex-fill" }, [
-          _c("div", { staticClass: "d-flex flex-fill" }, [
-            _c("div", { staticClass: "flex-fill" }, [
-              _c(
-                "div",
-                {
-                  staticClass:
-                    "overflow-hidden title font-weight-bold font-size-24 cursor-pointer"
-                },
-                [_vm._v(_vm._s(_vm.data.title))]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "text-grey mt-2" }, [
-                _vm.data.author
-                  ? _c("div", [
-                      _vm._v(
-                        _vm._s(_vm.data.author) + ", " + _vm._s(_vm.data.year)
+              },
+              [
+                _c("Print"),
+                _vm._v(" "),
+                _c("span", { staticClass: "ml-2" }, [
+                  _vm._v(_vm._s(_vm.$t("print_page")))
+                ])
+              ],
+              1
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "flex-fill" }, [
+            _c("div", { staticClass: "d-flex flex-fill" }, [
+              _c("div", { staticClass: "flex-fill" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "overflow-hidden title font-weight-bold font-size-24 cursor-pointer"
+                  },
+                  [_vm._v(_vm._s(_vm.data.title))]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "text-grey mt-2" }, [
+                  _vm.data.author
+                    ? _c("div", [
+                        _vm._v(
+                          _vm._s(_vm.data.author) + ", " + _vm._s(_vm.data.year)
+                        )
+                      ])
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "d-flex text-center text-blue mt-3" },
+                  [
+                    _vm.data.type
+                      ? _c(
+                          "div",
+                          { staticClass: "rounded-lg bg-lightblue p-1 px-3" },
+                          [_vm._v(_vm._s(_vm.$t(_vm.data.type)))]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.data.call_number
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "rounded-lg bg-lightblue p-1 px-3 ml-3"
+                          },
+                          [_vm._v(_vm._s(_vm.data.call_number))]
+                        )
+                      : _vm._e()
+                  ]
+                ),
+                _vm._v(" "),
+                _vm.data.description
+                  ? _c("div", { staticClass: "mt-3" }, [
+                      _c("div", { staticClass: "text-grey font-size-14" }, [
+                        _vm._v(
+                          "\n\t\t\t\t\t\t\t" +
+                            _vm._s(_vm.$t("description")) +
+                            "\n\t\t\t\t\t\t"
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", {
+                        staticClass: "mt-1",
+                        domProps: { innerHTML: _vm._s(_vm.data.description) }
+                      })
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.data.content
+                  ? _c("div", { staticClass: "mt-3" }, [
+                      _c("div", { staticClass: "text-grey font-size-14" }, [
+                        _vm._v(
+                          "\n\t\t\t\t\t\t\t" +
+                            _vm._s(_vm.$t("content")) +
+                            "\n\t\t\t\t\t\t"
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", {
+                        staticClass: "mt-1",
+                        domProps: { innerHTML: _vm._s(_vm.data.content) }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "d-flex justify-content-center" },
+                        [
+                          !_vm.contentExpanded
+                            ? _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "border rounded-pill p-2 my-2 cursor-pointer text-center",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.expandContent(_vm.data, true)
+                                    }
+                                  }
+                                },
+                                [_vm._v(_vm._s(_vm.$t("expand")))]
+                              )
+                            : _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "border rounded-pill p-2 my-2 cursor-pointer text-center",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.expandContent(_vm.data, false)
+                                    }
+                                  }
+                                },
+                                [_vm._v(_vm._s(_vm.$t("shrink")))]
+                              )
+                        ]
                       )
                     ])
                   : _vm._e()
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "d-flex text-center text-blue mt-3" }, [
-                _vm.data.type
-                  ? _c(
-                      "div",
-                      { staticClass: "rounded-lg bg-lightblue p-1 px-3" },
-                      [_vm._v(_vm._s(_vm.$t(_vm.data.type)))]
-                    )
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm.data.call_number
-                  ? _c(
-                      "div",
-                      { staticClass: "rounded-lg bg-lightblue p-1 px-3 ml-3" },
-                      [_vm._v(_vm._s(_vm.data.call_number))]
-                    )
-                  : _vm._e()
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "text-center col-2 px-0" }, [
-              _c(
-                "div",
-                { staticClass: "bg-lightgrey rounded-lg p-2 text-no-wrap" },
-                [
-                  _vm._v(
-                    "\n\t\t\t\t\t\t" +
-                      _vm._s(_vm.data.availability) +
+              _c("div", { staticClass: "text-center col-2 px-0" }, [
+                _c(
+                  "div",
+                  { staticClass: "bg-lightgrey rounded-lg p-2 text-no-wrap" },
+                  [
+                    _vm._v(
                       "\n\t\t\t\t\t\t" +
-                      _vm._s(_vm.$t("availability")) +
-                      "\n\t\t\t\t\t"
-                  )
-                ]
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _vm.data.description
-            ? _c("div", { staticClass: "mt-3" }, [
-                _c("div", { staticClass: "text-grey font-size-14" }, [
-                  _vm._v(
-                    "\n\t\t\t\t\t" +
-                      _vm._s(_vm.$t("description")) +
-                      "\n\t\t\t\t"
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", {
-                  staticClass: "mt-1",
-                  domProps: { innerHTML: _vm._s(_vm.data.description) }
-                })
+                        _vm._s(_vm.data.availability) +
+                        "\n\t\t\t\t\t\t" +
+                        _vm._s(_vm.$t("availability")) +
+                        "\n\t\t\t\t\t"
+                    )
+                  ]
+                )
               ])
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.data.content
-            ? _c("div", { staticClass: "mt-3" }, [
-                _c("div", { staticClass: "text-grey font-size-14" }, [
-                  _vm._v(
-                    "\n\t\t\t\t\t" + _vm._s(_vm.$t("content")) + "\n\t\t\t\t"
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", {
-                  staticClass: "mt-1",
-                  domProps: { innerHTML: _vm._s(_vm.data.content) }
-                })
-              ])
-            : _vm._e(),
-          _vm._v(" "),
-          _c("div", { staticClass: "title mt-4" }, [
-            _c("div", { staticClass: "text" }, [
-              _vm._v("\n\t\t\t\t\t" + _vm._s(_vm.$t("details")) + "\n\t\t\t\t")
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "tline" })
-          ]),
-          _vm._v(" "),
-          _c("table", { staticClass: "table" }, [
-            _c(
-              "tbody",
-              _vm._l(
-                new Array(Math.ceil(_vm.data.array_data.length / 2)),
-                function(info, index) {
-                  return _c("tr", { key: index }, [
-                    _c(
-                      "td",
-                      {
-                        attrs: {
-                          colspan:
-                            _vm.data.array_data[index * 2 + 1] == undefined
-                              ? "2"
-                              : null
-                        }
-                      },
-                      [
-                        _c("div", { staticClass: "text-grey" }, [
-                          _vm._v(
-                            "\n\t\t\t\t\t\t\t\t" +
-                              _vm._s(
-                                _vm.$t(_vm.data.array_data[index * 2].key)
-                              ) +
-                              ":\n\t\t\t\t\t\t\t"
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("div", [
-                          _vm._v(
-                            "\n\t\t\t\t\t\t\t\t" +
-                              _vm._s(
-                                _vm.data.array_data[index * 2].value !=
-                                  undefined
-                                  ? _vm.data.array_data[index * 2].value
-                                  : _vm.$t("undefined")
-                              ) +
-                              "\n\t\t\t\t\t\t\t"
-                          )
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _vm.data.array_data[index * 2 + 1] != undefined
-                      ? _c("td", [
+            _c("div", { staticClass: "title mt-4" }, [
+              _c("div", { staticClass: "text" }, [
+                _vm._v(
+                  "\n\t\t\t\t\t" + _vm._s(_vm.$t("details")) + "\n\t\t\t\t"
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "tline" })
+            ]),
+            _vm._v(" "),
+            _c("table", { staticClass: "table" }, [
+              _c(
+                "tbody",
+                _vm._l(
+                  new Array(Math.ceil(_vm.array_data.length / 2)),
+                  function(info, index) {
+                    return _c("tr", { key: index }, [
+                      _c(
+                        "td",
+                        {
+                          attrs: {
+                            colspan:
+                              _vm.array_data[index * 2 + 1] == undefined
+                                ? "2"
+                                : null
+                          }
+                        },
+                        [
                           _c("div", { staticClass: "text-grey" }, [
                             _vm._v(
                               "\n\t\t\t\t\t\t\t\t" +
-                                _vm._s(
-                                  _vm.$t(_vm.data.array_data[index * 2 + 1].key)
-                                ) +
+                                _vm._s(_vm.$t(_vm.array_data[index * 2].key)) +
                                 ":\n\t\t\t\t\t\t\t"
                             )
                           ]),
@@ -17516,40 +17553,67 @@ var render = function() {
                             _vm._v(
                               "\n\t\t\t\t\t\t\t\t" +
                                 _vm._s(
-                                  _vm.data.array_data[index * 2 + 1].value !=
-                                    undefined
-                                    ? _vm.data.array_data[index * 2 + 1].value
+                                  _vm.array_data[index * 2].value != undefined
+                                    ? _vm.array_data[index * 2].value
                                     : _vm.$t("undefined")
                                 ) +
                                 "\n\t\t\t\t\t\t\t"
                             )
                           ])
-                        ])
-                      : _vm._e()
-                  ])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _vm.array_data[index * 2 + 1] != undefined
+                        ? _c("td", [
+                            _c("div", { staticClass: "text-grey" }, [
+                              _vm._v(
+                                "\n\t\t\t\t\t\t\t\t" +
+                                  _vm._s(
+                                    _vm.$t(_vm.array_data[index * 2 + 1].key)
+                                  ) +
+                                  ":\n\t\t\t\t\t\t\t"
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("div", [
+                              _vm._v(
+                                "\n\t\t\t\t\t\t\t\t" +
+                                  _vm._s(
+                                    _vm.array_data[index * 2 + 1].value !=
+                                      undefined
+                                      ? _vm.array_data[index * 2 + 1].value
+                                      : _vm.$t("undefined")
+                                  ) +
+                                  "\n\t\t\t\t\t\t\t"
+                              )
+                            ])
+                          ])
+                        : _vm._e()
+                    ])
+                  }
+                ),
+                0
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "exit cursor-pointer",
+              on: {
+                click: function($event) {
+                  return _vm.closeModal()
                 }
-              ),
-              0
-            )
-          ])
-        ])
-      ]
-    ),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        staticClass: "exit cursor-pointer",
-        on: {
-          click: function($event) {
-            return _vm.closeModal()
-          }
-        }
-      },
-      [_c("X")],
-      1
-    )
-  ])
+              }
+            },
+            [_c("X")],
+            1
+          )
+        ]
+      )
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -35860,6 +35924,39 @@ var index = {
 /******/ 		};
 /******/ 	})();
 /******/ 	
+/******/ 	/* webpack/runtime/ensure chunk */
+/******/ 	(() => {
+/******/ 		__webpack_require__.f = {};
+/******/ 		// This file contains only the entry chunk.
+/******/ 		// The chunk loading function for additional chunks
+/******/ 		__webpack_require__.e = (chunkId) => {
+/******/ 			return Promise.all(Object.keys(__webpack_require__.f).reduce((promises, key) => {
+/******/ 				__webpack_require__.f[key](chunkId, promises);
+/******/ 				return promises;
+/******/ 			}, []));
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/get javascript chunk filename */
+/******/ 	(() => {
+/******/ 		// This function allow to reference async chunks
+/******/ 		__webpack_require__.u = (chunkId) => {
+/******/ 			// return url for filenames not based on template
+/******/ 			if (chunkId === "resources_js_user_views_Full_index_vue") return "js/" + chunkId + ".js";
+/******/ 			// return url for filenames based on template
+/******/ 			return undefined;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/get mini-css chunk filename */
+/******/ 	(() => {
+/******/ 		// This function allow to reference all chunks
+/******/ 		__webpack_require__.miniCssF = (chunkId) => {
+/******/ 			// return url for filenames based on template
+/******/ 			return "" + chunkId + ".css";
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/global */
 /******/ 	(() => {
 /******/ 		__webpack_require__.g = (function() {
@@ -35877,6 +35974,52 @@ var index = {
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
 /******/ 	})();
 /******/ 	
+/******/ 	/* webpack/runtime/load script */
+/******/ 	(() => {
+/******/ 		var inProgress = {};
+/******/ 		// data-webpack is not used as build has no uniqueName
+/******/ 		// loadScript function to load a script via script tag
+/******/ 		__webpack_require__.l = (url, done, key, chunkId) => {
+/******/ 			if(inProgress[url]) { inProgress[url].push(done); return; }
+/******/ 			var script, needAttach;
+/******/ 			if(key !== undefined) {
+/******/ 				var scripts = document.getElementsByTagName("script");
+/******/ 				for(var i = 0; i < scripts.length; i++) {
+/******/ 					var s = scripts[i];
+/******/ 					if(s.getAttribute("src") == url) { script = s; break; }
+/******/ 				}
+/******/ 			}
+/******/ 			if(!script) {
+/******/ 				needAttach = true;
+/******/ 				script = document.createElement('script');
+/******/ 		
+/******/ 				script.charset = 'utf-8';
+/******/ 				script.timeout = 120;
+/******/ 				if (__webpack_require__.nc) {
+/******/ 					script.setAttribute("nonce", __webpack_require__.nc);
+/******/ 				}
+/******/ 		
+/******/ 				script.src = url;
+/******/ 			}
+/******/ 			inProgress[url] = [done];
+/******/ 			var onScriptComplete = (prev, event) => {
+/******/ 				// avoid mem leaks in IE.
+/******/ 				script.onerror = script.onload = null;
+/******/ 				clearTimeout(timeout);
+/******/ 				var doneFns = inProgress[url];
+/******/ 				delete inProgress[url];
+/******/ 				script.parentNode && script.parentNode.removeChild(script);
+/******/ 				doneFns && doneFns.forEach((fn) => (fn(event)));
+/******/ 				if(prev) return prev(event);
+/******/ 			}
+/******/ 			;
+/******/ 			var timeout = setTimeout(onScriptComplete.bind(null, undefined, { type: 'timeout', target: script }), 120000);
+/******/ 			script.onerror = onScriptComplete.bind(null, script.onerror);
+/******/ 			script.onload = onScriptComplete.bind(null, script.onload);
+/******/ 			needAttach && document.head.appendChild(script);
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
 /******/ 	(() => {
 /******/ 		// define __esModule on exports
@@ -35886,6 +36029,11 @@ var index = {
 /******/ 			}
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
 /******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/publicPath */
+/******/ 	(() => {
+/******/ 		__webpack_require__.p = "/";
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/jsonp chunk loading */
@@ -35903,7 +36051,46 @@ var index = {
 /******/ 			["./resources/js/user/user.js"],
 /******/ 			["./resources/sass/app.scss"]
 /******/ 		];
-/******/ 		// no chunk on demand loading
+/******/ 		__webpack_require__.f.j = (chunkId, promises) => {
+/******/ 				// JSONP chunk loading for javascript
+/******/ 				var installedChunkData = __webpack_require__.o(installedChunks, chunkId) ? installedChunks[chunkId] : undefined;
+/******/ 				if(installedChunkData !== 0) { // 0 means "already installed".
+/******/ 		
+/******/ 					// a Promise means "currently loading".
+/******/ 					if(installedChunkData) {
+/******/ 						promises.push(installedChunkData[2]);
+/******/ 					} else {
+/******/ 						if("resources_js_user_views_Full_index_vue" == chunkId) {
+/******/ 							// setup Promise in chunk cache
+/******/ 							var promise = new Promise((resolve, reject) => {
+/******/ 								installedChunkData = installedChunks[chunkId] = [resolve, reject];
+/******/ 							});
+/******/ 							promises.push(installedChunkData[2] = promise);
+/******/ 		
+/******/ 							// start chunk loading
+/******/ 							var url = __webpack_require__.p + __webpack_require__.u(chunkId);
+/******/ 							// create error before stack unwound to get useful stacktrace later
+/******/ 							var error = new Error();
+/******/ 							var loadingEnded = (event) => {
+/******/ 								if(__webpack_require__.o(installedChunks, chunkId)) {
+/******/ 									installedChunkData = installedChunks[chunkId];
+/******/ 									if(installedChunkData !== 0) installedChunks[chunkId] = undefined;
+/******/ 									if(installedChunkData) {
+/******/ 										var errorType = event && (event.type === 'load' ? 'missing' : event.type);
+/******/ 										var realSrc = event && event.target && event.target.src;
+/******/ 										error.message = 'Loading chunk ' + chunkId + ' failed.\n(' + errorType + ': ' + realSrc + ')';
+/******/ 										error.name = 'ChunkLoadError';
+/******/ 										error.type = errorType;
+/******/ 										error.request = realSrc;
+/******/ 										installedChunkData[1](error);
+/******/ 									}
+/******/ 								}
+/******/ 							};
+/******/ 							__webpack_require__.l(url, loadingEnded, "chunk-" + chunkId, chunkId);
+/******/ 						} else installedChunks[chunkId] = 0;
+/******/ 					}
+/******/ 				}
+/******/ 		};
 /******/ 		
 /******/ 		// no prefetching
 /******/ 		

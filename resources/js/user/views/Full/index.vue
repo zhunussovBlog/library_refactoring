@@ -1,6 +1,6 @@
 <template>
-	<div class="d-flex justify-content-center bg-greyer padding mh-100 overflow-auto">
-		<div class="d-flex align-items-start content bg-white border-top py-4 px-5">
+	<div class="padding">
+		<div class="d-flex align-items-start bg-white border-top py-4">
 			<div class="mr-5">
 				<div class="image rounded bg-grey" :style="'background-image: url('+this.data.image+')'"></div>
 				<div class="d-flex align-items-center cursor-pointer py-2 mt-2" @click="copyLink()">
@@ -34,10 +34,6 @@
 								{{$t('content')}}
 							</div>
 							<div class="mt-1" v-html="data.content" />
-							<div class="d-flex justify-content-center">
-								<div class="border rounded-pill p-2 my-2 cursor-pointer text-center" @click="expandContent(data,true)" v-if="!contentExpanded">{{$t('expand')}}</div>
-								<div class="border rounded-pill p-2 my-2 cursor-pointer text-center" @click="expandContent(data,false)" v-else>{{$t('shrink')}}</div>
-							</div>
 						</div>
 					</div>
 					<div class="text-center col-2 px-0">
@@ -55,112 +51,56 @@
 				</div>
 				<table class="table">
 					<tbody>
-						<tr v-for="(info,index) in new Array(Math.ceil(array_data.length/2))" :key="index">
-							<td :colspan="array_data[(index*2)+1]==undefined ? '2':null">
+						<tr v-for="(info,index) in new Array(Math.ceil(data.array_data.length/2))" :key="index">
+							<td :colspan="data.array_data[(index*2)+1]==undefined ? '2':null">
 								<div class="text-grey">
-									{{$t(array_data[index*2].key)}}:
+									{{$t(data.array_data[index*2].key)}}:
 								</div>
 								<div>
-									{{array_data[index*2].value!=undefined ? array_data[index*2].value:$t('undefined')}}
+									{{data.array_data[index*2].value!=undefined ? data.array_data[index*2].value:$t('undefined')}}
 								</div>
 							</td>
-							<td v-if="array_data[(index*2)+1]!=undefined">
+							<td v-if="data.array_data[(index*2)+1]!=undefined">
 								<div class="text-grey">
-									{{$t(array_data[(index*2)+1].key)}}:
+									{{$t(data.array_data[(index*2)+1].key)}}:
 								</div>
 								<div>
-									{{array_data[(index*2)+1].value!=undefined ? array_data[(index*2)+1].value:$t('undefined')}}
+									{{data.array_data[(index*2)+1].value!=undefined ? data.array_data[(index*2)+1].value:$t('undefined')}}
 								</div>
 							</td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
-				<!-- fixed stuff -->
-			<div class="exit cursor-pointer" @click="closeModal()">
-				<X/>
-			</div>
 		</div>
 	</div>
 </template>
 <script type="text/javascript">
-	import {getBookImage} from '../../../../mixins/search'
+	import {goTo} from '../../mixins/goTo'
+	import {getBookImage} from '../../mixins/search'
 
-	import RightLittle from '../../../../assets/icons/RightLittle'
-	import X from '../../../../assets/icons/X'
-	import Save from '../../../../assets/icons/Save'
-	import Print from '../../../../assets/icons/Print'
+	import RightLittle from '../../assets/icons/RightLittle'
+	import X from '../../assets/icons/X'
+	import Save from '../../assets/icons/Save'
+	import Print from '../../assets/icons/Print'
 
 	export default{
-		props:{
-			id:[String,Number]
-		},
-		mixins:[getBookImage],
+		mixins:[goTo,getBookImage],
 		components:{RightLittle,X,Save,Print},
 		data(){
 			return{
 				data:{
+					array_data:[],
 					image:'',
 					isbn:'',
 					description:'',
 					content:''
 				},
-				array_data:[],
-				xml:[],
-				link:window.location.protocol+'//'+window.location.hostname+'/full?id='+this.id,
-				contentExpanded:false
+				id:'',
+				link:''
 			}
 		},
 		methods:{
-			expandContent(data,bool){
-				if(this.xml && data.content){
-					if(bool){
-						data.content=this.getFromCatalog(this.xml,'505.a').split('--').join('<br>');
-						this.contentExpanded=true;
-					}
-					else{
-						data.content=data.content.split(/--|<br>/).splice(0,2).join('--')
-						this.contentExpanded=false;
-					}
-				}
-			},
-			closeModal(){
-				this.$emit('close');
-				document.documentElement.classList.remove('overflow-hidden');
-			},
-			copyLink(){
-				var copyText = document.createElement('input');
-				copyText.value=this.link;
-				document.body.appendChild(copyText);
-
-				copyText.select();
-				copyText.setSelectionRange(0, 99999); /* For mobile devices */
-				try{
-					document.execCommand("copy");
-					alert('Copied successfully');
-				}catch(e){
-					alert('Something went wrong');
-				}
-				
-				document.body.removeChild(copyText);
-			},
-			printPage(){
-				let elem = document.getElementById('modals-container');
-				var domClone = elem.cloneNode(true);
-
-				var printSection = document.getElementById("printSection");
-
-				if (!printSection) {
-					var printSection = document.createElement("div");
-					printSection.id = "printSection";
-					document.body.appendChild(printSection);
-				}
-
-				printSection.innerHTML = "";
-				printSection.appendChild(domClone);
-				window.print();
-				document.body.removeChild(printSection);
-			},
 			capitalize(s){
 				let string = s.slice();
 				if (typeof string !== 'string') return ''
@@ -172,11 +112,11 @@
 			},
 			loadData(){
 				this.$store.commit('setFullPageLoading',true);
-				this.$http.get('media/show/'+this.id).then(response=>{
-					this.xml=response.data.xmlInfo;
+				this.$http.defaults.baseURL = window.configs.baseURL;
+				this.$http.get('/api/media/show/'+this.id).then(response=>{
 					this.data= Object.assign(this.data,this.importFromXML(response));
 					this.data.link=this.link;
-					this.array_data=this.convertToArray(objectWithoutKey(this.data,['id','type_key','issn','status','availability','image','description','content']));
+					this.data.array_data=this.convertToArray(objectWithoutKey(this.data,['id','type_key','issn','status','availability','description','content','array_data','image']));
 					try{
 						this.getBookImage(this.data,!this.data.description);
 					}catch(e){}
@@ -184,6 +124,7 @@
 					console.error(error);
 				}).then(()=>{
 					this.$store.commit('setFullPageLoading',false);
+					this.$http.defaults.baseURL = window.configs.baseURL + window.configs.api;
 				});
 			},
 			importFromXML(response){
@@ -197,7 +138,9 @@
 						data.description+='<br>'+moreDescription;
 					}
 					data.content=this.getFromCatalog(xml,'505.a');
-					this.expandContent(data,false);
+					if(data.content){
+						data.content=data.content.split('--').join('<br>');
+					}
 					data.attribution=this.getFromCatalog(xml,'245.c');				
 				}
 				
@@ -214,9 +157,37 @@
 					arr.push(obj)
 				}
 				return arr;
+			},
+			closeModal(){
+				this.$emit('close');
+				document.documentElement.classList.remove('overflow-hidden');
+			},
+			copyLink(){
+				var copyText = document.createElement('input');
+				copyText.value=this.link;
+				document.body.appendChild(copyText);
+
+				copyText.select();
+				copyText.setSelectionRange(0, 99999); /* For mobile devices */
+				try{
+					document.execCommand("copy");
+					alert('Copied successfully: '+copyText.value);
+				}catch(e){
+					alert('Something went wrong');
+				}
+				
+				document.body.removeChild(copyText);
+			},
+			printPage(){
+				window.print();
 			}
 		},
 		created(){
+			this.id=this.$route.query.id;
+			this.link=window.location.protocol+'//'+window.location.hostname+'/full?id='+this.id;
+			if(!this.id){
+				this.goTo('home');
+			}
 			this.loadData();
 		}
 	}
@@ -262,11 +233,8 @@ td{
 	min-height: 100%;
 }
 
-.content{
+.min-vh-100{
 	padding-top: 5% !important;
-	max-width:1120px;
-	width:100%;
-	min-height: 100vh;
-	height:100%;
 }
+
 </style>

@@ -23,6 +23,12 @@ export default [{
         component: Mybooks
     },
     {
+        path: '/full',
+        name: 'full',
+        component: () =>
+            import ('../views/Full')
+    },
+    {
         path: '*',
         redirect: { name: 'home' }
     }
