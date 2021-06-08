@@ -27,7 +27,7 @@
 </template>
 <script type="text/javascript">
 	import Checkbox from '../../../../components/checkbox'
-	import Full from './Full'
+	import Full from '../../../Full'
 
 	import {getBookImage} from '../../../../mixins/search'
 	import showModal from '../../../../mixins/modal'
@@ -69,7 +69,7 @@
 				}
 			},
 			showMore(){
-				this.showModal(Full,{id:this.data.id,width:'100%',height:'100%',styles:'overflow:hidden'});
+				this.showModal(Full,{id:this.data.id,modal:true,width:'100%',height:'100%',styles:'overflow:hidden'});
 				document.documentElement.classList.add("overflow-hidden");
 			}
 		},
