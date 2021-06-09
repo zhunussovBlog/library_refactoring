@@ -18542,7 +18542,7 @@ var render = function() {
         [
           _c(_vm.components[_vm.num].component, {
             tag: "component",
-            staticClass: "d-flex"
+            staticClass: "d-flex mb-3"
           })
         ],
         1
@@ -18550,9 +18550,9 @@ var render = function() {
       _vm._v(" "),
       !_vm.$mobileCheck()
         ? _c(
-            "div",
+            "u",
             {
-              staticClass: "link mt-3",
+              staticClass: "link ml-2 font-weight-bold",
               on: {
                 click: function($event) {
                   return _vm.move(_vm.components[_vm.num].num)

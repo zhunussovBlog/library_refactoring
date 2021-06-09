@@ -1,11 +1,11 @@
 <template>
 	<div>
 		<keep-alive>
-			<component :is="components[num].component" class="d-flex" />
+			<component :is="components[num].component" class="d-flex mb-3" />
 		</keep-alive>
-		<div class="link mt-3" @click="move(components[num].num)" v-if="!$mobileCheck()">
+		<u class="link ml-2 font-weight-bold" @click="move(components[num].num)" v-if="!$mobileCheck()">
 			{{$t(components[num].name)}}
-		</div>
+		</u>
 	</div>
 </template>
 <script type="text/javascript">
