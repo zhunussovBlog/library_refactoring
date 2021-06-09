@@ -2354,7 +2354,8 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
           name: 'full',
           query: {
             id: this.data.id,
-            mode: 'print'
+            mode: 'print',
+            contentExpanded: this.contentExpanded
           }
         });
         window.open(routeData.href, '_blank');
@@ -2396,15 +2397,13 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         _this.$http.defaults.baseURL = window.configs.baseURL + window.configs.api;
       }).then(function () {
         if (_this.printing) {
-          var contentExpanded = JSON.parse(JSON.stringify(_this.contentExpanded));
-
-          _this.expandContent(_this.data, true);
-
+          _this.expandContent(_this.data, _this.$route.query.contentExpanded == 'true');
+        }
+      }).then(function () {
+        if (_this.printing) {
           _this.printPage();
 
           window.close();
-
-          _this.expandContent(_this.data, contentExpanded);
         }
       });
     },

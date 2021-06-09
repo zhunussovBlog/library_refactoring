@@ -149,7 +149,7 @@
 			},
 			printPage(){
 				if(!this.printing){
-					let routeData = this.$router.resolve({name: 'full', query: {id: this.data.id,mode:'print'}});
+					let routeData = this.$router.resolve({name: 'full', query: {id: this.data.id,mode:'print',contentExpanded:this.contentExpanded}});
 					window.open(routeData.href, '_blank');
 					return 0;
 				}
@@ -182,11 +182,12 @@
 					this.$http.defaults.baseURL = window.configs.baseURL + window.configs.api;
 				}).then(()=>{
 					if(this.printing){
-						let contentExpanded=JSON.parse(JSON.stringify(this.contentExpanded));
-						this.expandContent(this.data,true);
+						this.expandContent(this.data,this.$route.query.contentExpanded=='true');
+					}
+				}).then(()=>{
+					if(this.printing){
 						this.printPage();
 						window.close();
-						this.expandContent(this.data,contentExpanded);
 					}
 				});
 			},
