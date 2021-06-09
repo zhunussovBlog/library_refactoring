@@ -151,5 +151,7 @@ export default {
     "attribution": "Атрибут",
     "copy_link": "Сілтемені көшіру",
     "print_page": "Бетті басып шығару",
-    "undefined": ""
+    "undefined": "Деректер жоқ :(",
+    "expand": "Толығырақ",
+    "shrink": "Азайту"
 }

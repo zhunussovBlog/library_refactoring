@@ -149,5 +149,7 @@ export default {
     "attribution": "Attribution",
     "copy_link": "Copy link",
     "print_page": "Print page",
-    "undefined": ""
+    "undefined": "No data :(",
+    "expand": "More",
+    "shrink": "Less"
 }

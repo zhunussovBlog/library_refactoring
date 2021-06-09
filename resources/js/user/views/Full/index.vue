@@ -1,7 +1,7 @@
 <template>
 	<div :class="modal ? 'd-flex justify-content-center bg-greyer padding mh-100 overflow-auto' :'padding'">
 		<div class="d-flex align-items-start bg-white border-top py-4" :class="{'content px-5':modal}">
-			<div class="mr-5">
+			<div class="mr-5" v-if="printing!='print'">
 				<div class="image rounded bg-grey" :style="'background-image: url('+this.data.image+')'"></div>
 				<div class="d-flex align-items-center cursor-pointer py-2 mt-2" @click="copyLink()">
 					<Save />
@@ -34,9 +34,9 @@
 								{{$t('content')}}
 							</div>
 							<div class="mt-1" v-html="data.content" />
-							<div class="d-flex justify-content-center">
-								<div class="border rounded-pill p-2 my-2 cursor-pointer text-center" @click="expandContent(data,true)" v-if="!contentExpanded">{{$t('expand')}}</div>
-								<div class="border rounded-pill p-2 my-2 cursor-pointer text-center" @click="expandContent(data,false)" v-else>{{$t('shrink')}}</div>
+							<div class="text-blue cursor-pointer font-weight-bold mt-2">
+								<div @click="expandContent(data,true)" v-if="!contentExpanded">{{$t('expand')}}</div>
+								<div @click="expandContent(data,false)" v-else>{{$t('shrink')}}</div>
 							</div>
 						</div>
 					</div>
@@ -94,8 +94,8 @@
 
 	export default{
 		props:{
-			id:[String,Number],
-			modal:Boolean
+			modal:Boolean,
+			id:[String,Number]
 		},
 		mixins:[goTo,getBookImage],
 		components:{RightLittle,X,Save,Print},
@@ -110,7 +110,8 @@
 				array_data:[],
 				xml:[],
 				link:'',
-				contentExpanded:false
+				contentExpanded:false,
+				printing:false
 			}
 		},
 		methods:{
@@ -147,21 +148,12 @@
 				document.body.removeChild(copyText);
 			},
 			printPage(){
-				let elem = document.getElementById('modals-container');
-				var domClone = elem.cloneNode(true);
-
-				var printSection = document.getElementById("printSection");
-
-				if (!printSection) {
-					var printSection = document.createElement("div");
-					printSection.id = "printSection";
-					document.body.appendChild(printSection);
+				if(!this.printing){
+					let routeData = this.$router.resolve({name: 'full', query: {id: this.data.id,mode:'print'}});
+					window.open(routeData.href, '_blank');
+					return 0;
 				}
-
-				printSection.innerHTML = "";
-				printSection.appendChild(domClone);
 				window.print();
-				document.body.removeChild(printSection);
 			},
 			capitalize(s){
 				let string = s.slice();
@@ -188,6 +180,14 @@
 				}).then(()=>{
 					this.$store.commit('setFullPageLoading',false);
 					this.$http.defaults.baseURL = window.configs.baseURL + window.configs.api;
+				}).then(()=>{
+					if(this.printing){
+						let contentExpanded=JSON.parse(JSON.stringify(this.contentExpanded));
+						this.expandContent(this.data,true);
+						this.printPage();
+						window.close();
+						this.expandContent(this.data,contentExpanded);
+					}
 				});
 			},
 			importFromXML(response){
@@ -221,13 +221,19 @@
 			},
 		},
 		created(){
-			this.link=window.location.protocol+'//'+window.location.hostname+'/full?id='+this.id;
 			if(!this.id){
 				this.id=this.$route.query.id;
 				if(!this.id){
 					this.goTo('home');
 				}
 			}
+
+			this.link=window.location.protocol+'//'+window.location.hostname+'/full?id='+this.id;
+
+			if(!this.printing){
+				this.printing=this.$route.query.mode;
+			}
+
 			this.loadData();
 		}
 	}

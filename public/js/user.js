@@ -2290,8 +2290,8 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
-    id: [String, Number],
-    modal: Boolean
+    modal: Boolean,
+    id: [String, Number]
   },
   mixins: [_mixins_goTo__WEBPACK_IMPORTED_MODULE_0__.goTo, _mixins_search__WEBPACK_IMPORTED_MODULE_1__.getBookImage],
   components: {
@@ -2311,7 +2311,8 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       array_data: [],
       xml: [],
       link: '',
-      contentExpanded: false
+      contentExpanded: false,
+      printing: false
     };
   },
   methods: {
@@ -2348,20 +2349,19 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       document.body.removeChild(copyText);
     },
     printPage: function printPage() {
-      var elem = document.getElementById('modals-container');
-      var domClone = elem.cloneNode(true);
-      var printSection = document.getElementById("printSection");
-
-      if (!printSection) {
-        var printSection = document.createElement("div");
-        printSection.id = "printSection";
-        document.body.appendChild(printSection);
+      if (!this.printing) {
+        var routeData = this.$router.resolve({
+          name: 'full',
+          query: {
+            id: this.data.id,
+            mode: 'print'
+          }
+        });
+        window.open(routeData.href, '_blank');
+        return 0;
       }
 
-      printSection.innerHTML = "";
-      printSection.appendChild(domClone);
       window.print();
-      document.body.removeChild(printSection);
     },
     capitalize: function capitalize(s) {
       var string = s.slice();
@@ -2394,6 +2394,18 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         _this.$store.commit('setFullPageLoading', false);
 
         _this.$http.defaults.baseURL = window.configs.baseURL + window.configs.api;
+      }).then(function () {
+        if (_this.printing) {
+          var contentExpanded = JSON.parse(JSON.stringify(_this.contentExpanded));
+
+          _this.expandContent(_this.data, true);
+
+          _this.printPage();
+
+          window.close();
+
+          _this.expandContent(_this.data, contentExpanded);
+        }
       });
     },
     importFromXML: function importFromXML(response) {
@@ -2437,14 +2449,18 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     }
   },
   created: function created() {
-    this.link = window.location.protocol + '//' + window.location.hostname + '/full?id=' + this.id;
-
     if (!this.id) {
       this.id = this.$route.query.id;
 
       if (!this.id) {
         this.goTo('home');
       }
+    }
+
+    this.link = window.location.protocol + '//' + window.location.hostname + '/full?id=' + this.id;
+
+    if (!this.printing) {
+      this.printing = this.$route.query.mode;
     }
 
     this.loadData();
@@ -4218,7 +4234,9 @@ __webpack_require__.r(__webpack_exports__);
   "attribution": "Attribution",
   "copy_link": "Copy link",
   "print_page": "Print page",
-  "undefined": ""
+  "undefined": "No data :(",
+  "expand": "More",
+  "shrink": "Less"
 });
 
 /***/ }),
@@ -4423,7 +4441,9 @@ __webpack_require__.r(__webpack_exports__);
   "attribution": "Атрибут",
   "copy_link": "Сілтемені көшіру",
   "print_page": "Бетті басып шығару",
-  "undefined": ""
+  "undefined": "Деректер жоқ :(",
+  "expand": "Толығырақ",
+  "shrink": "Азайту"
 });
 
 /***/ }),
@@ -4592,7 +4612,9 @@ __webpack_require__.r(__webpack_exports__);
   "attribution": "Атрибуция",
   "copy_link": "Скопировать ссылку",
   "print_page": "Распечатать страницу",
-  "undefined": ""
+  "undefined": "Нет данных",
+  "expand": "Подробнее",
+  "shrink": "Скрыть"
 });
 
 /***/ }),
@@ -16857,53 +16879,56 @@ var render = function() {
           class: { "content px-5": _vm.modal }
         },
         [
-          _c("div", { staticClass: "mr-5" }, [
-            _c("div", {
-              staticClass: "image rounded bg-grey",
-              style: "background-image: url(" + this.data.image + ")"
-            }),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass:
-                  "d-flex align-items-center cursor-pointer py-2 mt-2",
-                on: {
-                  click: function($event) {
-                    return _vm.copyLink()
-                  }
-                }
-              },
-              [
-                _c("Save"),
+          _vm.printing != "print"
+            ? _c("div", { staticClass: "mr-5" }, [
+                _c("div", {
+                  staticClass: "image rounded bg-grey",
+                  style: "background-image: url(" + this.data.image + ")"
+                }),
                 _vm._v(" "),
-                _c("span", { staticClass: "ml-2" }, [
-                  _vm._v(_vm._s(_vm.$t("copy_link")))
-                ])
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass: "d-flex align-items-center cursor-pointer py-2",
-                on: {
-                  click: function($event) {
-                    return _vm.printPage()
-                  }
-                }
-              },
-              [
-                _c("Print"),
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "d-flex align-items-center cursor-pointer py-2 mt-2",
+                    on: {
+                      click: function($event) {
+                        return _vm.copyLink()
+                      }
+                    }
+                  },
+                  [
+                    _c("Save"),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "ml-2" }, [
+                      _vm._v(_vm._s(_vm.$t("copy_link")))
+                    ])
+                  ],
+                  1
+                ),
                 _vm._v(" "),
-                _c("span", { staticClass: "ml-2" }, [
-                  _vm._v(_vm._s(_vm.$t("print_page")))
-                ])
-              ],
-              1
-            )
-          ]),
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "d-flex align-items-center cursor-pointer py-2",
+                    on: {
+                      click: function($event) {
+                        return _vm.printPage()
+                      }
+                    }
+                  },
+                  [
+                    _c("Print"),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "ml-2" }, [
+                      _vm._v(_vm._s(_vm.$t("print_page")))
+                    ])
+                  ],
+                  1
+                )
+              ])
+            : _vm._e(),
           _vm._v(" "),
           _c("div", { staticClass: "flex-fill" }, [
             _c("div", { staticClass: "d-flex flex-fill" }, [
@@ -16985,14 +17010,15 @@ var render = function() {
                       _vm._v(" "),
                       _c(
                         "div",
-                        { staticClass: "d-flex justify-content-center" },
+                        {
+                          staticClass:
+                            "text-blue cursor-pointer font-weight-bold mt-2"
+                        },
                         [
                           !_vm.contentExpanded
                             ? _c(
                                 "div",
                                 {
-                                  staticClass:
-                                    "border rounded-pill p-2 my-2 cursor-pointer text-center",
                                   on: {
                                     click: function($event) {
                                       return _vm.expandContent(_vm.data, true)
@@ -17004,8 +17030,6 @@ var render = function() {
                             : _c(
                                 "div",
                                 {
-                                  staticClass:
-                                    "border rounded-pill p-2 my-2 cursor-pointer text-center",
                                   on: {
                                     click: function($event) {
                                       return _vm.expandContent(_vm.data, false)

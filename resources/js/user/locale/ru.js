@@ -151,5 +151,7 @@ export default {
     "attribution": "Атрибуция",
     "copy_link": "Скопировать ссылку",
     "print_page": "Распечатать страницу",
-    "undefined": ""
+    "undefined": "Нет данных",
+    "expand": "Подробнее",
+    "shrink": "Скрыть"
 }
