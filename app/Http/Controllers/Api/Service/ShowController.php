@@ -53,7 +53,7 @@ class ShowController extends Controller
                 'history' => $media,
                 'total' => $total,
                 'return' => $borrowed,
-                'duration' => !empty($duration) ? $duration->data : null
+                'duration' => !empty($duration) ? $duration->data : 21
             ]
         ]);
     }
