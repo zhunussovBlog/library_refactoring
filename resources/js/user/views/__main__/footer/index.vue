@@ -3,7 +3,7 @@
 		<div class="d-flex justify-content-between padding py-5 flex-wrap">
 			<div class="text-center text-sm-left flex-grow-1 flex-sm-grow-0">
 				<div class="cursor-pointer" @click="scrollTo('top')">
-					<img src="images/logo.svg" class="logo">
+					<img src="/images/logo.svg" class="logo">
 				</div>
 				<div class="mt-5 mb-3 font-size-14 text-lightgrey">
 					<div>{{$t('SDU')}}</div>
@@ -40,7 +40,7 @@
 				{{$t('allRightsReserved',{year:year})}}
 			</div>
 			<div class="ml-3">
-				<dropdown class="dropup" :data="langs" :on_click="setLang" menu_classes="dropdown-menu-right" :title="{link:$i18n.locale,uppercase:true}"/>
+				<dropdown class="dropup" :data="langs" :on_click="setLanguage" menu_classes="dropdown-menu-right" :title="{link:$i18n.locale,uppercase:true}"/>
 			</div>
 		</div>
 	</div>

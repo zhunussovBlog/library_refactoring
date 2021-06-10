@@ -5718,6 +5718,19 @@ __webpack_require__.r(__webpack_exports__);
         _this4.$store.commit('setFullPageLoading', false);
       });
     },
+    importFromWorldCat: function importFromWorldCat() {
+      var control_number = '';
+      var wskey = '';
+      fetch('http://www.worldcat.org/webservices/catalog/content/' + control_number + '?wskey=' + wskey).then(function (response) {
+        var convert = __webpack_require__(/*! xml-js */ "./node_modules/xml-js/lib/index.js");
+
+        var json = convert.xml2json(response.responseText, {
+          compact: true,
+          spaces: 4
+        });
+        json = JSON.parse(json);
+      });
+    },
     preview: function preview() {
       this.showModal(_Preview__WEBPACK_IMPORTED_MODULE_6__.default, {
         info: this.sectioned,
@@ -71355,13 +71368,24 @@ var render = function() {
             ]
           ),
           _vm._v(" "),
-          _c("button", { staticClass: "outline-black mx-3" }, [
-            _vm._v(
-              "\n                        " +
-                _vm._s(_vm.$t("import_from_worldcat")) +
-                "\n                    "
-            )
-          ]),
+          _c(
+            "button",
+            {
+              staticClass: "outline-black mx-3",
+              on: {
+                click: function($event) {
+                  return _vm.importFromWorldCat()
+                }
+              }
+            },
+            [
+              _vm._v(
+                "\n                        " +
+                  _vm._s(_vm.$t("import_from_worldcat")) +
+                  "\n                    "
+              )
+            ]
+          ),
           _vm._v(" "),
           _c(
             "button",

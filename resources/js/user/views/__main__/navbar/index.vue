@@ -7,7 +7,7 @@
 			</div>
 			<div class="d-flex align-items-center">
 				<!-- languages dropdown -->
-				<dropdown :data="langs" :on_click="setLang" menu_classes="dropdown-menu-right" :title="{link:$i18n.locale,uppercase:true}"/>
+				<dropdown :data="langs" :on_click="setLanguage" menu_classes="dropdown-menu-right" :title="{link:$i18n.locale,uppercase:true}"/>
 				<!-- login button if ur not logged in -->
 				<div class="link bg-lightblue font-size-18 py-3 px-3 ml-3"  @click="showModal(login,{width:'300px',height:'300px'})" v-if="!logged">{{$t('login')}}</div>
 				<!-- dropdown, in other cases -->
@@ -16,8 +16,8 @@
 		</div>
 		<nav class="navbar navbar-expand-xl bg-blue navbar-dark padding py-2">
 			<!-- logo -->
-			<router-link class="cursor-pointer" :to="{name:'home'}">
-				<img class="logo" src="images/logo.svg">
+			<router-link class="cursor-pointer" :to="'/'+$i18n.locale">
+				<img class="logo" src="/images/logo.svg">
 			</router-link>
 			<!-- appears only on screens smaller than xl -->
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">

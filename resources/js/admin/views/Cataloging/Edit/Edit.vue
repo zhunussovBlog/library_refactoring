@@ -14,7 +14,7 @@
                     <button class="outline-black" @click="preview()">
                         {{$t('preview')}}
                     </button>
-                    <button class="outline-black mx-3">
+                    <button class="outline-black mx-3" @click="importFromWorldCat()">
                         {{$t('import_from_worldcat')}}
                     </button>
                     <button class="outline-black" @click="exportXML()">
@@ -268,6 +268,16 @@ export default {
                 this.print_file(response,'call_number_'+this.info.title,'pdf');
             }).catch(e=>{}).then(()=>{
                 this.$store.commit('setFullPageLoading',false);
+            })
+        },
+        importFromWorldCat(){
+            let control_number='';
+            let wskey='';
+            fetch('http://www.worldcat.org/webservices/catalog/content/'+control_number+'?wskey='+wskey).then(response=>{
+                let convert = require('xml-js');
+                let json = convert.xml2json(response.responseText, { compact: true, spaces: 4 });
+                json = JSON.parse(json);
+
             })
         },
         preview(){

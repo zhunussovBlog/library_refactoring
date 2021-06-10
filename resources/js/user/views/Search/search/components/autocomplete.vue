@@ -113,7 +113,7 @@ export default{
 			}catch(e){}
 		},
 		move(result){
-			this.$router.push({path:'/full?type='+result.type_key+'&id='+result.id});
+			this.$router.push({path:'/full?id='+result.id});
 		}
 	}
 }
