@@ -69,7 +69,7 @@
 				}
 			},
 			showMore(){
-				this.showModal(Full,{id:this.data.id,modal:true,width:'100%',height:'100%',styles:'overflow:hidden'});
+				this.showModal(Full,{id:this.data.id,modal:true,width:'100%',height:'100%',styles:'overflow:hidden;background:transparent'});
 				document.documentElement.classList.add("overflow-hidden");
 			}
 		},

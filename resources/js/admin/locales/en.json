@@ -208,6 +208,7 @@
     "date": "Date",
     "days": "Days",
 
+    "import_from_google_api": "Import from google api",
     "cataloging": "Cataloging",
     "search_cataloging": "Search by ISBN || Title || Author",
     "edit_rec": "Edit record",

@@ -209,6 +209,7 @@
     "date": "Дата",
     "days": "Дни",
 
+    "import_from_google_api": "Внести из google api",
     "cataloging": "Каталогизация",
     "search_cataloging": "Поиск по ISBN || Название || Автор",
     "edit_rec": "Редактировать запись",
