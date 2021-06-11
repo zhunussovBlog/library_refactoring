@@ -249,7 +249,7 @@
 	background-size: 100% 100%;
 }
 .bg-greyer{
-	background: #a2a6a8 !important;
+	background: rgba(0,0,0, 0.3 ) !important;
 }
 .exit{
 	color:white;

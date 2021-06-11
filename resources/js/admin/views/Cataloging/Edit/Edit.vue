@@ -14,8 +14,8 @@
                     <button class="outline-black" @click="preview()">
                         {{$t('preview')}}
                     </button>
-                    <button class="outline-black mx-3" @click="importFromWorldCat()">
-                        {{$t('import_from_worldcat')}}
+                    <button class="outline-black mx-3" @click="importFromGoogleAPIs(info.isbn)">
+                        {{$t('import_from_google_api')}}
                     </button>
                     <button class="outline-black" @click="exportXML()">
                         {{$t('export_to_xml')}}
@@ -154,11 +154,14 @@ export default {
                     }
                     return 0;
                 });
-                this.divideIntoSections();
-                this.divideIntoSubsections();
+                this.updateCatalogingInfo();
             }).catch(e=>{}).then(()=>{
                 this.$store.commit('setFullPageLoading',false);
             });
+        },
+        updateCatalogingInfo(){
+            this.divideIntoSections();
+            this.divideIntoSubsections();
         },
         divideIntoSections(){
             let sections=[];
@@ -278,6 +281,97 @@ export default {
                 let json = convert.xml2json(response.responseText, { compact: true, spaces: 4 });
                 json = JSON.parse(json);
 
+            })
+        },
+        importFromGoogleAPIs(isbn){
+            let info=this.info;
+            let importIt=(data)=>{
+                let array=[];
+                array.push({
+                    value:data.title,
+                    code:'245.a'    
+                },
+                {
+                    value:data.subtitle,
+                    code:'245.b'
+                },
+                {
+                    value:data.authors,
+                    code:'600.a'
+                },
+                {
+                    value:data.publisher,
+                    code:'260.b'
+                },
+                {
+                    value:data.publishedDate,
+                    code:'260.c'
+                },
+                {
+                    value:data.industryIdentifiers[1].identifier,
+                    code:'020.a'
+                },
+                {
+                    value:data.printType,
+                    code:'650.v'
+                },
+                {
+                    value:data.pageCount,
+                    code:'300.a'
+                },
+                {
+                    value:data.categories,
+                    code:'650.a'
+                },
+                {
+                    value:data.language,
+                    code:'546.a'
+                },
+                {
+                    value:data.description,
+                    code:'520.a'
+                });
+                array.forEach(e=>{
+                    if(e.value){
+                        let info = this.edit_info.find(elem=>elem.id==e.code);
+                        if(Array.isArray(e.value)){
+                            e.value.forEach(value=>{
+                                let new_data=copy(info);
+                                new_data.is_added=true;
+                                new_data.repeatable=null;
+                                if(info.data){
+                                    new_data.data=value;
+                                    this.edit_info.push(new_data);
+                                }else{
+                                    info.data=value;
+                                }
+                            })
+                        }else{
+                            info.data=e.value;
+                        }
+
+                    }
+                });
+                this.updateCatalogingInfo();
+                this.message_success('import_from_google_api',{});
+            }
+            // we use fetch() because there's cors mistake when use this.$http
+            this.$store.commit('setFullPageLoading', true);
+            fetch("https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbn).then(response => {
+                response.json().then(async res => {
+                    try {
+                        let data=res.items[0].volumeInfo;
+                        importIt(data);
+                        this.updateCatalogingInfo();
+                    } catch (e) {
+                        this.$store.commit('setFullPageLoading', false)
+                        this.$prompt("Search google apis for isbn: "+isbn+" failed. Maybe you'd like to try to search with another isbn?").then((text) => {
+                            this.importFromGoogleAPIs(text);
+                        });
+                    }
+                }).catch(e => { console.error(e) }).finally(() => {
+                    this.$store.commit('setFullPageLoading', false)
+                })
             })
         },
         preview(){

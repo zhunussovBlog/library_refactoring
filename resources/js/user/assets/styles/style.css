@@ -187,6 +187,10 @@ button {
     background-color: #F4F4F4 !important;
 }
 
+.bg-transparent {
+    background-color: transparent !important;
+}
+
 .ellipsis {
     width: 90%;
     overflow: hidden;
