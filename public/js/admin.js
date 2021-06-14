@@ -5544,6 +5544,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
 // mixins
 
 
@@ -71832,11 +71835,30 @@ var render = function() {
             )
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "d-flex" }, [
+          _c("div", { staticClass: "d-flex justify-content-end" }, [
             _c(
               "button",
               {
-                staticClass: "ml-auto width-unset",
+                staticClass: "ml-2 width-unset outline-black",
+                on: {
+                  click: function($event) {
+                    return _vm.getEditInfo()
+                  }
+                }
+              },
+              [
+                _vm._v(
+                  "\n                            " +
+                    _vm._s(_vm.$t("refresh")) +
+                    "\n                        "
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "ml-2 width-unset",
                 on: {
                   click: function($event) {
                     return _vm.save()
