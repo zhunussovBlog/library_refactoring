@@ -27,5 +27,5 @@ export default {
 }
 </script>
 <style scoped>
-@import './assets/styles/style.css'
+@import '../common/assets/styles/style.css'
 </style>
