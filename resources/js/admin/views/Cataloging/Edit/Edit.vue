@@ -101,8 +101,11 @@
                             </tr>
                         </tbody>
                     </table>
-                    <div class="d-flex">
-                        <button class="ml-auto width-unset" @click="save()">
+                    <div class="d-flex justify-content-end">
+                        <button class="ml-2 width-unset outline-black" @click="getEditInfo()">
+                            {{$t('refresh')}}
+                        </button>
+                        <button class="ml-2 width-unset" @click="save()">
                             {{$t('save')}}
                         </button>
                     </div>
