@@ -10,7 +10,7 @@
 		<div ref="results" class="position-absolute results bg-white shadow-sm w-100 mt-2">
 			<div class="p-2" :class="{'bg-lightgrey':chooseIndex==index}" @mouseover='chooseIndex=index' v-for="(result,index) in results" :key="index" @click="Choose();commitQuery();closeResults();">
 				<div class="d-flex">
-					<span class="ellipsis mr-10">
+					<span class="text-ellipsis mr-10">
 						{{result.result}}
 						<span v-if="result.title">, {{result.title}}</span>
 						<span v-if="result.year">, {{result.year}}</span>

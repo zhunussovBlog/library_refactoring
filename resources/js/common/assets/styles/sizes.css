@@ -1,0 +1,75 @@
+.h-min-100 {
+    min-height: 100%;
+}
+
+.width-unset {
+    width: unset;
+}
+
+.height-unset {
+    height: unset;
+}
+
+.font-weight-bold {
+    font-weight: 500 !important;
+}
+
+.font-size-32 {
+    font-size: 2em;
+}
+
+.font-size-24 {
+    font-size: 1.5em;
+}
+
+.font-size-20 {
+    font-size: 1.25em;
+}
+
+.font-size-18 {
+    font-size: 1.125em;
+}
+
+.font-size-14 {
+    font-size: 0.875em;
+    line-height: 1.04em;
+}
+
+.font-size-12 {
+    font-size: 0.75em;
+}
+
+
+/*icons*/
+
+svg:not(:root).svg-inline--fa {
+    overflow: visible;
+}
+
+.svg-inline--fa.fa-w-10 {
+    width: 0.625em;
+}
+
+.svg-inline--fa.fa-w-11 {
+    width: 0.6875em;
+}
+
+.svg-inline--fa.fa-w-14 {
+    width: 0.875em;
+}
+
+.svg-inline--fa.fa-w-16 {
+    width: 1em;
+}
+
+.svg-inline--fa.fa-w-18 {
+    width: 1.125em;
+}
+
+.svg-inline--fa {
+    display: inline-block;
+    font-size: inherit;
+    height: 1em;
+    overflow: visible;
+    vertical-align: -0.125em;
+}

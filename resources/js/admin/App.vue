@@ -27,5 +27,8 @@ export default {
 }
 </script>
 <style scoped>
-@import '../common/assets/styles/style.css'
+@import '../common/assets/styles/colors.css';
+@import '../common/assets/styles/common.css';
+@import '../common/assets/styles/sizes.css';
+@import './assets/styles/style.css';
 </style>

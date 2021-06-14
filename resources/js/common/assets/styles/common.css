@@ -1,0 +1,87 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,400italic,500,500italic,700,700italic,900,900italic,300italic,300,100italic,100);
+
+/* basic */
+
+* {
+    cursor: inherit;
+    /*firefox only scrollbar*/
+    scrollbar-color: #c5c5c5 white;
+    scrollbar-width: thin;
+}
+
+*:focus {
+    outline: none !important;
+}
+
+
+/* custom */
+
+.transition {
+    transition: .3s;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.rotate {
+    transform: rotate(180deg);
+}
+
+.text-no-wrap,
+.text-no-wrap>* {
+    white-space: nowrap;
+}
+
+.link {
+    cursor: pointer;
+    color: inherit;
+    text-decoration: inherit;
+}
+
+.link:hover {
+    color: #FF8E0A !important;
+}
+
+.text-ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/*crossbrowser scrollbars*/
+
+::-webkit-scrollbar {
+    width: 0.3125em;
+    height: 0.3125em;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c5c5c5;
+}
+
+::-webkit-scrollbar-track {
+    background: white;
+}
+
+
+/* remove bootstrap */
+
+label {
+    margin-bottom: unset;
+}
+
+
+/*responsiveness*/
+
+@media screen and (min-width: 1440px) {
+    html {
+        font-size: 16px !important;
+    }
+}
+
+@media screen and (min-width: 2000px) {
+    html {
+        font-size: 18px !important;
+    }
+}
