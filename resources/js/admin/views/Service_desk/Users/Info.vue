@@ -37,9 +37,9 @@
 // mixins
 import {goTo} from '../../../mixins/goTo'
 //components
-import Table from '../../../components/common/Table'
+import Table from '../../../components/Table'
 // icons
-import X from '../../../assets/icons/X'
+import X from '../../../../common/assets/icons/X'
 
 export default {
 	props:{

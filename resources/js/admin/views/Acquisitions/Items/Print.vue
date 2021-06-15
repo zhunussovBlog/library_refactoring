@@ -54,10 +54,10 @@
 </template>
 <script type="text/javascript">
 // components
-import Back from '../../../components/common/Back'
-import Dropdown from '../../../components/common/Dropdown'
-import Table from '../../../components/common/Table'
-import SelectedItems from '../../../components/common/SelectedItems'
+import Back from '../../../components/Back'
+import Dropdown from '../../../components/Dropdown'
+import Table from '../../../components/Table'
+import SelectedItems from '../../../components/SelectedItems'
 
 // loading indicator
 import PulseLoader from 'vue-spinner/src/PulseLoader'

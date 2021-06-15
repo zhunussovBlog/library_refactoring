@@ -24,9 +24,9 @@
 <script type="text/javascript">
 // identication in sublime 3
 // icons
-import Search from '../../assets/icons/Search'
-import Cancel from '../../assets/icons/Cancel'
-import CaretUp from '../../assets/icons/CaretUp'
+import Search from '../../common/assets/icons/Search'
+import Cancel from '../../common/assets/icons/Cancel'
+import CaretUp from '../../common/assets/icons/CaretUp'
 export default{
 	model: {
 		prop: 'value',

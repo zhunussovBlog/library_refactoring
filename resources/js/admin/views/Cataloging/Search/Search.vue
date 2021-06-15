@@ -35,9 +35,9 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
-import InputDiv from "../../../components/common/Input.vue";
-import TableDiv from '../../../components/common/Table'
-import More from '../../../components/common/More'
+import InputDiv from "../../../components/Input.vue";
+import TableDiv from '../../../components/Table'
+import More from '../../../components/More'
 
 import showModal from '../../../mixins/showModal'
 import {getResults} from '../../../mixins/common'

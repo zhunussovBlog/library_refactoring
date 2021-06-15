@@ -122,8 +122,8 @@ import {download_file,print_file} from '../../../mixins/files';
 import showModal from '../../../mixins/showModal';
 
 // components
-import Back from '../../../components/common/Back.vue'
-import Print from '../../../assets/icons/Print.vue'
+import Back from '../../../components/Back.vue'
+import Print from '../../../../common/assets/icons/Print.vue'
 
 import Preview from './Preview'
 

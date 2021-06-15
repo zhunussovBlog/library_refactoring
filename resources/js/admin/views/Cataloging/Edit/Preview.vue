@@ -57,7 +57,7 @@
 </template>
 <script type="text/javascript">
 	import {goTo} from '../../../mixins/goTo'
-	import X from '../../../assets/icons/X'
+	import X from '../../../../common/assets/icons/X'
 	export default{
 		props:{
 			info:Array

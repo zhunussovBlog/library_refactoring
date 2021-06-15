@@ -43,7 +43,7 @@
 </template>
 <script type="text/javascript">
 // icons
-import Warning from '../../../assets/icons/Warning'
+import Warning from '../../../../common/assets/icons/Warning'
 export default{
 	components:{Warning},
 	props:{

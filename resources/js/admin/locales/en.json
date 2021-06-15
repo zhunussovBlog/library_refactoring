@@ -114,7 +114,8 @@
     "beginning": "Start",
     "end": "End",
     "currency": "Currency",
-    "author-title": "Author - title",
+    "author_title": "Author - title",
+    "year_city": "Year - city",
 
     "name": "Name",
     "name_by": "name",

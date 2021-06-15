@@ -8,7 +8,7 @@ import router from './router'
 import i18n from './locales'
 import store from './store'
 
-import base from '../configs/base'
+import base from '../common/configs/base'
 
 // Events
 const eventHub = new Vue();
@@ -51,19 +51,19 @@ window.copy = (object) => {
 window.capitalize = (s) => {
     let string = s.slice();
     if (typeof string !== 'string') return ''
-        return string.charAt(0).toUpperCase() + string.slice(1)
+    return string.charAt(0).toUpperCase() + string.slice(1)
 }
 
 // returns you an object without a key  ( deletes a key from an object )
 window.objectWithoutKey = (object, key) => {
-    if(Array.isArray(key)){
-        key.forEach(str=>{
-          object = objectWithoutKey(object,str);
-      })
+    if (Array.isArray(key)) {
+        key.forEach(str => {
+            object = objectWithoutKey(object, str);
+        })
         return object;
-    }
-    else{
-        const {[key]: deletedKey, ...otherKeys} = object;
+    } else {
+        const {
+            [key]: deletedKey, ...otherKeys } = object;
         return otherKeys;
     }
 }

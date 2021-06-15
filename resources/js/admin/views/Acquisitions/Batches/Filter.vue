@@ -73,8 +73,8 @@
 </template>
 <script type="text/javascript">
 // components
-import Checkbox from '../../../components/common/Checkbox'
-import InputDiv from '../../../components/common/Input'
+import Checkbox from '../../../components/Checkbox'
+import InputDiv from '../../../components/Input'
 
 // mixins
 import {reset} from '../../../mixins/common'

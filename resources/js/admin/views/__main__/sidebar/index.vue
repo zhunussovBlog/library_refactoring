@@ -36,8 +36,8 @@
 // identication in sublime text 3 is better with this comment
 import {goTo,goToMain} from '../../../mixins/goTo'
 
-import CaretUp from '../../../assets/icons/CaretUp'
-import ArrowDown from '../../../assets/icons/ArrowDown'
+import CaretUp from '../../../../common/assets/icons/CaretUp'
+import ArrowDown from '../../../../common/assets/icons/ArrowDown'
 export default{
 	mixins:[goTo,goToMain],
 	components:{CaretUp,ArrowDown},

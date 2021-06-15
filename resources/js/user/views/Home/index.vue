@@ -61,7 +61,7 @@
 	import SlideEvents from './components/slide_events'
 
 	// icons
-	import RightNormal from '../../assets/icons/RightNormal'
+	import RightNormal from '../../../common/assets/icons/RightNormal'
 
 	export default{
 		components:{Search,RightNormal,SlideEvents},

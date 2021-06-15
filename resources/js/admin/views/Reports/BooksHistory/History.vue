@@ -42,7 +42,7 @@
 </template>
 <script type="text/javascript">
 // components
-import Table from '../../../components/common/Table'
+import Table from '../../../components/Table'
 
 //mixins
 import {getResults,reset} from '../../../mixins/common'

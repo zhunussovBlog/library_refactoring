@@ -55,10 +55,10 @@
 	import dropdown from '../../../components/dropdown'
 
 	//icons
-	import Instagram from '../../../assets/icons/Instagram'
-	import Facebook from '../../../assets/icons/Facebook'
-	import Telegram from '../../../assets/icons/Telegram'
-	import Youtube from '../../../assets/icons/Youtube'
+	import Instagram from '../../../../common/assets/icons/Instagram'
+	import Facebook from '../../../../common/assets/icons/Facebook'
+	import Telegram from '../../../../common/assets/icons/Telegram'
+	import Youtube from '../../../../common/assets/icons/Youtube'
 	export default{
 		mixins:[scrollTo,links,langs],
 		components:{dropdown},

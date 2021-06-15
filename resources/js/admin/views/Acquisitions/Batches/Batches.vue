@@ -49,17 +49,17 @@ import showModal from '../../../mixins/showModal'
 import {getResults,getAllData} from '../../../mixins/common'
 
 // common components
-import TableDiv from '../../../components/common/Table'
-import More from '../../../components/common/More'
-import InputDiv from '../../../components/common/Input'
+import TableDiv from '../../../components/Table'
+import More from '../../../components/More'
+import InputDiv from '../../../components/Input'
 
 // batches only components
 import CreateBatches from './CreateBatches'
 import FilterDiv from './Filter'
 
 // icons
-import Download from '../../../assets/icons/Download'
-import Plus from '../../../assets/icons/Plus'
+import Download from '../../../../common/assets/icons/Download'
+import Plus from '../../../../common/assets/icons/Plus'
 
 import {mapGetters} from 'vuex'
 

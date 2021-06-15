@@ -7,7 +7,7 @@
 </template>
 <script type="text/javascript">
 // components
-import Tabs from '../../../components/common/Tabs'
+import Tabs from '../../../../common/components/Tabs'
 
 import History from './History'
 import InventoryNumber from './InventoryNumber'

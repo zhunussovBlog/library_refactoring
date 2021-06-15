@@ -55,11 +55,11 @@
 </template>
 <script type="text/javascript">
 // components
-import Back from '../../../components/common/Back'
-import TableDiv from '../../../components/common/Table'
-import Tabs from '../../../components/common/Tabs'
-import InputDiv from '../../../components/common/Input'
-import SelectedItems from '../../../components/common/SelectedItems'
+import Back from '../../../components/Back'
+import TableDiv from '../../../components/Table'
+import Tabs from '../../../../common/components/Tabs'
+import InputDiv from '../../../components/Input'
+import SelectedItems from '../../../components/SelectedItems'
 
 import EditDuration from './EditDuration'
 // mixins

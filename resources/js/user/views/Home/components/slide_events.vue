@@ -29,7 +29,7 @@
 <script type="text/javascript">
 // identication in sublime text 3
 // icons
-import RightLittle from '../../../assets/icons/RightLittle'
+import RightLittle from '../../../../common/assets/icons/RightLittle'
 
 export default{
 	props:{

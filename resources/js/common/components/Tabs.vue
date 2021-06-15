@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="tabs position-relative" :class="tabsClasses" :style="tabsStyle">
-			<div :ref="'tab-'+index" v-for="(tab,index) in tabs" @click="setActive(index,tab)" class="tab" :class="[activeTab==index ? 'text-orange '+tabActiveClasses : 'text-grey '+tabInactiveClasses,tabClasses]" :style="tabStyle">{{$t(tab.name)}}
+			<div :ref="'tab-'+index" v-for="(tab,index) in tabs" :key="index" @click="setActive(index,tab)" class="tab" :class="[activeTab==index ? 'text-orange '+tabActiveClasses : 'text-grey '+tabInactiveClasses,tabClasses]" :style="tabStyle">{{$t(tab.name)}}
 			</div>
 			<div ref="line" class="line" :class="lineClasses" :style="lineStyle"/>
 		</div>
@@ -67,3 +67,26 @@
 		}
 	}
 </script>
+<style scoped>
+.tabs {
+    display: flex;
+}
+
+.tab {
+    margin-right: 2.5em;
+    font-weight: 500;
+    font-size: 1.5em;
+    line-height: 1.75em;
+    cursor: pointer;
+    transition: color .3s;
+}
+
+.line {
+    height: 0.3125em;
+    background: #FF9D29;
+    position: absolute;
+    transition: .5s;
+    /*emaa naugad*/
+    bottom: -0.625em;
+}
+</style>

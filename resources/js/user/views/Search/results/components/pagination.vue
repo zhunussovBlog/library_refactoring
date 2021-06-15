@@ -24,8 +24,8 @@
 	</div>
 </template>
 <script type="text/javascript">
-	import RightLittle from '../../../../assets/icons/RightLittle'	
-	import RightLong from '../../../../assets/icons/RightLong'
+	import RightLittle from '../../../../../common/assets/icons/RightLittle'	
+	import RightLong from '../../../../../common/assets/icons/RightLong'
 
 	import {filters} from '../../../../mixins/search'
 

@@ -85,7 +85,7 @@
 </template>
 <script type="text/javascript">
 // components
-import InputDiv from '../../../components/common/Input'
+import InputDiv from '../../../components/Input'
 //mixins 
 import {reset} from '../../../mixins/common'
 

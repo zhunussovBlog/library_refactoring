@@ -18,8 +18,8 @@
 </template>
 <script type="text/javascript">
 // icons
-import RegUser from '../../../assets/icons/RegUser'
-import CaretUp from '../../../assets/icons/CaretUp'
+import RegUser from '../../../../common/assets/icons/RegUser'
+import CaretUp from '../../../../common/assets/icons/CaretUp'
 
 import {message_error} from '../../../mixins/messages'
 export default{

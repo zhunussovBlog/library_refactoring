@@ -8,7 +8,7 @@
 </template>
 <script type="text/javascript">
 // icons
-import Right from '../../assets/icons/RightLittle'
+import Right from '../../common/assets/icons/RightLittle'
 export default{
 	components:{Right},
 	methods:{

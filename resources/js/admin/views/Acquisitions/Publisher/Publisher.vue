@@ -34,8 +34,8 @@ import {getResults,getAllData} from '../../../mixins/common'
 
 // components
 import CreatePublisher from './CreatePublisher'
-import table from '../../../components/common/Table'
-import input from '../../../components/common/Input'
+import table from '../../../components/Table'
+import input from '../../../components/Input'
 
 import {mapGetters} from 'vuex'
 
