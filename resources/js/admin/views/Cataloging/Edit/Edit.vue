@@ -92,7 +92,50 @@
                                     <input type="text" class="little_input" v-model="info.ind2"/>
                                 </td>
                                 <td class="w-50">
-                                    <input type="text" class="w-100" v-model="info.data"/>
+                                    <!-- here comes cases -->
+                                    <!-- if it's language -->
+                                    <input-div 
+                                        v-model="info.data"
+                                        classes="border-black input_static_height"
+                                        :selectable="{available:true,data:authority.authors}"
+                                        :head="'author'"
+                                        :body="'author'"
+                                        :autocomplete="{available:true,data:authority.authors}"
+                                        v-if="info.id=='100.a'||info.id=='600.a'"
+                                    />
+
+                                    <input-div 
+                                        v-model="info.data"
+                                        classes="border-black input_static_height"
+                                        :selectable="{available:true,data:authority.language}"
+                                        :head="'language'"
+                                        :body="'language'"
+                                        :autocomplete="{available:true,data:authority.language}"
+                                        v-else-if="info.id=='546.a'"
+                                    />
+
+                                    <input-div 
+                                        v-model="info.data"
+                                        classes="border-black input_static_height"
+                                        :selectable="{available:true,data:authority.subject_terms}"
+                                        :head="'subject_term'"
+                                        :body="'subject_term'"
+                                        :autocomplete="{available:true,data:authority.subject_terms}"
+                                        v-else-if="info.id=='650.x'"
+                                    />
+
+                                    <input-div 
+                                        v-model="info.data"
+                                        classes="border-black input_static_height"
+                                        :selectable="{available:true,data:authority.type}"
+                                        :head="'title'"
+                                        :body="'type'"
+                                        :autocomplete="{available:true,data:authority.type}"
+                                        v-else-if="info.id=='650.v'"
+                                    />
+
+                                    <!-- if it's just info -->
+                                    <input type="text" class="w-100" v-model="info.data" v-else/>
                                 </td>
                                 <td>
                                     <button class="outline-blue" @click="removeSubtag(info,index)" v-if="info.is_added || info.repeatable==undefined">-</button>
@@ -122,8 +165,11 @@ import {download_file,print_file} from '../../../mixins/files';
 import showModal from '../../../mixins/showModal';
 
 // components
-import Back from '../../../components/Back.vue'
-import Print from '../../../../common/assets/icons/Print.vue'
+import Back from '../../../components/Back'
+import InputDiv from '../../../components/Input'
+
+// icons
+import Print from '../../../../common/assets/icons/Print'
 
 import Preview from './Preview'
 
@@ -132,7 +178,7 @@ export default {
     props:{
         info:Object
     },
-    components: { Back,Print },
+    components: { Back, Print, InputDiv },
     data(){
         return{
             edit_info:[],
@@ -140,7 +186,8 @@ export default {
             commit:'cataloging',
             link:'cataloging/material',
             sectionSelected:0,
-            tagSelected:{}
+            tagSelected:{},
+            authority:{}
         }
     },
     methods:{
@@ -380,6 +427,11 @@ export default {
         preview(){
             this.showModal(Preview,{info:this.sectioned,width:'100%',height:'100%',styles:'overflow:hidden'});
             document.documentElement.classList.add("overflow-hidden");
+        },
+        getAuthority(){
+            this.$http.get('/cataloging/authority').then(response=>{
+                this.authority=response.data.res
+            })
         }
     },
     created(){
@@ -387,6 +439,7 @@ export default {
             this.goTo('cataloging_search');
         }else{
             this.getEditInfo();
+            this.getAuthority();
         }
     }
 }

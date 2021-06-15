@@ -2,7 +2,7 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="148b5b9f-7247-4a1f-864c-5be8e46e1eb1" name="rahmet" url="http://zhunussova@10.0.3.120">
+      <webServer id="148b5b9f-7247-4a1f-864c-5be8e46e1eb1" name="rahmet (project level)" url="http://zhunussova@10.0.3.120">
         <fileTransfer host="zhunussova@10.0.3.120" port="22">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />

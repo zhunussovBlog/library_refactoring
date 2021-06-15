@@ -34,7 +34,7 @@
 						>
 							{{$t('status')}}
 							<span>
-								<CaretUp :class="{rotate:!(statusReverse && sorting=='status')}" v-if="simpleSortable"/>
+								<CaretUp class="transition" :class="{rotate:!(statusReverse && sorting=='status')}" v-if="simpleSortable"/>
 							</span>
 						</th>
 						<!-- for in heads -->
@@ -47,7 +47,7 @@
 							{{$tc(name.name,1)}}
 							<span>
 								<!-- for sorting -->
-								<CaretUp :class="{rotate:!(name.reverse && sorting==name.link)}" v-if="name.link!=null && simpleSortable"/>
+								<CaretUp class="transition" :class="{rotate:!(name.reverse && sorting==name.link)}" v-if="name.link!=null && simpleSortable"/>
 							</span>
 						</th>
 						<!-- all clickables share one table head -->
