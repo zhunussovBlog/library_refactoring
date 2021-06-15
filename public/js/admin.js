@@ -1884,6 +1884,7 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     this.getAuth();
     this.setGlobalLocale();
+    this.getAuthority();
   }
 });
 
@@ -5287,15 +5288,59 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mixins_messages__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../mixins/messages */ "./resources/js/admin/mixins/messages.js");
 /* harmony import */ var _mixins_files__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../mixins/files */ "./resources/js/admin/mixins/files.js");
 /* harmony import */ var _mixins_showModal__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../mixins/showModal */ "./resources/js/admin/mixins/showModal.js");
-/* harmony import */ var _components_Back_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../components/Back.vue */ "./resources/js/admin/components/Back.vue");
-/* harmony import */ var _common_assets_icons_Print_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../../common/assets/icons/Print.vue */ "./resources/js/common/assets/icons/Print.vue");
-/* harmony import */ var _Preview__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Preview */ "./resources/js/admin/views/Cataloging/Edit/Preview.vue");
+/* harmony import */ var _components_Back__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../components/Back */ "./resources/js/admin/components/Back.vue");
+/* harmony import */ var _components_Input__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../components/Input */ "./resources/js/admin/components/Input.vue");
+/* harmony import */ var _common_assets_icons_Print__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../../common/assets/icons/Print */ "./resources/js/common/assets/icons/Print.vue");
+/* harmony import */ var _Preview__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./Preview */ "./resources/js/admin/views/Cataloging/Edit/Preview.vue");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5419,6 +5464,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
  // components
 
 
+ // icons
+
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -5427,8 +5474,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     info: Object
   },
   components: {
-    Back: _components_Back_vue__WEBPACK_IMPORTED_MODULE_5__.default,
-    Print: _common_assets_icons_Print_vue__WEBPACK_IMPORTED_MODULE_6__.default
+    Back: _components_Back__WEBPACK_IMPORTED_MODULE_5__.default,
+    Print: _common_assets_icons_Print__WEBPACK_IMPORTED_MODULE_7__.default,
+    InputDiv: _components_Input__WEBPACK_IMPORTED_MODULE_6__.default
   },
   data: function data() {
     return {
@@ -5437,7 +5485,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       commit: 'cataloging',
       link: 'cataloging/material',
       sectionSelected: 0,
-      tagSelected: {}
+      tagSelected: {},
+      authority: {}
     };
   },
   methods: {
@@ -5723,13 +5772,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       });
     },
     preview: function preview() {
-      this.showModal(_Preview__WEBPACK_IMPORTED_MODULE_7__.default, {
+      this.showModal(_Preview__WEBPACK_IMPORTED_MODULE_8__.default, {
         info: this.sectioned,
         width: '100%',
         height: '100%',
         styles: 'overflow:hidden'
       });
       document.documentElement.classList.add("overflow-hidden");
+    },
+    getAuthority: function getAuthority() {
+      var _this6 = this;
+
+      this.$http.get('/cataloging/authority').then(function (response) {
+        _this6.authority = response.data.res;
+      });
     }
   },
   created: function created() {
@@ -5737,6 +5793,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.goTo('cataloging_search');
     } else {
       this.getEditInfo();
+      this.getAuthority();
     }
   }
 });
@@ -29846,7 +29903,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "/*main stuff...initialization*/\n\ninput,\nbutton,\nselect,\ntextarea {\n    background: none;\n    font-size: 1em;\n    color: #333;\n    white-space: nowrap;\n}\n\nhtml,\ntextarea {\n    font-family: 'Roboto', sans-serif;\n    font-style: normal;\n    font-weight: normal;\n    line-height: 1.1875em;\n}\n\nhtml {\n    -webkit-user-select: none;\n    /* Safari */\n    -moz-user-select: none;\n    /* Firefox */\n    -ms-user-select: none;\n    /* IE10+/Edge */\n    user-select: none;\n    /* Standard */\n    color: #333333;\n    font-size: 13px;\n}\n\nbody {\n    padding: 0;\n    margin: 0;\n    background-color: #F9F9F9;\n}\n\nbody,\nhtml,\n#app,\n#main,\n#main>.main {\n    max-height: 100vh;\n}\n\n#main>.main {\n    overflow: auto;\n}\n\n\n/*custom*/\n\n.select>select,\n.select>input {\n    appearance: none;\n    padding-right: 2em;\n}\n\n.select {\n    display: grid;\n    grid-template-areas: \"select\";\n    align-items: center;\n}\n\n.select>select,\n.select>input,\n.select:after {\n    grid-area: select;\n}\n\n.select::after {\n    content: \"\";\n    display: block;\n    width: 0.75em;\n    height: 0.375em;\n    margin-right: 1em;\n    background-color: black;\n    clip-path: polygon(100% 0%, 0 0%, 50% 100%);\n    justify-self: end;\n}\n\n.search_icon {\n    position: absolute;\n    right: 1em;\n}\n\n\n/*custom defaults*/\n\n#navbar,\n#sidebar {\n    position: sticky;\n    top: 0;\n}\n\n.sidebar_hidden {\n    width: 0!important;\n    min-width: 0!important;\n}\n\n.main_shown {\n    max-width: 100vw;\n}\n\n.link {\n    transition: color .25s;\n}\n\n.dropdown {\n    position: absolute;\n    width: 12.75em;\n    max-height: 0;\n    overflow: auto;\n    z-index: 3;\n    top: 100%;\n}\n\n.dropdown-left {\n    left: 0;\n}\n\n.dropdown-right {\n    right: 0;\n}\n\n.overflow-hidden {\n    overflow: hidden;\n}\n\n\n/*inputs and buttons stuff*/\n\ninput,\nbutton,\nselect,\ntextarea {\n    width: 100%;\n    height: 100%;\n    border: 0.0625em solid #B5BAC7;\n    padding: 0.625em 1.25em;\n    border-radius: 0.3125em;\n}\n\ntextarea {\n    padding-top: .625em;\n    padding-bottom: .625em;\n    min-height: 6.25em;\n}\n\nbutton,\nselect {\n    cursor: pointer;\n}\n\ninput:disabled,\nselect:disabled {\n    border-color: red;\n    color: grey;\n}\n\ninput:disabled::placeholder,\nselect:disabled::placeholder {\n    color: lightgrey;\n}\n\ninput:disabled~.placeholder,\nselect:disabled~.placeholder {\n    color: grey;\n}\n\n::placeholder {\n    color: #9C9FA7;\n    opacity: 1;\n}\n\n:-ms-input-placeholder {\n    /* Internet Explorer 10-11 */\n    color: red;\n}\n\n::-ms-input-placeholder {\n    /* Microsoft Edge */\n    color: red;\n}\n\nselect,\noption {\n    overflow: hidden;\n}\n\noption {\n    width: 100%;\n    max-width: 30em;\n}\n\noption {\n    white-space: nowrap;\n    text-overflow: ellipsis;\n}\n\nbutton {\n    background-color: #FF9D29;\n    color: white;\n    border-color: transparent;\n    transition: .3s;\n    font-weight: 500;\n}\n\nbutton:hover {\n    border: 1px solid white;\n}\n\n.required::before {\n    content: '* ';\n    color: red;\n}\n\n\n/*input's label float*/\n\n.placeholder {\n    position: absolute;\n    pointer-events: none;\n    background-color: white;\n    top: -0.5em;\n    left: 2em;\n    margin-left: -0.3125em;\n    padding: 0 0.3125em;\n    font-size: 0.8em;\n    color: #9C9FA7;\n    white-space: nowrap;\n}\n\n.select>.placeholder,\ninput[type=date]~.placeholder {\n    top: -0.8em;\n}\n\n\n/*bootstrap like stuff*/\n\n.outline-green,\n.outline-orange,\n.outline-black,\n.outline-red,\n.outline-blue {\n    background-color: transparent;\n    border: 1px solid;\n}\n\n.outline-green {\n    color: #00BB78;\n    border-color: #00BB78;\n}\n\n.outline-green:hover {\n    background-color: #00BB78;\n    color: white;\n}\n\n.outline-orange {\n    color: #FF9D29;\n    border-color: #FF9D29;\n}\n\n.outline-orange:hover {\n    background-color: #FF9D29;\n    color: white;\n}\n\n.outline-red {\n    color: #FF5756;\n    border-color: #FF5756;\n}\n\n.outline-red:hover {\n    background-color: #FF5756;\n    color: white;\n}\n\n.outline-black {\n    color: #333;\n}\n\n.outline-black:hover {\n    background-color: #333;\n    color: #F4F4F4;\n}\n\n.outline-blue {\n    color: #3F98EB;\n    border-color: #3F98EB;\n}\n\n.outline-blue:hover {\n    background-color: #3F98EB;\n    color: #F4F4F4;\n}\n\n.cancel-button {\n    background-color: #F4F4F4;\n    color: #333;\n}\n\n.cancel-button:hover {\n    border: 1px solid #333;\n}\n\n.text-choosable,\n.text-choosable * {\n    -webkit-user-select: text;\n    /* Safari */\n    -moz-user-select: text;\n    /* Firefox */\n    -ms-user-select: text;\n    /* IE10+/Edge */\n    user-select: text;\n    /* Standard */\n}\n\n.title {\n    font-size: 1.5em;\n    margin: .5em 0;\n}\n\n.subtitle {\n    font-size: 1.25em;\n    margin: 0.5em 0;\n}\n\n.border-black {\n    border-color: black !important;\n}\n\n.border-grey {\n    border-color: #B5BAC7 !important;\n}\n\n.border-orange {\n    border-color: #FF9D29 !important;\n}\n\n.no_border_left {\n    border-left: none;\n    margin-left: -0.3125em;\n}\n\n.caret-orange {\n    caret-color: #FF9D29;\n}\n\n.pad {\n    padding: 0.3125em !important;\n    position: relative;\n}\n\n.h-min-100 {\n    min-height: 100%;\n}\n\n.height-1 {\n    height: 0.0625em;\n}\n\n.font-weight-bold {\n    font-weight: 500 !important;\n}\n\n.z-index-1 {\n    z-index: 1;\n}\n\n.overflow-auto,\n.overflow-scroll {\n    overflow: auto;\n}\n\n.overflow-scroll {\n    border-bottom: 1px solid #E8E8E8;\n    scrollbar-width: .125em;\n    padding-right: .625em;\n    padding-bottom: .625em;\n}\n\n.overflow-scroll::-webkit-scrollbar {\n    width: 0.125em;\n}\n\n\n/*modal changes*/\n\ndiv.vm--overlay {\n    background-color: rgba(51, 51, 51, 0.3);\n}\n\ndiv.vm--container,\ndiv.vm--overlay {\n    transition: .5s;\n}\n\n\n/*cancellations*/\n\n.no-hover-color:hover {\n    color: initial;\n}\n\n.col,\n.col-1,\n.col-10,\n.col-11,\n.col-12,\n.col-2,\n.col-3,\n.col-4,\n.col-5,\n.col-6,\n.col-7,\n.col-8,\n.col-9,\n.col-auto,\n.col-lg,\n.col-lg-1,\n.col-lg-10,\n.col-lg-11,\n.col-lg-12,\n.col-lg-2,\n.col-lg-3,\n.col-lg-4,\n.col-lg-5,\n.col-lg-6,\n.col-lg-7,\n.col-lg-8,\n.col-lg-9,\n.col-lg-auto,\n.col-md,\n.col-md-1,\n.col-md-10,\n.col-md-11,\n.col-md-12,\n.col-md-2,\n.col-md-3,\n.col-md-4,\n.col-md-5,\n.col-md-6,\n.col-md-7,\n.col-md-8,\n.col-md-9,\n.col-md-auto,\n.col-sm,\n.col-sm-1,\n.col-sm-10,\n.col-sm-11,\n.col-sm-12,\n.col-sm-2,\n.col-sm-3,\n.col-sm-4,\n.col-sm-5,\n.col-sm-6,\n.col-sm-7,\n.col-sm-8,\n.col-sm-9,\n.col-sm-auto,\n.col-xl,\n.col-xl-1,\n.col-xl-10,\n.col-xl-11,\n.col-xl-12,\n.col-xl-2,\n.col-xl-3,\n.col-xl-4,\n.col-xl-5,\n.col-xl-6,\n.col-xl-7,\n.col-xl-8,\n.col-xl-9,\n.col-xl-auto {\n    padding-right: 0px;\n    padding-left: 0px;\n}\n\n.table thead th {\n    vertical-align: middle;\n}\n\n.table td,\n.table th {\n    vertical-align: middle;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "/*main stuff...initialization*/\n\ninput,\nbutton,\nselect,\ntextarea {\n    background: none;\n    font-size: 1em;\n    color: #333;\n    white-space: nowrap;\n}\n\nhtml,\ntextarea {\n    font-family: 'Roboto', sans-serif;\n    font-style: normal;\n    font-weight: normal;\n    line-height: 1.1875em;\n}\n\nhtml {\n    -webkit-user-select: none;\n    /* Safari */\n    -moz-user-select: none;\n    /* Firefox */\n    -ms-user-select: none;\n    /* IE10+/Edge */\n    user-select: none;\n    /* Standard */\n    color: #333333;\n    font-size: 13px;\n}\n\nbody {\n    padding: 0;\n    margin: 0;\n    background-color: #F9F9F9;\n}\n\nbody,\nhtml,\n#app,\n#main,\n#main>.main {\n    max-height: 100vh;\n}\n\n#main>.main {\n    overflow: auto;\n}\n\n\n/*custom*/\n\n.input_static_height {\n    height: 2.5em !important;\n}\n\n.select>select,\n.select>input {\n    appearance: none;\n    padding-right: 2em;\n}\n\n.select {\n    display: grid;\n    grid-template-areas: \"select\";\n    align-items: center;\n}\n\n.select>select,\n.select>input,\n.select:after {\n    grid-area: select;\n}\n\n.select::after {\n    content: \"\";\n    display: block;\n    width: 0.75em;\n    height: 0.375em;\n    margin-right: 1em;\n    background-color: black;\n    clip-path: polygon(100% 0%, 0 0%, 50% 100%);\n    justify-self: end;\n}\n\n.search_icon {\n    position: absolute;\n    right: 1em;\n}\n\n\n/*custom defaults*/\n\n#navbar,\n#sidebar {\n    position: sticky;\n    top: 0;\n}\n\n.sidebar_hidden {\n    width: 0!important;\n    min-width: 0!important;\n}\n\n.main_shown {\n    max-width: 100vw;\n}\n\n.link {\n    transition: color .25s;\n}\n\n.dropdown {\n    position: absolute;\n    width: 12.75em;\n    max-height: 0;\n    overflow: auto;\n    z-index: 3;\n    top: 100%;\n}\n\n.dropdown-left {\n    left: 0;\n}\n\n.dropdown-right {\n    right: 0;\n}\n\n.overflow-hidden {\n    overflow: hidden;\n}\n\n\n/*inputs and buttons stuff*/\n\ninput,\nbutton,\nselect,\ntextarea {\n    width: 100%;\n    height: 100%;\n    border: 0.0625em solid #B5BAC7;\n    padding: 0.625em 1.25em;\n    border-radius: 0.3125em;\n}\n\ntextarea {\n    padding-top: .625em;\n    padding-bottom: .625em;\n    min-height: 6.25em;\n}\n\nbutton,\nselect {\n    cursor: pointer;\n}\n\ninput:disabled,\nselect:disabled {\n    border-color: red;\n    color: grey;\n}\n\ninput:disabled::placeholder,\nselect:disabled::placeholder {\n    color: lightgrey;\n}\n\ninput:disabled~.placeholder,\nselect:disabled~.placeholder {\n    color: grey;\n}\n\n::placeholder {\n    color: #9C9FA7;\n    opacity: 1;\n}\n\n:-ms-input-placeholder {\n    /* Internet Explorer 10-11 */\n    color: red;\n}\n\n::-ms-input-placeholder {\n    /* Microsoft Edge */\n    color: red;\n}\n\nselect,\noption {\n    overflow: hidden;\n}\n\noption {\n    width: 100%;\n    max-width: 30em;\n}\n\noption {\n    white-space: nowrap;\n    text-overflow: ellipsis;\n}\n\nbutton {\n    background-color: #FF9D29;\n    color: white;\n    border-color: transparent;\n    transition: .3s;\n    font-weight: 500;\n}\n\nbutton:hover {\n    border: 1px solid white;\n}\n\n.required::before {\n    content: '* ';\n    color: red;\n}\n\n\n/*input's label float*/\n\n.placeholder {\n    position: absolute;\n    pointer-events: none;\n    background-color: white;\n    top: -0.5em;\n    left: 2em;\n    margin-left: -0.3125em;\n    padding: 0 0.3125em;\n    font-size: 0.8em;\n    color: #9C9FA7;\n    white-space: nowrap;\n}\n\n.select>.placeholder,\ninput[type=date]~.placeholder {\n    top: -0.8em;\n}\n\n\n/*bootstrap like stuff*/\n\n.outline-green,\n.outline-orange,\n.outline-black,\n.outline-red,\n.outline-blue {\n    background-color: transparent;\n    border: 1px solid;\n}\n\n.outline-green {\n    color: #00BB78;\n    border-color: #00BB78;\n}\n\n.outline-green:hover {\n    background-color: #00BB78;\n    color: white;\n}\n\n.outline-orange {\n    color: #FF9D29;\n    border-color: #FF9D29;\n}\n\n.outline-orange:hover {\n    background-color: #FF9D29;\n    color: white;\n}\n\n.outline-red {\n    color: #FF5756;\n    border-color: #FF5756;\n}\n\n.outline-red:hover {\n    background-color: #FF5756;\n    color: white;\n}\n\n.outline-black {\n    color: #333;\n}\n\n.outline-black:hover {\n    background-color: #333;\n    color: #F4F4F4;\n}\n\n.outline-blue {\n    color: #3F98EB;\n    border-color: #3F98EB;\n}\n\n.outline-blue:hover {\n    background-color: #3F98EB;\n    color: #F4F4F4;\n}\n\n.cancel-button {\n    background-color: #F4F4F4;\n    color: #333;\n}\n\n.cancel-button:hover {\n    border: 1px solid #333;\n}\n\n.text-choosable,\n.text-choosable * {\n    -webkit-user-select: text;\n    /* Safari */\n    -moz-user-select: text;\n    /* Firefox */\n    -ms-user-select: text;\n    /* IE10+/Edge */\n    user-select: text;\n    /* Standard */\n}\n\n.title {\n    font-size: 1.5em;\n    margin: .5em 0;\n}\n\n.subtitle {\n    font-size: 1.25em;\n    margin: 0.5em 0;\n}\n\n.border-black {\n    border-color: black !important;\n}\n\n.border-grey {\n    border-color: #B5BAC7 !important;\n}\n\n.border-orange {\n    border-color: #FF9D29 !important;\n}\n\n.no_border_left {\n    border-left: none;\n    margin-left: -0.3125em;\n}\n\n.caret-orange {\n    caret-color: #FF9D29;\n}\n\n.pad {\n    padding: 0.3125em !important;\n    position: relative;\n}\n\n.h-min-100 {\n    min-height: 100%;\n}\n\n.height-1 {\n    height: 0.0625em;\n}\n\n.font-weight-bold {\n    font-weight: 500 !important;\n}\n\n.z-index-1 {\n    z-index: 1;\n}\n\n.overflow-auto,\n.overflow-scroll {\n    overflow: auto;\n}\n\n.overflow-scroll {\n    border-bottom: 1px solid #E8E8E8;\n    scrollbar-width: .125em;\n    padding-right: .625em;\n    padding-bottom: .625em;\n}\n\n.overflow-scroll::-webkit-scrollbar {\n    width: 0.125em;\n}\n\n\n/*modal changes*/\n\ndiv.vm--overlay {\n    background-color: rgba(51, 51, 51, 0.3);\n}\n\ndiv.vm--container,\ndiv.vm--overlay {\n    transition: .5s;\n}\n\n\n/*cancellations*/\n\n.no-hover-color:hover {\n    color: initial;\n}\n\n.col,\n.col-1,\n.col-10,\n.col-11,\n.col-12,\n.col-2,\n.col-3,\n.col-4,\n.col-5,\n.col-6,\n.col-7,\n.col-8,\n.col-9,\n.col-auto,\n.col-lg,\n.col-lg-1,\n.col-lg-10,\n.col-lg-11,\n.col-lg-12,\n.col-lg-2,\n.col-lg-3,\n.col-lg-4,\n.col-lg-5,\n.col-lg-6,\n.col-lg-7,\n.col-lg-8,\n.col-lg-9,\n.col-lg-auto,\n.col-md,\n.col-md-1,\n.col-md-10,\n.col-md-11,\n.col-md-12,\n.col-md-2,\n.col-md-3,\n.col-md-4,\n.col-md-5,\n.col-md-6,\n.col-md-7,\n.col-md-8,\n.col-md-9,\n.col-md-auto,\n.col-sm,\n.col-sm-1,\n.col-sm-10,\n.col-sm-11,\n.col-sm-12,\n.col-sm-2,\n.col-sm-3,\n.col-sm-4,\n.col-sm-5,\n.col-sm-6,\n.col-sm-7,\n.col-sm-8,\n.col-sm-9,\n.col-sm-auto,\n.col-xl,\n.col-xl-1,\n.col-xl-10,\n.col-xl-11,\n.col-xl-12,\n.col-xl-2,\n.col-xl-3,\n.col-xl-4,\n.col-xl-5,\n.col-xl-6,\n.col-xl-7,\n.col-xl-8,\n.col-xl-9,\n.col-xl-auto {\n    padding-right: 0px;\n    padding-left: 0px;\n}\n\n.table thead th {\n    vertical-align: middle;\n}\n\n.table td,\n.table th {\n    vertical-align: middle;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -66683,6 +66740,7 @@ var render = function() {
                           [
                             _vm.simpleSortable
                               ? _c("CaretUp", {
+                                  staticClass: "transition",
                                   class: {
                                     rotate: !(
                                       _vm.statusReverse &&
@@ -66730,6 +66788,7 @@ var render = function() {
                         [
                           name.link != null && _vm.simpleSortable
                             ? _c("CaretUp", {
+                                staticClass: "transition",
                                 class: {
                                   rotate: !(
                                     name.reverse && _vm.sorting == name.link
@@ -71052,29 +71111,126 @@ var render = function() {
                     })
                   ]),
                   _vm._v(" "),
-                  _c("td", { staticClass: "w-50" }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: info.data,
-                          expression: "info.data"
-                        }
-                      ],
-                      staticClass: "w-100",
-                      attrs: { type: "text" },
-                      domProps: { value: info.data },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(info, "data", $event.target.value)
-                        }
-                      }
-                    })
-                  ]),
+                  _c(
+                    "td",
+                    { staticClass: "w-50" },
+                    [
+                      info.id == "100.a" || info.id == "600.a"
+                        ? _c("input-div", {
+                            attrs: {
+                              classes: "border-black input_static_height",
+                              selectable: {
+                                available: true,
+                                data: _vm.authority.authors
+                              },
+                              head: "author",
+                              body: "author",
+                              autocomplete: {
+                                available: true,
+                                data: _vm.authority.authors
+                              }
+                            },
+                            model: {
+                              value: info.data,
+                              callback: function($$v) {
+                                _vm.$set(info, "data", $$v)
+                              },
+                              expression: "info.data"
+                            }
+                          })
+                        : info.id == "546.a"
+                        ? _c("input-div", {
+                            attrs: {
+                              classes: "border-black input_static_height",
+                              selectable: {
+                                available: true,
+                                data: _vm.authority.language
+                              },
+                              head: "language",
+                              body: "language",
+                              autocomplete: {
+                                available: true,
+                                data: _vm.authority.language
+                              }
+                            },
+                            model: {
+                              value: info.data,
+                              callback: function($$v) {
+                                _vm.$set(info, "data", $$v)
+                              },
+                              expression: "info.data"
+                            }
+                          })
+                        : info.id == "650.x"
+                        ? _c("input-div", {
+                            attrs: {
+                              classes: "border-black input_static_height",
+                              selectable: {
+                                available: true,
+                                data: _vm.authority.subject_terms
+                              },
+                              head: "subject_term",
+                              body: "subject_term",
+                              autocomplete: {
+                                available: true,
+                                data: _vm.authority.subject_terms
+                              }
+                            },
+                            model: {
+                              value: info.data,
+                              callback: function($$v) {
+                                _vm.$set(info, "data", $$v)
+                              },
+                              expression: "info.data"
+                            }
+                          })
+                        : info.id == "650.v"
+                        ? _c("input-div", {
+                            attrs: {
+                              classes: "border-black input_static_height",
+                              selectable: {
+                                available: true,
+                                data: _vm.authority.type
+                              },
+                              head: "title",
+                              body: "type",
+                              autocomplete: {
+                                available: true,
+                                data: _vm.authority.type
+                              }
+                            },
+                            model: {
+                              value: info.data,
+                              callback: function($$v) {
+                                _vm.$set(info, "data", $$v)
+                              },
+                              expression: "info.data"
+                            }
+                          })
+                        : _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: info.data,
+                                expression: "info.data"
+                              }
+                            ],
+                            staticClass: "w-100",
+                            attrs: { type: "text" },
+                            domProps: { value: info.data },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(info, "data", $event.target.value)
+                              }
+                            }
+                          })
+                    ],
+                    1
+                  ),
                   _vm._v(" "),
                   _c("td", [
                     info.is_added || info.repeatable == undefined

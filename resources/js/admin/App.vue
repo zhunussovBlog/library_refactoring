@@ -23,6 +23,7 @@ export default {
     created () {
         this.getAuth();
         this.setGlobalLocale();
+        this.getAuthority();
     }
 }
 </script>
