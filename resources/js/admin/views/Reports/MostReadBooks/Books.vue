@@ -34,7 +34,7 @@
 </template>
 <script type="text/javascript">
 // components
-import TableDiv from '../../../components/common/Table'
+import TableDiv from '../../../components/Table'
 
 // mixins
 import {getResults,reset} from '../../../mixins/common'

@@ -114,7 +114,8 @@
     "beginning": "Бастап",
     "end": "Дейін",
     "currency": "Валютасы",
-    "author-title": "Автор - атауы",
+    "author_title": "Автор - атауы",
+    "year_city": "Жыл - қаласы",
 
     "name": "Аты",
     "name_by": "Атымен",

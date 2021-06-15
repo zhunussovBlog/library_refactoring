@@ -59,18 +59,18 @@
 </template>
 <script type="text/javascript">
 // common components
-import Table from '../../../components/common/Table'
-import More from '../../../components/common/More'
-import Input from '../../../components/common/Input'
+import Table from '../../../components/Table'
+import More from '../../../components/More'
+import Input from '../../../components/Input'
 
 // item components
 import CreateItems from './CreateItems'
 import Filter from './Filter'
 
 // icons
-import Print from '../../../assets/icons/Print'
-import Plus from '../../../assets/icons/Plus'
-import Download from '../../../assets/icons/Download'
+import Print from '../../../../common/assets/icons/Print'
+import Plus from '../../../../common/assets/icons/Plus'
+import Download from '../../../../common/assets/icons/Download'
 
 // mixins
 import showModal from '../../../mixins/showModal'

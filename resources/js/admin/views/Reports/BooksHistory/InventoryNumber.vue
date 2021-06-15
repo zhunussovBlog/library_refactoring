@@ -37,7 +37,7 @@
 </template>
 <script type="text/javascript">
 // components
-import Table from '../../../components/common/Table'
+import Table from '../../../components/Table'
 
 // loading indicator
 import PulseLoader from 'vue-spinner/src/PulseLoader'

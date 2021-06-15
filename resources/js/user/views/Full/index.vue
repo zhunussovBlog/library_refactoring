@@ -87,10 +87,10 @@
 	import {goTo} from '../../mixins/goTo'
 	import {getBookImage} from '../../mixins/search'
 
-	import RightLittle from '../../assets/icons/RightLittle'
-	import X from '../../assets/icons/X'
-	import Save from '../../assets/icons/Save'
-	import Print from '../../assets/icons/Print'
+	import RightLittle from '../../../common/assets/icons/RightLittle'
+	import X from '../../../common/assets/icons/X'
+	import Save from '../../../common/assets/icons/Save'
+	import Print from '../../../common/assets/icons/Print'
 
 	export default{
 		props:{

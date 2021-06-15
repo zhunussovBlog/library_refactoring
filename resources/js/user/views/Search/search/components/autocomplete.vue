@@ -23,7 +23,7 @@
 </template>
 <script type="text/javascript">
 // icons
-import Book from '../../../../assets/icons/Book'
+import Book from '../../../../../common/assets/icons/Book'
 
 export default{
 	model: {

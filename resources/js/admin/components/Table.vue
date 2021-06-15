@@ -150,18 +150,18 @@
 </template>
 <script type="text/javascript">
 // mixins 
-import showModal from '../../mixins/showModal'
-import {last} from '../../mixins/common'
+import showModal from '../mixins/showModal'
+import {last} from '..//mixins/common'
 
 // icons
-import Edit from '../../assets/icons/Edit'
-import Redo from '../../assets/icons/Redo'
-import Delete from '../../assets/icons/Delete'
-import CaretUp from '../../assets/icons/CaretUp'
-import Refresh from '../../assets/icons/Refresh'
-import Book from '../../assets/icons/Book'
+import Edit from '../../common/assets/icons/Edit'
+import Redo from '../../common/assets/icons/Redo'
+import Delete from '../../common/assets/icons/Delete'
+import CaretUp from '../../common/assets/icons/CaretUp'
+import Refresh from '../../common/assets/icons/Refresh'
+import Book from '../../common/assets/icons/Book'
 // components
-import ShowStatus from '../../views/Acquisitions/Batches/ShowStatus'
+import ShowStatus from '../views/Acquisitions/Batches/ShowStatus'
 import DeleteModal from'./DeleteModal'
 import pagination from './Pagination'
 import Dropdown from './Dropdown'

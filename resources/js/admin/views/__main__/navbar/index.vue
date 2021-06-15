@@ -52,12 +52,12 @@
 </template>
 <script>
 // components
-import Dropdown from '../../../components/common/Dropdown'
+import Dropdown from '../../../components/Dropdown'
 import AccountDropdown from './account'
 
 // icons
-import Bars from '../../../assets/icons/Bars'
-import ArrowDown from '../../../assets/icons/ArrowDown'
+import Bars from '../../../../common/assets/icons/Bars'
+import ArrowDown from '../../../../common/assets/icons/ArrowDown'
 
 // mixins
 import {goTo} from '../../../mixins/goTo'

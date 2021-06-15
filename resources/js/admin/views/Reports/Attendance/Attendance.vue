@@ -27,8 +27,8 @@
 </template>
 <script type="text/javascript">
 // common components
-import Tabs from '../../../components/common/Tabs'
-import Dropdown from '../../../components/common/Dropdown'
+import Tabs from '../../../../common/components/Tabs'
+import Dropdown from '../../../components/Dropdown'
 
 // plugins / charts
 import LineChart from '../../../plugins/charts/Line'

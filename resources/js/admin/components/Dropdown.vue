@@ -8,7 +8,7 @@
 </template>
 <script type="text/javascript">
 // icon
-import CaretUp from '../../assets/icons/CaretUp'
+import CaretUp from '../../common/assets/icons/CaretUp'
 
 export default{
 	props:{

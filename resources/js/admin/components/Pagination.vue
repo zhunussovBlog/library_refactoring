@@ -25,10 +25,10 @@
 </template>
 <script type="text/javascript">
 // mixins
-import {last} from "../../mixins/common"
+import {last} from "..//mixins/common"
 
 //icons
-import ArrowDown from "../../assets//icons/ArrowDown"
+import ArrowDown from "../../common/assets/icons/ArrowDown"
 export default{
 	mixins:[last],
 	props:{

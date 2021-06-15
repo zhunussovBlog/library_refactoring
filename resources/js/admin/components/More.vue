@@ -35,11 +35,11 @@
 // components
 import DeleteModal from './DeleteModal'
 // icons
-import X from '../../assets/icons/X'
-import Edit from '../../assets/icons/Edit'
-import Delete from '../../assets/icons/Delete'
+import X from '../../common/assets/icons/X'
+import Edit from '../../common/assets/icons/Edit'
+import Delete from '../../common/assets/icons/Delete'
 // mixins
-import showModal from '../../mixins/showModal'
+import showModal from '../mixins/showModal'
 
 export default{
 	props:{

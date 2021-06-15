@@ -1,28 +1,3 @@
-/*defaults*/
-
-.tabs {
-    display: flex;
-}
-
-.tab {
-    margin-right: 2.5em;
-    font-weight: 500;
-    font-size: 1.5em;
-    line-height: 1.75em;
-    cursor: pointer;
-    transition: color .3s;
-}
-
-.line {
-    height: 0.3125em;
-    background: #FF9D29;
-    position: absolute;
-    transition: .5s;
-    /*emaa naugad*/
-    bottom: -0.625em;
-}
-
-
 /*main stuff...initialization*/
 
 input,

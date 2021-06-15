@@ -40,9 +40,9 @@
 </template>
 <script type="text/javascript">
 // components
-import Table from '../../../components/common/Table'
-import Input from '../../../components/common/Input'
-import Dropdown from '../../../components/common/Dropdown'
+import Table from '../../../components/Table'
+import Input from '../../../components/Input'
+import Dropdown from '../../../components/Dropdown'
 import Info from './Info'
 
 // loading indicator
@@ -54,7 +54,7 @@ import {goTo} from '../../../mixins/goTo'
 import showModal from '../../../mixins/showModal'
 
 // icons
-import Book from '../../../assets/icons/Book'
+import Book from '../../../../common/assets/icons/Book'
 
 import {mapGetters} from 'vuex'
 

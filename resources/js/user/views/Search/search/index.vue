@@ -5,7 +5,7 @@
 </template>
 <script type="text/javascript">
 // components
-import tabs from '../../../components/tabs'
+import tabs from '../../../../common/components/Tabs'
 import gen_col from './general_collection'
 import e_resources from './e_resources'
 

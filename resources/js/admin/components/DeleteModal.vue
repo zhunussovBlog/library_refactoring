@@ -9,8 +9,8 @@
 </template>
 <script type="text/javascript">
 // identication in sublime text3
-import {last} from '../../mixins/common'
-import {message_success,message_error} from '../../mixins/messages'
+import {last} from '..//mixins/common'
+import {message_success,message_error} from '../mixins/messages'
 export default{
 	props:{link:String,commit:String,id:String,afterDelete:Function},
 	mixins:[last,message_success,message_error],
