@@ -1,7 +1,7 @@
 <template>
-	<div :class="modal ? 'd-flex justify-content-center bg-greyer padding mh-100 overflow-auto' :'padding'">
+	<div :class="modal ? 'd-flex justify-content-center bg-greyer padding mh-100 overflow-y-auto' :'padding'">
 		<div class="d-flex align-items-start bg-white border-top py-4" :class="{'content px-5':modal}">
-			<div class="mr-5" v-if="printing!='print'">
+			<div class="d-none d-md-block mr-5" v-if="printing!='print'">
 				<div class="image rounded bg-grey" :style="'background-image: url('+this.data.image+')'"></div>
 				<div class="d-flex align-items-center cursor-pointer py-2 mt-2" @click="copyLink()">
 					<Save />
@@ -23,6 +23,12 @@
 							<div class="rounded-lg bg-lightblue p-1 px-3" v-if="data.type">{{$t(data.type)}}</div>
 							<div class="rounded-lg bg-lightblue p-1 px-3 ml-3" v-if="data.call_number">{{data.call_number}}</div>
 						</div>
+						<div class="d-block d-sm-none mt-3 text-center">
+							<div class="bg-lightgrey rounded-lg p-2 text-no-wrap">
+								{{data.availability}}
+								{{$t('availability')}}
+							</div>
+						</div>
 						<div class="mt-3" v-if="data.description">
 							<div class="text-grey font-size-14">
 								{{$t('description')}}
@@ -40,7 +46,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="text-center col-2 px-0">
+					<div class="d-none d-sm-block text-center col-2 px-0">
 						<div class="bg-lightgrey rounded-lg p-2 text-no-wrap">
 							{{data.availability}}
 							{{$t('availability')}}
@@ -53,32 +59,34 @@
 					</div>
 					<div class="tline"/>
 				</div>
-				<table class="table">
-					<tbody>
-						<tr v-for="(info,index) in new Array(Math.ceil(array_data.length/2))" :key="index">
-							<td :colspan="array_data[(index*2)+1]==undefined ? '2':null">
-								<div class="text-grey">
-									{{$t(array_data[index*2].key)}}:
-								</div>
-								<div>
-									{{array_data[index*2].value!=undefined ? array_data[index*2].value:$t('undefined')}}
-								</div>
-							</td>
-							<td v-if="array_data[(index*2)+1]!=undefined">
-								<div class="text-grey">
-									{{$t(array_data[(index*2)+1].key)}}:
-								</div>
-								<div>
-									{{array_data[(index*2)+1].value!=undefined ? array_data[(index*2)+1].value:$t('undefined')}}
-								</div>
-							</td>
-						</tr>
-					</tbody>
-				</table>
+				<div class="overflow-auto">
+					<table class="table">
+						<tbody>
+							<tr v-for="(info,index) in new Array(Math.ceil(array_data.length/2))" :key="index">
+								<td :colspan="array_data[(index*2)+1]==undefined ? '2':null">
+									<div class="text-grey">
+										{{$t(array_data[index*2].key)}}:
+									</div>
+									<div>
+										{{array_data[index*2].value!=undefined ? array_data[index*2].value:$t('undefined')}}
+									</div>
+								</td>
+								<td v-if="array_data[(index*2)+1]!=undefined">
+									<div class="text-grey">
+										{{$t(array_data[(index*2)+1].key)}}:
+									</div>
+									<div>
+										{{array_data[(index*2)+1].value!=undefined ? array_data[(index*2)+1].value:$t('undefined')}}
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 		<!-- fixed stuff -->
-		<div class="exit cursor-pointer" @click="closeModal()" v-if="modal">
+		<div class="close_icon cursor-pointer" @click="closeModal()" v-if="modal">
 			<X/>
 		</div>
 	</div>
@@ -251,12 +259,6 @@
 .bg-greyer{
 	background: rgba(0,0,0, 0.3 ) !important;
 }
-.exit{
-	color:white;
-	position: absolute;
-	top:10%;
-	right:4%;
-}
 .title{
 	display:flex;
 	align-items:flex-end;
@@ -281,10 +283,26 @@ td{
 }
 
 .content{
-	padding-top: 5% !important;
 	max-width:1120px;
 	width:100%;
 	min-height: 100vh;
 	height:100%;
+}
+.close_icon{
+	color:white;
+	position: absolute;
+	top:8%;
+	right:4%;
+	font-size:2em;
+}
+.overflow-y-auto{
+	overflow-y: auto;
+}
+@media screen and (max-width: 1300px) {
+	.close_icon{
+		top:1%;
+		color:black;
+		font-size:1.5em;
+	}
 }
 </style>

@@ -3,7 +3,7 @@
 		<select-div :data="select_data" label="name" class="w-min-120 p-3 border-grey no-border-right no-border-right-radius border-width bg-white" labelClasses="text-no-wrap" v-model="type"/>
 		<div id="warn-simple" class="warn">{{$t('at_least_2')}}</div>
 		<autocomplete class="flex-fill mr--5" input_classes="rounded-0 border-grey" :placeholder="$t('search_books&media',{type:$t(type.name+'_by')})" v-model="query" :results="autocomplete_results" :submit_method="search"/>
-		<button type="submit" class="border-grey w-min-120" v-if="!$mobileCheck()">{{$t('search')}}</button>
+		<button type="submit" class="d-none d-sm-block border-grey w-min-120">{{$t('search')}}</button>
 	</form>
 </template>
 <script type="text/javascript">

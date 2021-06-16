@@ -20,7 +20,7 @@
 			</div>
 		</div>
 		<div class="padding d-flex align-items-start mt-3">
-			<filter-div	class="flex-shrink-0" />
+			<filter-div	class="d-none d-md-block flex-shrink-0" />
 			<div class="flex-grow-1">
 				<book-card :data="result" v-for="(result,index) in results.data" :key="index"/>
 				<pagination />

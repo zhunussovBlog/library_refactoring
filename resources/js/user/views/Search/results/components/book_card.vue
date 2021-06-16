@@ -1,10 +1,19 @@
 <template>
 	<div class="d-flex border-top py-3">
-		<div class="mr-5">
-			<checkbox :checked="selected.data.includes(data.id)" @change="checkBook()"/>
-			<div class="image rounded bg-grey mt-3" :style="'background-image: url('+this.info.image+')'"></div>
+		<div class="mr-5 flex-grow-1 flex-sm-grow-0">
+			<div class="d-flex">
+				<checkbox :checked="selected.data.includes(data.id)" @change="checkBook()"/>
+				<div class="d-flex d-sm-none text-center text-blue ml-3">
+					<div class="rounded-lg bg-lightblue p-1 px-3" v-if="data.type">{{$t(data.type)}}</div>
+					<div class="rounded-lg bg-lightblue p-1 px-3 ml-3" v-if="data.call_number">{{data.call_number}}</div>
+				</div>
+			</div>
+			<div>
+				<div class="image rounded bg-grey mt-3" :style="'background-image: url('+this.info.image+')'"></div>
+				<div class="d-block d-sm-none mt-3 overflow-hidden title font-weight-bold font-size-24 cursor-pointer" @click="showMore()">{{data.title}}</div>
+			</div>
 		</div>
-		<div class="flex-grow-1">
+		<div class="d-none d-sm-block flex-grow-1">
 			<div class="d-flex text-center text-blue">
 				<div class="rounded-lg bg-lightblue p-1 px-3" v-if="data.type">{{$t(data.type)}}</div>
 				<div class="rounded-lg bg-lightblue p-1 px-3 ml-3" v-if="data.call_number">{{data.call_number}}</div>
