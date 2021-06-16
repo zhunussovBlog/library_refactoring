@@ -138,6 +138,13 @@ button {
 }
 
 
+/* springshare */
+
+.lcs_slide_out-r {
+    top: 130px !important;
+}
+
+
 /* responsive */
 
 @media screen and (max-width: 1300px) {
@@ -151,5 +158,9 @@ button {
     .padding {
         padding-left: 1.25em;
         padding-right: 1.25em;
+    }
+    .filter-width {
+        width: unset;
+        min-width: 0;
     }
 }

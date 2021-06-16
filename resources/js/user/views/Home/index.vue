@@ -43,7 +43,7 @@
 					<iframe class="videos mr-3 mt-3 mt-xl-0 w-100" src="https://www.youtube.com/embed/KMGDDYt2Zvs" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 				</div>
 				<div class="d-none d-lg-flex align-items-center">
-					<img src="images/Video.svg">
+					<img src="/images/Video.svg">
 				</div>
 			</div>
 			<div class="mt-5">
