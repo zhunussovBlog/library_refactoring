@@ -59,7 +59,7 @@
 					</div>
 					<div class="tline"/>
 				</div>
-				<div class="overflow-auto">
+				<div class="d-none d-sm-block">
 					<table class="table">
 						<tbody>
 							<tr v-for="(info,index) in new Array(Math.ceil(array_data.length/2))" :key="index">
@@ -82,6 +82,16 @@
 							</tr>
 						</tbody>
 					</table>
+				</div>
+				<div class="d-block d-sm-none">
+					<div v-for="(info,index) in array_data" :key="index">
+						<div class="text-grey mt-3">
+							{{$t(array_data[index].key)}}:
+						</div>
+						<div>
+							{{array_data[index].value!=undefined ? array_data[index].value:$t('undefined')}}
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

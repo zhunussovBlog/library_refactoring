@@ -2360,6 +2360,16 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2755,6 +2765,13 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.loadExternalLibGuideScripts();
+
+    this.$refs['calendar'].onload = function () {
+      var obj = this;
+      console.log(obj);
+      console.log(obj.contentWindow.document.body.getBoundingClientRect());
+      obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
+    };
   }
 });
 
@@ -2939,6 +2956,14 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -6186,7 +6211,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.calendar[data-v-97f5468e]{\n\tborder:none;\n\theight:300px;\n}\n.videos[data-v-97f5468e]{\n\theight:18em;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.no-border[data-v-97f5468e]{\n\tborder:none;\n}\n.videos[data-v-97f5468e]{\n\theight:18em;\n}\n.calendar[data-v-97f5468e] #document>>>html{\n\tbackground-color: rgba( 163, 200, 255, .25) !important;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -17422,7 +17447,7 @@ var render = function() {
               _c("div", { staticClass: "tline" })
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "overflow-auto" }, [
+            _c("div", { staticClass: "d-none d-sm-block" }, [
               _c("table", { staticClass: "table" }, [
                 _c(
                   "tbody",
@@ -17497,7 +17522,36 @@ var render = function() {
                   0
                 )
               ])
-            ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "d-block d-sm-none" },
+              _vm._l(_vm.array_data, function(info, index) {
+                return _c("div", { key: index }, [
+                  _c("div", { staticClass: "text-grey mt-3" }, [
+                    _vm._v(
+                      "\n\t\t\t\t\t\t" +
+                        _vm._s(_vm.$t(_vm.array_data[index].key)) +
+                        ":\n\t\t\t\t\t"
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", [
+                    _vm._v(
+                      "\n\t\t\t\t\t\t" +
+                        _vm._s(
+                          _vm.array_data[index].value != undefined
+                            ? _vm.array_data[index].value
+                            : _vm.$t("undefined")
+                        ) +
+                        "\n\t\t\t\t\t"
+                    )
+                  ])
+                ])
+              }),
+              0
+            )
           ])
         ]
       ),
@@ -17563,7 +17617,7 @@ var render = function() {
               "div",
               {
                 key: index,
-                staticClass: "bg-lightgrey rounded flex-shrink-0 transition",
+                staticClass: "bg-white rounded flex-shrink-0 transition",
                 class: index == _vm.items.length - 1 ? "ml-2" : "mr-2",
                 style: { width: _vm.itemWidth + "px" }
               },
@@ -17666,10 +17720,7 @@ var render = function() {
   return _c("div", [
     _c(
       "div",
-      {
-        staticClass:
-          "d-flex flex-wrap flex-xl-nowrap bg-lightgrey padding py-5 "
-      },
+      { staticClass: "d-flex flex-wrap flex-xl-nowrap bg-white padding py-5 " },
       [
         _c(
           "div",
@@ -17688,7 +17739,7 @@ var render = function() {
       ]
     ),
     _vm._v(" "),
-    _c("div", { staticClass: "padding py-5" }, [
+    _c("div", { staticClass: "padding bg-lightgrey py-5" }, [
       _c("div", { staticClass: "d-flex justify-content-between" }, [
         _c("span", { staticClass: "font-size-32 font-weight-bold" }, [
           _vm._v(_vm._s(_vm.$t("upcoming_events").toUpperCase()))
@@ -17720,7 +17771,8 @@ var render = function() {
         { staticClass: "d-flex align-items-start mt-5 " },
         [
           _c("iframe", {
-            staticClass: "mr-5 calendar",
+            ref: "calendar",
+            staticClass: "mr-5 no-border bg-lightgrey",
             attrs: {
               src:
                 "https://api3-eu.libcal.com/embed_mini_calendar.php?mode=month&iid=4105&cal_id=7853&l=5&tar=0&h=457&audience=&c=&z="
@@ -17735,7 +17787,7 @@ var render = function() {
       )
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "bg-lightgrey padding py-5" }, [
+    _c("div", { staticClass: "bg-white padding py-5" }, [
       _c("span", {
         staticClass: "font-size-32 font-weight-bold",
         domProps: { innerHTML: _vm._s(_vm.$t("vid_content").toUpperCase()) }
@@ -18078,10 +18130,28 @@ var render = function() {
       ),
       _vm._v(" "),
       _c("div", [
-        _c("div", {
-          staticClass: "image rounded bg-grey mt-3",
-          style: "background-image: url(" + this.info.image + ")"
-        }),
+        _c("div", { staticClass: "d-flex" }, [
+          _c("div", {
+            staticClass: "image rounded bg-grey mt-3",
+            style: "background-image: url(" + this.info.image + ")"
+          }),
+          _vm._v(" "),
+          _c("div", { staticClass: "d-block d-sm-none ml-3 mt-3" }, [
+            _c(
+              "div",
+              { staticClass: "bg-lightgrey rounded-lg p-2 text-no-wrap" },
+              [
+                _vm._v(
+                  "\n\t\t\t\t\t\t" +
+                    _vm._s(_vm.data.availability) +
+                    "\n\t\t\t\t\t\t" +
+                    _vm._s(_vm.$t("availability")) +
+                    "\n\t\t\t\t\t"
+                )
+              ]
+            )
+          ])
+        ]),
         _vm._v(" "),
         _c(
           "div",
@@ -18153,7 +18223,7 @@ var render = function() {
       ])
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "text-center col-2 px-0" }, [
+    _c("div", { staticClass: "d-none d-sm-block text-center col-2 px-0" }, [
       _c("div", { staticClass: "bg-lightgrey rounded-lg p-2 text-no-wrap" }, [
         _vm._v(
           "\n\t\t\t" +
@@ -18420,7 +18490,8 @@ var render = function() {
     _c(
       "div",
       {
-        staticClass: "d-flex align-items-center bg-lightgrey rounded px-3 mt-1"
+        staticClass:
+          "d-none d-sm-flex align-items-center bg-lightgrey rounded px-3 mt-1"
       },
       [
         _c("div", [

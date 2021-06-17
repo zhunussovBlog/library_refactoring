@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<!-- search -->
-		<div class="d-flex flex-wrap flex-xl-nowrap bg-lightgrey padding py-5 ">
+		<div class="d-flex flex-wrap flex-xl-nowrap bg-white padding py-5 ">
 			<div class="d-flex flex-column w-100">
 				<Search class="pt-4 pb-4 col-md-12 col-xl-11 px-0 flex-0" />
 				<div class="align-self-start mt-40" style="z-index: 1;">
@@ -16,7 +16,7 @@
 			</div>
 		</div>
 		<!-- upcoming events -->
-		<div class="padding py-5">
+		<div class="padding bg-lightgrey py-5">
 			<div class="d-flex justify-content-between">
 				<span class="font-size-32 font-weight-bold">{{$t('upcoming_events').toUpperCase()}}</span>
 				<a href="https://sdu-kz.libguides.com/about_us/reports" target="_blank" class="d-flex align-items-center link text-blue">
@@ -27,12 +27,12 @@
 				</a> 
 			</div>
 			<div class="d-flex align-items-start mt-5 ">
-				<iframe class="mr-5 calendar" src="https://api3-eu.libcal.com/embed_mini_calendar.php?mode=month&iid=4105&cal_id=7853&l=5&tar=0&h=457&audience=&c=&z="/>
+				<iframe ref="calendar" class="mr-5 no-border bg-lightgrey" src="https://api3-eu.libcal.com/embed_mini_calendar.php?mode=month&iid=4105&cal_id=7853&l=5&tar=0&h=457&audience=&c=&z="/>
 				<slide-events v-if="!$mobileCheck()" :number="2" />
 			</div>
 		</div>
 		<!-- library's video content -->
-		<div class="bg-lightgrey padding py-5">
+		<div class="bg-white padding py-5">
 			<span class="font-size-32 font-weight-bold" v-html="$t('vid_content').toUpperCase()" />
 			<div class="mt-3">
 				{{$t('video_content')}}
@@ -86,15 +86,23 @@
 		},
 		mounted(){
 			this.loadExternalLibGuideScripts();
+			this.$refs['calendar'].onload = function() {
+				let obj=this;
+				console.log(obj);
+				console.log(obj.contentWindow.document.body.getBoundingClientRect());
+				obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
+			}
 		}
 	}
 </script>
 <style scoped>
-.calendar{
+.no-border{
 	border:none;
-	height:300px;
 }
 .videos{
 	height:18em;
+}
+.calendar>>>#document>>>html{
+	background-color: rgba( 163, 200, 255, .25) !important;
 }
 </style>
