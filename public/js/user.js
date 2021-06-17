@@ -2731,6 +2731,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 // components
 
  // icons
@@ -2765,13 +2767,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.loadExternalLibGuideScripts();
-
-    this.$refs['calendar'].onload = function () {
-      var obj = this;
-      console.log(obj);
-      console.log(obj.contentWindow.document.body.getBoundingClientRect());
-      obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
-    };
   }
 });
 
@@ -6211,7 +6206,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.no-border[data-v-97f5468e]{\n\tborder:none;\n}\n.videos[data-v-97f5468e]{\n\theight:18em;\n}\n.calendar[data-v-97f5468e] #document>>>html{\n\tbackground-color: rgba( 163, 200, 255, .25) !important;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.no-border[data-v-97f5468e]{\n\tborder:none;\n}\n.videos[data-v-97f5468e]{\n\theight:18em;\n}\n.calendar-height[data-v-97f5468e]{\n\theight:18.75em;\n}\n.calendar[data-v-97f5468e] #document>>>html{\n\tbackground-color: rgba( 163, 200, 255, .25) !important;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -17770,14 +17765,7 @@ var render = function() {
         "div",
         { staticClass: "d-flex align-items-start mt-5 " },
         [
-          _c("iframe", {
-            ref: "calendar",
-            staticClass: "mr-5 no-border bg-lightgrey",
-            attrs: {
-              src:
-                "https://api3-eu.libcal.com/embed_mini_calendar.php?mode=month&iid=4105&cal_id=7853&l=5&tar=0&h=457&audience=&c=&z="
-            }
-          }),
+          _vm._m(2),
           _vm._v(" "),
           !_vm.$mobileCheck()
             ? _c("slide-events", { attrs: { number: 2 } })
@@ -17797,7 +17785,7 @@ var render = function() {
         _vm._v("\n\t\t\t" + _vm._s(_vm.$t("video_content")) + "\n\t\t")
       ]),
       _vm._v(" "),
-      _vm._m(2),
+      _vm._m(3),
       _vm._v(" "),
       _c("div", { staticClass: "mt-5" }, [
         _c(
@@ -17855,6 +17843,20 @@ var staticRenderFns = [
           attrs: { id: "s-la-widget-7615" }
         })
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "p-3 bg-white mr-5 rounded" }, [
+      _c("iframe", {
+        staticClass: "no-border calendar-height",
+        attrs: {
+          src:
+            "https://api3-eu.libcal.com/embed_mini_calendar.php?mode=month&iid=4105&cal_id=7853&l=5&tar=0&h=457&audience=&c=&z="
+        }
+      })
     ])
   },
   function() {

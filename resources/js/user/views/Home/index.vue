@@ -27,7 +27,9 @@
 				</a> 
 			</div>
 			<div class="d-flex align-items-start mt-5 ">
-				<iframe ref="calendar" class="mr-5 no-border bg-lightgrey" src="https://api3-eu.libcal.com/embed_mini_calendar.php?mode=month&iid=4105&cal_id=7853&l=5&tar=0&h=457&audience=&c=&z="/>
+				<div class="p-3 bg-white mr-5 rounded">
+					<iframe class="no-border calendar-height" src="https://api3-eu.libcal.com/embed_mini_calendar.php?mode=month&iid=4105&cal_id=7853&l=5&tar=0&h=457&audience=&c=&z="/>
+				</div>
 				<slide-events v-if="!$mobileCheck()" :number="2" />
 			</div>
 		</div>
@@ -86,12 +88,6 @@
 		},
 		mounted(){
 			this.loadExternalLibGuideScripts();
-			this.$refs['calendar'].onload = function() {
-				let obj=this;
-				console.log(obj);
-				console.log(obj.contentWindow.document.body.getBoundingClientRect());
-				obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
-			}
 		}
 	}
 </script>
@@ -101,6 +97,9 @@
 }
 .videos{
 	height:18em;
+}
+.calendar-height{
+	height:18.75em;	
 }
 .calendar>>>#document>>>html{
 	background-color: rgba( 163, 200, 255, .25) !important;
