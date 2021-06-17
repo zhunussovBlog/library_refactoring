@@ -2,7 +2,7 @@
 	<div ref="slide_items" class="position-relative d-none d-lg-flex align-items-center w-min-0">
 		<div class="overflow-hidden w-100">
 			<div ref="items" class="d-flex justify-content-between transition">
-				<div v-for="(item,index) in items" :key="index" class="bg-lightgrey rounded flex-shrink-0 transition" :class="index==items.length-1 ? 'ml-2' : 'mr-2'" :style="{width:itemWidth+ 'px'}">
+				<div v-for="(item,index) in items" :key="index" class="bg-white rounded flex-shrink-0 transition" :class="index==items.length-1 ? 'ml-2' : 'mr-2'" :style="{width:itemWidth+ 'px'}">
 					<div class="d-flex p-3">
 						<div class="mr-5 d-flex flex-column">
 							<span class="font-size-32">DAY</span>

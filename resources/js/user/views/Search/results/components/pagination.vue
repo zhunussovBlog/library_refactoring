@@ -12,7 +12,7 @@
 				<right-little :class="{'text-grey':data.current_page==data.last_page}"/>
 			</div>
 		</div>
-		<div class="d-flex align-items-center bg-lightgrey rounded px-3 mt-1">
+		<div class="d-none d-sm-flex align-items-center bg-lightgrey rounded px-3 mt-1">
 			<div>
 				{{$t('to_page')}} :
 			</div>

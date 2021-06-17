@@ -9,7 +9,15 @@
 				</div>
 			</div>
 			<div>
-				<div class="image rounded bg-grey mt-3" :style="'background-image: url('+this.info.image+')'"></div>
+				<div class="d-flex">
+					<div class="image rounded bg-grey mt-3" :style="'background-image: url('+this.info.image+')'"></div>
+					<div class="d-block d-sm-none ml-3 mt-3" >
+						<div class="bg-lightgrey rounded-lg p-2 text-no-wrap">
+							{{data.availability}}
+							{{$t('availability')}}
+						</div>
+					</div>
+				</div>
 				<div class="d-block d-sm-none mt-3 overflow-hidden title font-weight-bold font-size-24 cursor-pointer" @click="showMore()">{{data.title}}</div>
 			</div>
 		</div>
@@ -25,7 +33,7 @@
 				<div v-if="data.year">{{$t('year')}}: {{data.year}}</div>
 			</div>
 		</div>
-		<div class="text-center col-2 px-0">
+		<div class="d-none d-sm-block text-center col-2 px-0">
 			<div class="bg-lightgrey rounded-lg p-2 text-no-wrap">
 				{{data.availability}}
 				{{$t('availability')}}
