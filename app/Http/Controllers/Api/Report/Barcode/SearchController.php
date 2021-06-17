@@ -26,7 +26,7 @@ class SearchController extends Controller
             $barcodeValue = $addOptions[$index]['value'];
 
             if (isset($barcodeValue['from']) && isset($barcodeValue['to']) && $barcodeValue['to'] === '-') {
-                $data = Item::barcodeQuery()->where('i.barcode', 'like', $barcodeValue . '%')->first();
+                $data = Item::barcodeQuery()->where('i.barcode', $barcodeValue['from'])->first();
                 $data = collect([$data]);
             }
         }
