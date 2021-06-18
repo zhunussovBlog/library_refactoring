@@ -1884,7 +1884,6 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     this.getAuth();
     this.setGlobalLocale();
-    this.getAuthority();
   }
 });
 
@@ -2237,6 +2236,10 @@ __webpack_require__.r(__webpack_exports__);
     },
     classes: {
       type: [Array, String]
+    },
+    showBody: {
+      type: Boolean,
+      "default": true
     }
   },
   watch: {
@@ -2249,7 +2252,11 @@ __webpack_require__.r(__webpack_exports__);
         });
 
         if (result.length > 0) {
-          this.text = result[0][this.head] + ' (' + result[0][this.body] + ')';
+          this.text = result[0][this.head];
+
+          if (this.showBody) {
+            this.text += ' (' + result[0][this.body] + ')';
+          }
         } else {
           this.text = newValue;
         }
@@ -5450,13 +5457,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 // mixins
 
 
@@ -5496,21 +5496,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.$store.commit('setFullPageLoading', true);
       this.sectionSelected = 0;
       this.$http.get(this.link + '/' + this.info.type_key + '/' + this.info.id).then(function (response) {
-        _this.edit_info = response.data.res.sort(function (a, b) {
-          if (a.id < b.id) {
-            return -1;
-          }
+        _this.edit_info = response.data.res;
 
-          if (a.id > b.id) {
-            return 1;
-          }
-
-          return 0;
-        });
+        _this.sortInfo(_this.edit_info);
 
         _this.updateCatalogingInfo();
       })["catch"](function (e) {}).then(function () {
         _this.$store.commit('setFullPageLoading', false);
+      });
+    },
+    sortInfo: function sortInfo(info) {
+      return info.sort(function (a, b) {
+        if (a.id < b.id) {
+          return -1;
+        }
+
+        if (a.id > b.id) {
+          return 1;
+        }
+
+        return 0;
       });
     },
     updateCatalogingInfo: function updateCatalogingInfo() {
@@ -5645,19 +5650,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         _this4.$store.commit('setFullPageLoading', false);
       });
     },
-    importFromWorldCat: function importFromWorldCat() {
-      var control_number = '';
-      var wskey = '';
-      fetch('http://www.worldcat.org/webservices/catalog/content/' + control_number + '?wskey=' + wskey).then(function (response) {
-        var convert = __webpack_require__(/*! xml-js */ "./node_modules/xml-js/lib/index.js");
-
-        var json = convert.xml2json(response.responseText, {
-          compact: true,
-          spaces: 4
-        });
-        json = JSON.parse(json);
-      });
-    },
     importFromGoogleAPIs: function importFromGoogleAPIs(isbn) {
       var _this5 = this;
 
@@ -5724,6 +5716,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             }
           }
         });
+
+        _this5.sortInfo(_this5.edit_info);
 
         _this5.updateCatalogingInfo();
 
@@ -29402,7 +29396,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\ninput[data-v-289cddaf]{\n\tpadding:unset;\n}\n.icon[data-v-289cddaf]{\n\tfont-size: 1.2em;\n\tposition: absolute;\n\ttop:0;\n\theight:100%;\n\tright:1.25em;\n}\n.selectable[data-v-289cddaf]{\n\t/*hard..*/\t\n\tright: .86em;\n}\n.padding-right[data-v-289cddaf]{\n\tpadding-right: 2.3em !important;\n}\n.down[data-v-289cddaf]{\n\ttransform: rotate(180deg);\n}\n.results[data-v-289cddaf]{\n\tposition: absolute;\n\ttop:110%;\n\twidth: 100%;\n\tbackground:white;\n\toverflow:auto;\n\ttransition: .3s;\n\tborder:0.03125em solid transparent;\n\tborder-radius: .3125em;\n\tz-index: 1;\n\tmax-height: 0em;\n}\n.shown[data-v-289cddaf]{\n\tmax-height: 20em;\n\tborder-color: #B5BAC7;\n}\n.result[data-v-289cddaf]{\n\tpadding:.4em .625em;\n\tborder-bottom:.03125em solid #B5BAC7;\n\tcursor: pointer;\n}\n.result[data-v-289cddaf]:hover{\n\tbackground-color:rgba(100,100,100,0.1);\n\tcolor:#FF9D29;\n}\n.no_border_bottom[data-v-289cddaf]{\n\tborder-bottom: none;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\ninput[data-v-289cddaf]{\n\tpadding:unset;\n}\n.icon[data-v-289cddaf]{\n\tfont-size: 1.2em;\n\tposition: absolute;\n\ttop:0;\n\theight:100%;\n\tright:1.25em;\n}\n.selectable[data-v-289cddaf]{\n\t/*hard..*/\t\n\tright: .86em;\n}\n.padding-right[data-v-289cddaf]{\n\tpadding-right: 2.3em !important;\n}\n.down[data-v-289cddaf]{\n\ttransform: rotate(180deg);\n}\n.results[data-v-289cddaf]{\n\tposition: absolute;\n\ttop:110%;\n\twidth: 100%;\n\tbackground:white;\n\toverflow:auto;\n\ttransition: .3s;\n\tborder:0.03125em solid transparent;\n\tborder-radius: .3125em;\n\tz-index: 998;\n\tmax-height: 0em;\n}\n.shown[data-v-289cddaf]{\n\tmax-height: 20em;\n\tborder-color: #B5BAC7;\n}\n.result[data-v-289cddaf]{\n\tpadding:.4em .625em;\n\tborder-bottom:.03125em solid #B5BAC7;\n\tcursor: pointer;\n}\n.result[data-v-289cddaf]:hover{\n\tbackground-color:rgba(100,100,100,0.1);\n\tcolor:#FF9D29;\n}\n.no_border_bottom[data-v-289cddaf]{\n\tborder-bottom: none;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -69163,8 +69157,8 @@ var render = function() {
               _vm._l(_vm.support_data.types, function(type, index) {
                 return _c(
                   "option",
-                  { key: index, domProps: { value: type.item_type_key } },
-                  [_vm._v(_vm._s(type.item_type))]
+                  { key: index, domProps: { value: type.type_key } },
+                  [_vm._v(_vm._s(type.type))]
                 )
               })
             ],
@@ -71131,7 +71125,8 @@ var render = function() {
                               autocomplete: {
                                 available: true,
                                 data: _vm.authority.authors
-                              }
+                              },
+                              showBody: false
                             },
                             model: {
                               value: info.data,
@@ -71154,7 +71149,8 @@ var render = function() {
                               autocomplete: {
                                 available: true,
                                 data: _vm.authority.language
-                              }
+                              },
+                              showBody: false
                             },
                             model: {
                               value: info.data,
@@ -71177,30 +71173,8 @@ var render = function() {
                               autocomplete: {
                                 available: true,
                                 data: _vm.authority.subject_terms
-                              }
-                            },
-                            model: {
-                              value: info.data,
-                              callback: function($$v) {
-                                _vm.$set(info, "data", $$v)
                               },
-                              expression: "info.data"
-                            }
-                          })
-                        : info.id == "650.v"
-                        ? _c("input-div", {
-                            attrs: {
-                              classes: "border-black input_static_height",
-                              selectable: {
-                                available: true,
-                                data: _vm.authority.type
-                              },
-                              head: "title",
-                              body: "type",
-                              autocomplete: {
-                                available: true,
-                                data: _vm.authority.type
-                              }
+                              showBody: false
                             },
                             model: {
                               value: info.data,
