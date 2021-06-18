@@ -101,6 +101,7 @@
                                         :head="'author'"
                                         :body="'author'"
                                         :autocomplete="{available:true,data:authority.authors}"
+                                        :showBody="false"
                                         v-if="info.id=='100.a'||info.id=='600.a'"
                                     />
 
@@ -111,6 +112,7 @@
                                         :head="'language'"
                                         :body="'language'"
                                         :autocomplete="{available:true,data:authority.language}"
+                                        :showBody="false"
                                         v-else-if="info.id=='546.a'"
                                     />
 
@@ -121,17 +123,8 @@
                                         :head="'subject_term'"
                                         :body="'subject_term'"
                                         :autocomplete="{available:true,data:authority.subject_terms}"
+                                        :showBody="false"
                                         v-else-if="info.id=='650.x'"
-                                    />
-
-                                    <input-div 
-                                        v-model="info.data"
-                                        classes="border-black input_static_height"
-                                        :selectable="{available:true,data:authority.type}"
-                                        :head="'title'"
-                                        :body="'type'"
-                                        :autocomplete="{available:true,data:authority.type}"
-                                        v-else-if="info.id=='650.v'"
                                     />
 
                                     <!-- if it's just info -->
@@ -195,7 +188,15 @@ export default {
             this.$store.commit('setFullPageLoading',true);
             this.sectionSelected=0;
             this.$http.get(this.link+'/'+this.info.type_key+'/'+this.info.id).then(response=>{
-                this.edit_info=response.data.res.sort((a,b)=>{
+                this.edit_info=response.data.res;
+                this.sortInfo(this.edit_info);
+                this.updateCatalogingInfo();
+            }).catch(e=>{}).then(()=>{
+                this.$store.commit('setFullPageLoading',false);
+            });
+        },
+        sortInfo(info){
+            return info.sort((a,b)=>{
                     if(a.id<b.id){
                         return -1;
                     }
@@ -203,11 +204,7 @@ export default {
                         return 1;
                     }
                     return 0;
-                });
-                this.updateCatalogingInfo();
-            }).catch(e=>{}).then(()=>{
-                this.$store.commit('setFullPageLoading',false);
-            });
+                })
         },
         updateCatalogingInfo(){
             this.divideIntoSections();
@@ -323,16 +320,6 @@ export default {
                 this.$store.commit('setFullPageLoading',false);
             })
         },
-        importFromWorldCat(){
-            let control_number='';
-            let wskey='';
-            fetch('http://www.worldcat.org/webservices/catalog/content/'+control_number+'?wskey='+wskey).then(response=>{
-                let convert = require('xml-js');
-                let json = convert.xml2json(response.responseText, { compact: true, spaces: 4 });
-                json = JSON.parse(json);
-
-            })
-        },
         importFromGoogleAPIs(isbn){
             let info=this.info;
             let importIt=(data)=>{
@@ -402,6 +389,7 @@ export default {
 
                     }
                 });
+                this.sortInfo(this.edit_info);
                 this.updateCatalogingInfo();
                 this.message_success('import_from_google_api',{});
             }
