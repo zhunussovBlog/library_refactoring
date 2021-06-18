@@ -75,7 +75,9 @@ export default {
     print_barcode: {
         search: {
             add_options: {
-                barcode: {},
+                barcode: {
+                    to: '-'
+                },
                 title: '',
                 author: ''
             }
