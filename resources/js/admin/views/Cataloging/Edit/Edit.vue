@@ -108,10 +108,10 @@
                                     <input-div 
                                         v-model="info.data"
                                         classes="border-black input_static_height"
-                                        :selectable="{available:true,data:authority.language}"
-                                        :head="'language'"
+                                        :selectable="{available:true,data:authority.languages}"
+                                        :head="'title'"
                                         :body="'language'"
-                                        :autocomplete="{available:true,data:authority.language}"
+                                        :autocomplete="{available:true,data:authority.languages}"
                                         :showBody="false"
                                         v-else-if="info.id=='546.a'"
                                     />
