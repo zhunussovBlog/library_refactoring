@@ -17420,20 +17420,22 @@ var render = function() {
                     ])
                   : _vm._e(),
                 _vm._v(" "),
-                _c("div", { staticClass: "mt-3" }, [
-                  _c("div", { staticClass: "text-grey font-size-14" }, [
-                    _vm._v(
-                      "\n\t\t\t\t\t\t\t" +
-                        _vm._s(_vm.$t("subject_terms")) +
-                        "\n\t\t\t\t\t\t"
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", {
-                    staticClass: "mt-1",
-                    domProps: { innerHTML: _vm._s(_vm.data.subject_terms) }
-                  })
-                ])
+                _vm.data.subject_terms
+                  ? _c("div", { staticClass: "mt-3" }, [
+                      _c("div", { staticClass: "text-grey font-size-14" }, [
+                        _vm._v(
+                          "\n\t\t\t\t\t\t\t" +
+                            _vm._s(_vm.$t("subject_terms")) +
+                            "\n\t\t\t\t\t\t"
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", {
+                        staticClass: "mt-1",
+                        domProps: { innerHTML: _vm._s(_vm.data.subject_terms) }
+                      })
+                    ])
+                  : _vm._e()
               ]),
               _vm._v(" "),
               _c(

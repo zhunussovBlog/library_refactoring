@@ -45,7 +45,7 @@
 								<div @click="expandContent(data,false)" v-else>{{$t('shrink')}}</div>
 							</div>
 						</div>
-						<div class="mt-3">
+						<div class="mt-3" v-if="data.subject_terms">
 							<div class="text-grey font-size-14">
 								{{$t('subject_terms')}}
 							</div>
