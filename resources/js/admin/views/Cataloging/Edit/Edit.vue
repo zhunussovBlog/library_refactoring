@@ -112,7 +112,7 @@
                                         :head="'title'"
                                         :body="'language'"
                                         :autocomplete="{available:true,data:authority.languages}"
-                                        :showBody="false"
+                                        :showBody="true"
                                         v-else-if="info.id=='546.a'"
                                     />
 
