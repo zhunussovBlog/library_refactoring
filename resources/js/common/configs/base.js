@@ -1,5 +1,5 @@
 export default {
-    baseURL: 'https://library.sdu.edu.kz/',
+    baseURL: 'https://localhost:8000/',
     api: 'api/',
     default_lang: 'en'
 }
