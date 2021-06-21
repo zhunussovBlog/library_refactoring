@@ -153,5 +153,6 @@ export default {
     "print_page": "Распечатать страницу",
     "undefined": "Нет данных",
     "expand": "Подробнее",
-    "shrink": "Скрыть"
+    "shrink": "Скрыть",
+    "subject_terms": "Тематические термины"
 }

@@ -45,6 +45,12 @@
 								<div @click="expandContent(data,false)" v-else>{{$t('shrink')}}</div>
 							</div>
 						</div>
+						<div class="mt-3">
+							<div class="text-grey font-size-14">
+								{{$t('subject_terms')}}
+							</div>
+							<div class="mt-1" v-html="data.subject_terms" />
+						</div>
 					</div>
 					<div class="d-none d-sm-block text-center col-2 px-0">
 						<div class="bg-lightgrey rounded-lg p-2 text-no-wrap">
@@ -189,7 +195,7 @@
 					this.xml=response.data.xmlInfo;
 					this.data= Object.assign(this.data,this.importFromXML(response));
 					this.data.link=this.link;
-					this.array_data=this.convertToArray(objectWithoutKey(this.data,['id','type_key','issn','status','availability','image','description','content']));
+					this.array_data=this.convertToArray(objectWithoutKey(this.data,['id','type_key','issn','status','availability','image','description','content','subject_terms']));
 					try{
 						this.getBookImage(this.data,!this.data.description);
 					}catch(e){}
@@ -221,7 +227,8 @@
 					}
 					data.content=this.getFromCatalog(xml,'505.a');
 					this.expandContent(data,false);
-					data.attribution=this.getFromCatalog(xml,'245.c');				
+					data.attribution=this.getFromCatalog(xml,'245.c');
+					data.subject_terms=this.getFromCatalog(xml,'650.x');			
 				}
 				
 				return data;

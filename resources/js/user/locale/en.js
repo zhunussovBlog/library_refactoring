@@ -151,5 +151,6 @@ export default {
     "print_page": "Print page",
     "undefined": "No data :(",
     "expand": "More",
-    "shrink": "Less"
+    "shrink": "Less",
+    "subject_terms": "Subject terms"
 }

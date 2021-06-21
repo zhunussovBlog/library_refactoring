@@ -153,5 +153,6 @@ export default {
     "print_page": "Бетті басып шығару",
     "undefined": "Деректер жоқ :(",
     "expand": "Толығырақ",
-    "shrink": "Азайту"
+    "shrink": "Азайту",
+    "subject_terms": "Пәндік терминдер"
 }

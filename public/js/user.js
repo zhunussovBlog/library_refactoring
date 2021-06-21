@@ -2370,6 +2370,12 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2472,7 +2478,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         _this.xml = response.data.xmlInfo;
         _this.data = Object.assign(_this.data, _this.importFromXML(response));
         _this.data.link = _this.link;
-        _this.array_data = _this.convertToArray(objectWithoutKey(_this.data, ['id', 'type_key', 'issn', 'status', 'availability', 'image', 'description', 'content']));
+        _this.array_data = _this.convertToArray(objectWithoutKey(_this.data, ['id', 'type_key', 'issn', 'status', 'availability', 'image', 'description', 'content', 'subject_terms']));
 
         try {
           _this.getBookImage(_this.data, !_this.data.description);
@@ -2511,6 +2517,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         data.content = this.getFromCatalog(xml, '505.a');
         this.expandContent(data, false);
         data.attribution = this.getFromCatalog(xml, '245.c');
+        data.subject_terms = this.getFromCatalog(xml, '650.x');
       }
 
       return data;
@@ -4173,7 +4180,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  baseURL: 'https://localhost:8000/',
+  baseURL: 'http://localhost:8000/',
   api: 'api/',
   default_lang: 'en'
 });
@@ -4344,7 +4351,8 @@ __webpack_require__.r(__webpack_exports__);
   "print_page": "Print page",
   "undefined": "No data :(",
   "expand": "More",
-  "shrink": "Less"
+  "shrink": "Less",
+  "subject_terms": "Subject terms"
 });
 
 /***/ }),
@@ -4551,7 +4559,8 @@ __webpack_require__.r(__webpack_exports__);
   "print_page": "Бетті басып шығару",
   "undefined": "Деректер жоқ :(",
   "expand": "Толығырақ",
-  "shrink": "Азайту"
+  "shrink": "Азайту",
+  "subject_terms": "Пәндік терминдер"
 });
 
 /***/ }),
@@ -4722,7 +4731,8 @@ __webpack_require__.r(__webpack_exports__);
   "print_page": "Распечатать страницу",
   "undefined": "Нет данных",
   "expand": "Подробнее",
-  "shrink": "Скрыть"
+  "shrink": "Скрыть",
+  "subject_terms": "Тематические термины"
 });
 
 /***/ }),
@@ -17408,7 +17418,22 @@ var render = function() {
                         ]
                       )
                     ])
-                  : _vm._e()
+                  : _vm._e(),
+                _vm._v(" "),
+                _c("div", { staticClass: "mt-3" }, [
+                  _c("div", { staticClass: "text-grey font-size-14" }, [
+                    _vm._v(
+                      "\n\t\t\t\t\t\t\t" +
+                        _vm._s(_vm.$t("subject_terms")) +
+                        "\n\t\t\t\t\t\t"
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", {
+                    staticClass: "mt-1",
+                    domProps: { innerHTML: _vm._s(_vm.data.subject_terms) }
+                  })
+                ])
               ]),
               _vm._v(" "),
               _c(
