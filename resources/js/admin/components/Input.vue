@@ -84,16 +84,21 @@ export default{
 		},
 		classes:{
 			type:[Array,String]
+		},
+		showBody:{
+			type:Boolean,
+			default:true
 		}
 	},
 	watch:{
 		'value'(newValue,oldValue){
 			if(this.selectable.available){
-				let result=this.selectable.data.filter(item=>{
-					return item[this.body]==newValue
-				});
-				if(result.length>0){
-					this.text=result[0][this.head] + ' (' + result[0][this.body] + ')';
+				let result = this.selectable.data.filter(item=>item[this.body]==newValue);
+				if(result.length > 0){
+					this.text = result[0][this.head]
+					if(this.showBody){
+						this.text += ' (' + result[0][this.body] + ')';
+					}
 				}
 				else{
 					this.text=newValue;
@@ -183,7 +188,7 @@ input{
 	transition: .3s;
 	border:0.03125em solid transparent;
 	border-radius: .3125em;
-	z-index: 1;
+	z-index: 998;
 	max-height: 0em;
 }
 .shown{

@@ -2370,6 +2370,12 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2472,7 +2478,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         _this.xml = response.data.xmlInfo;
         _this.data = Object.assign(_this.data, _this.importFromXML(response));
         _this.data.link = _this.link;
-        _this.array_data = _this.convertToArray(objectWithoutKey(_this.data, ['id', 'type_key', 'issn', 'status', 'availability', 'image', 'description', 'content']));
+        _this.array_data = _this.convertToArray(objectWithoutKey(_this.data, ['id', 'type_key', 'issn', 'status', 'availability', 'image', 'description', 'content', 'subject_terms']));
 
         try {
           _this.getBookImage(_this.data, !_this.data.description);
@@ -2511,6 +2517,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         data.content = this.getFromCatalog(xml, '505.a');
         this.expandContent(data, false);
         data.attribution = this.getFromCatalog(xml, '245.c');
+        data.subject_terms = this.getFromCatalog(xml, '650.x');
       }
 
       return data;
@@ -3524,7 +3531,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     move: function move(result) {
       this.$router.push({
-        path: '/full?id=' + result.id
+        path: '/' + this.$i18n.locale + '/full?id=' + result.id
       });
     }
   }
@@ -4344,7 +4351,8 @@ __webpack_require__.r(__webpack_exports__);
   "print_page": "Print page",
   "undefined": "No data :(",
   "expand": "More",
-  "shrink": "Less"
+  "shrink": "Less",
+  "subject_terms": "Subject terms"
 });
 
 /***/ }),
@@ -4551,7 +4559,8 @@ __webpack_require__.r(__webpack_exports__);
   "print_page": "Бетті басып шығару",
   "undefined": "Деректер жоқ :(",
   "expand": "Толығырақ",
-  "shrink": "Азайту"
+  "shrink": "Азайту",
+  "subject_terms": "Пәндік терминдер"
 });
 
 /***/ }),
@@ -4722,7 +4731,8 @@ __webpack_require__.r(__webpack_exports__);
   "print_page": "Распечатать страницу",
   "undefined": "Нет данных",
   "expand": "Подробнее",
-  "shrink": "Скрыть"
+  "shrink": "Скрыть",
+  "subject_terms": "Тематические термины"
 });
 
 /***/ }),
@@ -17408,6 +17418,23 @@ var render = function() {
                         ]
                       )
                     ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.data.subject_terms
+                  ? _c("div", { staticClass: "mt-3" }, [
+                      _c("div", { staticClass: "text-grey font-size-14" }, [
+                        _vm._v(
+                          "\n\t\t\t\t\t\t\t" +
+                            _vm._s(_vm.$t("subject_terms")) +
+                            "\n\t\t\t\t\t\t"
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", {
+                        staticClass: "mt-1",
+                        domProps: { innerHTML: _vm._s(_vm.data.subject_terms) }
+                      })
+                    ])
                   : _vm._e()
               ]),
               _vm._v(" "),
@@ -17612,7 +17639,7 @@ var render = function() {
               "div",
               {
                 key: index,
-                staticClass: "bg-white rounded flex-shrink-0 transition",
+                staticClass: "bg-lightgrey rounded flex-shrink-0 transition",
                 class: index == _vm.items.length - 1 ? "ml-2" : "mr-2",
                 style: { width: _vm.itemWidth + "px" }
               },
@@ -17715,7 +17742,10 @@ var render = function() {
   return _c("div", [
     _c(
       "div",
-      { staticClass: "d-flex flex-wrap flex-xl-nowrap bg-white padding py-5 " },
+      {
+        staticClass:
+          "d-flex flex-wrap flex-xl-nowrap bg-lightgrey\t padding py-5 "
+      },
       [
         _c(
           "div",
@@ -17734,7 +17764,7 @@ var render = function() {
       ]
     ),
     _vm._v(" "),
-    _c("div", { staticClass: "padding bg-lightgrey py-5" }, [
+    _c("div", { staticClass: "padding bg-white py-5" }, [
       _c("div", { staticClass: "d-flex justify-content-between" }, [
         _c("span", { staticClass: "font-size-32 font-weight-bold" }, [
           _vm._v(_vm._s(_vm.$t("upcoming_events").toUpperCase()))
@@ -17775,7 +17805,7 @@ var render = function() {
       )
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "bg-white padding py-5" }, [
+    _c("div", { staticClass: "bg-lightgrey padding py-5" }, [
       _c("span", {
         staticClass: "font-size-32 font-weight-bold",
         domProps: { innerHTML: _vm._s(_vm.$t("vid_content").toUpperCase()) }
@@ -17849,7 +17879,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "p-3 bg-white mr-5 rounded" }, [
+    return _c("div", { staticClass: "p-0 bg-white mr-5 rounded" }, [
       _c("iframe", {
         staticClass: "no-border calendar-height",
         attrs: {

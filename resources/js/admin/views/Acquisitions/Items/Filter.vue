@@ -34,7 +34,7 @@
 			<div class="mt-2 select">
 				<select v-model="search.add_options.item_type">
 					<option :value="null">None</option>
-					<option v-for="(type,index) in support_data.types" :key="index" :value="type.item_type_key">{{type.item_type}}</option>
+					<option v-for="(type,index) in support_data.types" :key="index" :value="type.type_key">{{type.type}}</option>
 				</select>
 			</div>
 			<div class="text-grey font-size-12 font-weight-bold mt-3">{{$t('location')}}:</div>
