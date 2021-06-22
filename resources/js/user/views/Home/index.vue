@@ -1,11 +1,12 @@
 <template>
 	<div>
 		<!-- search -->
-		<div class="d-flex flex-wrap flex-xl-nowrap bg-lightgrey	 padding py-5 ">
+		<div class="d-flex flex-wrap flex-xl-nowrap bg-lightgrey padding py-5 ">
 			<div class="d-flex flex-column w-100">
 				<Search class="pt-4 pb-4 col-md-12 col-xl-11 px-0 flex-0" />
 				<div class="align-self-start mt-40" style="z-index: 1;">
-					<div class="border 	border-width" id="libchat_591323eae0c67c543ac18bf22cf2e1a7"></div>
+					<div class="border 	border-width" id="libchat_591323eae0c67c543ac18bf22cf2e1a7" v-if="$i18n.locale=='en'"></div>
+					<div class="border 	border-width" id="libchat_2bd2632bd2b55389a65a46993bf9f779" v-if="$i18n.locale=='kz'"></div>
 				</div>
 			</div>
 			<div class="col-12 col-xl-4 px-0 mt-3 mb-3">
@@ -70,17 +71,22 @@
 		methods:{
 			loadScript(src){
 				let externalScript = document.createElement('script');
-				externalScript.setAttribute('src', src)
-				document.head.appendChild(externalScript)
+				externalScript.setAttribute('src',src);
+				document.head.appendChild(externalScript);
 			},
 			loadExternalLibGuideScripts(){
 				let srcs=[];
+				
 				// faq questions 
-				srcs[0]='https://sdu-kz.libanswers.com/1.0/widgets/7614';
+				srcs[0]='https://sdu-kz.libanswers.com/1.0/widgets/7614'; // en
+				
 				// faq answers
-				srcs[1]='https://sdu-kz.libanswers.com/1.0/widgets/7615';
+				srcs[1]='https://sdu-kz.libanswers.com/1.0/widgets/7615'; // en
+				
 				// chat
-				srcs[2]='https://sdu-kz.libanswers.com/load_chat.php?hash=591323eae0c67c543ac18bf22cf2e1a7';
+				srcs[2]='https://sdu-kz.libanswers.com/load_chat.php?hash=591323eae0c67c543ac18bf22cf2e1a7'; // en
+				srcs[3]='https://sdu-kz.libanswers.com/load_chat.php?hash=2bd2632bd2b55389a65a46993bf9f779'; // kz
+
 				srcs.forEach(item=>{
 					this.loadScript(item);
 				});

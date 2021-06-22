@@ -15,6 +15,8 @@ use App\Models\Media\Book;
 use App\Models\Media\Loan;
 use App\Models\User\Employee;
 use App\Models\User\Student;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -31,14 +33,44 @@ class SearchController extends Controller
             default => throw new ReturnResponseException('Incorrect user type', 400),
         });
 
-        $data = Search::search($request, QueryHelper::nestedQueryBuilder($model), new UserSearchFields());
-        $forFilter = FilterHelper::forFilter($data, UserSearchFields::getFilterFields());
+        $value = $request->input('add_options')[0]['value'];
+
+        $userCard = self::getByRfid($value);
+
+        if (empty($userCard)) {
+            $data = Search::search($request, QueryHelper::nestedQueryBuilder($model), new UserSearchFields());
+        }
+
+        if (!isset($data)) {
+            if (!is_null($userCard->stud_id)) {
+                $data = Student::defaultQuery()->where('t.stud_id', $userCard->stud_id)->get();
+            }
+
+            if (!is_null($userCard->emp_id)) {
+                $data = Employee::defaultQuery()->where('e.emp_id', $userCard->emp_id)->get();
+            }
+        }
+
+        $forFilter = FilterHelper::forFilter($data ?? collect([]), UserSearchFields::getFilterFields());
 
         return response()->json([
-            'res' => CustomPaginate::getPaginate($data, $request, $perPage),
+            'res' => CustomPaginate::getPaginate($data ?? collect([]), $request, $perPage),
             'filter' => $forFilter,
-            'all' => $data->pluck('id')->toArray()
+            'all' => isset($data) ? $data->pluck('id')->toArray() : [],
         ]);
+    }
+
+
+    /**
+     * @param string $value
+     * @return object|null
+     */
+    private static function getByRfid(string $value): ?object
+    {
+        return DB::table('lib_user_cards as u')
+            ->select(['u.stud_id', 'u.emp_id'])
+            ->leftJoin('rfid_cards as r', 'r.user_cid', '=', 'u.user_cid')
+            ->where('r.card_id', $value)->first();
     }
 
     public function searchMedia(Request $request): JsonResponse
