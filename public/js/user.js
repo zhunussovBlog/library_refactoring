@@ -2231,6 +2231,10 @@ __webpack_require__.r(__webpack_exports__);
     var lang = this.$route.matched[0].meta.lang;
 
     if (!lang) {
+      this.setLang({
+        lan: 'en',
+        name: 'EN'
+      });
       this.$router.push('en');
     }
 
