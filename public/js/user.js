@@ -2740,6 +2740,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 // components
 
  // icons
@@ -2762,11 +2763,16 @@ __webpack_require__.r(__webpack_exports__);
 
       var srcs = []; // faq questions 
 
-      srcs[0] = 'https://sdu-kz.libanswers.com/1.0/widgets/7614'; // faq answers
+      srcs[0] = 'https://sdu-kz.libanswers.com/1.0/widgets/7614'; // en
+      // faq answers
 
-      srcs[1] = 'https://sdu-kz.libanswers.com/1.0/widgets/7615'; // chat
+      srcs[1] = 'https://sdu-kz.libanswers.com/1.0/widgets/7615'; // en
+      // chat
 
-      srcs[2] = 'https://sdu-kz.libanswers.com/load_chat.php?hash=591323eae0c67c543ac18bf22cf2e1a7';
+      srcs[2] = 'https://sdu-kz.libanswers.com/load_chat.php?hash=591323eae0c67c543ac18bf22cf2e1a7'; // en
+
+      srcs[3] = 'https://sdu-kz.libanswers.com/load_chat.php?hash=2bd2632bd2b55389a65a46993bf9f779'; // kz
+
       srcs.forEach(function (item) {
         _this.loadScript(item);
       });
@@ -17744,7 +17750,7 @@ var render = function() {
       "div",
       {
         staticClass:
-          "d-flex flex-wrap flex-xl-nowrap bg-lightgrey\t padding py-5 "
+          "d-flex flex-wrap flex-xl-nowrap bg-lightgrey padding py-5 "
       },
       [
         _c(
@@ -17755,12 +17761,33 @@ var render = function() {
               staticClass: "pt-4 pb-4 col-md-12 col-xl-11 px-0 flex-0"
             }),
             _vm._v(" "),
-            _vm._m(0)
+            _c(
+              "div",
+              {
+                staticClass: "align-self-start mt-40",
+                staticStyle: { "z-index": "1" }
+              },
+              [
+                _vm.$i18n.locale == "en"
+                  ? _c("div", {
+                      staticClass: "border \tborder-width",
+                      attrs: { id: "libchat_591323eae0c67c543ac18bf22cf2e1a7" }
+                    })
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.$i18n.locale == "kz"
+                  ? _c("div", {
+                      staticClass: "border \tborder-width",
+                      attrs: { id: "libchat_2bd2632bd2b55389a65a46993bf9f779" }
+                    })
+                  : _vm._e()
+              ]
+            )
           ],
           1
         ),
         _vm._v(" "),
-        _vm._m(1)
+        _vm._m(0)
       ]
     ),
     _vm._v(" "),
@@ -17795,7 +17822,7 @@ var render = function() {
         "div",
         { staticClass: "d-flex align-items-start mt-5 " },
         [
-          _vm._m(2),
+          _vm._m(1),
           _vm._v(" "),
           !_vm.$mobileCheck()
             ? _c("slide-events", { attrs: { number: 2 } })
@@ -17815,7 +17842,7 @@ var render = function() {
         _vm._v("\n\t\t\t" + _vm._s(_vm.$t("video_content")) + "\n\t\t")
       ]),
       _vm._v(" "),
-      _vm._m(3),
+      _vm._m(2),
       _vm._v(" "),
       _c("div", { staticClass: "mt-5" }, [
         _c(
@@ -17839,24 +17866,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "align-self-start mt-40",
-        staticStyle: { "z-index": "1" }
-      },
-      [
-        _c("div", {
-          staticClass: "border \tborder-width",
-          attrs: { id: "libchat_591323eae0c67c543ac18bf22cf2e1a7" }
-        })
-      ]
-    )
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
