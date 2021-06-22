@@ -21,7 +21,7 @@ class SearchController extends Controller
 
         $dataByContent = $this->contentSearch($request);
         $data = Search::search($request, QueryHelper::unionAll(...GetModels::getModels()), new MediaFields());
-        $data->merge($dataByContent);
+        $data = $data->merge($dataByContent);
         $forFilter = FilterHelper::forFilter($data, MediaFields::getFilterFields());
 
         return response()->json([
