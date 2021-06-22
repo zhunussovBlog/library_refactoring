@@ -11,13 +11,17 @@ use App\Common\Helpers\Search\FilterHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SearchRequest;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 
 class SearchController extends Controller
 {
     public function search(SearchRequest $request): JsonResponse
     {
         $perPage = $request->get('per_page') ?? 10;
+
+        $dataByContent = $this->contentSearch($request);
         $data = Search::search($request, QueryHelper::unionAll(...GetModels::getModels()), new MediaFields());
+        $data->merge($dataByContent);
         $forFilter = FilterHelper::forFilter($data, MediaFields::getFilterFields());
 
         return response()->json([
@@ -25,5 +29,28 @@ class SearchController extends Controller
             'filter' => $forFilter,
             'all' => $data->pluck('id')->toArray()
         ]);
+    }
+
+    /**
+     * @param SearchRequest $request
+     * @return \Tightenco\Collect\Support\Collection|\Illuminate\Support\Collection
+     */
+    private function contentSearch(SearchRequest $request): \Tightenco\Collect\Support\Collection|\Illuminate\Support\Collection
+    {
+        $data = collect([]);
+        $options = $request->input('search_options');
+
+        if ($options[0]['key'] === 'all') {
+            $value = $options[0]['value'];
+
+            $searchResults = DB::table('lib_bibliographic_info')
+                ->select(DB::raw("coalesce(book_id, journal_id, disc_id) as id"))
+                ->whereRaw("CONTAINS(xml_data, '$value INPATH(//TreeList/Nodes/Node/NodeData[Cell=\"650.x\"])', 1) > 0")
+                ->orderByRaw('score(1) desc')->get()->pluck('id');
+
+            $data = QueryHelper::unionAll(...GetModels::getModels())->select()->whereIn('id', $searchResults)->get();
+        }
+
+        return $data;
     }
 }
