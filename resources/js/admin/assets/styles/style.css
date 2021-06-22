@@ -117,7 +117,7 @@ html,
     width: 12.75em;
     max-height: 0;
     overflow: auto;
-    z-index: 3;
+    z-index: 998;
     top: 100%;
 }
 
