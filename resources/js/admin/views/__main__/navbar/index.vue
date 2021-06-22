@@ -129,7 +129,7 @@ export default {
 	box-shadow: 0 0.125em 0.25em rgba(0, 0, 0, 0.25);
 	min-height: 5em;
 	height:8.72vh;
-	z-index: 100;
+	z-index: 1000;
 	padding: 1.5625em;
 }
 .icon{
