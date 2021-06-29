@@ -259,36 +259,36 @@ export default {
             })
             this.tagSelected=this.sectioned[0].tags[0];
         },
-        importFromExt(){
-            var str='';
-            var res=[];
+        // importFromExt(){
+        //     var str='';
+        //     var res=[];
 
-            import('/schedules.js').then(response=>{
-                str=response.schedules;
-            }).then(()=>{
-                str=str.split('@');
-                str.forEach(elem=>{
-                    let search_c_n=this.edit_info.find(item=>item.id=='010.c').data;
-                    this.edit_info.forEach(item=>{
-                        if(item.id=='010.n'){
-                            search_c_n+=item.data;
-                        }
-                    })
-                    if(elem.includes(search_c_n)){
-                        let s=elem.split('\t');
-                        let data='';
-                        try{
-                            data=s[1].split('--')
-                        }catch(e){
-                            let datas=s[0].split('--');
-                            datas.shift();
-                            data=datas;
-                        }
-                        return ;
-                    }
-                })
-            })
-        },
+        //     import('/schedules.js').then(response=>{
+        //         str=response.schedules;
+        //     }).then(()=>{
+        //         str=str.split('@');
+        //         str.forEach(elem=>{
+        //             let search_c_n=this.edit_info.find(item=>item.id=='010.c').data;
+        //             this.edit_info.forEach(item=>{
+        //                 if(item.id=='010.n'){
+        //                     search_c_n+=item.data;
+        //                 }
+        //             })
+        //             if(elem.includes(search_c_n)){
+        //                 let s=elem.split('\t');
+        //                 let data='';
+        //                 try{
+        //                     data=s[1].split('--')
+        //                 }catch(e){
+        //                     let datas=s[0].split('--');
+        //                     datas.shift();
+        //                     data=datas;
+        //                 }
+        //                 return ;
+        //             }
+        //         })
+        //     })
+        // },
         selectSection(section){
             this.sectionSelected=section.section;
             this.tagSelected=section.tags[0];
