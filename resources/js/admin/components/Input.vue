@@ -91,27 +91,13 @@ export default{
 		}
 	},
 	watch:{
-		'value'(newValue,oldValue){
-			if(this.selectable.available){
-				let result = this.selectable.data.filter(item=>item[this.body]==newValue);
-				if(result.length > 0){
-					this.text = result[0][this.head]
-					if(this.showBody){
-						this.text += ' (' + result[0][this.body] + ')';
-					}
-				}
-				else{
-					this.text=newValue;
-				}
-			}
-			else{
-				this.text=newValue;
-			}
+		'value'(newValue){
+			this.setText(newValue);
 		}
 	},
 	data(){
 		return{
-			text:this.value ?? '',
+			text:'',
 			shown:false,
 			results:[0],
 			result:{}
@@ -154,7 +140,27 @@ export default{
 		},
 		reset(){
 			this.$emit('input','');
+		},
+		setText(value){
+			if(this.selectable.available){
+				let result = this.selectable.data.filter(item=>item[this.body]==value);
+				if(result.length > 0){
+					this.text = result[0][this.head]
+					if(this.showBody){
+						this.text += ' (' + result[0][this.body] + ')';
+					}
+				}
+				else{
+					this.text=value;
+				}
+			}
+			else{
+				this.text=value;
+			}
 		}
+	},
+	created(){
+		this.setText(this.value);
 	}
 }
 </script>

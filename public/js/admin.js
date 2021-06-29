@@ -2243,33 +2243,13 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   watch: {
-    'value': function value(newValue, oldValue) {
-      var _this = this;
-
-      if (this.selectable.available) {
-        var result = this.selectable.data.filter(function (item) {
-          return item[_this.body] == newValue;
-        });
-
-        if (result.length > 0) {
-          this.text = result[0][this.head];
-
-          if (this.showBody) {
-            this.text += ' (' + result[0][this.body] + ')';
-          }
-        } else {
-          this.text = newValue;
-        }
-      } else {
-        this.text = newValue;
-      }
+    'value': function value(newValue) {
+      this.setText(newValue);
     }
   },
   data: function data() {
-    var _this$value;
-
     return {
-      text: (_this$value = this.value) !== null && _this$value !== void 0 ? _this$value : '',
+      text: '',
       shown: false,
       results: [0],
       result: {}
@@ -2288,12 +2268,12 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     onInput: function onInput() {
-      var _this2 = this;
+      var _this = this;
 
       if (this.autocomplete.available) {
         var data = copy(this.autocomplete.data);
         this.results = data.filter(function (item) {
-          return item[_this2.head].toLowerCase().includes(_this2.text.toLowerCase());
+          return item[_this.head].toLowerCase().includes(_this.text.toLowerCase());
         }).splice(0, 200);
         this.shown = true;
       }
@@ -2316,7 +2296,31 @@ __webpack_require__.r(__webpack_exports__);
     },
     reset: function reset() {
       this.$emit('input', '');
+    },
+    setText: function setText(value) {
+      var _this2 = this;
+
+      if (this.selectable.available) {
+        var result = this.selectable.data.filter(function (item) {
+          return item[_this2.body] == value;
+        });
+
+        if (result.length > 0) {
+          this.text = result[0][this.head];
+
+          if (this.showBody) {
+            this.text += ' (' + result[0][this.body] + ')';
+          }
+        } else {
+          this.text = value;
+        }
+      } else {
+        this.text = value;
+      }
     }
+  },
+  created: function created() {
+    this.setText(this.value);
   }
 });
 
@@ -5764,11 +5768,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                         edit_info: _this5.edit_info,
                         after: after
                       });
-
-                      _this5.updateCatalogingInfo();
                     } catch (e) {
-                      console.error(e);
-
                       _this5.$store.commit('setFullPageLoading', false);
 
                       _this5.$prompt("Search google apis for isbn: " + isbn + " failed. Maybe you'd like to try to search with another isbn?").then(function (text) {
