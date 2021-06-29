@@ -420,9 +420,7 @@ export default {
                             this.message_success('import_from_google_api',{});
                         }
                         this.showModal(IFGA,{data:array,edit_info:this.edit_info,after});
-                        this.updateCatalogingInfo();
                     } catch (e) {
-                        console.error(e);
                         this.$store.commit('setFullPageLoading', false)
                         this.$prompt("Search google apis for isbn: "+isbn+" failed. Maybe you'd like to try to search with another isbn?").then((text) => {
                             this.importFromGoogleAPIs(text);
