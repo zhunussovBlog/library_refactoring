@@ -81,10 +81,17 @@
 							]" 
 							@click="tdOnClick(info,name)"
 						>
-							{{
-								name.display_func ? name.display_func(info,name) :
-								name.is_date && info[name.link]!=null ? new Date(info[name.link]).toDateInputValue() : info[name.link]
-							}}
+							<span v-if="info[name.link]!=null">
+								<span v-if="!Array.isArray(info[name.link])">
+									{{
+										name.display_func ? name.display_func(info,name) :
+										name.is_date ? new Date(info[name.link]).toDateInputValue() : info[name.link]
+									}}
+								</span>
+								<div v-for="(item,index) in info[name.link]" :key="index" v-else >
+									[{{item}}]
+								</div>
+							</span>
 							<edit class="d-inline-block float-right" v-if="typeof name.edit_icon=='function' ? name.edit_icon(info,name) : name.edit_icon"/>
 						</td>
 						<!-- if there are clickable elements in table -> Show more, Edit, ReCreate, Delete or Service -->

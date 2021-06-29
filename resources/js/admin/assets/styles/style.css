@@ -404,6 +404,10 @@ div.vm--overlay {
     transition: .5s;
 }
 
+div.vm--container {
+    z-index: 1000;
+}
+
 
 /*cancellations*/
 

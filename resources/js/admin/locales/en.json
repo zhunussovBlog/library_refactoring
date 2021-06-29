@@ -210,6 +210,8 @@
     "days": "Days",
 
     "import_from_google_api": "Import from google api",
+    "code": "Code",
+    "value": "Value",
     "cataloging": "Cataloging",
     "search_cataloging": "Search by ISBN || Title || Author",
     "edit_rec": "Edit record",

@@ -2811,6 +2811,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 // mixins 
 
  // icons
@@ -5299,12 +5306,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Input__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../components/Input */ "./resources/js/admin/components/Input.vue");
 /* harmony import */ var _common_assets_icons_Print__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../../common/assets/icons/Print */ "./resources/js/common/assets/icons/Print.vue");
 /* harmony import */ var _Preview__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./Preview */ "./resources/js/admin/views/Cataloging/Edit/Preview.vue");
+/* harmony import */ var _ImportFromGoogleAPI_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./ImportFromGoogleAPI.vue */ "./resources/js/admin/views/Cataloging/Edit/ImportFromGoogleAPI.vue");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5466,6 +5483,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
  // icons
 
+ // relative components
+
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -5568,6 +5587,43 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       });
       this.tagSelected = this.sectioned[0].tags[0];
     },
+    importFromExt: function importFromExt() {
+      var _this2 = this;
+
+      var str = '';
+      var res = [];
+      __webpack_require__.e(/*! import() */ "public_schedules_js").then(__webpack_require__.bind(__webpack_require__, /*! ../../../../schedules.js */ "./public/schedules.js")).then(function (response) {
+        str = response.schedules;
+      }).then(function () {
+        str = str.split('@');
+        str.forEach(function (elem) {
+          var search_c_n = _this2.edit_info.find(function (item) {
+            return item.id == '010.c';
+          }).data;
+
+          _this2.edit_info.forEach(function (item) {
+            if (item.id == '010.n') {
+              search_c_n += item.data;
+            }
+          });
+
+          if (elem.includes(search_c_n)) {
+            var s = elem.split('\t');
+            var data = '';
+
+            try {
+              data = s[1].split('--');
+            } catch (e) {
+              var datas = s[0].split('--');
+              datas.shift();
+              data = datas;
+            }
+
+            return;
+          }
+        });
+      });
+    },
     selectSection: function selectSection(section) {
       this.sectionSelected = section.section;
       this.tagSelected = section.tags[0];
@@ -5589,14 +5645,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.sectioned[this.sectionSelected].info.splice(lindex, 1);
     },
     save: function save() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.$store.commit('setFullPageLoading', true);
 
       var joinSections = function joinSections() {
         var res = [];
 
-        _this2.sectioned.forEach(function (section) {
+        _this3.sectioned.forEach(function (section) {
           section.info.forEach(function (data) {
             if (data.is_added) {
               delete data.is_added;
@@ -5617,133 +5673,114 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.$http.post(this.link + '/' + this.info.type_key + '/' + this.info.id + '/edit', {
         data: res
       }).then(function (response) {
-        _this2.message_success('edit', response);
+        _this3.message_success('edit', response);
 
-        _this2.tagSelected = {};
+        _this3.tagSelected = {};
 
-        _this2.getEditInfo();
+        _this3.getEditInfo();
       })["catch"](function (e) {
-        _this2.message_error('edit', e);
+        _this3.message_error('edit', e);
       }).then(function () {
-        _this2.$store.commit('setFullPageLoading', false);
-      });
-    },
-    exportXML: function exportXML() {
-      var _this3 = this;
-
-      this.$store.commit('setFullPageLoading', true);
-      this.$http.get(this.link + '/export/' + this.info.type_key + '/' + this.info.id).then(function (response) {
-        _this3.download_file(response, 'xml_' + _this3.info.title, 'xml');
-      })["catch"](function (e) {}).then(function () {
         _this3.$store.commit('setFullPageLoading', false);
       });
     },
-    printCallNumber: function printCallNumber() {
+    exportXML: function exportXML() {
       var _this4 = this;
+
+      this.$store.commit('setFullPageLoading', true);
+      this.$http.get(this.link + '/export/' + this.info.type_key + '/' + this.info.id).then(function (response) {
+        _this4.download_file(response, 'xml_' + _this4.info.title, 'xml');
+      })["catch"](function (e) {}).then(function () {
+        _this4.$store.commit('setFullPageLoading', false);
+      });
+    },
+    printCallNumber: function printCallNumber() {
+      var _this5 = this;
 
       this.$store.commit('setFullPageLoading', true);
       this.$http.get(this.link + '/print/' + this.info.type_key + '/' + this.info.id, {
         responseType: 'blob'
       }).then(function (response) {
-        _this4.print_file(response, 'call_number_' + _this4.info.title, 'pdf');
+        _this5.print_file(response, 'call_number_' + _this5.info.title, 'pdf');
       })["catch"](function (e) {}).then(function () {
-        _this4.$store.commit('setFullPageLoading', false);
+        _this5.$store.commit('setFullPageLoading', false);
       });
     },
     importFromGoogleAPIs: function importFromGoogleAPIs(isbn) {
-      var _this5 = this;
+      var _this6 = this;
 
-      var info = this.info;
-
-      var importIt = function importIt(data) {
-        var array = [];
-        array.push({
-          value: data.title,
-          code: '245.a'
-        }, {
-          value: data.subtitle,
-          code: '245.b'
-        }, {
-          value: data.authors,
-          code: '600.a'
-        }, {
-          value: data.publisher,
-          code: '260.b'
-        }, {
-          value: data.publishedDate,
-          code: '260.c'
-        }, {
-          value: data.industryIdentifiers[1].identifier,
-          code: '020.a'
-        }, {
-          value: data.printType,
-          code: '650.v'
-        }, {
-          value: data.pageCount,
-          code: '300.a'
-        }, {
-          value: data.categories,
-          code: '650.a'
-        }, {
-          value: data.language,
-          code: '546.a'
-        }, {
-          value: data.description,
-          code: '520.a'
-        });
-        array.forEach(function (e) {
-          if (e.value) {
-            var _info = _this5.edit_info.find(function (elem) {
-              return elem.id == e.code;
-            });
-
-            if (Array.isArray(e.value)) {
-              e.value.forEach(function (value) {
-                var new_data = copy(_info);
-                new_data.is_added = true;
-                new_data.repeatable = null;
-
-                if (_info.data) {
-                  new_data.data = value;
-
-                  _this5.edit_info.push(new_data);
-                } else {
-                  _info.data = value;
-                }
-              });
-            } else {
-              _info.data = e.value;
-            }
-          }
-        });
-
-        _this5.sortInfo(_this5.edit_info);
-
-        _this5.updateCatalogingInfo();
-
-        _this5.message_success('import_from_google_api', {});
-      }; // we use fetch() because there's cors mistake when use this.$http
-
-
+      // we use fetch() because there's cors mistake when use this.$http
       this.$store.commit('setFullPageLoading', true);
       fetch("https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbn).then(function (response) {
         response.json().then( /*#__PURE__*/function () {
           var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(res) {
-            var data;
+            var data, array, after;
             return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
               while (1) {
                 switch (_context.prev = _context.next) {
                   case 0:
                     try {
                       data = res.items[0].volumeInfo;
-                      importIt(data);
+                      array = [];
+                      array.push({
+                        value: data.title,
+                        code: '245.a'
+                      }, {
+                        value: data.subtitle,
+                        code: '245.b'
+                      }, {
+                        value: data.authors,
+                        code: '600.a'
+                      }, {
+                        value: data.publisher,
+                        code: '260.b'
+                      }, {
+                        value: data.publishedDate,
+                        code: '260.c'
+                      }, {
+                        value: data.industryIdentifiers[1].identifier,
+                        code: '020.a'
+                      }, {
+                        value: data.printType,
+                        code: '650.v'
+                      }, {
+                        value: data.pageCount,
+                        code: '300.a'
+                      }, {
+                        value: data.categories,
+                        code: '650.a'
+                      }, {
+                        value: data.language,
+                        code: '546.a'
+                      }, {
+                        value: data.description,
+                        code: '520.a'
+                      });
 
-                      _this5.updateCatalogingInfo();
+                      after = function after(res) {
+                        _this6.edit_info = res;
+
+                        _this6.sortInfo(_this6.edit_info);
+
+                        _this6.updateCatalogingInfo();
+
+                        _this6.message_success('import_from_google_api', {});
+                      };
+
+                      _this6.showModal(_ImportFromGoogleAPI_vue__WEBPACK_IMPORTED_MODULE_9__.default, {
+                        data: array,
+                        edit_info: _this6.edit_info,
+                        after: after
+                      });
+
+                      _this6.updateCatalogingInfo();
                     } catch (e) {
-                      _this5.$store.commit('setFullPageLoading', false);
+                      console.error(e);
 
-                      _this5.$prompt("Search google apis for isbn: " + isbn + " failed. Maybe you'd like to try to search with another isbn?").then(function (text) {
-                        _this5.importFromGoogleAPIs(text);
+                      _this6.$store.commit('setFullPageLoading', false);
+
+                      _this6.$prompt("Search google apis for isbn: " + isbn + " failed. Maybe you'd like to try to search with another isbn?").then(function (text) {
+                        _this6.importFromGoogleAPIs(text);
                       });
                     }
 
@@ -5761,7 +5798,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }())["catch"](function (e) {
           console.error(e);
         })["finally"](function () {
-          _this5.$store.commit('setFullPageLoading', false);
+          _this6.$store.commit('setFullPageLoading', false);
         });
       });
     },
@@ -5775,10 +5812,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       document.documentElement.classList.add("overflow-hidden");
     },
     getAuthority: function getAuthority() {
-      var _this6 = this;
+      var _this7 = this;
 
       this.$http.get('/cataloging/authority').then(function (response) {
-        _this6.authority = response.data.res;
+        _this7.authority = response.data.res;
       });
     }
   },
@@ -5789,6 +5826,101 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.getEditInfo();
       this.getAuthority();
     }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Cataloging/Edit/ImportFromGoogleAPI.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Cataloging/Edit/ImportFromGoogleAPI.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _components_Table__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../components/Table */ "./resources/js/admin/components/Table.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: {
+    data: [Object, Array],
+    edit_info: [Array],
+    after: Function
+  },
+  components: {
+    TableDiv: _components_Table__WEBPACK_IMPORTED_MODULE_0__.default
+  },
+  data: function data() {
+    return {
+      heads: [{
+        name: 'code',
+        link: 'code'
+      }, {
+        name: 'value',
+        link: 'value'
+      }],
+      selectable: {
+        available: true,
+        func: this.importIt,
+        button_title: 'save'
+      }
+    };
+  },
+  methods: {
+    importIt: function importIt(selected) {
+      var res = this.edit_info;
+      selected.forEach(function (e) {
+        if (e.value) {
+          var info = res.find(function (elem) {
+            return elem.id == e.code;
+          });
+
+          if (Array.isArray(e.value)) {
+            e.value.forEach(function (value) {
+              var new_data = copy(info);
+              new_data.is_added = true;
+              new_data.repeatable = null;
+
+              if (info.data) {
+                new_data.data = value;
+                res.push(new_data);
+              } else {
+                info.data = value;
+              }
+            });
+          } else {
+            info.data = e.value;
+          }
+        }
+      });
+      this.after(res);
+    }
+  },
+  created: function created() {
+    this.data.sort(function (a, b) {
+      if (a.code > b.code) {
+        return 1;
+      } else if (a.code == b.code) {
+        return 0;
+      }
+
+      return -1;
+    });
   }
 });
 
@@ -29286,9 +29418,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_common_assets_styles_colors_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! -!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../common/assets/styles/colors.css */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./resources/js/common/assets/styles/colors.css");
 /* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_common_assets_styles_common_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! -!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../common/assets/styles/common.css */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./resources/js/common/assets/styles/common.css");
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_common_assets_styles_sizes_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! -!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../common/assets/styles/sizes.css */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./resources/js/common/assets/styles/sizes.css");
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_assets_styles_style_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! -!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./assets/styles/style.css */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./resources/js/admin/assets/styles/style.css");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_common_assets_styles_font_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! -!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../common/assets/styles/font.css */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./resources/js/common/assets/styles/font.css");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_common_assets_styles_sizes_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! -!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../common/assets/styles/sizes.css */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./resources/js/common/assets/styles/sizes.css");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_assets_styles_style_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! -!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./assets/styles/style.css */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./resources/js/admin/assets/styles/style.css");
 // Imports
+
 
 
 
@@ -29297,8 +29431,9 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 ___CSS_LOADER_EXPORT___.i(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_common_assets_styles_colors_css__WEBPACK_IMPORTED_MODULE_1__.default);
 ___CSS_LOADER_EXPORT___.i(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_common_assets_styles_common_css__WEBPACK_IMPORTED_MODULE_2__.default);
-___CSS_LOADER_EXPORT___.i(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_common_assets_styles_sizes_css__WEBPACK_IMPORTED_MODULE_3__.default);
-___CSS_LOADER_EXPORT___.i(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_assets_styles_style_css__WEBPACK_IMPORTED_MODULE_4__.default);
+___CSS_LOADER_EXPORT___.i(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_common_assets_styles_font_css__WEBPACK_IMPORTED_MODULE_3__.default);
+___CSS_LOADER_EXPORT___.i(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_common_assets_styles_sizes_css__WEBPACK_IMPORTED_MODULE_4__.default);
+___CSS_LOADER_EXPORT___.i(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_assets_styles_style_css__WEBPACK_IMPORTED_MODULE_5__.default);
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, "\n", ""]);
 // Exports
@@ -29828,7 +29963,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n#navbar[data-v-152fd6fa]{\n\tbox-shadow: 0 0.125em 0.25em rgba(0, 0, 0, 0.25);\n\tmin-height: 5em;\n\theight:8.72vh;\n\tz-index: 100;\n\tpadding: 1.5625em;\n}\n.icon[data-v-152fd6fa]{\n\tpadding:0.3125em 0.46875em;\n\tfont-size: 1.73em;\n}\n.margin-right[data-v-152fd6fa]{\n\t/*at least ~20 px*/\n\tmargin-right:max(2.7vh,1.25em);\n}\n.left[data-v-152fd6fa]{\n\ttransform: rotate(90deg);\n}\n.shown[data-v-152fd6fa]{\n\tmax-height: 11.25em;\n}\n.link[data-v-152fd6fa]{\n\tmargin: 1em 0;\n}\n\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n#navbar[data-v-152fd6fa]{\n\tbox-shadow: 0 0.125em 0.25em rgba(0, 0, 0, 0.25);\n\tmin-height: 5em;\n\theight:8.72vh;\n\tz-index: 1000;\n\tpadding: 1.5625em;\n}\n.icon[data-v-152fd6fa]{\n\tpadding:0.3125em 0.46875em;\n\tfont-size: 1.73em;\n}\n.margin-right[data-v-152fd6fa]{\n\t/*at least ~20 px*/\n\tmargin-right:max(2.7vh,1.25em);\n}\n.left[data-v-152fd6fa]{\n\ttransform: rotate(90deg);\n}\n.shown[data-v-152fd6fa]{\n\tmax-height: 11.25em;\n}\n.link[data-v-152fd6fa]{\n\tmargin: 1em 0;\n}\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -29900,7 +30035,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "/*main stuff...initialization*/\n\ninput,\nbutton,\nselect,\ntextarea {\n    background: none;\n    font-size: 1em;\n    color: #333;\n    white-space: nowrap;\n}\n\nhtml,\ntextarea {\n    font-family: 'Roboto', sans-serif;\n    font-style: normal;\n    font-weight: normal;\n    line-height: 1.1875em;\n}\n\nhtml {\n    -webkit-user-select: none;\n    /* Safari */\n    -moz-user-select: none;\n    /* Firefox */\n    -ms-user-select: none;\n    /* IE10+/Edge */\n    user-select: none;\n    /* Standard */\n    color: #333333;\n    font-size: 13px;\n}\n\nbody {\n    padding: 0;\n    margin: 0;\n    background-color: #F9F9F9;\n}\n\nbody,\nhtml,\n#app,\n#main,\n#main>.main {\n    max-height: 100vh;\n}\n\n#main>.main {\n    overflow: auto;\n}\n\n\n/*custom*/\n\n.input_static_height {\n    height: 2.5em !important;\n}\n\n.select>select,\n.select>input {\n    appearance: none;\n    padding-right: 2em;\n}\n\n.select {\n    display: grid;\n    grid-template-areas: \"select\";\n    align-items: center;\n}\n\n.select>select,\n.select>input,\n.select:after {\n    grid-area: select;\n}\n\n.select::after {\n    content: \"\";\n    display: block;\n    width: 0.75em;\n    height: 0.375em;\n    margin-right: 1em;\n    background-color: black;\n    clip-path: polygon(100% 0%, 0 0%, 50% 100%);\n    justify-self: end;\n}\n\n.search_icon {\n    position: absolute;\n    right: 1em;\n}\n\n\n/*custom defaults*/\n\n#navbar,\n#sidebar {\n    position: sticky;\n    top: 0;\n}\n\n.sidebar_hidden {\n    width: 0!important;\n    min-width: 0!important;\n}\n\n.main_shown {\n    max-width: 100vw;\n}\n\n.link {\n    transition: color .25s;\n}\n\n.dropdown {\n    position: absolute;\n    width: 12.75em;\n    max-height: 0;\n    overflow: auto;\n    z-index: 3;\n    top: 100%;\n}\n\n.dropdown-left {\n    left: 0;\n}\n\n.dropdown-right {\n    right: 0;\n}\n\n.overflow-hidden {\n    overflow: hidden;\n}\n\n\n/*inputs and buttons stuff*/\n\ninput,\nbutton,\nselect,\ntextarea {\n    width: 100%;\n    height: 100%;\n    border: 0.0625em solid #B5BAC7;\n    padding: 0.625em 1.25em;\n    border-radius: 0.3125em;\n}\n\ntextarea {\n    padding-top: .625em;\n    padding-bottom: .625em;\n    min-height: 6.25em;\n}\n\nbutton,\nselect {\n    cursor: pointer;\n}\n\ninput:disabled,\nselect:disabled {\n    border-color: red;\n    color: grey;\n}\n\ninput:disabled::placeholder,\nselect:disabled::placeholder {\n    color: lightgrey;\n}\n\ninput:disabled~.placeholder,\nselect:disabled~.placeholder {\n    color: grey;\n}\n\n::placeholder {\n    color: #9C9FA7;\n    opacity: 1;\n}\n\n:-ms-input-placeholder {\n    /* Internet Explorer 10-11 */\n    color: red;\n}\n\n::-ms-input-placeholder {\n    /* Microsoft Edge */\n    color: red;\n}\n\nselect,\noption {\n    overflow: hidden;\n}\n\noption {\n    width: 100%;\n    max-width: 30em;\n}\n\noption {\n    white-space: nowrap;\n    text-overflow: ellipsis;\n}\n\nbutton {\n    background-color: #FF9D29;\n    color: white;\n    border-color: transparent;\n    transition: .3s;\n    font-weight: 500;\n}\n\nbutton:hover {\n    border: 1px solid white;\n}\n\n.required::before {\n    content: '* ';\n    color: red;\n}\n\n\n/*input's label float*/\n\n.placeholder {\n    position: absolute;\n    pointer-events: none;\n    background-color: white;\n    top: -0.5em;\n    left: 2em;\n    margin-left: -0.3125em;\n    padding: 0 0.3125em;\n    font-size: 0.8em;\n    color: #9C9FA7;\n    white-space: nowrap;\n}\n\n.select>.placeholder,\ninput[type=date]~.placeholder {\n    top: -0.8em;\n}\n\n\n/*bootstrap like stuff*/\n\n.outline-green,\n.outline-orange,\n.outline-black,\n.outline-red,\n.outline-blue {\n    background-color: transparent;\n    border: 1px solid;\n}\n\n.outline-green {\n    color: #00BB78;\n    border-color: #00BB78;\n}\n\n.outline-green:hover {\n    background-color: #00BB78;\n    color: white;\n}\n\n.outline-orange {\n    color: #FF9D29;\n    border-color: #FF9D29;\n}\n\n.outline-orange:hover {\n    background-color: #FF9D29;\n    color: white;\n}\n\n.outline-red {\n    color: #FF5756;\n    border-color: #FF5756;\n}\n\n.outline-red:hover {\n    background-color: #FF5756;\n    color: white;\n}\n\n.outline-black {\n    color: #333;\n}\n\n.outline-black:hover {\n    background-color: #333;\n    color: #F4F4F4;\n}\n\n.outline-blue {\n    color: #3F98EB;\n    border-color: #3F98EB;\n}\n\n.outline-blue:hover {\n    background-color: #3F98EB;\n    color: #F4F4F4;\n}\n\n.cancel-button {\n    background-color: #F4F4F4;\n    color: #333;\n}\n\n.cancel-button:hover {\n    border: 1px solid #333;\n}\n\n.text-choosable,\n.text-choosable * {\n    -webkit-user-select: text;\n    /* Safari */\n    -moz-user-select: text;\n    /* Firefox */\n    -ms-user-select: text;\n    /* IE10+/Edge */\n    user-select: text;\n    /* Standard */\n}\n\n.title {\n    font-size: 1.5em;\n    margin: .5em 0;\n}\n\n.subtitle {\n    font-size: 1.25em;\n    margin: 0.5em 0;\n}\n\n.border-black {\n    border-color: black !important;\n}\n\n.border-grey {\n    border-color: #B5BAC7 !important;\n}\n\n.border-orange {\n    border-color: #FF9D29 !important;\n}\n\n.no_border_left {\n    border-left: none;\n    margin-left: -0.3125em;\n}\n\n.caret-orange {\n    caret-color: #FF9D29;\n}\n\n.pad {\n    padding: 0.3125em !important;\n    position: relative;\n}\n\n.h-min-100 {\n    min-height: 100%;\n}\n\n.height-1 {\n    height: 0.0625em;\n}\n\n.font-weight-bold {\n    font-weight: 500 !important;\n}\n\n.z-index-1 {\n    z-index: 1;\n}\n\n.overflow-auto,\n.overflow-scroll {\n    overflow: auto;\n}\n\n.overflow-scroll {\n    border-bottom: 1px solid #E8E8E8;\n    scrollbar-width: .125em;\n    padding-right: .625em;\n    padding-bottom: .625em;\n}\n\n.overflow-scroll::-webkit-scrollbar {\n    width: 0.125em;\n}\n\n\n/*modal changes*/\n\ndiv.vm--overlay {\n    background-color: rgba(51, 51, 51, 0.3);\n}\n\ndiv.vm--container,\ndiv.vm--overlay {\n    transition: .5s;\n}\n\n\n/*cancellations*/\n\n.no-hover-color:hover {\n    color: initial;\n}\n\n.col,\n.col-1,\n.col-10,\n.col-11,\n.col-12,\n.col-2,\n.col-3,\n.col-4,\n.col-5,\n.col-6,\n.col-7,\n.col-8,\n.col-9,\n.col-auto,\n.col-lg,\n.col-lg-1,\n.col-lg-10,\n.col-lg-11,\n.col-lg-12,\n.col-lg-2,\n.col-lg-3,\n.col-lg-4,\n.col-lg-5,\n.col-lg-6,\n.col-lg-7,\n.col-lg-8,\n.col-lg-9,\n.col-lg-auto,\n.col-md,\n.col-md-1,\n.col-md-10,\n.col-md-11,\n.col-md-12,\n.col-md-2,\n.col-md-3,\n.col-md-4,\n.col-md-5,\n.col-md-6,\n.col-md-7,\n.col-md-8,\n.col-md-9,\n.col-md-auto,\n.col-sm,\n.col-sm-1,\n.col-sm-10,\n.col-sm-11,\n.col-sm-12,\n.col-sm-2,\n.col-sm-3,\n.col-sm-4,\n.col-sm-5,\n.col-sm-6,\n.col-sm-7,\n.col-sm-8,\n.col-sm-9,\n.col-sm-auto,\n.col-xl,\n.col-xl-1,\n.col-xl-10,\n.col-xl-11,\n.col-xl-12,\n.col-xl-2,\n.col-xl-3,\n.col-xl-4,\n.col-xl-5,\n.col-xl-6,\n.col-xl-7,\n.col-xl-8,\n.col-xl-9,\n.col-xl-auto {\n    padding-right: 0px;\n    padding-left: 0px;\n}\n\n.table thead th {\n    vertical-align: middle;\n}\n\n.table td,\n.table th {\n    vertical-align: middle;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "/*main stuff...initialization*/\n\ninput,\nbutton,\nselect,\ntextarea {\n    background: none;\n    font-size: 1em;\n    color: #333;\n    white-space: nowrap;\n}\n\nhtml,\ntextarea {\n    font-family: 'Roboto', sans-serif;\n    font-style: normal;\n    font-weight: normal;\n    line-height: 1.1875em;\n}\n\nhtml {\n    -webkit-user-select: none;\n    /* Safari */\n    -moz-user-select: none;\n    /* Firefox */\n    -ms-user-select: none;\n    /* IE10+/Edge */\n    user-select: none;\n    /* Standard */\n    color: #333333;\n    font-size: 13px;\n}\n\nbody {\n    padding: 0;\n    margin: 0;\n    background-color: #F9F9F9;\n}\n\nbody,\nhtml,\n#app,\n#main,\n#main>.main {\n    max-height: 100vh;\n}\n\n#main>.main {\n    overflow: auto;\n}\n\n\n/*custom*/\n\n.input_static_height {\n    height: 2.5em !important;\n}\n\n.select>select,\n.select>input {\n    appearance: none;\n    padding-right: 2em;\n}\n\n.select {\n    display: grid;\n    grid-template-areas: \"select\";\n    align-items: center;\n}\n\n.select>select,\n.select>input,\n.select:after {\n    grid-area: select;\n}\n\n.select::after {\n    content: \"\";\n    display: block;\n    width: 0.75em;\n    height: 0.375em;\n    margin-right: 1em;\n    background-color: black;\n    clip-path: polygon(100% 0%, 0 0%, 50% 100%);\n    justify-self: end;\n}\n\n.search_icon {\n    position: absolute;\n    right: 1em;\n}\n\n\n/*custom defaults*/\n\n#navbar,\n#sidebar {\n    position: sticky;\n    top: 0;\n}\n\n.sidebar_hidden {\n    width: 0!important;\n    min-width: 0!important;\n}\n\n.main_shown {\n    max-width: 100vw;\n}\n\n.link {\n    transition: color .25s;\n}\n\n.dropdown {\n    position: absolute;\n    width: 12.75em;\n    max-height: 0;\n    overflow: auto;\n    z-index: 998;\n    top: 100%;\n}\n\n.dropdown-left {\n    left: 0;\n}\n\n.dropdown-right {\n    right: 0;\n}\n\n.overflow-hidden {\n    overflow: hidden;\n}\n\n\n/*inputs and buttons stuff*/\n\ninput,\nbutton,\nselect,\ntextarea {\n    width: 100%;\n    height: 100%;\n    border: 0.0625em solid #B5BAC7;\n    padding: 0.625em 1.25em;\n    border-radius: 0.3125em;\n}\n\ntextarea {\n    padding-top: .625em;\n    padding-bottom: .625em;\n    min-height: 6.25em;\n}\n\nbutton,\nselect {\n    cursor: pointer;\n}\n\ninput:disabled,\nselect:disabled {\n    border-color: red;\n    color: grey;\n}\n\ninput:disabled::placeholder,\nselect:disabled::placeholder {\n    color: lightgrey;\n}\n\ninput:disabled~.placeholder,\nselect:disabled~.placeholder {\n    color: grey;\n}\n\n::placeholder {\n    color: #9C9FA7;\n    opacity: 1;\n}\n\n:-ms-input-placeholder {\n    /* Internet Explorer 10-11 */\n    color: red;\n}\n\n::-ms-input-placeholder {\n    /* Microsoft Edge */\n    color: red;\n}\n\nselect,\noption {\n    overflow: hidden;\n}\n\noption {\n    width: 100%;\n    max-width: 30em;\n}\n\noption {\n    white-space: nowrap;\n    text-overflow: ellipsis;\n}\n\nbutton {\n    background-color: #FF9D29;\n    color: white;\n    border-color: transparent;\n    transition: .3s;\n    font-weight: 500;\n}\n\nbutton:hover {\n    border: 1px solid white;\n}\n\n.required::before {\n    content: '* ';\n    color: red;\n}\n\n\n/*input's label float*/\n\n.placeholder {\n    position: absolute;\n    pointer-events: none;\n    background-color: white;\n    top: -0.5em;\n    left: 2em;\n    margin-left: -0.3125em;\n    padding: 0 0.3125em;\n    font-size: 0.8em;\n    color: #9C9FA7;\n    white-space: nowrap;\n}\n\n.select>.placeholder,\ninput[type=date]~.placeholder {\n    top: -0.8em;\n}\n\n\n/*bootstrap like stuff*/\n\n.outline-green,\n.outline-orange,\n.outline-black,\n.outline-red,\n.outline-blue {\n    background-color: transparent;\n    border: 1px solid;\n}\n\n.outline-green {\n    color: #00BB78;\n    border-color: #00BB78;\n}\n\n.outline-green:hover {\n    background-color: #00BB78;\n    color: white;\n}\n\n.outline-orange {\n    color: #FF9D29;\n    border-color: #FF9D29;\n}\n\n.outline-orange:hover {\n    background-color: #FF9D29;\n    color: white;\n}\n\n.outline-red {\n    color: #FF5756;\n    border-color: #FF5756;\n}\n\n.outline-red:hover {\n    background-color: #FF5756;\n    color: white;\n}\n\n.outline-black {\n    color: #333;\n}\n\n.outline-black:hover {\n    background-color: #333;\n    color: #F4F4F4;\n}\n\n.outline-blue {\n    color: #3F98EB;\n    border-color: #3F98EB;\n}\n\n.outline-blue:hover {\n    background-color: #3F98EB;\n    color: #F4F4F4;\n}\n\n.cancel-button {\n    background-color: #F4F4F4;\n    color: #333;\n}\n\n.cancel-button:hover {\n    border: 1px solid #333;\n}\n\n.text-choosable,\n.text-choosable * {\n    -webkit-user-select: text;\n    /* Safari */\n    -moz-user-select: text;\n    /* Firefox */\n    -ms-user-select: text;\n    /* IE10+/Edge */\n    user-select: text;\n    /* Standard */\n}\n\n.title {\n    font-size: 1.5em;\n    margin: .5em 0;\n}\n\n.subtitle {\n    font-size: 1.25em;\n    margin: 0.5em 0;\n}\n\n.border-black {\n    border-color: black !important;\n}\n\n.border-grey {\n    border-color: #B5BAC7 !important;\n}\n\n.border-orange {\n    border-color: #FF9D29 !important;\n}\n\n.no_border_left {\n    border-left: none;\n    margin-left: -0.3125em;\n}\n\n.caret-orange {\n    caret-color: #FF9D29;\n}\n\n.pad {\n    padding: 0.3125em !important;\n    position: relative;\n}\n\n.h-min-100 {\n    min-height: 100%;\n}\n\n.height-1 {\n    height: 0.0625em;\n}\n\n.font-weight-bold {\n    font-weight: 500 !important;\n}\n\n.z-index-1 {\n    z-index: 1;\n}\n\n.overflow-auto,\n.overflow-scroll {\n    overflow: auto;\n}\n\n.overflow-scroll {\n    border-bottom: 1px solid #E8E8E8;\n    scrollbar-width: .125em;\n    padding-right: .625em;\n    padding-bottom: .625em;\n}\n\n.overflow-scroll::-webkit-scrollbar {\n    width: 0.125em;\n}\n\n\n/*modal changes*/\n\ndiv.vm--overlay {\n    background-color: rgba(51, 51, 51, 0.3);\n}\n\ndiv.vm--container,\ndiv.vm--overlay {\n    transition: .5s;\n}\n\ndiv.vm--container {\n    z-index: 1000;\n}\n\n\n/*cancellations*/\n\n.no-hover-color:hover {\n    color: initial;\n}\n\n.col,\n.col-1,\n.col-10,\n.col-11,\n.col-12,\n.col-2,\n.col-3,\n.col-4,\n.col-5,\n.col-6,\n.col-7,\n.col-8,\n.col-9,\n.col-auto,\n.col-lg,\n.col-lg-1,\n.col-lg-10,\n.col-lg-11,\n.col-lg-12,\n.col-lg-2,\n.col-lg-3,\n.col-lg-4,\n.col-lg-5,\n.col-lg-6,\n.col-lg-7,\n.col-lg-8,\n.col-lg-9,\n.col-lg-auto,\n.col-md,\n.col-md-1,\n.col-md-10,\n.col-md-11,\n.col-md-12,\n.col-md-2,\n.col-md-3,\n.col-md-4,\n.col-md-5,\n.col-md-6,\n.col-md-7,\n.col-md-8,\n.col-md-9,\n.col-md-auto,\n.col-sm,\n.col-sm-1,\n.col-sm-10,\n.col-sm-11,\n.col-sm-12,\n.col-sm-2,\n.col-sm-3,\n.col-sm-4,\n.col-sm-5,\n.col-sm-6,\n.col-sm-7,\n.col-sm-8,\n.col-sm-9,\n.col-sm-auto,\n.col-xl,\n.col-xl-1,\n.col-xl-10,\n.col-xl-11,\n.col-xl-12,\n.col-xl-2,\n.col-xl-3,\n.col-xl-4,\n.col-xl-5,\n.col-xl-6,\n.col-xl-7,\n.col-xl-8,\n.col-xl-9,\n.col-xl-auto {\n    padding-right: 0px;\n    padding-left: 0px;\n}\n\n.table thead th {\n    vertical-align: middle;\n}\n\n.table td,\n.table th {\n    vertical-align: middle;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -29947,9 +30082,32 @@ __webpack_require__.r(__webpack_exports__);
 // Imports
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
-___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css?family=Roboto:400,400italic,500,500italic,700,700italic,900,900italic,300italic,300,100italic,100);"]);
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, "/* basic */\n\n* {\n    cursor: inherit;\n    /*firefox only scrollbar*/\n    scrollbar-color: #c5c5c5 white;\n    scrollbar-width: thin;\n}\n\n*:focus {\n    outline: none !important;\n}\n\n\n/* custom */\n\n.transition {\n    transition: .3s;\n}\n\n.cursor-pointer {\n    cursor: pointer;\n}\n\n.rotate {\n    transform: rotate(180deg);\n}\n\n.text-no-wrap,\n.text-no-wrap>* {\n    white-space: nowrap;\n}\n\n.link {\n    cursor: pointer;\n    color: inherit;\n    text-decoration: inherit;\n}\n\n.link:hover {\n    color: #FF8E0A !important;\n}\n\n.text-ellipsis {\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n\n\n/*crossbrowser scrollbars*/\n\n::-webkit-scrollbar {\n    width: 0.3125em;\n    height: 0.3125em;\n}\n\n::-webkit-scrollbar-thumb {\n    background: #c5c5c5;\n}\n\n::-webkit-scrollbar-track {\n    background: white;\n}\n\n\n/* remove bootstrap */\n\nlabel {\n    margin-bottom: unset;\n}\n\n\n/*responsiveness*/\n\n@media screen and (min-width: 1440px) {\n    html {\n        font-size: 16px !important;\n    }\n}\n\n@media screen and (min-width: 2000px) {\n    html {\n        font-size: 18px !important;\n    }\n}", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./resources/js/common/assets/styles/font.css":
+/*!******************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./resources/js/common/assets/styles/font.css ***!
+  \******************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "/* cyrillic-ext */\n@font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 100;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOiCnqEu92Fr1Mu51QrEz0dL_nz.woff2) format('woff2');\n    unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;\n  }\n  /* cyrillic */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 100;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOiCnqEu92Fr1Mu51QrEzQdL_nz.woff2) format('woff2');\n    unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;\n  }\n  /* greek-ext */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 100;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOiCnqEu92Fr1Mu51QrEzwdL_nz.woff2) format('woff2');\n    unicode-range: U+1F00-1FFF;\n  }\n  /* greek */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 100;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOiCnqEu92Fr1Mu51QrEzMdL_nz.woff2) format('woff2');\n    unicode-range: U+0370-03FF;\n  }\n  /* vietnamese */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 100;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOiCnqEu92Fr1Mu51QrEz8dL_nz.woff2) format('woff2');\n    unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB;\n  }\n  /* latin-ext */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 100;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOiCnqEu92Fr1Mu51QrEz4dL_nz.woff2) format('woff2');\n    unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;\n  }\n  /* latin */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 100;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOiCnqEu92Fr1Mu51QrEzAdLw.woff2) format('woff2');\n    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;\n  }\n  /* cyrillic-ext */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 300;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOjCnqEu92Fr1Mu51TjASc3CsTKlA.woff2) format('woff2');\n    unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;\n  }\n  /* cyrillic */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 300;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOjCnqEu92Fr1Mu51TjASc-CsTKlA.woff2) format('woff2');\n    unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;\n  }\n  /* greek-ext */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 300;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOjCnqEu92Fr1Mu51TjASc2CsTKlA.woff2) format('woff2');\n    unicode-range: U+1F00-1FFF;\n  }\n  /* greek */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 300;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOjCnqEu92Fr1Mu51TjASc5CsTKlA.woff2) format('woff2');\n    unicode-range: U+0370-03FF;\n  }\n  /* vietnamese */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 300;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOjCnqEu92Fr1Mu51TjASc1CsTKlA.woff2) format('woff2');\n    unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB;\n  }\n  /* latin-ext */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 300;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOjCnqEu92Fr1Mu51TjASc0CsTKlA.woff2) format('woff2');\n    unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;\n  }\n  /* latin */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 300;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOjCnqEu92Fr1Mu51TjASc6CsQ.woff2) format('woff2');\n    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;\n  }\n  /* cyrillic-ext */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 400;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOkCnqEu92Fr1Mu51xFIzIFKw.woff2) format('woff2');\n    unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;\n  }\n  /* cyrillic */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 400;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOkCnqEu92Fr1Mu51xMIzIFKw.woff2) format('woff2');\n    unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;\n  }\n  /* greek-ext */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 400;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOkCnqEu92Fr1Mu51xEIzIFKw.woff2) format('woff2');\n    unicode-range: U+1F00-1FFF;\n  }\n  /* greek */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 400;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOkCnqEu92Fr1Mu51xLIzIFKw.woff2) format('woff2');\n    unicode-range: U+0370-03FF;\n  }\n  /* vietnamese */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 400;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOkCnqEu92Fr1Mu51xHIzIFKw.woff2) format('woff2');\n    unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB;\n  }\n  /* latin-ext */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 400;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOkCnqEu92Fr1Mu51xGIzIFKw.woff2) format('woff2');\n    unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;\n  }\n  /* latin */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 400;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOkCnqEu92Fr1Mu51xIIzI.woff2) format('woff2');\n    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;\n  }\n  /* cyrillic-ext */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 500;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOjCnqEu92Fr1Mu51S7ACc3CsTKlA.woff2) format('woff2');\n    unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;\n  }\n  /* cyrillic */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 500;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOjCnqEu92Fr1Mu51S7ACc-CsTKlA.woff2) format('woff2');\n    unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;\n  }\n  /* greek-ext */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 500;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOjCnqEu92Fr1Mu51S7ACc2CsTKlA.woff2) format('woff2');\n    unicode-range: U+1F00-1FFF;\n  }\n  /* greek */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 500;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOjCnqEu92Fr1Mu51S7ACc5CsTKlA.woff2) format('woff2');\n    unicode-range: U+0370-03FF;\n  }\n  /* vietnamese */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 500;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOjCnqEu92Fr1Mu51S7ACc1CsTKlA.woff2) format('woff2');\n    unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB;\n  }\n  /* latin-ext */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 500;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOjCnqEu92Fr1Mu51S7ACc0CsTKlA.woff2) format('woff2');\n    unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;\n  }\n  /* latin */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 500;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOjCnqEu92Fr1Mu51S7ACc6CsQ.woff2) format('woff2');\n    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;\n  }\n  /* cyrillic-ext */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 700;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOjCnqEu92Fr1Mu51TzBic3CsTKlA.woff2) format('woff2');\n    unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;\n  }\n  /* cyrillic */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 700;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOjCnqEu92Fr1Mu51TzBic-CsTKlA.woff2) format('woff2');\n    unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;\n  }\n  /* greek-ext */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 700;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOjCnqEu92Fr1Mu51TzBic2CsTKlA.woff2) format('woff2');\n    unicode-range: U+1F00-1FFF;\n  }\n  /* greek */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 700;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOjCnqEu92Fr1Mu51TzBic5CsTKlA.woff2) format('woff2');\n    unicode-range: U+0370-03FF;\n  }\n  /* vietnamese */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 700;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOjCnqEu92Fr1Mu51TzBic1CsTKlA.woff2) format('woff2');\n    unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB;\n  }\n  /* latin-ext */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 700;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOjCnqEu92Fr1Mu51TzBic0CsTKlA.woff2) format('woff2');\n    unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;\n  }\n  /* latin */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 700;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOjCnqEu92Fr1Mu51TzBic6CsQ.woff2) format('woff2');\n    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;\n  }\n  /* cyrillic-ext */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 900;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOjCnqEu92Fr1Mu51TLBCc3CsTKlA.woff2) format('woff2');\n    unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;\n  }\n  /* cyrillic */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 900;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOjCnqEu92Fr1Mu51TLBCc-CsTKlA.woff2) format('woff2');\n    unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;\n  }\n  /* greek-ext */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 900;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOjCnqEu92Fr1Mu51TLBCc2CsTKlA.woff2) format('woff2');\n    unicode-range: U+1F00-1FFF;\n  }\n  /* greek */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 900;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOjCnqEu92Fr1Mu51TLBCc5CsTKlA.woff2) format('woff2');\n    unicode-range: U+0370-03FF;\n  }\n  /* vietnamese */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 900;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOjCnqEu92Fr1Mu51TLBCc1CsTKlA.woff2) format('woff2');\n    unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB;\n  }\n  /* latin-ext */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 900;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOjCnqEu92Fr1Mu51TLBCc0CsTKlA.woff2) format('woff2');\n    unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;\n  }\n  /* latin */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: italic;\n    font-weight: 900;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOjCnqEu92Fr1Mu51TLBCc6CsQ.woff2) format('woff2');\n    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;\n  }\n  /* cyrillic-ext */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 100;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOkCnqEu92Fr1MmgVxFIzIFKw.woff2) format('woff2');\n    unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;\n  }\n  /* cyrillic */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 100;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOkCnqEu92Fr1MmgVxMIzIFKw.woff2) format('woff2');\n    unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;\n  }\n  /* greek-ext */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 100;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOkCnqEu92Fr1MmgVxEIzIFKw.woff2) format('woff2');\n    unicode-range: U+1F00-1FFF;\n  }\n  /* greek */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 100;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOkCnqEu92Fr1MmgVxLIzIFKw.woff2) format('woff2');\n    unicode-range: U+0370-03FF;\n  }\n  /* vietnamese */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 100;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOkCnqEu92Fr1MmgVxHIzIFKw.woff2) format('woff2');\n    unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB;\n  }\n  /* latin-ext */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 100;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOkCnqEu92Fr1MmgVxGIzIFKw.woff2) format('woff2');\n    unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;\n  }\n  /* latin */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 100;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOkCnqEu92Fr1MmgVxIIzI.woff2) format('woff2');\n    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;\n  }\n  /* cyrillic-ext */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 300;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOlCnqEu92Fr1MmSU5fCRc4EsA.woff2) format('woff2');\n    unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;\n  }\n  /* cyrillic */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 300;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOlCnqEu92Fr1MmSU5fABc4EsA.woff2) format('woff2');\n    unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;\n  }\n  /* greek-ext */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 300;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOlCnqEu92Fr1MmSU5fCBc4EsA.woff2) format('woff2');\n    unicode-range: U+1F00-1FFF;\n  }\n  /* greek */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 300;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOlCnqEu92Fr1MmSU5fBxc4EsA.woff2) format('woff2');\n    unicode-range: U+0370-03FF;\n  }\n  /* vietnamese */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 300;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOlCnqEu92Fr1MmSU5fCxc4EsA.woff2) format('woff2');\n    unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB;\n  }\n  /* latin-ext */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 300;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOlCnqEu92Fr1MmSU5fChc4EsA.woff2) format('woff2');\n    unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;\n  }\n  /* latin */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 300;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOlCnqEu92Fr1MmSU5fBBc4.woff2) format('woff2');\n    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;\n  }\n  /* cyrillic-ext */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 400;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOmCnqEu92Fr1Mu72xKOzY.woff2) format('woff2');\n    unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;\n  }\n  /* cyrillic */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 400;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOmCnqEu92Fr1Mu5mxKOzY.woff2) format('woff2');\n    unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;\n  }\n  /* greek-ext */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 400;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOmCnqEu92Fr1Mu7mxKOzY.woff2) format('woff2');\n    unicode-range: U+1F00-1FFF;\n  }\n  /* greek */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 400;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOmCnqEu92Fr1Mu4WxKOzY.woff2) format('woff2');\n    unicode-range: U+0370-03FF;\n  }\n  /* vietnamese */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 400;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOmCnqEu92Fr1Mu7WxKOzY.woff2) format('woff2');\n    unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB;\n  }\n  /* latin-ext */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 400;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOmCnqEu92Fr1Mu7GxKOzY.woff2) format('woff2');\n    unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;\n  }\n  /* latin */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 400;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOmCnqEu92Fr1Mu4mxK.woff2) format('woff2');\n    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;\n  }\n  /* cyrillic-ext */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 500;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOlCnqEu92Fr1MmEU9fCRc4EsA.woff2) format('woff2');\n    unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;\n  }\n  /* cyrillic */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 500;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOlCnqEu92Fr1MmEU9fABc4EsA.woff2) format('woff2');\n    unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;\n  }\n  /* greek-ext */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 500;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOlCnqEu92Fr1MmEU9fCBc4EsA.woff2) format('woff2');\n    unicode-range: U+1F00-1FFF;\n  }\n  /* greek */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 500;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOlCnqEu92Fr1MmEU9fBxc4EsA.woff2) format('woff2');\n    unicode-range: U+0370-03FF;\n  }\n  /* vietnamese */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 500;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOlCnqEu92Fr1MmEU9fCxc4EsA.woff2) format('woff2');\n    unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB;\n  }\n  /* latin-ext */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 500;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOlCnqEu92Fr1MmEU9fChc4EsA.woff2) format('woff2');\n    unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;\n  }\n  /* latin */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 500;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOlCnqEu92Fr1MmEU9fBBc4.woff2) format('woff2');\n    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;\n  }\n  /* cyrillic-ext */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 700;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOlCnqEu92Fr1MmWUlfCRc4EsA.woff2) format('woff2');\n    unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;\n  }\n  /* cyrillic */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 700;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOlCnqEu92Fr1MmWUlfABc4EsA.woff2) format('woff2');\n    unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;\n  }\n  /* greek-ext */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 700;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOlCnqEu92Fr1MmWUlfCBc4EsA.woff2) format('woff2');\n    unicode-range: U+1F00-1FFF;\n  }\n  /* greek */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 700;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOlCnqEu92Fr1MmWUlfBxc4EsA.woff2) format('woff2');\n    unicode-range: U+0370-03FF;\n  }\n  /* vietnamese */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 700;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOlCnqEu92Fr1MmWUlfCxc4EsA.woff2) format('woff2');\n    unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB;\n  }\n  /* latin-ext */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 700;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOlCnqEu92Fr1MmWUlfChc4EsA.woff2) format('woff2');\n    unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;\n  }\n  /* latin */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 700;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOlCnqEu92Fr1MmWUlfBBc4.woff2) format('woff2');\n    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;\n  }\n  /* cyrillic-ext */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 900;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOlCnqEu92Fr1MmYUtfCRc4EsA.woff2) format('woff2');\n    unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;\n  }\n  /* cyrillic */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 900;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOlCnqEu92Fr1MmYUtfABc4EsA.woff2) format('woff2');\n    unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;\n  }\n  /* greek-ext */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 900;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOlCnqEu92Fr1MmYUtfCBc4EsA.woff2) format('woff2');\n    unicode-range: U+1F00-1FFF;\n  }\n  /* greek */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 900;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOlCnqEu92Fr1MmYUtfBxc4EsA.woff2) format('woff2');\n    unicode-range: U+0370-03FF;\n  }\n  /* vietnamese */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 900;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOlCnqEu92Fr1MmYUtfCxc4EsA.woff2) format('woff2');\n    unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB;\n  }\n  /* latin-ext */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 900;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOlCnqEu92Fr1MmYUtfChc4EsA.woff2) format('woff2');\n    unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;\n  }\n  /* latin */\n  @font-face {\n    font-family: 'Roboto';\n    font-style: normal;\n    font-weight: 900;\n    src: url(https://fonts.gstatic.com/s/roboto/v27/KFOlCnqEu92Fr1MmYUtfBBc4.woff2) format('woff2');\n    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;\n  }", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -62509,6 +62667,45 @@ component.options.__file = "resources/js/admin/views/Cataloging/Edit/Edit.vue"
 
 /***/ }),
 
+/***/ "./resources/js/admin/views/Cataloging/Edit/ImportFromGoogleAPI.vue":
+/*!**************************************************************************!*\
+  !*** ./resources/js/admin/views/Cataloging/Edit/ImportFromGoogleAPI.vue ***!
+  \**************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _ImportFromGoogleAPI_vue_vue_type_template_id_0c2cd484___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ImportFromGoogleAPI.vue?vue&type=template&id=0c2cd484& */ "./resources/js/admin/views/Cataloging/Edit/ImportFromGoogleAPI.vue?vue&type=template&id=0c2cd484&");
+/* harmony import */ var _ImportFromGoogleAPI_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ImportFromGoogleAPI.vue?vue&type=script&lang=js& */ "./resources/js/admin/views/Cataloging/Edit/ImportFromGoogleAPI.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
+  _ImportFromGoogleAPI_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
+  _ImportFromGoogleAPI_vue_vue_type_template_id_0c2cd484___WEBPACK_IMPORTED_MODULE_0__.render,
+  _ImportFromGoogleAPI_vue_vue_type_template_id_0c2cd484___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/admin/views/Cataloging/Edit/ImportFromGoogleAPI.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/admin/views/Cataloging/Edit/Preview.vue":
 /*!**************************************************************!*\
   !*** ./resources/js/admin/views/Cataloging/Edit/Preview.vue ***!
@@ -64148,6 +64345,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/admin/views/Cataloging/Edit/ImportFromGoogleAPI.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************!*\
+  !*** ./resources/js/admin/views/Cataloging/Edit/ImportFromGoogleAPI.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ImportFromGoogleAPI_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ImportFromGoogleAPI.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Cataloging/Edit/ImportFromGoogleAPI.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ImportFromGoogleAPI_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+
+/***/ }),
+
 /***/ "./resources/js/admin/views/Cataloging/Edit/Preview.vue?vue&type=script&lang=js&":
 /*!***************************************************************************************!*\
   !*** ./resources/js/admin/views/Cataloging/Edit/Preview.vue?vue&type=script&lang=js& ***!
@@ -65225,6 +65438,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Edit_vue_vue_type_template_id_e49fe630_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Edit_vue_vue_type_template_id_e49fe630_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Edit.vue?vue&type=template&id=e49fe630&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Cataloging/Edit/Edit.vue?vue&type=template&id=e49fe630&scoped=true&");
+
+
+/***/ }),
+
+/***/ "./resources/js/admin/views/Cataloging/Edit/ImportFromGoogleAPI.vue?vue&type=template&id=0c2cd484&":
+/*!*********************************************************************************************************!*\
+  !*** ./resources/js/admin/views/Cataloging/Edit/ImportFromGoogleAPI.vue?vue&type=template&id=0c2cd484& ***!
+  \*********************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ImportFromGoogleAPI_vue_vue_type_template_id_0c2cd484___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ImportFromGoogleAPI_vue_vue_type_template_id_0c2cd484___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ImportFromGoogleAPI_vue_vue_type_template_id_0c2cd484___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ImportFromGoogleAPI.vue?vue&type=template&id=0c2cd484& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Cataloging/Edit/ImportFromGoogleAPI.vue?vue&type=template&id=0c2cd484&");
 
 
 /***/ }),
@@ -66901,17 +67131,43 @@ var render = function() {
                         }
                       },
                       [
-                        _vm._v(
-                          "\n\t\t\t\t\t\t" +
-                            _vm._s(
-                              name.display_func
-                                ? name.display_func(info, name)
-                                : name.is_date && info[name.link] != null
-                                ? new Date(info[name.link]).toDateInputValue()
-                                : info[name.link]
-                            ) +
-                            "\n\t\t\t\t\t\t"
-                        ),
+                        info[name.link] != null
+                          ? _c(
+                              "span",
+                              [
+                                !Array.isArray(info[name.link])
+                                  ? _c("span", [
+                                      _vm._v(
+                                        "\n\t\t\t\t\t\t\t\t" +
+                                          _vm._s(
+                                            name.display_func
+                                              ? name.display_func(info, name)
+                                              : name.is_date
+                                              ? new Date(
+                                                  info[name.link]
+                                                ).toDateInputValue()
+                                              : info[name.link]
+                                          ) +
+                                          "\n\t\t\t\t\t\t\t"
+                                      )
+                                    ])
+                                  : _vm._l(info[name.link], function(
+                                      item,
+                                      index
+                                    ) {
+                                      return _c("div", { key: index }, [
+                                        _vm._v(
+                                          "\n\t\t\t\t\t\t\t\t[" +
+                                            _vm._s(item) +
+                                            "]\n\t\t\t\t\t\t\t"
+                                        )
+                                      ])
+                                    })
+                              ],
+                              2
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
                         (typeof name.edit_icon == "function"
                         ? name.edit_icon(info, name)
                         : name.edit_icon)
@@ -70910,51 +71166,61 @@ var render = function() {
           2
         ),
         _vm._v(" "),
-        _c("div", { staticClass: "p-3 ml-3 border rounded flex-fill " }, [
-          _c("div", { staticClass: "text-grey font-size-14 py-2 my-1" }, [
-            _vm._v(
-              "\n                        " +
-                _vm._s(_vm.$t("section_tag")) +
-                "\n                    "
-            )
-          ]),
-          _vm._v(" "),
+        _c("div", { staticClass: "p-3 ml-3 border rounded flex-fill" }, [
           _c(
             "div",
-            { staticClass: "d-flex" },
-            _vm._l(_vm.sectioned[_vm.sectionSelected].tags, function(
-              tag,
-              index
-            ) {
-              return _c(
-                "div",
-                {
-                  key: index,
-                  staticClass:
-                    "rounded px-3 py-2 font-weight-bold bg-lightgrey text-grey cursor-pointer",
-                  class: [
-                    {
-                      "bg-orange text-white":
-                        _vm.tagSelected.field_code == tag.field_code
-                    },
-                    { "ml-2": index != 0 }
-                  ],
-                  on: {
-                    click: function($event) {
-                      _vm.tagSelected = tag
-                    }
-                  }
-                },
-                [
+            {
+              staticClass: "d-flex align-items-center justify-content-between"
+            },
+            [
+              _c("div", [
+                _c("div", { staticClass: "text-grey font-size-14 py-2 my-1" }, [
                   _vm._v(
                     "\n                                " +
-                      _vm._s(tag.field_code) +
-                      "\n                        "
+                      _vm._s(_vm.$t("section_tag")) +
+                      "\n                            "
                   )
-                ]
-              )
-            }),
-            0
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "d-flex" },
+                  _vm._l(_vm.sectioned[_vm.sectionSelected].tags, function(
+                    tag,
+                    index
+                  ) {
+                    return _c(
+                      "div",
+                      {
+                        key: index,
+                        staticClass:
+                          "rounded px-3 py-2 font-weight-bold bg-lightgrey text-grey cursor-pointer",
+                        class: [
+                          {
+                            "bg-orange text-white":
+                              _vm.tagSelected.field_code == tag.field_code
+                          },
+                          { "ml-2": index != 0 }
+                        ],
+                        on: {
+                          click: function($event) {
+                            _vm.tagSelected = tag
+                          }
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n                                        " +
+                            _vm._s(tag.field_code) +
+                            "\n                                "
+                        )
+                      ]
+                    )
+                  }),
+                  0
+                )
+              ])
+            ]
           ),
           _vm._v(" "),
           _c("div", { staticClass: "text-center font-weight-bold" }, [
@@ -71289,6 +71555,46 @@ var render = function() {
       ])
     ])
   ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Cataloging/Edit/ImportFromGoogleAPI.vue?vue&type=template&id=0c2cd484&":
+/*!************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/admin/views/Cataloging/Edit/ImportFromGoogleAPI.vue?vue&type=template&id=0c2cd484& ***!
+  \************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("table-div", {
+        attrs: {
+          heads: _vm.heads,
+          data: _vm.data,
+          pagination: false,
+          selectable: _vm.selectable,
+          link: "link",
+          commit: "commit"
+        }
+      })
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -91795,7 +92101,7 @@ module.exports = function(xml, userOptions) {
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse("{\"back\":\"Back\",\"ok\":\"OK\",\"acquisitions\":\"Acquisitions\",\"batches\":\"Batch | Batches\",\"items\":\"Item | Items\",\"publishers\":\"Publisher | Publishers\",\"suppliers\":\"Supplier | Suppliers\",\"table\":\"Table\",\"logout\":\"Logout\",\"search\":\"Search\",\"searching\":\"Search\",\"reset\":\"Reset\",\"load_all\":\"Load all data\",\"count\":\"Count\",\"save\":\"Save\",\"cancel\":\"Cancel\",\"cost\":\"Cost\",\"from\":\"From\",\"until\":\"Until\",\"not_found\":\"No data found\",\"create_date\":\"Form fill date\",\"edit_date\":\"Form edit date\",\"results\":\"Results\",\"results_of\":\"results\",\"yes\":\"Yes\",\"no\":\"No\",\"edit\":\"Edit\",\"delete\":\"Delete\",\"create\":\"Create\",\"show_more\":\"Details\",\"more\":\"More ...\",\"confirmation\":\"Are you sure you want to delete?\",\"sort_by\":\"Sort by\",\"search_by\":\"Search by {type}\",\"author_by\":\"author\",\"title_by\":\"title\",\"barcode_by\":\"barcode\",\"batch_id_by\":\"batch number\",\"id_by\":\"inventory number\",\"isbn_by\":\"isbn\",\"and\":\"And\",\"or\":\"Or\",\"not\":\"Not\",\"per_page\":\"Results per page\",\"apply\":\"Apply\",\"showing_pages\":\"{from} - {to} out of {total}\",\"page\":\"Page\",\"page_num\":\"Page {num}\",\"previous\":\"Prev\",\"next\":\"Next\",\"move_to\":\"Move\",\"asc\":\"Ascending\",\"desc\":\"Descending\",\"refresh\":\"Refresh\",\"choose\":\"Choose\",\"choose_search_mode\":\"Choose search mode\",\"save_&_search\":\"Save and search\",\"error\":\"Error !\",\"batch_filter\":\"Batches filter\",\"item_filter\":\"Items filter\",\"search_batches\":\"Search batches\",\"search_items\":\"Search items\",\"search_barcodes\":\"Search barcodes\",\"batches_number\":\"Batch number\",\"batches_by\":\"batch number\",\"add_batch\":\"Add batch\",\"add_item\":\"Add item\",\"create_batches\":\"Create batch\",\"create_items\":\"Create item\",\"create_supplier\":\"Create supplier\",\"create_publisher\":\"Create publisher\",\"edit_batches\":\"Edit batch\",\"edit_items\":\"Edit item\",\"edit_supplier\":\"Edit supplier\",\"edit_publisher\":\"Edit publisher\",\"recreate\":\"Re-create\",\"reCreate_items\":\"Re-create item\",\"type_of_supply\":\"Type of supply\",\"type_of_item\":\"Type of item\",\"quantity_items\":\"Quantity of items\",\"quantity_titles\":\"Quantity of titles\",\"document_number\":\"Document number\",\"contract_number\":\"Contract number\",\"inventory_number\":\"Inventory number\",\"inv_id\":\"Inventory number\",\"types\":\"Types\",\"filled_in\":\"Filled in\",\"made_actually\":\"Made acutally\",\"correct\":\"Correct\",\"titles_no_match\":\"The number of titles does not match\",\"items_no_match\":\"The number of items does not match\",\"add_input\":\"Add input +\",\"status\":\"Status\",\"invoice_date\":\"Invoice date\",\"by_contract\":\"By contract\",\"invoice_details\":\"Invoice details\",\"barcode\":\"Barcode\",\"isbn\":\"ISBN\",\"created_by\":\"Form filled by\",\"edited_by\":\"Form edited by\",\"titles\":\"Title | Titles\",\"title\":\"Title\",\"author\":\"Author\",\"year\":\"Year\",\"call_number\":\"Call number\",\"pub_year\":\"Publisher year\",\"pub_city\":\"Publisher city\",\"location\":\"Location\",\"fill_date\":\"Form fill date\",\"beginning\":\"Start\",\"end\":\"End\",\"currency\":\"Currency\",\"author_title\":\"Author - title\",\"year_city\":\"Year - city\",\"name\":\"Name\",\"name_by\":\"name\",\"commercial_name\":\"Commercial name\",\"bin\":\"BIN / IIN\",\"contact\":\"Contacts\",\"address\":\"Address\",\"email\":\"E-mail\",\"phone\":\"Phone number\",\"fax\":\"Fax\",\"service_desk\":\"Service desk\",\"users\":\"Users\",\"books\":\"Books history\",\"search_user\":\"Search user\",\"type\":\"Type\",\"student\":\"Student\",\"employee\":\"Staff\",\"all\":\"All\",\"username\":\"Username\",\"user_id\":\"User ID\",\"user_id_user\":\"User ID (or name || surname)\",\"username_user\":\"Username (or name || surname)\",\"surname\":\"Surname\",\"section\":\"Section\",\"serve\":\"Book issuance\",\"check_in\":\"Issue\",\"search_material\":\"Search material\",\"user_info\":\"User information\",\"full_name\":\"Full name\",\"degree\":\"Degree\",\"class\":\"Year\",\"faculty\":\"Faculty\",\"program\":\"Program\",\"id\":\"ID\",\"mobile\":\"Phone number\",\"more_info\":\"More details\",\"select_all\":\"Select all ( {num} selected )\",\"delivery_date\":\"Delivery date\",\"due_date\":\"Due date\",\"issue_date\":\"Issue date\",\"borrow_date\":\"Borrow date\",\"last_user_borrowed\":\"Last user\",\"give_material\":\"Give material\",\"hesab_id\":\"Batch ID\",\"batch_id\":\"Batch Id\",\"items_no\":\"Quantity of items\",\"titles_no\":\"Quantity of titles\",\"receive_date\":\"Form fill date\",\"supplier_id\":\"Supplier ID\",\"supplier_name\":\"Supplier name\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"Publisher ID\",\"com_name\":\"Commercial name\",\"reports\":\"Reports\",\"attendance\":\"Attendance\",\"mrbooks\":\"Most read books\",\"attendance_statistics\":\"Virtual attendance statistics\",\"show_for_week\":\"Show for week\",\"show_for_month\":\"Show for month\",\"in_lib_by_week\":\"In library by week\",\"in_lib_by_month\":\"In library by year\",\"print\":\"Print barcode\",\"language\":\"Language\",\"show_in_table\":\"Show in table\",\"clear_selected\":\"Clear selected\",\"duration\":\"Duration\",\"duration_in_days\":\"Duration ( in days )\",\"edit_duration\":\"Edit duration\",\"issuance\":\"Issuance\",\"return\":\"Return\",\"history\":\"History\",\"dept\":\"Overdue\",\"borrowed\":\"Borrowed\",\"returned\":\"Returned\",\"initialize\":\"Initialize\",\"read_from_rfid\":\"Read from RFID\",\"init_status\":\"Initialized\",\"print_status\":\"Printed\",\"date\":\"Date\",\"days\":\"Days\",\"import_from_google_api\":\"Import from google api\",\"cataloging\":\"Cataloging\",\"search_cataloging\":\"Search by ISBN || Title || Author\",\"edit_rec\":\"Edit record\",\"management\":\"Management: {info}\",\"print_call_number\":\"Print call number\",\"preview\":\"Preview\",\"import_from_worldcat\":\"Import from WorldCat\",\"export_to_xml\":\"Export to XML\",\"section_tag\":\"Section tag\",\"subtags\":\"SubTags\",\"ind1\":\"IND1\",\"ind2\":\"IND2\",\"data\":\"Data\"}");
+module.exports = JSON.parse("{\"back\":\"Back\",\"ok\":\"OK\",\"acquisitions\":\"Acquisitions\",\"batches\":\"Batch | Batches\",\"items\":\"Item | Items\",\"publishers\":\"Publisher | Publishers\",\"suppliers\":\"Supplier | Suppliers\",\"table\":\"Table\",\"logout\":\"Logout\",\"search\":\"Search\",\"searching\":\"Search\",\"reset\":\"Reset\",\"load_all\":\"Load all data\",\"count\":\"Count\",\"save\":\"Save\",\"cancel\":\"Cancel\",\"cost\":\"Cost\",\"from\":\"From\",\"until\":\"Until\",\"not_found\":\"No data found\",\"create_date\":\"Form fill date\",\"edit_date\":\"Form edit date\",\"results\":\"Results\",\"results_of\":\"results\",\"yes\":\"Yes\",\"no\":\"No\",\"edit\":\"Edit\",\"delete\":\"Delete\",\"create\":\"Create\",\"show_more\":\"Details\",\"more\":\"More ...\",\"confirmation\":\"Are you sure you want to delete?\",\"sort_by\":\"Sort by\",\"search_by\":\"Search by {type}\",\"author_by\":\"author\",\"title_by\":\"title\",\"barcode_by\":\"barcode\",\"batch_id_by\":\"batch number\",\"id_by\":\"inventory number\",\"isbn_by\":\"isbn\",\"and\":\"And\",\"or\":\"Or\",\"not\":\"Not\",\"per_page\":\"Results per page\",\"apply\":\"Apply\",\"showing_pages\":\"{from} - {to} out of {total}\",\"page\":\"Page\",\"page_num\":\"Page {num}\",\"previous\":\"Prev\",\"next\":\"Next\",\"move_to\":\"Move\",\"asc\":\"Ascending\",\"desc\":\"Descending\",\"refresh\":\"Refresh\",\"choose\":\"Choose\",\"choose_search_mode\":\"Choose search mode\",\"save_&_search\":\"Save and search\",\"error\":\"Error !\",\"batch_filter\":\"Batches filter\",\"item_filter\":\"Items filter\",\"search_batches\":\"Search batches\",\"search_items\":\"Search items\",\"search_barcodes\":\"Search barcodes\",\"batches_number\":\"Batch number\",\"batches_by\":\"batch number\",\"add_batch\":\"Add batch\",\"add_item\":\"Add item\",\"create_batches\":\"Create batch\",\"create_items\":\"Create item\",\"create_supplier\":\"Create supplier\",\"create_publisher\":\"Create publisher\",\"edit_batches\":\"Edit batch\",\"edit_items\":\"Edit item\",\"edit_supplier\":\"Edit supplier\",\"edit_publisher\":\"Edit publisher\",\"recreate\":\"Re-create\",\"reCreate_items\":\"Re-create item\",\"type_of_supply\":\"Type of supply\",\"type_of_item\":\"Type of item\",\"quantity_items\":\"Quantity of items\",\"quantity_titles\":\"Quantity of titles\",\"document_number\":\"Document number\",\"contract_number\":\"Contract number\",\"inventory_number\":\"Inventory number\",\"inv_id\":\"Inventory number\",\"types\":\"Types\",\"filled_in\":\"Filled in\",\"made_actually\":\"Made acutally\",\"correct\":\"Correct\",\"titles_no_match\":\"The number of titles does not match\",\"items_no_match\":\"The number of items does not match\",\"add_input\":\"Add input +\",\"status\":\"Status\",\"invoice_date\":\"Invoice date\",\"by_contract\":\"By contract\",\"invoice_details\":\"Invoice details\",\"barcode\":\"Barcode\",\"isbn\":\"ISBN\",\"created_by\":\"Form filled by\",\"edited_by\":\"Form edited by\",\"titles\":\"Title | Titles\",\"title\":\"Title\",\"author\":\"Author\",\"year\":\"Year\",\"call_number\":\"Call number\",\"pub_year\":\"Publisher year\",\"pub_city\":\"Publisher city\",\"location\":\"Location\",\"fill_date\":\"Form fill date\",\"beginning\":\"Start\",\"end\":\"End\",\"currency\":\"Currency\",\"author_title\":\"Author - title\",\"year_city\":\"Year - city\",\"name\":\"Name\",\"name_by\":\"name\",\"commercial_name\":\"Commercial name\",\"bin\":\"BIN / IIN\",\"contact\":\"Contacts\",\"address\":\"Address\",\"email\":\"E-mail\",\"phone\":\"Phone number\",\"fax\":\"Fax\",\"service_desk\":\"Service desk\",\"users\":\"Users\",\"books\":\"Books history\",\"search_user\":\"Search user\",\"type\":\"Type\",\"student\":\"Student\",\"employee\":\"Staff\",\"all\":\"All\",\"username\":\"Username\",\"user_id\":\"User ID\",\"user_id_user\":\"User ID (or name || surname)\",\"username_user\":\"Username (or name || surname)\",\"surname\":\"Surname\",\"section\":\"Section\",\"serve\":\"Book issuance\",\"check_in\":\"Issue\",\"search_material\":\"Search material\",\"user_info\":\"User information\",\"full_name\":\"Full name\",\"degree\":\"Degree\",\"class\":\"Year\",\"faculty\":\"Faculty\",\"program\":\"Program\",\"id\":\"ID\",\"mobile\":\"Phone number\",\"more_info\":\"More details\",\"select_all\":\"Select all ( {num} selected )\",\"delivery_date\":\"Delivery date\",\"due_date\":\"Due date\",\"issue_date\":\"Issue date\",\"borrow_date\":\"Borrow date\",\"last_user_borrowed\":\"Last user\",\"give_material\":\"Give material\",\"hesab_id\":\"Batch ID\",\"batch_id\":\"Batch Id\",\"items_no\":\"Quantity of items\",\"titles_no\":\"Quantity of titles\",\"receive_date\":\"Form fill date\",\"supplier_id\":\"Supplier ID\",\"supplier_name\":\"Supplier name\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"Publisher ID\",\"com_name\":\"Commercial name\",\"reports\":\"Reports\",\"attendance\":\"Attendance\",\"mrbooks\":\"Most read books\",\"attendance_statistics\":\"Virtual attendance statistics\",\"show_for_week\":\"Show for week\",\"show_for_month\":\"Show for month\",\"in_lib_by_week\":\"In library by week\",\"in_lib_by_month\":\"In library by year\",\"print\":\"Print barcode\",\"language\":\"Language\",\"show_in_table\":\"Show in table\",\"clear_selected\":\"Clear selected\",\"duration\":\"Duration\",\"duration_in_days\":\"Duration ( in days )\",\"edit_duration\":\"Edit duration\",\"issuance\":\"Issuance\",\"return\":\"Return\",\"history\":\"History\",\"dept\":\"Overdue\",\"borrowed\":\"Borrowed\",\"returned\":\"Returned\",\"initialize\":\"Initialize\",\"read_from_rfid\":\"Read from RFID\",\"init_status\":\"Initialized\",\"print_status\":\"Printed\",\"date\":\"Date\",\"days\":\"Days\",\"import_from_google_api\":\"Import from google api\",\"code\":\"Code\",\"value\":\"Value\",\"cataloging\":\"Cataloging\",\"search_cataloging\":\"Search by ISBN || Title || Author\",\"edit_rec\":\"Edit record\",\"management\":\"Management: {info}\",\"print_call_number\":\"Print call number\",\"preview\":\"Preview\",\"import_from_worldcat\":\"Import from WorldCat\",\"export_to_xml\":\"Export to XML\",\"section_tag\":\"Section tag\",\"subtags\":\"SubTags\",\"ind1\":\"IND1\",\"ind2\":\"IND2\",\"data\":\"Data\"}");
 
 /***/ }),
 
@@ -91806,7 +92112,7 @@ module.exports = JSON.parse("{\"back\":\"Back\",\"ok\":\"OK\",\"acquisitions\":\
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse("{\"back\":\"Артқа\",\"ok\":\"ОК\",\"acquisitions\":\"Кітап қабылдау\",\"batches\":\"Партия | Партиялар\",\"items\":\"Дана | Даналар\",\"publishers\":\"Баспагер | Баспагерлер\",\"suppliers\":\"Жеткізуші | Жеткізушілер\",\"table\":\"Таблица\",\"logout\":\"Шығу\",\"search\":\"Іздеу\",\"searching\":\"Іздеу\",\"reset\":\"Қалпына келтіру\",\"load_all\":\"Барін көрсету\",\"count\":\"Сандар\",\"save\":\"Сақтау\",\"cancel\":\"Бас тарту\",\"cost\":\"Бағасы\",\"from\":\"Бастап\",\"until\":\"Дейін\",\"not_found\":\"Деректер табылмады\",\"create_date\":\"Форма толтырылған күні\",\"edit_date\":\"Форма өзгертілген күні\",\"results\":\"Нәтижелер\",\"results_of\":\"нәтиже табылды\",\"yes\":\"Ия\",\"no\":\"Жоқ\",\"edit\":\"Өзгерту\",\"delete\":\"Жою\",\"create\":\"Қосу\",\"show_more\":\"Көбірек\",\"more\":\"Көбірек ...\",\"confirmation\":\"Жойғыңыз келетініне сенімдісіз бе?\",\"sort_by\":\"Сұрыптау\",\"search_by\":\"{type} іздеу\",\"author_by\":\"Авторымен\",\"title_by\":\"Тақырырбымен\",\"barcode_by\":\"Баркодымен\",\"batch_id_by\":\"Партия нөмірімен\",\"id_by\":\"Инвентарь нөмірімен\",\"isbn_by\":\"ISBN-мен\",\"and\":\"Және\",\"or\":\"Немесе\",\"not\":\"Емес\",\"per_page\":\"Парақтагы нәтижелер саны\",\"apply\":\"Растау\",\"showing_pages\":\"{total} нәтиженің {from} - {to} көрсетілуде\",\"page\":\"Бет\",\"page_num\":\"{num} бет\",\"previous\":\"Артқа\",\"next\":\"Келесі\",\"move_to\":\"Өту\",\"asc\":\"Өсу\",\"desc\":\"Азаю\",\"refresh\":\"Жаңарту\",\"choose\":\"Таңдаңыз\",\"choose_search_mode\":\"Іздеу режимін таңдаңыз\",\"save_&_search\":\"Сақтау және іздеу\",\"error\":\"Қате !\",\"batch_filter\":\"Партиялық сүзгі\",\"item_filter\":\"Даналық сүзгі\",\"search_batches\":\"Партия іздеу\",\"search_items\":\"Дана іздеу\",\"search_barcodes\":\"Баркод іздеу\",\"batches_number\":\"Партия нөмірі\",\"batches_by\":\"Партия нөмірімен\",\"add_batch\":\"Партия қосу\",\"add_item\":\"Дана қосу\",\"create_batches\":\"Партия қосу\",\"create_items\":\"Дана қосу\",\"create_supplier\":\"Жеткізуші қосу\",\"create_publisher\":\"Баспагер қосу\",\"edit_batches\":\"Партия өзгерту\",\"edit_items\":\"Дана өзгерту\",\"edit_supplier\":\"Жеткізуші өзгерту\",\"edit_publisher\":\"Баспагер өзгерту\",\"recreate\":\"Қайта қосу\",\"reCreate_items\":\"Дана қайта қосу\",\"type_of_supply\":\"Жеткізу түрі\",\"type_of_item\":\"Дана түрі\",\"quantity_items\":\"Дана саны\",\"quantity_titles\":\"Тақырып саны\",\"document_number\":\"Документ нөмірі\",\"contract_number\":\"Контракт нөмірі\",\"inventory_number\":\"Инвентарь нөмірі\",\"inv_id\":\"Инвентарь нөмірі\",\"types\":\"Түрлер\",\"filled_in\":\"Енгізілді\",\"made_actually\":\"Негізгі саны\",\"correct\":\"Дұрыс\",\"titles_no_match\":\"Тақырыптар саны сәйкес келмейді\",\"items_no_match\":\"Даналар саны сәйкес келмейді\",\"add_input\":\"Енгізуді қосу +\",\"status\":\"Статус\",\"invoice_date\":\"Жеткізген күні\",\"by_contract\":\"Контракт арқылы\",\"invoice_details\":\"Жеткізу деректері\",\"barcode\":\"Баркод\",\"isbn\":\"ISBN\",\"created_by\":\"Толтырылды\",\"edited_by\":\"Өзгертілді\",\"titles\":\"Атау | Атаулар\",\"title\":\"Атау\",\"author\":\"Автор\",\"year\":\"Жылы\",\"call_number\":\"Нөмірі\",\"pub_year\":\"Баспа жылы\",\"pub_city\":\"Баспа қаласы\",\"location\":\"Орналасқан жері\",\"fill_date\":\"Толтырылған күні\",\"beginning\":\"Бастап\",\"end\":\"Дейін\",\"currency\":\"Валютасы\",\"author_title\":\"Автор - атауы\",\"year_city\":\"Жыл - қаласы\",\"name\":\"Аты\",\"name_by\":\"Атымен\",\"commercial_name\":\"Коммерциялық аты\",\"bin\":\"BIN / IIN\",\"contact\":\"Байланыстар\",\"address\":\"Мекен-жайы\",\"email\":\"Электрондық поштасы\",\"phone\":\"Телефон нөмірі\",\"fax\":\"Факс\",\"service_desk\":\"Қызмет көрсету\",\"users\":\"Пайдаланушылар\",\"books\":\"Кітаптар тарихы\",\"search_user\":\"Пайдаланушы іздеу\",\"type\":\"Түрі\",\"student\":\"Студент\",\"employee\":\"Қызметкер\",\"all\":\"Бәрі\",\"username\":\"Пайдаланушы аты\",\"user_id\":\"Пайдаланушы ID\",\"user_id_user\":\"Пайдаланушы ID (немесе аты || жөні)\",\"username_user\":\"Пайдаланушы аты (немесе аты || жөні)\",\"surname\":\"Тегі\",\"section\":\"Бөлімі\",\"serve\":\"Кітап беру\",\"check_in\":\"Беру\",\"search_material\":\"Материал іздеу\",\"user_info\":\"Пайдаланушы туралы ақпарат\",\"full_name\":\"Аты - тегі\",\"degree\":\"Дәрежесі\",\"class\":\"Оқу жылы\",\"faculty\":\"Факультеті\",\"program\":\"Бағдарламасы\",\"id\":\"ID\",\"mobile\":\"Телефон нөмірі\",\"more_info\":\"Толығырақ\",\"select_all\":\"Барлығын таңдау ( {num} таңдалды )\",\"delivery_date\":\"Жеткізілім уақыты\",\"due_date\":\"Мерзімнің өту күні\",\"issue_date\":\"Берілген күні\",\"borrow_date\":\"Қарызға алу күні\",\"last_user_borrowed\":\"Соңғы пайдаланушы\",\"give_material\":\"Материал беру\",\"hesab_id\":\"Партия ID\",\"batch_id\":\"Партия ID\",\"items_no\":\"Дана саны\",\"titles_no\":\"Тақырып саны\",\"receive_date\":\"Толтырылған күні\",\"supplier_id\":\"Жеткізуші ID\",\"supplier_name\":\"Жеткізущі аты\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"Баспагер ID\",\"com_name\":\"Коммерциялық аты\",\"reports\":\"Есептер\",\"attendance\":\"Қатысу\",\"mrbooks\":\"Көпшілігі оқитын кітаптар\",\"attendance_statistics\":\"Қатысушылардың виртуалды статистикасы\",\"show_for_week\":\"Бір апта бойынша көрсету\",\"show_for_month\":\"Бір ай бойынша көрсету\",\"in_lib_by_week\":\"Бір аптада кітапханада\",\"in_lib_by_month\":\"Бір жылда кітапханада\",\"print\":\"Баркодты басып шығару\",\"language\":\"Тілі\",\"show_in_table\":\"Кестеде көрсету\",\"clear_selected\":\"Таңдалғандарды жою\",\"duration\":\"Ұзақтығы\",\"duration_in_days\":\"Ұзақтығы ( күндермен )\",\"edit_duration\":\"Ұзақтықты өзгерту\",\"issuance\":\"Беру\",\"return\":\"Қайтару\",\"history\":\"Тарих\",\"dept\":\"Мерзімі өткен\",\"borrowed\":\"Қарызға алынған\",\"returned\":\"Қайтарылған\",\"initialize\":\"Инициализациялау\",\"read_from_rfid\":\"RFID-ден оқу\",\"init_status\":\"Инициализацияланған\",\"print_status\":\"Басылған\",\"date\":\"Дата\",\"days\":\"Күндер\",\"import_from_google_api\":\"Google api-дан импорттау\",\"cataloging\":\"Каталогтау\",\"search_cataloging\":\"ISBN || Атауы || Автор бойынша іздеу\",\"edit_rec\":\"Жазбаны өңдеу\",\"management\":\"Басқару: {info}\",\"print_call_number\":\"Нөмірін басып шығару\",\"preview\":\"Алдын ала қарау\",\"import_from_worldcat\":\"WorldCat-тан импорттау\",\"export_to_xml\":\"XML-ге экспорттау\",\"section_tag\":\"Бөлім тегі\",\"subtags\":\"Қосымша белгілер\",\"ind1\":\"IND1\",\"ind2\":\"IND2\",\"data\":\"Деректер\"}");
+module.exports = JSON.parse("{\"back\":\"Артқа\",\"ok\":\"ОК\",\"acquisitions\":\"Кітап қабылдау\",\"batches\":\"Партия | Партиялар\",\"items\":\"Дана | Даналар\",\"publishers\":\"Баспагер | Баспагерлер\",\"suppliers\":\"Жеткізуші | Жеткізушілер\",\"table\":\"Таблица\",\"logout\":\"Шығу\",\"search\":\"Іздеу\",\"searching\":\"Іздеу\",\"reset\":\"Қалпына келтіру\",\"load_all\":\"Барін көрсету\",\"count\":\"Сандар\",\"save\":\"Сақтау\",\"cancel\":\"Бас тарту\",\"cost\":\"Бағасы\",\"from\":\"Бастап\",\"until\":\"Дейін\",\"not_found\":\"Деректер табылмады\",\"create_date\":\"Форма толтырылған күні\",\"edit_date\":\"Форма өзгертілген күні\",\"results\":\"Нәтижелер\",\"results_of\":\"нәтиже табылды\",\"yes\":\"Ия\",\"no\":\"Жоқ\",\"edit\":\"Өзгерту\",\"delete\":\"Жою\",\"create\":\"Қосу\",\"show_more\":\"Көбірек\",\"more\":\"Көбірек ...\",\"confirmation\":\"Жойғыңыз келетініне сенімдісіз бе?\",\"sort_by\":\"Сұрыптау\",\"search_by\":\"{type} іздеу\",\"author_by\":\"Авторымен\",\"title_by\":\"Тақырырбымен\",\"barcode_by\":\"Баркодымен\",\"batch_id_by\":\"Партия нөмірімен\",\"id_by\":\"Инвентарь нөмірімен\",\"isbn_by\":\"ISBN-мен\",\"and\":\"Және\",\"or\":\"Немесе\",\"not\":\"Емес\",\"per_page\":\"Парақтагы нәтижелер саны\",\"apply\":\"Растау\",\"showing_pages\":\"{total} нәтиженің {from} - {to} көрсетілуде\",\"page\":\"Бет\",\"page_num\":\"{num} бет\",\"previous\":\"Артқа\",\"next\":\"Келесі\",\"move_to\":\"Өту\",\"asc\":\"Өсу\",\"desc\":\"Азаю\",\"refresh\":\"Жаңарту\",\"choose\":\"Таңдаңыз\",\"choose_search_mode\":\"Іздеу режимін таңдаңыз\",\"save_&_search\":\"Сақтау және іздеу\",\"error\":\"Қате !\",\"batch_filter\":\"Партиялық сүзгі\",\"item_filter\":\"Даналық сүзгі\",\"search_batches\":\"Партия іздеу\",\"search_items\":\"Дана іздеу\",\"search_barcodes\":\"Баркод іздеу\",\"batches_number\":\"Партия нөмірі\",\"batches_by\":\"Партия нөмірімен\",\"add_batch\":\"Партия қосу\",\"add_item\":\"Дана қосу\",\"create_batches\":\"Партия қосу\",\"create_items\":\"Дана қосу\",\"create_supplier\":\"Жеткізуші қосу\",\"create_publisher\":\"Баспагер қосу\",\"edit_batches\":\"Партия өзгерту\",\"edit_items\":\"Дана өзгерту\",\"edit_supplier\":\"Жеткізуші өзгерту\",\"edit_publisher\":\"Баспагер өзгерту\",\"recreate\":\"Қайта қосу\",\"reCreate_items\":\"Дана қайта қосу\",\"type_of_supply\":\"Жеткізу түрі\",\"type_of_item\":\"Дана түрі\",\"quantity_items\":\"Дана саны\",\"quantity_titles\":\"Тақырып саны\",\"document_number\":\"Документ нөмірі\",\"contract_number\":\"Контракт нөмірі\",\"inventory_number\":\"Инвентарь нөмірі\",\"inv_id\":\"Инвентарь нөмірі\",\"types\":\"Түрлер\",\"filled_in\":\"Енгізілді\",\"made_actually\":\"Негізгі саны\",\"correct\":\"Дұрыс\",\"titles_no_match\":\"Тақырыптар саны сәйкес келмейді\",\"items_no_match\":\"Даналар саны сәйкес келмейді\",\"add_input\":\"Енгізуді қосу +\",\"status\":\"Статус\",\"invoice_date\":\"Жеткізген күні\",\"by_contract\":\"Контракт арқылы\",\"invoice_details\":\"Жеткізу деректері\",\"barcode\":\"Баркод\",\"isbn\":\"ISBN\",\"created_by\":\"Толтырылды\",\"edited_by\":\"Өзгертілді\",\"titles\":\"Атау | Атаулар\",\"title\":\"Атау\",\"author\":\"Автор\",\"year\":\"Жылы\",\"call_number\":\"Нөмірі\",\"pub_year\":\"Баспа жылы\",\"pub_city\":\"Баспа қаласы\",\"location\":\"Орналасқан жері\",\"fill_date\":\"Толтырылған күні\",\"beginning\":\"Бастап\",\"end\":\"Дейін\",\"currency\":\"Валютасы\",\"author_title\":\"Автор - атауы\",\"year_city\":\"Жыл - қаласы\",\"name\":\"Аты\",\"name_by\":\"Атымен\",\"commercial_name\":\"Коммерциялық аты\",\"bin\":\"BIN / IIN\",\"contact\":\"Байланыстар\",\"address\":\"Мекен-жайы\",\"email\":\"Электрондық поштасы\",\"phone\":\"Телефон нөмірі\",\"fax\":\"Факс\",\"service_desk\":\"Қызмет көрсету\",\"users\":\"Пайдаланушылар\",\"books\":\"Кітаптар тарихы\",\"search_user\":\"Пайдаланушы іздеу\",\"type\":\"Түрі\",\"student\":\"Студент\",\"employee\":\"Қызметкер\",\"all\":\"Бәрі\",\"username\":\"Пайдаланушы аты\",\"user_id\":\"Пайдаланушы ID\",\"user_id_user\":\"Пайдаланушы ID (немесе аты || жөні)\",\"username_user\":\"Пайдаланушы аты (немесе аты || жөні)\",\"surname\":\"Тегі\",\"section\":\"Бөлімі\",\"serve\":\"Кітап беру\",\"check_in\":\"Беру\",\"search_material\":\"Материал іздеу\",\"user_info\":\"Пайдаланушы туралы ақпарат\",\"full_name\":\"Аты - тегі\",\"degree\":\"Дәрежесі\",\"class\":\"Оқу жылы\",\"faculty\":\"Факультеті\",\"program\":\"Бағдарламасы\",\"id\":\"ID\",\"mobile\":\"Телефон нөмірі\",\"more_info\":\"Толығырақ\",\"select_all\":\"Барлығын таңдау ( {num} таңдалды )\",\"delivery_date\":\"Жеткізілім уақыты\",\"due_date\":\"Мерзімнің өту күні\",\"issue_date\":\"Берілген күні\",\"borrow_date\":\"Қарызға алу күні\",\"last_user_borrowed\":\"Соңғы пайдаланушы\",\"give_material\":\"Материал беру\",\"hesab_id\":\"Партия ID\",\"batch_id\":\"Партия ID\",\"items_no\":\"Дана саны\",\"titles_no\":\"Тақырып саны\",\"receive_date\":\"Толтырылған күні\",\"supplier_id\":\"Жеткізуші ID\",\"supplier_name\":\"Жеткізущі аты\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"Баспагер ID\",\"com_name\":\"Коммерциялық аты\",\"reports\":\"Есептер\",\"attendance\":\"Қатысу\",\"mrbooks\":\"Көпшілігі оқитын кітаптар\",\"attendance_statistics\":\"Қатысушылардың виртуалды статистикасы\",\"show_for_week\":\"Бір апта бойынша көрсету\",\"show_for_month\":\"Бір ай бойынша көрсету\",\"in_lib_by_week\":\"Бір аптада кітапханада\",\"in_lib_by_month\":\"Бір жылда кітапханада\",\"print\":\"Баркодты басып шығару\",\"language\":\"Тілі\",\"show_in_table\":\"Кестеде көрсету\",\"clear_selected\":\"Таңдалғандарды жою\",\"duration\":\"Ұзақтығы\",\"duration_in_days\":\"Ұзақтығы ( күндермен )\",\"edit_duration\":\"Ұзақтықты өзгерту\",\"issuance\":\"Беру\",\"return\":\"Қайтару\",\"history\":\"Тарих\",\"dept\":\"Мерзімі өткен\",\"borrowed\":\"Қарызға алынған\",\"returned\":\"Қайтарылған\",\"initialize\":\"Инициализациялау\",\"read_from_rfid\":\"RFID-ден оқу\",\"init_status\":\"Инициализацияланған\",\"print_status\":\"Басылған\",\"date\":\"Дата\",\"days\":\"Күндер\",\"import_from_google_api\":\"Google api-дан импорттау\",\"code\":\"Код\",\"value\":\"Мәні\",\"cataloging\":\"Каталогтау\",\"search_cataloging\":\"ISBN || Атауы || Автор бойынша іздеу\",\"edit_rec\":\"Жазбаны өңдеу\",\"management\":\"Басқару: {info}\",\"print_call_number\":\"Нөмірін басып шығару\",\"preview\":\"Алдын ала қарау\",\"import_from_worldcat\":\"WorldCat-тан импорттау\",\"export_to_xml\":\"XML-ге экспорттау\",\"section_tag\":\"Бөлім тегі\",\"subtags\":\"Қосымша белгілер\",\"ind1\":\"IND1\",\"ind2\":\"IND2\",\"data\":\"Деректер\"}");
 
 /***/ }),
 
@@ -91817,7 +92123,7 @@ module.exports = JSON.parse("{\"back\":\"Артқа\",\"ok\":\"ОК\",\"acquisit
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse("{\"back\":\"Назад\",\"ok\":\"OK\",\"acquisitions\":\"Комплектование\",\"batches\":\"Партия | Партии\",\"items\":\"Экземлпяр | Экземпляры\",\"publishers\":\"Издатель | Издатели\",\"suppliers\":\"Поставщик | Поставщики\",\"table\":\"Таблица\",\"logout\":\"Выйти\",\"search\":\"Найти\",\"searching\":\"Поиск\",\"reset\":\"Сброс\",\"load_all\":\"Загрузить все\",\"count\":\"Количество\",\"save\":\"Сохранить\",\"cancel\":\"Отменить\",\"cost\":\"Цена\",\"from\":\"От\",\"until\":\"До\",\"not_found\":\"Ничего не найдено\",\"create_date\":\"Дата заполнения формы\",\"edit_date\":\"Дата изменения формы\",\"results\":\"Результаты\",\"results_of\":\"результатов\",\"yes\":\"Да\",\"no\":\"Нет\",\"edit\":\"Изменить\",\"delete\":\"Удалить\",\"create\":\"Создать\",\"show_more\":\"Узнать больше\",\"more\":\"Больше ...\",\"confirmation\":\"Вы действительно хотите удалить?\",\"sort_by\":\"Сортировать по\",\"search_by\":\"Искать по {type}\",\"author_by\":\"автору\",\"title_by\":\"заглавию\",\"barcode_by\":\"баркоду\",\"batch_id_by\":\"номеру партии\",\"id_by\":\"номеру инвентаря\",\"isbn_by\":\"ISBN\",\"and\":\"И\",\"or\":\"Или\",\"not\":\"Не\",\"per_page\":\"Результатов на странице\",\"apply\":\"Подтвердить\",\"showing_pages\":\"{from} - {to} из {total}\",\"page\":\"Стр.\",\"page_num\":\"{num} страница\",\"previous\":\"Назад\",\"next\":\"Вперед\",\"move_to\":\"Перейти\",\"asc\":\"По возрастанию\",\"desc\":\"По убыванию\",\"refresh\":\"Обновить\",\"choose\":\"Выберите\",\"choose_search_mode\":\"Выберите режим поиска\",\"save_&_search\":\"Сохранить и искать\",\"error\":\"Ошибка !\",\"batch_filter\":\"Фильтр партий\",\"item_filter\":\"Фильтр экземпляров\",\"search_batches\":\"Искать партию\",\"search_items\":\"Искать экземпляр\",\"search_barcodes\":\"Искать баркоды\",\"batches_number\":\"Номер партии\",\"batches_by\":\"по номеру партии\",\"add_batch\":\"Добавить партию\",\"add_item\":\"Добавить экземпляр\",\"create_batches\":\"Создать партию\",\"create_items\":\"Создать экземпляр\",\"create_supplier\":\"Создать поставщика\",\"create_publisher\":\"Создать издателя\",\"edit_batches\":\"Изменить партию\",\"edit_items\":\"Изменить экземпляр\",\"edit_supplier\":\"Изменить поставщика\",\"edit_publisher\":\"Изменить издателя\",\"recreate\":\"Пересоздать\",\"reCreate_items\":\"Пересоздать экземпляр\",\"type_of_supply\":\"Тип поставки\",\"type_of_item\":\"Тип экземпляра\",\"quantity_items\":\"Количество экземпляров\",\"quantity_titles\":\"Количество заглавий\",\"document_number\":\"Номер документа\",\"contract_number\":\"Контрактный номер\",\"inventory_number\":\"Номер инвентаря\",\"inv_id\":\"Номер инвентаря\",\"types\":\"Types\",\"filled_in\":\"Введено\",\"made_actually\":\"Введено фактически\",\"correct\":\"Правильно\",\"titles_no_match\":\"Количество заглавий не совпадает\",\"items_no_match\":\"Количество экземпляров не совпадает\",\"add_input\":\"Добавить входные данные +\",\"status\":\"Статус\",\"invoice_date\":\"Дата счета-фактуры\",\"by_contract\":\"По контракту\",\"invoice_details\":\"Информация о счете-фактуре\",\"barcode\":\"Баркод\",\"isbn\":\"ISBN\",\"created_by\":\"Заполнено\",\"edited_by\":\"Изменено\",\"titles\":\"Заглавие | Заглавия\",\"title\":\"Заглавие\",\"author\":\"Автор\",\"year\":\"Год\",\"call_number\":\"Номер\",\"pub_year\":\"Год издания\",\"pub_city\":\"Город издания\",\"location\":\"Место расположения\",\"fill_date\":\"Дата заполнения\",\"beginning\":\"От\",\"end\":\"До\",\"currency\":\"Валюта\",\"author_title\":\"Автор - заглавие\",\"year_city\":\"Год - город\",\"name\":\"Имя\",\"name_by\":\"по имени\",\"commercial_name\":\"Коммерческое имя\",\"bin\":\"BIN / IIN\",\"contact\":\"Контакты\",\"address\":\"Адресс\",\"email\":\"Электронная почта\",\"phone\":\"Номер телефона\",\"fax\":\"Факс\",\"service_desk\":\"Служба обслуживания\",\"users\":\"Пользователи\",\"books\":\"История книг\",\"search_user\":\"Найти пользователя\",\"type\":\"Тип\",\"student\":\"Студент\",\"employee\":\"Работник\",\"all\":\"Все\",\"username\":\"Имя пользователя\",\"user_id\":\"ID пользователя\",\"user_id_user\":\"ID пользователя (или имя || фамилия)\",\"username_user\":\"Имя пользователя (или имя || фамилия)\",\"surname\":\"Фамилия\",\"section\":\"Раздел\",\"serve\":\"Выдача книг\",\"check_in\":\"Выдать\",\"search_material\":\"Поиск материала\",\"user_info\":\"Информация о пользователе\",\"full_name\":\"Имя - фамилия\",\"degree\":\"Степень\",\"class\":\"Год\",\"faculty\":\"Факультет\",\"program\":\"Программа\",\"id\":\"ID\",\"mobile\":\"Номер телефона\",\"more_info\":\"Подробнее\",\"select_all\":\"Выбрать все ( {num} выбрано )\",\"delivery_date\":\"Дата доставки\",\"due_date\":\"Дата сдачи\",\"issue_date\":\"Дата выпуска\",\"borrow_date\":\"Дата заимствования\",\"last_user_borrowed\":\"Последний пользователь\",\"give_material\":\"Дать материал\",\"hesab_id\":\"ID партии\",\"batch_id\":\"ID партии\",\"items_no\":\"Количество экземпляров\",\"titles_no\":\"Количество заглавий\",\"receive_date\":\"Дата заполнения\",\"supplier_id\":\"ID поставщика\",\"supplier_name\":\"Имя поставщика\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"ID издателя\",\"com_name\":\"Коммерческое имя\",\"reports\":\"Отчеты\",\"attendance\":\"Посещаемость\",\"mrbooks\":\"Самые читаемые книги\",\"attendance_statistics\":\"Статистика виртуальной посещаемости\",\"show_for_week\":\"Показать за неделю\",\"show_for_month\":\"Показать за месяц\",\"in_lib_by_week\":\"В библиотеке за неделю\",\"in_lib_by_month\":\"В библиотеке за год\",\"print\":\"Распечатать баркод\",\"language\":\"Язык\",\"show_in_table\":\"Показать в таблице\",\"clear_selected\":\"Очистить выбранные\",\"duration\":\"Продолжительность\",\"duration_in_days\":\"Продолжительность ( в днях )\",\"edit_duration\":\"Изменить продолжительность\",\"issuance\":\"Выдача\",\"return\":\"Возврат\",\"history\":\"История\",\"dept\":\"Просроченный\",\"borrowed\":\"Взяли\",\"returned\":\"Вернули\",\"initialize\":\"Инициализировать\",\"read_from_rfid\":\"Читать из RFID\",\"init_status\":\"Инициализирован\",\"print_status\":\"Распечатан\",\"date\":\"Дата\",\"days\":\"Дни\",\"import_from_google_api\":\"Внести из google api\",\"cataloging\":\"Каталогизация\",\"search_cataloging\":\"Поиск по ISBN || Название || Автор\",\"edit_rec\":\"Редактировать запись\",\"management\":\"Управление: {info}\",\"print_call_number\":\"Распечатать номер\",\"preview\":\"Предварительный просмотр\",\"import_from_worldcat\":\"Внести из WorldCat\",\"export_to_xml\":\"Вывести в XML\",\"section_tag\":\"Тег раздела\",\"subtags\":\"Подтеги\",\"ind1\":\"IND1\",\"ind2\":\"IND2\",\"data\":\"Данные\"}");
+module.exports = JSON.parse("{\"back\":\"Назад\",\"ok\":\"OK\",\"acquisitions\":\"Комплектование\",\"batches\":\"Партия | Партии\",\"items\":\"Экземлпяр | Экземпляры\",\"publishers\":\"Издатель | Издатели\",\"suppliers\":\"Поставщик | Поставщики\",\"table\":\"Таблица\",\"logout\":\"Выйти\",\"search\":\"Найти\",\"searching\":\"Поиск\",\"reset\":\"Сброс\",\"load_all\":\"Загрузить все\",\"count\":\"Количество\",\"save\":\"Сохранить\",\"cancel\":\"Отменить\",\"cost\":\"Цена\",\"from\":\"От\",\"until\":\"До\",\"not_found\":\"Ничего не найдено\",\"create_date\":\"Дата заполнения формы\",\"edit_date\":\"Дата изменения формы\",\"results\":\"Результаты\",\"results_of\":\"результатов\",\"yes\":\"Да\",\"no\":\"Нет\",\"edit\":\"Изменить\",\"delete\":\"Удалить\",\"create\":\"Создать\",\"show_more\":\"Узнать больше\",\"more\":\"Больше ...\",\"confirmation\":\"Вы действительно хотите удалить?\",\"sort_by\":\"Сортировать по\",\"search_by\":\"Искать по {type}\",\"author_by\":\"автору\",\"title_by\":\"заглавию\",\"barcode_by\":\"баркоду\",\"batch_id_by\":\"номеру партии\",\"id_by\":\"номеру инвентаря\",\"isbn_by\":\"ISBN\",\"and\":\"И\",\"or\":\"Или\",\"not\":\"Не\",\"per_page\":\"Результатов на странице\",\"apply\":\"Подтвердить\",\"showing_pages\":\"{from} - {to} из {total}\",\"page\":\"Стр.\",\"page_num\":\"{num} страница\",\"previous\":\"Назад\",\"next\":\"Вперед\",\"move_to\":\"Перейти\",\"asc\":\"По возрастанию\",\"desc\":\"По убыванию\",\"refresh\":\"Обновить\",\"choose\":\"Выберите\",\"choose_search_mode\":\"Выберите режим поиска\",\"save_&_search\":\"Сохранить и искать\",\"error\":\"Ошибка !\",\"batch_filter\":\"Фильтр партий\",\"item_filter\":\"Фильтр экземпляров\",\"search_batches\":\"Искать партию\",\"search_items\":\"Искать экземпляр\",\"search_barcodes\":\"Искать баркоды\",\"batches_number\":\"Номер партии\",\"batches_by\":\"по номеру партии\",\"add_batch\":\"Добавить партию\",\"add_item\":\"Добавить экземпляр\",\"create_batches\":\"Создать партию\",\"create_items\":\"Создать экземпляр\",\"create_supplier\":\"Создать поставщика\",\"create_publisher\":\"Создать издателя\",\"edit_batches\":\"Изменить партию\",\"edit_items\":\"Изменить экземпляр\",\"edit_supplier\":\"Изменить поставщика\",\"edit_publisher\":\"Изменить издателя\",\"recreate\":\"Пересоздать\",\"reCreate_items\":\"Пересоздать экземпляр\",\"type_of_supply\":\"Тип поставки\",\"type_of_item\":\"Тип экземпляра\",\"quantity_items\":\"Количество экземпляров\",\"quantity_titles\":\"Количество заглавий\",\"document_number\":\"Номер документа\",\"contract_number\":\"Контрактный номер\",\"inventory_number\":\"Номер инвентаря\",\"inv_id\":\"Номер инвентаря\",\"types\":\"Types\",\"filled_in\":\"Введено\",\"made_actually\":\"Введено фактически\",\"correct\":\"Правильно\",\"titles_no_match\":\"Количество заглавий не совпадает\",\"items_no_match\":\"Количество экземпляров не совпадает\",\"add_input\":\"Добавить входные данные +\",\"status\":\"Статус\",\"invoice_date\":\"Дата счета-фактуры\",\"by_contract\":\"По контракту\",\"invoice_details\":\"Информация о счете-фактуре\",\"barcode\":\"Баркод\",\"isbn\":\"ISBN\",\"created_by\":\"Заполнено\",\"edited_by\":\"Изменено\",\"titles\":\"Заглавие | Заглавия\",\"title\":\"Заглавие\",\"author\":\"Автор\",\"year\":\"Год\",\"call_number\":\"Номер\",\"pub_year\":\"Год издания\",\"pub_city\":\"Город издания\",\"location\":\"Место расположения\",\"fill_date\":\"Дата заполнения\",\"beginning\":\"От\",\"end\":\"До\",\"currency\":\"Валюта\",\"author_title\":\"Автор - заглавие\",\"year_city\":\"Год - город\",\"name\":\"Имя\",\"name_by\":\"по имени\",\"commercial_name\":\"Коммерческое имя\",\"bin\":\"BIN / IIN\",\"contact\":\"Контакты\",\"address\":\"Адресс\",\"email\":\"Электронная почта\",\"phone\":\"Номер телефона\",\"fax\":\"Факс\",\"service_desk\":\"Служба обслуживания\",\"users\":\"Пользователи\",\"books\":\"История книг\",\"search_user\":\"Найти пользователя\",\"type\":\"Тип\",\"student\":\"Студент\",\"employee\":\"Работник\",\"all\":\"Все\",\"username\":\"Имя пользователя\",\"user_id\":\"ID пользователя\",\"user_id_user\":\"ID пользователя (или имя || фамилия)\",\"username_user\":\"Имя пользователя (или имя || фамилия)\",\"surname\":\"Фамилия\",\"section\":\"Раздел\",\"serve\":\"Выдача книг\",\"check_in\":\"Выдать\",\"search_material\":\"Поиск материала\",\"user_info\":\"Информация о пользователе\",\"full_name\":\"Имя - фамилия\",\"degree\":\"Степень\",\"class\":\"Год\",\"faculty\":\"Факультет\",\"program\":\"Программа\",\"id\":\"ID\",\"mobile\":\"Номер телефона\",\"more_info\":\"Подробнее\",\"select_all\":\"Выбрать все ( {num} выбрано )\",\"delivery_date\":\"Дата доставки\",\"due_date\":\"Дата сдачи\",\"issue_date\":\"Дата выпуска\",\"borrow_date\":\"Дата заимствования\",\"last_user_borrowed\":\"Последний пользователь\",\"give_material\":\"Дать материал\",\"hesab_id\":\"ID партии\",\"batch_id\":\"ID партии\",\"items_no\":\"Количество экземпляров\",\"titles_no\":\"Количество заглавий\",\"receive_date\":\"Дата заполнения\",\"supplier_id\":\"ID поставщика\",\"supplier_name\":\"Имя поставщика\",\"bin/inn\":\"BIN/IIN\",\"publisher_id\":\"ID издателя\",\"com_name\":\"Коммерческое имя\",\"reports\":\"Отчеты\",\"attendance\":\"Посещаемость\",\"mrbooks\":\"Самые читаемые книги\",\"attendance_statistics\":\"Статистика виртуальной посещаемости\",\"show_for_week\":\"Показать за неделю\",\"show_for_month\":\"Показать за месяц\",\"in_lib_by_week\":\"В библиотеке за неделю\",\"in_lib_by_month\":\"В библиотеке за год\",\"print\":\"Распечатать баркод\",\"language\":\"Язык\",\"show_in_table\":\"Показать в таблице\",\"clear_selected\":\"Очистить выбранные\",\"duration\":\"Продолжительность\",\"duration_in_days\":\"Продолжительность ( в днях )\",\"edit_duration\":\"Изменить продолжительность\",\"issuance\":\"Выдача\",\"return\":\"Возврат\",\"history\":\"История\",\"dept\":\"Просроченный\",\"borrowed\":\"Взяли\",\"returned\":\"Вернули\",\"initialize\":\"Инициализировать\",\"read_from_rfid\":\"Читать из RFID\",\"init_status\":\"Инициализирован\",\"print_status\":\"Распечатан\",\"date\":\"Дата\",\"days\":\"Дни\",\"import_from_google_api\":\"Внести из google api\",\"code\":\"Код\",\"value\":\"Значение\",\"cataloging\":\"Каталогизация\",\"search_cataloging\":\"Поиск по ISBN || Название || Автор\",\"edit_rec\":\"Редактировать запись\",\"management\":\"Управление: {info}\",\"print_call_number\":\"Распечатать номер\",\"preview\":\"Предварительный просмотр\",\"import_from_worldcat\":\"Внести из WorldCat\",\"export_to_xml\":\"Вывести в XML\",\"section_tag\":\"Тег раздела\",\"subtags\":\"Подтеги\",\"ind1\":\"IND1\",\"ind2\":\"IND2\",\"data\":\"Данные\"}");
 
 /***/ })
 
@@ -91849,6 +92155,9 @@ module.exports = JSON.parse("{\"back\":\"Назад\",\"ok\":\"OK\",\"acquisitio
 /******/ 		return module.exports;
 /******/ 	}
 /******/ 	
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = __webpack_modules__;
+/******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
 /******/ 	(() => {
@@ -91874,6 +92183,39 @@ module.exports = JSON.parse("{\"back\":\"Назад\",\"ok\":\"OK\",\"acquisitio
 /******/ 		};
 /******/ 	})();
 /******/ 	
+/******/ 	/* webpack/runtime/ensure chunk */
+/******/ 	(() => {
+/******/ 		__webpack_require__.f = {};
+/******/ 		// This file contains only the entry chunk.
+/******/ 		// The chunk loading function for additional chunks
+/******/ 		__webpack_require__.e = (chunkId) => {
+/******/ 			return Promise.all(Object.keys(__webpack_require__.f).reduce((promises, key) => {
+/******/ 				__webpack_require__.f[key](chunkId, promises);
+/******/ 				return promises;
+/******/ 			}, []));
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/get javascript chunk filename */
+/******/ 	(() => {
+/******/ 		// This function allow to reference async chunks
+/******/ 		__webpack_require__.u = (chunkId) => {
+/******/ 			// return url for filenames not based on template
+/******/ 			if (chunkId === "public_schedules_js") return "js/" + chunkId + ".js";
+/******/ 			// return url for filenames based on template
+/******/ 			return undefined;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/get mini-css chunk filename */
+/******/ 	(() => {
+/******/ 		// This function allow to reference all chunks
+/******/ 		__webpack_require__.miniCssF = (chunkId) => {
+/******/ 			// return url for filenames based on template
+/******/ 			return undefined;
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/global */
 /******/ 	(() => {
 /******/ 		__webpack_require__.g = (function() {
@@ -91889,6 +92231,52 @@ module.exports = JSON.parse("{\"back\":\"Назад\",\"ok\":\"OK\",\"acquisitio
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/load script */
+/******/ 	(() => {
+/******/ 		var inProgress = {};
+/******/ 		// data-webpack is not used as build has no uniqueName
+/******/ 		// loadScript function to load a script via script tag
+/******/ 		__webpack_require__.l = (url, done, key, chunkId) => {
+/******/ 			if(inProgress[url]) { inProgress[url].push(done); return; }
+/******/ 			var script, needAttach;
+/******/ 			if(key !== undefined) {
+/******/ 				var scripts = document.getElementsByTagName("script");
+/******/ 				for(var i = 0; i < scripts.length; i++) {
+/******/ 					var s = scripts[i];
+/******/ 					if(s.getAttribute("src") == url) { script = s; break; }
+/******/ 				}
+/******/ 			}
+/******/ 			if(!script) {
+/******/ 				needAttach = true;
+/******/ 				script = document.createElement('script');
+/******/ 		
+/******/ 				script.charset = 'utf-8';
+/******/ 				script.timeout = 120;
+/******/ 				if (__webpack_require__.nc) {
+/******/ 					script.setAttribute("nonce", __webpack_require__.nc);
+/******/ 				}
+/******/ 		
+/******/ 				script.src = url;
+/******/ 			}
+/******/ 			inProgress[url] = [done];
+/******/ 			var onScriptComplete = (prev, event) => {
+/******/ 				// avoid mem leaks in IE.
+/******/ 				script.onerror = script.onload = null;
+/******/ 				clearTimeout(timeout);
+/******/ 				var doneFns = inProgress[url];
+/******/ 				delete inProgress[url];
+/******/ 				script.parentNode && script.parentNode.removeChild(script);
+/******/ 				doneFns && doneFns.forEach((fn) => (fn(event)));
+/******/ 				if(prev) return prev(event);
+/******/ 			}
+/******/ 			;
+/******/ 			var timeout = setTimeout(onScriptComplete.bind(null, undefined, { type: 'timeout', target: script }), 120000);
+/******/ 			script.onerror = onScriptComplete.bind(null, script.onerror);
+/******/ 			script.onload = onScriptComplete.bind(null, script.onload);
+/******/ 			needAttach && document.head.appendChild(script);
+/******/ 		};
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
@@ -91909,6 +92297,107 @@ module.exports = JSON.parse("{\"back\":\"Назад\",\"ok\":\"OK\",\"acquisitio
 /******/ 			if (!module.children) module.children = [];
 /******/ 			return module;
 /******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/publicPath */
+/******/ 	(() => {
+/******/ 		__webpack_require__.p = "/";
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/jsonp chunk loading */
+/******/ 	(() => {
+/******/ 		// no baseURI
+/******/ 		
+/******/ 		// object to store loaded and loading chunks
+/******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
+/******/ 		// Promise = chunk loading, 0 = chunk loaded
+/******/ 		var installedChunks = {
+/******/ 			"/js/admin": 0
+/******/ 		};
+/******/ 		
+/******/ 		
+/******/ 		__webpack_require__.f.j = (chunkId, promises) => {
+/******/ 				// JSONP chunk loading for javascript
+/******/ 				var installedChunkData = __webpack_require__.o(installedChunks, chunkId) ? installedChunks[chunkId] : undefined;
+/******/ 				if(installedChunkData !== 0) { // 0 means "already installed".
+/******/ 		
+/******/ 					// a Promise means "currently loading".
+/******/ 					if(installedChunkData) {
+/******/ 						promises.push(installedChunkData[2]);
+/******/ 					} else {
+/******/ 						if(true) { // all chunks have JS
+/******/ 							// setup Promise in chunk cache
+/******/ 							var promise = new Promise((resolve, reject) => {
+/******/ 								installedChunkData = installedChunks[chunkId] = [resolve, reject];
+/******/ 							});
+/******/ 							promises.push(installedChunkData[2] = promise);
+/******/ 		
+/******/ 							// start chunk loading
+/******/ 							var url = __webpack_require__.p + __webpack_require__.u(chunkId);
+/******/ 							// create error before stack unwound to get useful stacktrace later
+/******/ 							var error = new Error();
+/******/ 							var loadingEnded = (event) => {
+/******/ 								if(__webpack_require__.o(installedChunks, chunkId)) {
+/******/ 									installedChunkData = installedChunks[chunkId];
+/******/ 									if(installedChunkData !== 0) installedChunks[chunkId] = undefined;
+/******/ 									if(installedChunkData) {
+/******/ 										var errorType = event && (event.type === 'load' ? 'missing' : event.type);
+/******/ 										var realSrc = event && event.target && event.target.src;
+/******/ 										error.message = 'Loading chunk ' + chunkId + ' failed.\n(' + errorType + ': ' + realSrc + ')';
+/******/ 										error.name = 'ChunkLoadError';
+/******/ 										error.type = errorType;
+/******/ 										error.request = realSrc;
+/******/ 										installedChunkData[1](error);
+/******/ 									}
+/******/ 								}
+/******/ 							};
+/******/ 							__webpack_require__.l(url, loadingEnded, "chunk-" + chunkId, chunkId);
+/******/ 						} else installedChunks[chunkId] = 0;
+/******/ 					}
+/******/ 				}
+/******/ 		};
+/******/ 		
+/******/ 		// no prefetching
+/******/ 		
+/******/ 		// no preloaded
+/******/ 		
+/******/ 		// no HMR
+/******/ 		
+/******/ 		// no HMR manifest
+/******/ 		
+/******/ 		// no deferred startup
+/******/ 		
+/******/ 		// install a JSONP callback for chunk loading
+/******/ 		var webpackJsonpCallback = (parentChunkLoadingFunction, data) => {
+/******/ 			var [chunkIds, moreModules, runtime] = data;
+/******/ 			// add "moreModules" to the modules object,
+/******/ 			// then flag all "chunkIds" as loaded and fire callback
+/******/ 			var moduleId, chunkId, i = 0, resolves = [];
+/******/ 			for(;i < chunkIds.length; i++) {
+/******/ 				chunkId = chunkIds[i];
+/******/ 				if(__webpack_require__.o(installedChunks, chunkId) && installedChunks[chunkId]) {
+/******/ 					resolves.push(installedChunks[chunkId][0]);
+/******/ 				}
+/******/ 				installedChunks[chunkId] = 0;
+/******/ 			}
+/******/ 			for(moduleId in moreModules) {
+/******/ 				if(__webpack_require__.o(moreModules, moduleId)) {
+/******/ 					__webpack_require__.m[moduleId] = moreModules[moduleId];
+/******/ 				}
+/******/ 			}
+/******/ 			if(runtime) runtime(__webpack_require__);
+/******/ 			if(parentChunkLoadingFunction) parentChunkLoadingFunction(data);
+/******/ 			while(resolves.length) {
+/******/ 				resolves.shift()();
+/******/ 			}
+/******/ 		
+/******/ 		}
+/******/ 		
+/******/ 		var chunkLoadingGlobal = self["webpackChunk"] = self["webpackChunk"] || [];
+/******/ 		chunkLoadingGlobal.forEach(webpackJsonpCallback.bind(null, 0));
+/******/ 		chunkLoadingGlobal.push = webpackJsonpCallback.bind(null, chunkLoadingGlobal.push.bind(chunkLoadingGlobal));
+/******/ 		
+/******/ 		// no deferred startup
 /******/ 	})();
 /******/ 	
 /************************************************************************/

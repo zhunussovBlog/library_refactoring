@@ -63,7 +63,8 @@ window.objectWithoutKey = (object, key) => {
         return object;
     } else {
         const {
-            [key]: deletedKey, ...otherKeys } = object;
+            [key]: deletedKey, ...otherKeys
+        } = object;
         return otherKeys;
     }
 }
