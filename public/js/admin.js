@@ -5587,43 +5587,35 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       });
       this.tagSelected = this.sectioned[0].tags[0];
     },
-    importFromExt: function importFromExt() {
-      var _this2 = this;
-
-      var str = '';
-      var res = [];
-      __webpack_require__.e(/*! import() */ "public_schedules_js").then(__webpack_require__.bind(__webpack_require__, /*! ../../../../schedules.js */ "./public/schedules.js")).then(function (response) {
-        str = response.schedules;
-      }).then(function () {
-        str = str.split('@');
-        str.forEach(function (elem) {
-          var search_c_n = _this2.edit_info.find(function (item) {
-            return item.id == '010.c';
-          }).data;
-
-          _this2.edit_info.forEach(function (item) {
-            if (item.id == '010.n') {
-              search_c_n += item.data;
-            }
-          });
-
-          if (elem.includes(search_c_n)) {
-            var s = elem.split('\t');
-            var data = '';
-
-            try {
-              data = s[1].split('--');
-            } catch (e) {
-              var datas = s[0].split('--');
-              datas.shift();
-              data = datas;
-            }
-
-            return;
-          }
-        });
-      });
-    },
+    // importFromExt(){
+    //     var str='';
+    //     var res=[];
+    //     import('/schedules.js').then(response=>{
+    //         str=response.schedules;
+    //     }).then(()=>{
+    //         str=str.split('@');
+    //         str.forEach(elem=>{
+    //             let search_c_n=this.edit_info.find(item=>item.id=='010.c').data;
+    //             this.edit_info.forEach(item=>{
+    //                 if(item.id=='010.n'){
+    //                     search_c_n+=item.data;
+    //                 }
+    //             })
+    //             if(elem.includes(search_c_n)){
+    //                 let s=elem.split('\t');
+    //                 let data='';
+    //                 try{
+    //                     data=s[1].split('--')
+    //                 }catch(e){
+    //                     let datas=s[0].split('--');
+    //                     datas.shift();
+    //                     data=datas;
+    //                 }
+    //                 return ;
+    //             }
+    //         })
+    //     })
+    // },
     selectSection: function selectSection(section) {
       this.sectionSelected = section.section;
       this.tagSelected = section.tags[0];
@@ -5645,14 +5637,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.sectioned[this.sectionSelected].info.splice(lindex, 1);
     },
     save: function save() {
-      var _this3 = this;
+      var _this2 = this;
 
       this.$store.commit('setFullPageLoading', true);
 
       var joinSections = function joinSections() {
         var res = [];
 
-        _this3.sectioned.forEach(function (section) {
+        _this2.sectioned.forEach(function (section) {
           section.info.forEach(function (data) {
             if (data.is_added) {
               delete data.is_added;
@@ -5673,41 +5665,41 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.$http.post(this.link + '/' + this.info.type_key + '/' + this.info.id + '/edit', {
         data: res
       }).then(function (response) {
-        _this3.message_success('edit', response);
+        _this2.message_success('edit', response);
 
-        _this3.tagSelected = {};
+        _this2.tagSelected = {};
 
-        _this3.getEditInfo();
+        _this2.getEditInfo();
       })["catch"](function (e) {
-        _this3.message_error('edit', e);
+        _this2.message_error('edit', e);
       }).then(function () {
-        _this3.$store.commit('setFullPageLoading', false);
+        _this2.$store.commit('setFullPageLoading', false);
       });
     },
     exportXML: function exportXML() {
-      var _this4 = this;
+      var _this3 = this;
 
       this.$store.commit('setFullPageLoading', true);
       this.$http.get(this.link + '/export/' + this.info.type_key + '/' + this.info.id).then(function (response) {
-        _this4.download_file(response, 'xml_' + _this4.info.title, 'xml');
+        _this3.download_file(response, 'xml_' + _this3.info.title, 'xml');
       })["catch"](function (e) {}).then(function () {
-        _this4.$store.commit('setFullPageLoading', false);
+        _this3.$store.commit('setFullPageLoading', false);
       });
     },
     printCallNumber: function printCallNumber() {
-      var _this5 = this;
+      var _this4 = this;
 
       this.$store.commit('setFullPageLoading', true);
       this.$http.get(this.link + '/print/' + this.info.type_key + '/' + this.info.id, {
         responseType: 'blob'
       }).then(function (response) {
-        _this5.print_file(response, 'call_number_' + _this5.info.title, 'pdf');
+        _this4.print_file(response, 'call_number_' + _this4.info.title, 'pdf');
       })["catch"](function (e) {}).then(function () {
-        _this5.$store.commit('setFullPageLoading', false);
+        _this4.$store.commit('setFullPageLoading', false);
       });
     },
     importFromGoogleAPIs: function importFromGoogleAPIs(isbn) {
-      var _this6 = this;
+      var _this5 = this;
 
       // we use fetch() because there's cors mistake when use this.$http
       this.$store.commit('setFullPageLoading', true);
@@ -5758,29 +5750,29 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                       });
 
                       after = function after(res) {
-                        _this6.edit_info = res;
+                        _this5.edit_info = res;
 
-                        _this6.sortInfo(_this6.edit_info);
+                        _this5.sortInfo(_this5.edit_info);
 
-                        _this6.updateCatalogingInfo();
+                        _this5.updateCatalogingInfo();
 
-                        _this6.message_success('import_from_google_api', {});
+                        _this5.message_success('import_from_google_api', {});
                       };
 
-                      _this6.showModal(_ImportFromGoogleAPI_vue__WEBPACK_IMPORTED_MODULE_9__.default, {
+                      _this5.showModal(_ImportFromGoogleAPI_vue__WEBPACK_IMPORTED_MODULE_9__.default, {
                         data: array,
-                        edit_info: _this6.edit_info,
+                        edit_info: _this5.edit_info,
                         after: after
                       });
 
-                      _this6.updateCatalogingInfo();
+                      _this5.updateCatalogingInfo();
                     } catch (e) {
                       console.error(e);
 
-                      _this6.$store.commit('setFullPageLoading', false);
+                      _this5.$store.commit('setFullPageLoading', false);
 
-                      _this6.$prompt("Search google apis for isbn: " + isbn + " failed. Maybe you'd like to try to search with another isbn?").then(function (text) {
-                        _this6.importFromGoogleAPIs(text);
+                      _this5.$prompt("Search google apis for isbn: " + isbn + " failed. Maybe you'd like to try to search with another isbn?").then(function (text) {
+                        _this5.importFromGoogleAPIs(text);
                       });
                     }
 
@@ -5798,7 +5790,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }())["catch"](function (e) {
           console.error(e);
         })["finally"](function () {
-          _this6.$store.commit('setFullPageLoading', false);
+          _this5.$store.commit('setFullPageLoading', false);
         });
       });
     },
@@ -5812,10 +5804,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       document.documentElement.classList.add("overflow-hidden");
     },
     getAuthority: function getAuthority() {
-      var _this7 = this;
+      var _this6 = this;
 
       this.$http.get('/cataloging/authority').then(function (response) {
-        _this7.authority = response.data.res;
+        _this6.authority = response.data.res;
       });
     }
   },
@@ -92155,9 +92147,6 @@ module.exports = JSON.parse("{\"back\":\"Назад\",\"ok\":\"OK\",\"acquisitio
 /******/ 		return module.exports;
 /******/ 	}
 /******/ 	
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = __webpack_modules__;
-/******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
 /******/ 	(() => {
@@ -92183,39 +92172,6 @@ module.exports = JSON.parse("{\"back\":\"Назад\",\"ok\":\"OK\",\"acquisitio
 /******/ 		};
 /******/ 	})();
 /******/ 	
-/******/ 	/* webpack/runtime/ensure chunk */
-/******/ 	(() => {
-/******/ 		__webpack_require__.f = {};
-/******/ 		// This file contains only the entry chunk.
-/******/ 		// The chunk loading function for additional chunks
-/******/ 		__webpack_require__.e = (chunkId) => {
-/******/ 			return Promise.all(Object.keys(__webpack_require__.f).reduce((promises, key) => {
-/******/ 				__webpack_require__.f[key](chunkId, promises);
-/******/ 				return promises;
-/******/ 			}, []));
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/get javascript chunk filename */
-/******/ 	(() => {
-/******/ 		// This function allow to reference async chunks
-/******/ 		__webpack_require__.u = (chunkId) => {
-/******/ 			// return url for filenames not based on template
-/******/ 			if (chunkId === "public_schedules_js") return "js/" + chunkId + ".js";
-/******/ 			// return url for filenames based on template
-/******/ 			return undefined;
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/get mini-css chunk filename */
-/******/ 	(() => {
-/******/ 		// This function allow to reference all chunks
-/******/ 		__webpack_require__.miniCssF = (chunkId) => {
-/******/ 			// return url for filenames based on template
-/******/ 			return undefined;
-/******/ 		};
-/******/ 	})();
-/******/ 	
 /******/ 	/* webpack/runtime/global */
 /******/ 	(() => {
 /******/ 		__webpack_require__.g = (function() {
@@ -92231,52 +92187,6 @@ module.exports = JSON.parse("{\"back\":\"Назад\",\"ok\":\"OK\",\"acquisitio
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/load script */
-/******/ 	(() => {
-/******/ 		var inProgress = {};
-/******/ 		// data-webpack is not used as build has no uniqueName
-/******/ 		// loadScript function to load a script via script tag
-/******/ 		__webpack_require__.l = (url, done, key, chunkId) => {
-/******/ 			if(inProgress[url]) { inProgress[url].push(done); return; }
-/******/ 			var script, needAttach;
-/******/ 			if(key !== undefined) {
-/******/ 				var scripts = document.getElementsByTagName("script");
-/******/ 				for(var i = 0; i < scripts.length; i++) {
-/******/ 					var s = scripts[i];
-/******/ 					if(s.getAttribute("src") == url) { script = s; break; }
-/******/ 				}
-/******/ 			}
-/******/ 			if(!script) {
-/******/ 				needAttach = true;
-/******/ 				script = document.createElement('script');
-/******/ 		
-/******/ 				script.charset = 'utf-8';
-/******/ 				script.timeout = 120;
-/******/ 				if (__webpack_require__.nc) {
-/******/ 					script.setAttribute("nonce", __webpack_require__.nc);
-/******/ 				}
-/******/ 		
-/******/ 				script.src = url;
-/******/ 			}
-/******/ 			inProgress[url] = [done];
-/******/ 			var onScriptComplete = (prev, event) => {
-/******/ 				// avoid mem leaks in IE.
-/******/ 				script.onerror = script.onload = null;
-/******/ 				clearTimeout(timeout);
-/******/ 				var doneFns = inProgress[url];
-/******/ 				delete inProgress[url];
-/******/ 				script.parentNode && script.parentNode.removeChild(script);
-/******/ 				doneFns && doneFns.forEach((fn) => (fn(event)));
-/******/ 				if(prev) return prev(event);
-/******/ 			}
-/******/ 			;
-/******/ 			var timeout = setTimeout(onScriptComplete.bind(null, undefined, { type: 'timeout', target: script }), 120000);
-/******/ 			script.onerror = onScriptComplete.bind(null, script.onerror);
-/******/ 			script.onload = onScriptComplete.bind(null, script.onload);
-/******/ 			needAttach && document.head.appendChild(script);
-/******/ 		};
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
@@ -92297,107 +92207,6 @@ module.exports = JSON.parse("{\"back\":\"Назад\",\"ok\":\"OK\",\"acquisitio
 /******/ 			if (!module.children) module.children = [];
 /******/ 			return module;
 /******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/publicPath */
-/******/ 	(() => {
-/******/ 		__webpack_require__.p = "/";
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/jsonp chunk loading */
-/******/ 	(() => {
-/******/ 		// no baseURI
-/******/ 		
-/******/ 		// object to store loaded and loading chunks
-/******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
-/******/ 		// Promise = chunk loading, 0 = chunk loaded
-/******/ 		var installedChunks = {
-/******/ 			"/js/admin": 0
-/******/ 		};
-/******/ 		
-/******/ 		
-/******/ 		__webpack_require__.f.j = (chunkId, promises) => {
-/******/ 				// JSONP chunk loading for javascript
-/******/ 				var installedChunkData = __webpack_require__.o(installedChunks, chunkId) ? installedChunks[chunkId] : undefined;
-/******/ 				if(installedChunkData !== 0) { // 0 means "already installed".
-/******/ 		
-/******/ 					// a Promise means "currently loading".
-/******/ 					if(installedChunkData) {
-/******/ 						promises.push(installedChunkData[2]);
-/******/ 					} else {
-/******/ 						if(true) { // all chunks have JS
-/******/ 							// setup Promise in chunk cache
-/******/ 							var promise = new Promise((resolve, reject) => {
-/******/ 								installedChunkData = installedChunks[chunkId] = [resolve, reject];
-/******/ 							});
-/******/ 							promises.push(installedChunkData[2] = promise);
-/******/ 		
-/******/ 							// start chunk loading
-/******/ 							var url = __webpack_require__.p + __webpack_require__.u(chunkId);
-/******/ 							// create error before stack unwound to get useful stacktrace later
-/******/ 							var error = new Error();
-/******/ 							var loadingEnded = (event) => {
-/******/ 								if(__webpack_require__.o(installedChunks, chunkId)) {
-/******/ 									installedChunkData = installedChunks[chunkId];
-/******/ 									if(installedChunkData !== 0) installedChunks[chunkId] = undefined;
-/******/ 									if(installedChunkData) {
-/******/ 										var errorType = event && (event.type === 'load' ? 'missing' : event.type);
-/******/ 										var realSrc = event && event.target && event.target.src;
-/******/ 										error.message = 'Loading chunk ' + chunkId + ' failed.\n(' + errorType + ': ' + realSrc + ')';
-/******/ 										error.name = 'ChunkLoadError';
-/******/ 										error.type = errorType;
-/******/ 										error.request = realSrc;
-/******/ 										installedChunkData[1](error);
-/******/ 									}
-/******/ 								}
-/******/ 							};
-/******/ 							__webpack_require__.l(url, loadingEnded, "chunk-" + chunkId, chunkId);
-/******/ 						} else installedChunks[chunkId] = 0;
-/******/ 					}
-/******/ 				}
-/******/ 		};
-/******/ 		
-/******/ 		// no prefetching
-/******/ 		
-/******/ 		// no preloaded
-/******/ 		
-/******/ 		// no HMR
-/******/ 		
-/******/ 		// no HMR manifest
-/******/ 		
-/******/ 		// no deferred startup
-/******/ 		
-/******/ 		// install a JSONP callback for chunk loading
-/******/ 		var webpackJsonpCallback = (parentChunkLoadingFunction, data) => {
-/******/ 			var [chunkIds, moreModules, runtime] = data;
-/******/ 			// add "moreModules" to the modules object,
-/******/ 			// then flag all "chunkIds" as loaded and fire callback
-/******/ 			var moduleId, chunkId, i = 0, resolves = [];
-/******/ 			for(;i < chunkIds.length; i++) {
-/******/ 				chunkId = chunkIds[i];
-/******/ 				if(__webpack_require__.o(installedChunks, chunkId) && installedChunks[chunkId]) {
-/******/ 					resolves.push(installedChunks[chunkId][0]);
-/******/ 				}
-/******/ 				installedChunks[chunkId] = 0;
-/******/ 			}
-/******/ 			for(moduleId in moreModules) {
-/******/ 				if(__webpack_require__.o(moreModules, moduleId)) {
-/******/ 					__webpack_require__.m[moduleId] = moreModules[moduleId];
-/******/ 				}
-/******/ 			}
-/******/ 			if(runtime) runtime(__webpack_require__);
-/******/ 			if(parentChunkLoadingFunction) parentChunkLoadingFunction(data);
-/******/ 			while(resolves.length) {
-/******/ 				resolves.shift()();
-/******/ 			}
-/******/ 		
-/******/ 		}
-/******/ 		
-/******/ 		var chunkLoadingGlobal = self["webpackChunk"] = self["webpackChunk"] || [];
-/******/ 		chunkLoadingGlobal.forEach(webpackJsonpCallback.bind(null, 0));
-/******/ 		chunkLoadingGlobal.push = webpackJsonpCallback.bind(null, chunkLoadingGlobal.push.bind(chunkLoadingGlobal));
-/******/ 		
-/******/ 		// no deferred startup
 /******/ 	})();
 /******/ 	
 /************************************************************************/
