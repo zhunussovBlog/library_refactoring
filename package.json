@@ -1,4 +1,9 @@
 {
+    "browser": {
+        "fs": false,
+        "path": false,
+        "os": false
+    },
     "private": true,
     "scripts": {
         "dev": "npm run development",

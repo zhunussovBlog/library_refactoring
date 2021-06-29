@@ -21,7 +21,7 @@ class SearchController extends Controller
 
         $dataByContent = $this->contentSearch($request);
         $data = Search::search($request, QueryHelper::unionAll(...GetModels::getModels()), new MediaFields());
-        $data->merge($dataByContent);
+        $data = $data->merge($dataByContent);
         $forFilter = FilterHelper::forFilter($data, MediaFields::getFilterFields());
 
         return response()->json([
@@ -43,12 +43,20 @@ class SearchController extends Controller
         if ($options[0]['key'] === 'all') {
             $value = $options[0]['value'];
 
-            $searchResults = DB::table('lib_bibliographic_info')
-                ->select(DB::raw("coalesce(book_id, journal_id, disc_id) as id"))
-                ->whereRaw("CONTAINS(xml_data, '$value INPATH(//TreeList/Nodes/Node/NodeData[Cell=\"650.x\"])', 1) > 0")
-                ->orderByRaw('score(1) desc')->get()->pluck('id');
+            $searchResults = DB::select(DB::raw(
+                "select coalesce(book_id, journal_id, disc_id) as id
+                        from LIB_BIBLIOGRAPHIC_INFO t
+                        where CONTAINS(t.xml_data, '$value INPATH (//TreeList/Nodes/Node/NodeData[Cell=\"650.x\"])', 1) > 0
+                        ORDER BY SCORE(1) DESC"
+            ));
 
-            $data = QueryHelper::unionAll(...GetModels::getModels())->select()->whereIn('id', $searchResults)->get();
+            $ids = [];
+
+            foreach ($searchResults as $result) {
+                $ids[] = $result->id;
+            }
+
+            $data = QueryHelper::unionAll(...GetModels::getModels())->select()->whereIn('id', $ids)->get();
         }
 
         return $data;

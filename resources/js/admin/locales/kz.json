@@ -210,6 +210,8 @@
     "days": "Күндер",
 
     "import_from_google_api": "Google api-дан импорттау",
+    "code": "Код",
+    "value": "Мәні",
     "cataloging": "Каталогтау",
     "search_cataloging": "ISBN || Атауы || Автор бойынша іздеу",
     "edit_rec": "Жазбаны өңдеу",

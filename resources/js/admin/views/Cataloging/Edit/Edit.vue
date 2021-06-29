@@ -34,17 +34,26 @@
                             {{section.section}}
                     </div>
                 </div>
-                <div class="p-3 ml-3 border rounded flex-fill ">
-                    <div class="text-grey font-size-14 py-2 my-1">
-                        {{$t('section_tag')}}
-                    </div>
-                    <div class="d-flex">
-                        <div class="rounded px-3 py-2 font-weight-bold bg-lightgrey text-grey cursor-pointer"
-                            :class="[{'bg-orange text-white':tagSelected.field_code==tag.field_code},{'ml-2':index!=0}]"
-                            @click="tagSelected=tag"
-                            v-for="(tag,index) in sectioned[sectionSelected].tags" :key="index">
-                                {{tag.field_code}}
+                <div class="p-3 ml-3 border rounded flex-fill">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <div class="text-grey font-size-14 py-2 my-1">
+                                {{$t('section_tag')}}
+                            </div>
+                            <div class="d-flex">
+                                <div class="rounded px-3 py-2 font-weight-bold bg-lightgrey text-grey cursor-pointer"
+                                    :class="[{'bg-orange text-white':tagSelected.field_code==tag.field_code},{'ml-2':index!=0}]"
+                                    @click="tagSelected=tag"
+                                    v-for="(tag,index) in sectioned[sectionSelected].tags" :key="index">
+                                        {{tag.field_code}}
+                                </div>
+                            </div>
                         </div>
+                        <!-- <div>
+                            <button class="outline-black" v-if="tagSelected.field_code=='650'" @click="importFromExt()">
+                                {{$t('import_from_external_source')}}
+                            </button>
+                        </div> -->
                     </div>
                     <div class="text-center font-weight-bold">
                         {{tagSelected.title}}
@@ -164,8 +173,9 @@ import InputDiv from '../../../components/Input'
 // icons
 import Print from '../../../../common/assets/icons/Print'
 
+// relative components
 import Preview from './Preview'
-
+import IFGA from './ImportFromGoogleAPI.vue'
 export default {
     mixins:[goTo,message_error,message_success,download_file,print_file,showModal],
     props:{
@@ -180,7 +190,7 @@ export default {
             link:'cataloging/material',
             sectionSelected:0,
             tagSelected:{},
-            authority:{}
+            authority:{},
         }
     },
     methods:{
@@ -247,7 +257,37 @@ export default {
                     tag.data=section.info.filter(elem=>elem.pid==tag.field_code)
                 })
             })
-            this.tagSelected=this.sectioned[0].tags[0]
+            this.tagSelected=this.sectioned[0].tags[0];
+        },
+        importFromExt(){
+            var str='';
+            var res=[];
+
+            import('/schedules.js').then(response=>{
+                str=response.schedules;
+            }).then(()=>{
+                str=str.split('@');
+                str.forEach(elem=>{
+                    let search_c_n=this.edit_info.find(item=>item.id=='010.c').data;
+                    this.edit_info.forEach(item=>{
+                        if(item.id=='010.n'){
+                            search_c_n+=item.data;
+                        }
+                    })
+                    if(elem.includes(search_c_n)){
+                        let s=elem.split('\t');
+                        let data='';
+                        try{
+                            data=s[1].split('--')
+                        }catch(e){
+                            let datas=s[0].split('--');
+                            datas.shift();
+                            data=datas;
+                        }
+                        return ;
+                    }
+                })
+            })
         },
         selectSection(section){
             this.sectionSelected=section.section;
@@ -321,87 +361,68 @@ export default {
             })
         },
         importFromGoogleAPIs(isbn){
-            let info=this.info;
-            let importIt=(data)=>{
-                let array=[];
-                array.push({
-                    value:data.title,
-                    code:'245.a'    
-                },
-                {
-                    value:data.subtitle,
-                    code:'245.b'
-                },
-                {
-                    value:data.authors,
-                    code:'600.a'
-                },
-                {
-                    value:data.publisher,
-                    code:'260.b'
-                },
-                {
-                    value:data.publishedDate,
-                    code:'260.c'
-                },
-                {
-                    value:data.industryIdentifiers[1].identifier,
-                    code:'020.a'
-                },
-                {
-                    value:data.printType,
-                    code:'650.v'
-                },
-                {
-                    value:data.pageCount,
-                    code:'300.a'
-                },
-                {
-                    value:data.categories,
-                    code:'650.a'
-                },
-                {
-                    value:data.language,
-                    code:'546.a'
-                },
-                {
-                    value:data.description,
-                    code:'520.a'
-                });
-                array.forEach(e=>{
-                    if(e.value){
-                        let info = this.edit_info.find(elem=>elem.id==e.code);
-                        if(Array.isArray(e.value)){
-                            e.value.forEach(value=>{
-                                let new_data=copy(info);
-                                new_data.is_added=true;
-                                new_data.repeatable=null;
-                                if(info.data){
-                                    new_data.data=value;
-                                    this.edit_info.push(new_data);
-                                }else{
-                                    info.data=value;
-                                }
-                            })
-                        }else{
-                            info.data=e.value;
-                        }
-
-                    }
-                });
-                this.sortInfo(this.edit_info);
-                this.updateCatalogingInfo();
-                this.message_success('import_from_google_api',{});
-            }
             // we use fetch() because there's cors mistake when use this.$http
             this.$store.commit('setFullPageLoading', true);
             fetch("https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbn).then(response => {
                 response.json().then(async res => {
                     try {
                         let data=res.items[0].volumeInfo;
-                        importIt(data);
+                        let array=[];
+                        array.push({
+                            value:data.title,
+                            code:'245.a'    
+                        },
+                        {
+                            value:data.subtitle,
+                            code:'245.b'
+                        },
+                        {
+                            value:data.authors,
+                            code:'600.a'
+                        },
+                        {
+                            value:data.publisher,
+                            code:'260.b'
+                        },
+                        {
+                            value:data.publishedDate,
+                            code:'260.c'
+                        },
+                        {
+                            value:data.industryIdentifiers[1].identifier,
+                            code:'020.a'
+                        },
+                        {
+                            value:data.printType,
+                            code:'650.v'
+                        },
+                        {
+                            value:data.pageCount,
+                            code:'300.a'
+                        },
+                        {
+                            value:data.categories,
+                            code:'650.a'
+                        },
+                        {
+                            value:data.language,
+                            code:'546.a'
+                        },
+                        {
+                            value:data.description,
+                            code:'520.a'
+                        });
+                        
+                        let after=(res)=>{
+                            this.edit_info=res;
+                            this.sortInfo(this.edit_info);
+                            this.updateCatalogingInfo();
+                            this.message_success('import_from_google_api',{});
+                        }
+                        this.showModal(IFGA,{data:array,edit_info:this.edit_info,after});
                         this.updateCatalogingInfo();
                     } catch (e) {
+                        console.error(e);
                         this.$store.commit('setFullPageLoading', false)
                         this.$prompt("Search google apis for isbn: "+isbn+" failed. Maybe you'd like to try to search with another isbn?").then((text) => {
                             this.importFromGoogleAPIs(text);
