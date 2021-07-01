@@ -6,13 +6,16 @@
 				<Search class="pt-4 pb-4 col-md-12 col-xl-11 px-0 flex-0" />
 				<div class="align-self-start mt-40" style="z-index: 1;">
 					<div class="border 	border-width" id="libchat_591323eae0c67c543ac18bf22cf2e1a7" v-if="$i18n.locale=='en'"></div>
+					<div class="border 	border-width" id="libchat_26182d2d0a7628dba14f5685b439f7b5" v-if="$i18n.locale=='ru'"></div>
 					<div class="border 	border-width" id="libchat_2bd2632bd2b55389a65a46993bf9f779" v-if="$i18n.locale=='kz'"></div>
 				</div>
 			</div>
 			<div class="col-12 col-xl-4 px-0 mt-3 mb-3">
 				<div id="s-la-widget-7614" class="mt-20 full-width width-100-lg"></div>
 				<div class="full-width">
-					<div id="s-la-widget-7615" class="no-border-top"></div>
+					<div id="s-la-widget-7615" class="no-border-top" v-if="$i18n.locale=='en'"></div>
+					<div id="s-la-widget-7792" class="no-border-top" v-if="$i18n.locale=='ru'"></div>
+					<div id="s-la-widget-7809" class="no-border-top" v-if="$i18n.locale=='kz'"></div>
 				</div>
 			</div>
 		</div>
@@ -76,16 +79,42 @@
 			},
 			loadExternalLibGuideScripts(){
 				let srcs=[];
-				
-				// faq questions 
-				srcs[0]='https://sdu-kz.libanswers.com/1.0/widgets/7614'; // en
-				
-				// faq answers
-				srcs[1]='https://sdu-kz.libanswers.com/1.0/widgets/7615'; // en
-				
-				// chat
-				srcs[2]='https://sdu-kz.libanswers.com/load_chat.php?hash=591323eae0c67c543ac18bf22cf2e1a7'; // en
-				srcs[3]='https://sdu-kz.libanswers.com/load_chat.php?hash=2bd2632bd2b55389a65a46993bf9f779'; // kz
+
+				// en
+				if(this.$i18n.locale=='en'){
+					// faq ask 
+					srcs[0]='https://sdu-kz.libanswers.com/1.0/widgets/7614'; 
+					
+					// faq questions
+					srcs[1]='https://sdu-kz.libanswers.com/1.0/widgets/7615'; 
+					
+					// chat
+					srcs[2]='https://sdu-kz.libanswers.com/load_chat.php?hash=591323eae0c67c543ac18bf22cf2e1a7'; 
+				}
+
+				// ru
+				else if (this.$i18n.locale=='ru'){
+					// faq ask 
+					srcs[0]='https://sdu-kz.libanswers.com/1.0/widgets/7614'; 
+					
+					// faq questions
+					srcs[1]='https://sdu-kz.libanswers.com/1.0/widgets/7792'; 
+					
+					// chat
+					srcs[2]='https://sdu-kz.libanswers.com/load_chat.php?hash=26182d2d0a7628dba14f5685b439f7b5'; 
+				}
+
+				// kz
+				else {
+					// faq ask 
+					srcs[0]='https://sdu-kz.libanswers.com/1.0/widgets/7614'; 
+					
+					// faq questions
+					srcs[1]='https://sdu-kz.libanswers.com/1.0/widgets/7809'; 
+					
+					// chat
+					srcs[2]='https://sdu-kz.libanswers.com/load_chat.php?hash=2bd2632bd2b55389a65a46993bf9f779';
+				}
 
 				srcs.forEach(item=>{
 					this.loadScript(item);
