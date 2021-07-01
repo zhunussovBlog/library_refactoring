@@ -5,17 +5,17 @@
 			<div class="d-flex flex-column w-100">
 				<Search class="pt-4 pb-4 col-md-12 col-xl-11 px-0 flex-0" />
 				<div class="align-self-start mt-40" style="z-index: 1;">
-					<div class="border 	border-width" id="libchat_591323eae0c67c543ac18bf22cf2e1a7" v-if="$i18n.locale=='en'"></div>
-					<div class="border 	border-width" id="libchat_26182d2d0a7628dba14f5685b439f7b5" v-if="$i18n.locale=='ru'"></div>
-					<div class="border 	border-width" id="libchat_2bd2632bd2b55389a65a46993bf9f779" v-if="$i18n.locale=='kz'"></div>
+					<div class="d-none border border-width" id="libchat_591323eae0c67c543ac18bf22cf2e1a7" :class="{'d-block':$i18n.locale=='en'}"></div>
+					<div class="d-none border border-width" id="libchat_26182d2d0a7628dba14f5685b439f7b5" :class="{'d-block':$i18n.locale=='ru'}"></div>
+					<div class="d-none border border-width" id="libchat_2bd2632bd2b55389a65a46993bf9f779" :class="{'d-block':$i18n.locale=='kz'}"></div>
 				</div>
 			</div>
 			<div class="col-12 col-xl-4 px-0 mt-3 mb-3">
 				<div id="s-la-widget-7614" class="mt-20 full-width width-100-lg"></div>
 				<div class="full-width">
-					<div id="s-la-widget-7615" class="no-border-top" v-if="$i18n.locale=='en'"></div>
-					<div id="s-la-widget-7792" class="no-border-top" v-if="$i18n.locale=='ru'"></div>
-					<div id="s-la-widget-7809" class="no-border-top" v-if="$i18n.locale=='kz'"></div>
+					<div id="s-la-widget-7615" class="d-none no-border-top s-la-widget s-la-widget-embed" :class="{'d-block':$i18n.locale=='en'}"></div>
+					<div id="s-la-widget-7792" class="d-none no-border-top s-la-widget s-la-widget-embed" :class="{'d-block':$i18n.locale=='ru'}"></div>
+					<div id="s-la-widget-7809" class="d-none no-border-top s-la-widget s-la-widget-embed" :class="{'d-block':$i18n.locale=='kz'}"></div>
 				</div>
 			</div>
 		</div>
@@ -72,7 +72,7 @@
 	export default{
 		components:{Search,RightNormal,SlideEvents},
 		methods:{
-			loadScript(src){
+			async loadScript(src){
 				let externalScript = document.createElement('script');
 				externalScript.setAttribute('src',src);
 				document.head.appendChild(externalScript);
@@ -80,41 +80,65 @@
 			loadExternalLibGuideScripts(){
 				let srcs=[];
 
+				// // en
+				// if(this.$i18n.locale=='en'){
+				// 	// faq ask 
+				// 	srcs[0]='https://sdu-kz.libanswers.com/1.0/widgets/7614'; 
+					
+				// 	// faq questions
+				// 	srcs[1]='https://sdu-kz.libanswers.com/1.0/widgets/7615'; 
+					
+				// 	// chat
+				// 	srcs[2]='https://sdu-kz.libanswers.com/load_chat.php?hash=591323eae0c67c543ac18bf22cf2e1a7'; 
+				// }
+
+				// // ru
+				// else if (this.$i18n.locale=='ru'){
+				// 	// faq ask 
+				// 	srcs[0]='https://sdu-kz.libanswers.com/1.0/widgets/7614'; 
+					
+				// 	// faq questions
+				// 	srcs[1]='https://sdu-kz.libanswers.com/1.0/widgets/7792'; 
+					
+				// 	// chat
+				// 	srcs[2]='https://sdu-kz.libanswers.com/load_chat.php?hash=26182d2d0a7628dba14f5685b439f7b5'; 
+				// }
+
+				// // kz
+				// else {
+				// 	// faq ask 
+				// 	srcs[0]='https://sdu-kz.libanswers.com/1.0/widgets/7614'; 
+					
+				// 	// faq questions
+				// 	srcs[1]='https://sdu-kz.libanswers.com/1.0/widgets/7809'; 
+					
+				// 	// chat
+				// 	srcs[2]='https://sdu-kz.libanswers.com/load_chat.php?hash=2bd2632bd2b55389a65a46993bf9f779';
+				// }
+
+				// faq ask 
 				// en
-				if(this.$i18n.locale=='en'){
-					// faq ask 
-					srcs[0]='https://sdu-kz.libanswers.com/1.0/widgets/7614'; 
-					
-					// faq questions
-					srcs[1]='https://sdu-kz.libanswers.com/1.0/widgets/7615'; 
-					
-					// chat
-					srcs[2]='https://sdu-kz.libanswers.com/load_chat.php?hash=591323eae0c67c543ac18bf22cf2e1a7'; 
-				}
-
+				srcs[0]='https://sdu-kz.libanswers.com/1.0/widgets/7614'; 
 				// ru
-				else if (this.$i18n.locale=='ru'){
-					// faq ask 
-					srcs[0]='https://sdu-kz.libanswers.com/1.0/widgets/7614'; 
-					
-					// faq questions
-					srcs[1]='https://sdu-kz.libanswers.com/1.0/widgets/7792'; 
-					
-					// chat
-					srcs[2]='https://sdu-kz.libanswers.com/load_chat.php?hash=26182d2d0a7628dba14f5685b439f7b5'; 
-				}
-
+				srcs[1]='https://sdu-kz.libanswers.com/1.0/widgets/7614'; 
 				// kz
-				else {
-					// faq ask 
-					srcs[0]='https://sdu-kz.libanswers.com/1.0/widgets/7614'; 
-					
-					// faq questions
-					srcs[1]='https://sdu-kz.libanswers.com/1.0/widgets/7809'; 
-					
-					// chat
-					srcs[2]='https://sdu-kz.libanswers.com/load_chat.php?hash=2bd2632bd2b55389a65a46993bf9f779';
-				}
+				srcs[2]='https://sdu-kz.libanswers.com/1.0/widgets/7614'; 
+				
+				// faq questions
+				// en
+				srcs[3]='https://sdu-kz.libanswers.com/1.0/widgets/7615'; 
+				// ru
+				srcs[4]='https://sdu-kz.libanswers.com/1.0/widgets/7792'; 
+				// kz
+				srcs[5]='https://sdu-kz.libanswers.com/1.0/widgets/7809'; 
+				
+				// chat
+				// en
+				srcs[6]='https://sdu-kz.libanswers.com/load_chat.php?hash=591323eae0c67c543ac18bf22cf2e1a7'; 
+				// ru
+				srcs[7]='https://sdu-kz.libanswers.com/load_chat.php?hash=26182d2d0a7628dba14f5685b439f7b5'; 
+				// kz
+				srcs[8]='https://sdu-kz.libanswers.com/load_chat.php?hash=2bd2632bd2b55389a65a46993bf9f779';
 
 				srcs.forEach(item=>{
 					this.loadScript(item);

@@ -254,7 +254,7 @@
 				}
 			}
 
-			this.link=window.location.protocol+'//'+window.location.hostname+'/'+this.$i18n.locale+'/full?id='+this.id;
+			this.link=window.location.protocol+'//'+window.location.hostname+'/full?id='+this.id;
 
 			if(!this.printing){
 				this.printing=this.$route.query.mode;
