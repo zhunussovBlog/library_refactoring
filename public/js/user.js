@@ -2745,6 +2745,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 // components
 
  // icons
@@ -2765,17 +2768,32 @@ __webpack_require__.r(__webpack_exports__);
     loadExternalLibGuideScripts: function loadExternalLibGuideScripts() {
       var _this = this;
 
-      var srcs = []; // faq questions 
+      var srcs = []; // en
 
-      srcs[0] = 'https://sdu-kz.libanswers.com/1.0/widgets/7614'; // en
-      // faq answers
+      if (this.$i18n.locale == 'en') {
+        // faq ask 
+        srcs[0] = 'https://sdu-kz.libanswers.com/1.0/widgets/7614'; // faq questions
 
-      srcs[1] = 'https://sdu-kz.libanswers.com/1.0/widgets/7615'; // en
-      // chat
+        srcs[1] = 'https://sdu-kz.libanswers.com/1.0/widgets/7615'; // chat
 
-      srcs[2] = 'https://sdu-kz.libanswers.com/load_chat.php?hash=591323eae0c67c543ac18bf22cf2e1a7'; // en
+        srcs[2] = 'https://sdu-kz.libanswers.com/load_chat.php?hash=591323eae0c67c543ac18bf22cf2e1a7';
+      } // ru
+      else if (this.$i18n.locale == 'ru') {
+          // faq ask 
+          srcs[0] = 'https://sdu-kz.libanswers.com/1.0/widgets/7614'; // faq questions
 
-      srcs[3] = 'https://sdu-kz.libanswers.com/load_chat.php?hash=2bd2632bd2b55389a65a46993bf9f779'; // kz
+          srcs[1] = 'https://sdu-kz.libanswers.com/1.0/widgets/7792'; // chat
+
+          srcs[2] = 'https://sdu-kz.libanswers.com/load_chat.php?hash=26182d2d0a7628dba14f5685b439f7b5';
+        } // kz
+        else {
+            // faq ask 
+            srcs[0] = 'https://sdu-kz.libanswers.com/1.0/widgets/7614'; // faq questions
+
+            srcs[1] = 'https://sdu-kz.libanswers.com/1.0/widgets/7809'; // chat
+
+            srcs[2] = 'https://sdu-kz.libanswers.com/load_chat.php?hash=2bd2632bd2b55389a65a46993bf9f779';
+          }
 
       srcs.forEach(function (item) {
         _this.loadScript(item);
@@ -17805,6 +17823,13 @@ var render = function() {
                     })
                   : _vm._e(),
                 _vm._v(" "),
+                _vm.$i18n.locale == "ru"
+                  ? _c("div", {
+                      staticClass: "border \tborder-width",
+                      attrs: { id: "libchat_26182d2d0a7628dba14f5685b439f7b5" }
+                    })
+                  : _vm._e(),
+                _vm._v(" "),
                 _vm.$i18n.locale == "kz"
                   ? _c("div", {
                       staticClass: "border \tborder-width",
@@ -17817,7 +17842,35 @@ var render = function() {
           1
         ),
         _vm._v(" "),
-        _vm._m(0)
+        _c("div", { staticClass: "col-12 col-xl-4 px-0 mt-3 mb-3" }, [
+          _c("div", {
+            staticClass: "mt-20 full-width width-100-lg",
+            attrs: { id: "s-la-widget-7614" }
+          }),
+          _vm._v(" "),
+          _c("div", { staticClass: "full-width" }, [
+            _vm.$i18n.locale == "en"
+              ? _c("div", {
+                  staticClass: "no-border-top",
+                  attrs: { id: "s-la-widget-7615" }
+                })
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.$i18n.locale == "ru"
+              ? _c("div", {
+                  staticClass: "no-border-top",
+                  attrs: { id: "s-la-widget-7792" }
+                })
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.$i18n.locale == "kz"
+              ? _c("div", {
+                  staticClass: "no-border-top",
+                  attrs: { id: "s-la-widget-7809" }
+                })
+              : _vm._e()
+          ])
+        ])
       ]
     ),
     _vm._v(" "),
@@ -17852,7 +17905,7 @@ var render = function() {
         "div",
         { staticClass: "d-flex align-items-start mt-5 " },
         [
-          _vm._m(1),
+          _vm._m(0),
           _vm._v(" "),
           !_vm.$mobileCheck()
             ? _c("slide-events", { attrs: { number: 2 } })
@@ -17872,7 +17925,7 @@ var render = function() {
         _vm._v("\n\t\t\t" + _vm._s(_vm.$t("video_content")) + "\n\t\t")
       ]),
       _vm._v(" "),
-      _vm._m(2),
+      _vm._m(1),
       _vm._v(" "),
       _c("div", { staticClass: "mt-5" }, [
         _c(
@@ -17896,24 +17949,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-12 col-xl-4 px-0 mt-3 mb-3" }, [
-      _c("div", {
-        staticClass: "mt-20 full-width width-100-lg",
-        attrs: { id: "s-la-widget-7614" }
-      }),
-      _vm._v(" "),
-      _c("div", { staticClass: "full-width" }, [
-        _c("div", {
-          staticClass: "no-border-top",
-          attrs: { id: "s-la-widget-7615" }
-        })
-      ])
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
