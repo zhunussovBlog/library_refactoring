@@ -4,69 +4,32 @@ import Search from "../views/Search";
 
 import Mybooks from "../views/Mybooks";
 
-import Locale from '../locale/Locale'
-
-let children = [{
-        path: '',
+export default [{
+        path: '/',
         component: Home,
+        name: 'home',
         meta: {
-            name: '',
             footer: true
         }
     },
     {
-        path: 'search',
+        path: '/search',
         component: Search,
-        meta: {
-            name: 'search'
-        }
+        name: 'search'
     },
     {
-        path: 'mybooks',
-        component: Mybooks,
-        meta: {
-            name: 'mybooks'
-        }
+        path: '/mybooks',
+        name: 'mybooks',
+        component: Mybooks
     },
     {
-        path: 'full',
+        path: '/full',
         name: 'full',
         component: () =>
-            import ('../views/Full'),
-        meta: {
-            name: 'full'
-        }
-    },
-]
-export default [{
-        path: '/',
-        component: Locale,
-        meta: {
-            lang: null
-        }
+            import ('../views/Full')
     },
     {
-        path: '/en',
-        component: Locale,
-        meta: {
-            lang: { lan: 'en', name: 'EN' },
-        },
-        children: children
-    },
-    {
-        path: '/ru',
-        component: Locale,
-        meta: {
-            lang: { lan: 'ru', name: 'RU' },
-        },
-        children: children
-    },
-    {
-        path: '/kz',
-        component: Locale,
-        meta: {
-            lang: { lan: 'kz', name: 'KZ' },
-        },
-        children: children
+        path: '*',
+        redirect: { name: 'home' }
     }
 ];

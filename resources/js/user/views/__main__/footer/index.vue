@@ -40,7 +40,7 @@
 				{{$t('allRightsReserved',{year:year})}}
 			</div>
 			<div class="ml-3">
-				<dropdown class="dropup" :data="langs" :on_click="setLanguage" menu_classes="dropdown-menu-right" :title="{link:$i18n.locale,uppercase:true}"/>
+				<dropdown class="dropup" :data="langs" :on_click="setLang" menu_classes="dropdown-menu-right" :title="{link:$i18n.locale,uppercase:true}"/>
 			</div>
 		</div>
 	</div>

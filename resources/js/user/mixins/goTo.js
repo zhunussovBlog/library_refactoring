@@ -1,13 +1,10 @@
 export const goTo = {
     methods: {
         goTo(place, props) {
-            let lang = this.$i18n.locale;
-            if (place != 'home') {
-                this.$router.push({ path: '/' + lang + '/' + place, query: props });
-            } else {
-                this.$router.push({ path: '/' + lang, query: props });
+            if (this.$route.name != place) {
+                this.$router.push({ name: place, params: props });
+                this.$emit('close');
             }
-            this.$emit('close');
         }
     }
 }

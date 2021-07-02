@@ -11,7 +11,12 @@
 				</div>
 			</div>
 			<div class="col-12 col-xl-4 px-0 mt-3 mb-3">
-				
+				<div id="s-la-widget-7614" class="mt-20 full-width width-100-lg"></div>
+				<div class="full-width">
+					<div id="s-la-widget-7615" class="d-none no-border-top s-la-widget s-la-widget-embed" :class="{'d-block':$i18n.locale=='en'}"></div>
+					<div id="s-la-widget-7792" class="d-none no-border-top s-la-widget s-la-widget-embed" :class="{'d-block':$i18n.locale=='ru'}"></div>
+					<div id="s-la-widget-7809" class="d-none no-border-top s-la-widget s-la-widget-embed" :class="{'d-block':$i18n.locale=='kz'}"></div>
+				</div>
 			</div>
 		</div>
 		<!-- upcoming events -->
