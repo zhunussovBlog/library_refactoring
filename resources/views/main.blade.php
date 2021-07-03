@@ -14,12 +14,6 @@
 
 	<!-- /bootstrap -->
 
-	<!-- ask us -->
-
-	<script src="https://sdu-kz.libanswers.com/load_chat.php?hash=e250e6e469c178c6e24700298be9a087"></script>
-
-	<!-- /ask us -->
-
 	<title>Library SDU</title>
 </head>
 <body>

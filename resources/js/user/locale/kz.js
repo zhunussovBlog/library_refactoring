@@ -82,7 +82,7 @@ export default {
     "publisher": "Баспасы",
     "publisher_by": "Баспасымен",
     "quick_links": {
-        "title": "Жылдам сілтемелер",
+        "title": "Сілтемелер",
         "az": "Деректер Қоры",
         "bookpurchase": "Кітапханаға Тапсырыс",
         "askus": "Кітапханашыдан Сұраңыз",

@@ -9804,7 +9804,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  baseURL: 'https://library.sdu.edu.kz/',
+  baseURL: 'http://localhost:8000/',
   api: 'api/',
   default_lang: 'en'
 });
@@ -30051,7 +30051,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".text-red {\n    color: red;\n}\n\n.text-lightgrey {\n    color: #B5BAC7;\n}\n\n.text-grey {\n    color: #9C9FA7;\n}\n\n.text-white {\n    color: white;\n}\n\n.text-black {\n    color: #333;\n}\n\n.text-blue {\n    color: #274FB6 !important;\n}\n\n.text-green {\n    color: #00BB78;\n}\n\n.text-orange {\n    color: #FF9D29;\n}\n\n.caret-orange {\n    caret-color: #FF9D29;\n}\n\n.bg-transparent {\n    background-color: transparent;\n}\n\n.bg-white {\n    background-color: #FFFFFF;\n}\n\n.bg-bg {\n    background-color: #eef5ff;\n}\n\n.bg-darkgrey {\n    background-color: #B5BAC7;\n}\n\n.bg-grey {\n    background-color: #EDEDED;\n}\n\n.bg-lightgrey {\n    background-color: #F4F4F4;\n}\n\n.bg-orange {\n    background-color: #FF9D29;\n}\n\n.bg-green {\n    background-color: #00BB78;\n}\n\n.bg-blue {\n    background-color: #0a306a !important;\n}\n\n.bg-lightblue {\n    background-color: rgba( 163, 200, 255, .25) !important;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".text-red {\n    color: red;\n}\n\n.text-lightgrey {\n    color: #B5BAC7;\n}\n\n.text-grey {\n    color: #9C9FA7;\n}\n\n.text-white {\n    color: white;\n}\n\n.text-black {\n    color: #333;\n}\n\n.text-blue {\n    color: #274FB6 !important;\n}\n\n.text-darkblue {\n    color: #00246A;\n}\n\n.text-green {\n    color: #00BB78;\n}\n\n.text-orange {\n    color: #FF9D29;\n}\n\n.caret-orange {\n    caret-color: #FF9D29;\n}\n\n.bg-transparent {\n    background-color: transparent;\n}\n\n.bg-white {\n    background-color: #FFFFFF;\n}\n\n.bg-bg {\n    background-color: #eef5ff;\n}\n\n.bg-darkgrey {\n    background-color: #B5BAC7;\n}\n\n.bg-grey {\n    background-color: #EDEDED;\n}\n\n.bg-lightgrey {\n    background-color: #F4F4F4;\n}\n\n.bg-orange {\n    background-color: #FF9D29;\n}\n\n.bg-green {\n    background-color: #00BB78;\n}\n\n.bg-blue {\n    background-color: #0a306a !important;\n}\n\n.bg-lightblue {\n    background-color: rgba( 163, 200, 255, .25) !important;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

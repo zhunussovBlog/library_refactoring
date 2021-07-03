@@ -3,10 +3,10 @@
 		<div class="d-flex flex-wrap mb-4" v-for="(input,index) in inputs" :key="index">
 			<div class="d-flex flex-fill position-relative">
 				<div :id="'warn-'+index" class="warn">{{$t('at_least_2')}}</div>
-				<select-div :data="select_data" label="name" class="w-min-120 p-3 border-grey no-border-right no-border-right-radius border-width bg-white" labelClasses="text-no-wrap" v-model="input.search.type"/>
+				<select-div :data="select_data" label="name" class="w-min-120 p-3 border-grey no-border-right no-border-right-radius border-width bg-white text-black" labelClasses="text-no-wrap" v-model="input.search.type"/>
 				<autocomplete class="flex-fill" input_classes="no-border-left-radius border-grey w-100" v-model="input.search.query" :submit_method="search"/>
 			</div>
-			<select-div :data="operations" class="w-min-120 border-grey border-width bg-white p-3 ml-0 ml-sm-3 mt-3 mt-sm-0" v-model="inputs[index+1].operator" v-if="index<(inputs.length-1)" />
+			<select-div :data="operations" class="w-min-120 border-grey border-width bg-white p-3 ml-0 ml-sm-3 mt-3 mt-sm-0 text-black" v-model="inputs[index+1].operator" v-if="index<(inputs.length-1)" />
 			<button type="button" class="w-min-120 ml-0 ml-sm-3 mt-3 mt-sm-0" @click="addItem()" v-if="!(index < (inputs.length-1)) && (index < maximum-1)"> + </button>
 		</div>
 		<div class="d-flex justify-content-between flex-wrap mt-3">

@@ -1,22 +1,9 @@
 <template>
 	<div>
 		<!-- search -->
-		<div class="d-flex flex-wrap flex-xl-nowrap bg-lightgrey padding py-5 ">
-			<div class="d-flex flex-column w-100">
-				<Search class="pt-4 pb-4 col-md-12 col-xl-11 px-0 flex-0" />
-				<div class="align-self-start mt-40" style="z-index: 1;">
-					<div class="d-none border border-width" id="libchat_591323eae0c67c543ac18bf22cf2e1a7" :class="{'d-block':$i18n.locale=='en'}"></div>
-					<div class="d-none border border-width" id="libchat_26182d2d0a7628dba14f5685b439f7b5" :class="{'d-block':$i18n.locale=='ru'}"></div>
-					<div class="d-none border border-width" id="libchat_2bd2632bd2b55389a65a46993bf9f779" :class="{'d-block':$i18n.locale=='kz'}"></div>
-				</div>
-			</div>
-			<div class="col-12 col-xl-4 px-0 mt-3 mb-3">
-				<div id="s-la-widget-7614" class="mt-20 full-width width-100-lg"></div>
-				<div class="full-width">
-					<div id="s-la-widget-7615" class="d-none no-border-top s-la-widget s-la-widget-embed" :class="{'d-block':$i18n.locale=='en'}"></div>
-					<div id="s-la-widget-7792" class="d-none no-border-top s-la-widget s-la-widget-embed" :class="{'d-block':$i18n.locale=='ru'}"></div>
-					<div id="s-la-widget-7809" class="d-none no-border-top s-la-widget s-la-widget-embed" :class="{'d-block':$i18n.locale=='kz'}"></div>
-				</div>
+		<div class="d-flex flex-wrap flex-xl-nowrap bg-lightgrey padding py-5 bg-image home" :style="'background-image:url('+this.bgImage.src+')'">
+			<div class="d-flex flex-column w-100 mt-5 align-items-center">
+				<Search class="pt-4 pb-4 col-md-8 col-xl-6 px-0 flex-0 text-white" />
 			</div>
 		</div>
 		<!-- upcoming events -->
@@ -38,18 +25,18 @@
 			</div>
 		</div>
 		<!-- library's video content -->
-		<div class="bg-lightgrey padding py-5">
+		<div class="position-relative bg-lightgrey padding py-5 overflow-hidden">
 			<span class="font-size-32 font-weight-bold" v-html="$t('vid_content').toUpperCase()" />
 			<div class="mt-3">
 				{{$t('video_content')}}
 			</div>
 			<div class="d-flex justify-content-between mt-3">
-				<div class="flex-wrap d-flex flex-xl-nowrap w-100">
+				<div class="flex-wrap d-flex flex-xl-nowrap w-100 z-index-2">
 					<iframe class="videos mr-3 w-100" src="https://www.youtube.com/embed/IS3jYEzgb4A" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 					<iframe class="videos mr-3 mt-3 mt-xl-0 w-100" src="https://www.youtube.com/embed/KMGDDYt2Zvs" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 				</div>
 				<div class="d-none d-lg-flex align-items-center">
-					<img src="/images/Video.svg">
+					<img class="videos_image" src="/images/Video.svg">
 				</div>
 			</div>
 			<div class="mt-5">
@@ -59,16 +46,19 @@
 				</a>
 			</div>
 		</div>
-		<div class="padding py-5 bg-white d-flex justify-content-between">
-			<div>
-				<div>{{$t('faq').toUpperCase()}}</div>
+		<!-- faq -->
+		<div class="padding py-5 bg-white row flex-wrap justify-content-between">
+			<div class="col-12 col-md-4">
+				<div class="font-size-32 font-weight-bold">{{$t('faq').toUpperCase()}}</div>
 				<div class="mt-5 font-weight-bold">{{$t('faq_question')}}</div>
 				<div class="mt-1 font-size-14">{{$t('faq_answer')}}</div>
-				<div class="mt-2">
-					<div id="s-la-widget-7614" class="mt-20 full-width width-100-lg"></div>
+				<div class="mt-4">
+					<div id="s-la-widget-7614" class="d-none mt-20 full-width width-100-lg s-la-widget s-la-widget-embed" :class="{'d-block':$i18n.locale=='en'}"></div>
+					<div id="s-la-widget-7815" class="d-none mt-20 full-width width-100-lg s-la-widget s-la-widget-embed" :class="{'d-block':$i18n.locale=='ru'}"></div>
+					<div id="s-la-widget-7814" class="d-none mt-20 full-width width-100-lg s-la-widget s-la-widget-embed" :class="{'d-block':$i18n.locale=='kz'}"></div>
 				</div>
 			</div>
-			<div>
+			<div class="mt-3 col-12 col-md-6 mt-md-0">
 				<div id="s-la-widget-7615" class="d-none no-border-top s-la-widget s-la-widget-embed" :class="{'d-block':$i18n.locale=='en'}"></div>
 				<div id="s-la-widget-7792" class="d-none no-border-top s-la-widget s-la-widget-embed" :class="{'d-block':$i18n.locale=='ru'}"></div>
 				<div id="s-la-widget-7809" class="d-none no-border-top s-la-widget s-la-widget-embed" :class="{'d-block':$i18n.locale=='kz'}"></div>
@@ -86,58 +76,37 @@
 
 	export default{
 		components:{Search,RightNormal,SlideEvents},
+		data(){
+			return{
+				bgImage:{
+					src:''
+				}
+			}
+		},
 		methods:{
 			async loadScript(src){
 				let externalScript = document.createElement('script');
 				externalScript.setAttribute('src',src);
 				document.head.appendChild(externalScript);
 			},
+			setBgImage(){
+				let date=new Date();
+				let src='/bg-images/';
+				src+=this.$pad(date.getMonth()+1,2)+'.';
+				src+=Math.trunc(date.getDate()/7)+1;
+				src+='.png';
+				this.bgImage.src=src;
+			},
 			loadExternalLibGuideScripts(){
 				let srcs=[];
-
-				// // en
-				// if(this.$i18n.locale=='en'){
-				// 	// faq ask 
-				// 	srcs[0]='https://sdu-kz.libanswers.com/1.0/widgets/7614'; 
-					
-				// 	// faq questions
-				// 	srcs[1]='https://sdu-kz.libanswers.com/1.0/widgets/7615'; 
-					
-				// 	// chat
-				// 	srcs[2]='https://sdu-kz.libanswers.com/load_chat.php?hash=591323eae0c67c543ac18bf22cf2e1a7'; 
-				// }
-
-				// // ru
-				// else if (this.$i18n.locale=='ru'){
-				// 	// faq ask 
-				// 	srcs[0]='https://sdu-kz.libanswers.com/1.0/widgets/7614'; 
-					
-				// 	// faq questions
-				// 	srcs[1]='https://sdu-kz.libanswers.com/1.0/widgets/7792'; 
-					
-				// 	// chat
-				// 	srcs[2]='https://sdu-kz.libanswers.com/load_chat.php?hash=26182d2d0a7628dba14f5685b439f7b5'; 
-				// }
-
-				// // kz
-				// else {
-				// 	// faq ask 
-				// 	srcs[0]='https://sdu-kz.libanswers.com/1.0/widgets/7614'; 
-					
-				// 	// faq questions
-				// 	srcs[1]='https://sdu-kz.libanswers.com/1.0/widgets/7809'; 
-					
-				// 	// chat
-				// 	srcs[2]='https://sdu-kz.libanswers.com/load_chat.php?hash=2bd2632bd2b55389a65a46993bf9f779';
-				// }
 
 				// faq ask 
 				// en
 				srcs[0]='https://sdu-kz.libanswers.com/1.0/widgets/7614'; 
 				// ru
-				srcs[1]='https://sdu-kz.libanswers.com/1.0/widgets/7614'; 
+				srcs[1]='https://sdu-kz.libanswers.com/1.0/widgets/7815'; 
 				// kz
-				srcs[2]='https://sdu-kz.libanswers.com/1.0/widgets/7614'; 
+				srcs[2]='https://sdu-kz.libanswers.com/1.0/widgets/7814'; 
 				
 				// faq questions
 				// en
@@ -162,6 +131,7 @@
 		},
 		mounted(){
 			this.loadExternalLibGuideScripts();
+			this.setBgImage();
 		}
 	}
 </script>
@@ -175,7 +145,22 @@
 .calendar-height{
 	height:18.75em;	
 }
-.calendar>>>#document>>>html{
-	background-color: rgba( 163, 200, 255, .25) !important;
+.bg-image{
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+}
+.home{
+	/* hard... minus navbar height */
+	height:calc(100vh - 143px);
+	min-height: 740px;
+}
+.videos_image{
+	position: absolute;
+	bottom:-40px;
+	right:-40px;
+	z-index: 1;
+}
+.z-index-2{
+	z-index: 2;
 }
 </style>

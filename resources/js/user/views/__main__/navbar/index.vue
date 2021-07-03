@@ -1,7 +1,8 @@
 <template>
 	<div>
 		<div class="d-flex justify-content-between padding flex-wrap">
-			<div class="d-flex align-items-center">
+			<div class="d-flex align-items-center text-darkblue">
+				<span class="mr-2"><clock /></span>
 				<span>{{$t('time',{time:time})}}</span>
 				<div class="dot ml-3" :class="open ? 'bg-success': 'bg-danger'"></div>
 			</div>
@@ -20,14 +21,12 @@
 				<img class="logo" src="/images/logo.svg">
 			</router-link>
 			<!-- appears only on screens smaller than xl -->
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-				<span class="navbar-toggler-icon"></span>
-			</button>
+			
 			<!-- main items -->
 			<div class="collapse navbar-collapse flex-grow-0 m-auto" id="collapsibleNavbar">
 				<ul class="navbar-nav">
 					<li class="nav-item" v-for="(link,index) in lib_links" :key="index">
-						<a :href="link.link" :target="link.target!=undefined ? link.target : '_blank'" class="nav-link link text-white text-nowrap font-weight-bold">
+						<a :href="link.link" :target="link.target!=undefined ? link.target : '_blank'" class="nav-link link text-white text-nowrap font-weight-bold px-1">
 							<!-- if link is a dropdown -->
 							<span v-if="link.dropdown==undefined">{{$t(link.name).toUpperCase()}}</span>
 							<!-- in other cases -->
@@ -37,7 +36,20 @@
 						</a>
 					</li>
 				</ul>
-			</div>  
+			</div>
+			<div class="ml-auto mr-5 mr-xl-0 border border-white rounded-lg p-3 text-white cursor-pointer" @click="chatShown=!chatShown">
+				ASK!
+			</div>
+			<div class="slide-out transition py-2 px-3 bg-blue rounded hidden" :class="{shown:chatShown}">
+				<div class="align-self-start mt-40" style="z-index: 1;">
+					<div class="d-none border border-width" id="libchat_591323eae0c67c543ac18bf22cf2e1a7" :class="{'d-block':$i18n.locale=='en'}"></div>
+					<div class="d-none border border-width" id="libchat_26182d2d0a7628dba14f5685b439f7b5" :class="{'d-block':$i18n.locale=='ru'}"></div>
+					<div class="d-none border border-width" id="libchat_2bd2632bd2b55389a65a46993bf9f779" :class="{'d-block':$i18n.locale=='kz'}"></div>
+				</div>
+			</div>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+				<span class="navbar-toggler-icon"></span>
+			</button>
 		</nav>
 	</div>
 </template>
@@ -54,11 +66,14 @@
 	import account_dropdown from './account_dropdown'
 
 	import { mapGetters } from 'vuex'
+
+	// icons
+	import Clock from '../../../../common/assets/icons/Clock'
 	
 	export default{
 		mixins:[links,langs,modal,account_dropdown],
 		components:{
-			dropdown
+			dropdown,Clock
 		},
 		computed:{
 			...mapGetters(['logged','user']),
@@ -78,7 +93,7 @@
 				end.setHours(end_hours);
 				end.setMinutes(end_miutes);
 
-				this.time=begin.getHours() + ":" + begin.getMinutes().pad(0) + ' - ' + end.getHours() + ':' + end.getMinutes().pad(0);
+				this.time=begin.getHours() + ":" + this.$pad(begin.getMinutes(),2) + ' - ' + end.getHours() + ':' + this.$pad(end.getMinutes(),2);
 
 				return begin<now && now<end; 
 			}
@@ -86,7 +101,8 @@
 		data(){
 			return{
 				time:'',
-				login:login
+				login:login,
+				chatShown:false
 			}
 		}
 	}
@@ -96,5 +112,15 @@
 	border-radius: 50%;
 	height: .5em;
 	width: .5em;
+}
+.slide-out{
+	position:absolute;
+	top:200%;
+}
+.shown{
+	right:0 !important;
+}
+.hidden{
+	right:-340px;
 }
 </style>
