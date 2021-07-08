@@ -2721,21 +2721,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 // components
 
  // icons
@@ -4232,7 +4217,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  baseURL: 'https://library.sdu.edu.kz/',
+  baseURL: 'http://localhost:8000/',
   api: 'api/',
   default_lang: 'en'
 });
@@ -17814,47 +17799,7 @@ var render = function() {
           ]
         )
       ])
-    ]),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "padding py-5 bg-white d-flex justify-content-between" },
-      [
-        _c("div", [
-          _c("div", [_vm._v(_vm._s(_vm.$t("faq").toUpperCase()))]),
-          _vm._v(" "),
-          _c("div", { staticClass: "mt-5 font-weight-bold" }, [
-            _vm._v(_vm._s(_vm.$t("faq_question")))
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "mt-1 font-size-14" }, [
-            _vm._v(_vm._s(_vm.$t("faq_answer")))
-          ]),
-          _vm._v(" "),
-          _vm._m(2)
-        ]),
-        _vm._v(" "),
-        _c("div", [
-          _c("div", {
-            staticClass: "d-none no-border-top s-la-widget s-la-widget-embed",
-            class: { "d-block": _vm.$i18n.locale == "en" },
-            attrs: { id: "s-la-widget-7615" }
-          }),
-          _vm._v(" "),
-          _c("div", {
-            staticClass: "d-none no-border-top s-la-widget s-la-widget-embed",
-            class: { "d-block": _vm.$i18n.locale == "ru" },
-            attrs: { id: "s-la-widget-7792" }
-          }),
-          _vm._v(" "),
-          _c("div", {
-            staticClass: "d-none no-border-top s-la-widget s-la-widget-embed",
-            class: { "d-block": _vm.$i18n.locale == "kz" },
-            attrs: { id: "s-la-widget-7809" }
-          })
-        ])
-      ]
-    )
+    ])
   ])
 }
 var staticRenderFns = [
@@ -17904,17 +17849,6 @@ var staticRenderFns = [
       _c("div", { staticClass: "d-none d-lg-flex align-items-center" }, [
         _c("img", { attrs: { src: "/images/Video.svg" } })
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "mt-2" }, [
-      _c("div", {
-        staticClass: "mt-20 full-width width-100-lg",
-        attrs: { id: "s-la-widget-7614" }
-      })
     ])
   }
 ]

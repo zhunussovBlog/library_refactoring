@@ -114,6 +114,8 @@
                                         v-if="info.id=='100.a'||info.id=='600.a'"
                                     />
 
+                                    <textarea class="text-wrap" v-model="info.data" v-else-if="info.id=='520.a' || info.id=='520.b'" />
+
                                     <input-div 
                                         v-model="info.data"
                                         classes="border-black input_static_height"
@@ -135,7 +137,6 @@
                                         :showBody="false"
                                         v-else-if="info.id=='650.x'"
                                     />
-
                                     <!-- if it's just info -->
                                     <input type="text" class="w-100" v-model="info.data" v-else/>
                                 </td>
@@ -394,7 +395,7 @@ export default {
                         },
                         {
                             value:data.printType,
-                            code:'650.v'
+                            code:'650.x'
                         },
                         {
                             value:data.pageCount,
@@ -411,7 +412,12 @@ export default {
                         {
                             value:data.description,
                             code:'520.a'
-                        });
+                        },
+                        {
+                            value:data.description,
+                            code:'520.b'
+                        }
+                        );
                         
                         let after=(res)=>{
                             this.edit_info=res;

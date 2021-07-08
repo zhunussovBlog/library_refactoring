@@ -59,21 +59,6 @@
 				</a>
 			</div>
 		</div>
-		<div class="padding py-5 bg-white d-flex justify-content-between">
-			<div>
-				<div>{{$t('faq').toUpperCase()}}</div>
-				<div class="mt-5 font-weight-bold">{{$t('faq_question')}}</div>
-				<div class="mt-1 font-size-14">{{$t('faq_answer')}}</div>
-				<div class="mt-2">
-					<div id="s-la-widget-7614" class="mt-20 full-width width-100-lg"></div>
-				</div>
-			</div>
-			<div>
-				<div id="s-la-widget-7615" class="d-none no-border-top s-la-widget s-la-widget-embed" :class="{'d-block':$i18n.locale=='en'}"></div>
-				<div id="s-la-widget-7792" class="d-none no-border-top s-la-widget s-la-widget-embed" :class="{'d-block':$i18n.locale=='ru'}"></div>
-				<div id="s-la-widget-7809" class="d-none no-border-top s-la-widget s-la-widget-embed" :class="{'d-block':$i18n.locale=='kz'}"></div>
-			</div>
-		</div>
 	</div>
 </template>
 <script type="text/javascript">

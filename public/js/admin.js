@@ -5478,6 +5478,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
 // mixins
 
 
@@ -5738,7 +5739,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                         code: '020.a'
                       }, {
                         value: data.printType,
-                        code: '650.v'
+                        code: '650.x'
                       }, {
                         value: data.pageCount,
                         code: '300.a'
@@ -5751,6 +5752,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                       }, {
                         value: data.description,
                         code: '520.a'
+                      }, {
+                        value: data.description,
+                        code: '520.b'
                       });
 
                       after = function after(res) {
@@ -9804,7 +9808,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  baseURL: 'https://library.sdu.edu.kz/',
+  baseURL: 'http://localhost:8000/',
   api: 'api/',
   default_lang: 'en'
 });
@@ -71392,6 +71396,27 @@ var render = function() {
                                 _vm.$set(info, "data", $$v)
                               },
                               expression: "info.data"
+                            }
+                          })
+                        : info.id == "520.a" || info.id == "520.b"
+                        ? _c("textarea", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: info.data,
+                                expression: "info.data"
+                              }
+                            ],
+                            staticClass: "text-wrap",
+                            domProps: { value: info.data },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(info, "data", $event.target.value)
+                              }
                             }
                           })
                         : info.id == "546.a"
