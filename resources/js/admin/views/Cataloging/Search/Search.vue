@@ -96,7 +96,7 @@ export default{
                 link:'title' 
             },
             {
-                name:'publisher',
+                name:'publishers',
                 link:'publisher'  
             },
             {
@@ -121,7 +121,8 @@ export default{
             heads:heads,
             custom_func:{
                 title:'edit_rec',
-                func:this.editRec
+                func:this.editRec,
+                close:true
             },
             width:'35%'
         };

@@ -24,7 +24,7 @@
 				</button>
 			</div>
 			<div class="pad ml-2" v-if="custom_func">
-				<button type="button" class="outline-black" :class="custom_func.class" @click="custom_func.func(data)">
+				<button type="button" class="outline-black" :class="custom_func.class" @click="custom_method()">
 					{{$t(custom_func.title)}}
 				</button>
 			</div>
@@ -87,6 +87,12 @@ export default{
 		deleteit(){
 			this.showModal(this.DeleteModal,{link:this.link,commit:this.commit,id:this.data.id,afterDelete:this.close,width:'41.6%'});
 		},
+		custom_method(){
+			this.custom_func.func(this.data);
+			if(this.custom_func.close){
+				this.close();
+			}
+		}
 	}
 }
 </script>
