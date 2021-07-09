@@ -2452,6 +2452,13 @@ __webpack_require__.r(__webpack_exports__);
         afterDelete: this.close,
         width: '41.6%'
       });
+    },
+    custom_method: function custom_method() {
+      this.custom_func.func(this.data);
+
+      if (this.custom_func.close) {
+        this.close();
+      }
     }
   }
 });
@@ -6168,7 +6175,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         name: 'title',
         link: 'title'
       }, {
-        name: 'publisher',
+        name: 'publishers',
         link: 'publisher'
       }, {
         name: 'isbn',
@@ -6188,7 +6195,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         heads: heads,
         custom_func: {
           title: 'edit_rec',
-          func: this.editRec
+          func: this.editRec,
+          close: true
         },
         width: '35%'
       };
@@ -66603,7 +66611,7 @@ var render = function() {
                 attrs: { type: "button" },
                 on: {
                   click: function($event) {
-                    return _vm.custom_func.func(_vm.data)
+                    return _vm.custom_method()
                   }
                 }
               },
