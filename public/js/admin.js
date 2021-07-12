@@ -2222,6 +2222,12 @@ __webpack_require__.r(__webpack_exports__);
         return false;
       }
     },
+    required: {
+      type: Boolean,
+      "default": function _default() {
+        return false;
+      }
+    },
     onSubmit: {
       type: Function,
       "default": function _default() {
@@ -2245,6 +2251,12 @@ __webpack_require__.r(__webpack_exports__);
   watch: {
     'value': function value(newValue) {
       this.setText(newValue);
+    },
+    'selectable.data': function selectableData() {
+      this.setText(this.value);
+    },
+    'autocomplete.data': function autocompleteData() {
+      this.setText(this.value);
     }
   },
   data: function data() {
@@ -2288,6 +2300,13 @@ __webpack_require__.r(__webpack_exports__);
     show: function show() {
       this.shown = !this.shown;
     },
+    close: function close() {
+      var _this2 = this;
+
+      setTimeout(function () {
+        _this2.shown = false;
+      }, 100);
+    },
     select: function select(result) {
       var res = result[this.body];
       this.$emit('input', res);
@@ -2298,11 +2317,11 @@ __webpack_require__.r(__webpack_exports__);
       this.$emit('input', '');
     },
     setText: function setText(value) {
-      var _this2 = this;
+      var _this3 = this;
 
       if (this.selectable.available) {
         var result = this.selectable.data.filter(function (item) {
-          return item[_this2.body] == value;
+          return item[_this3.body] == value;
         });
 
         if (result.length > 0) {
@@ -3834,6 +3853,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Batches_CreateBatches__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Batches/CreateBatches */ "./resources/js/admin/views/Acquisitions/Batches/CreateBatches.vue");
 /* harmony import */ var _Publisher_CreatePublisher__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Publisher/CreatePublisher */ "./resources/js/admin/views/Acquisitions/Publisher/CreatePublisher.vue");
 /* harmony import */ var _components_Input__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../components/Input */ "./resources/js/admin/components/Input.vue");
+//
+//
+//
 //
 //
 //
@@ -66376,7 +66398,7 @@ var render = function() {
           return _vm.submitTotal($event)
         },
         focusout: function($event) {
-          _vm.shown = false
+          return _vm.close()
         }
       }
     },
@@ -66393,7 +66415,12 @@ var render = function() {
           ],
           staticClass: "pl-3",
           class: _vm.classes,
-          attrs: { type: "text", placeholder: _vm.placeholder },
+          attrs: {
+            type: "text",
+            placeholder: _vm.placeholder,
+            disabled: _vm.disabled,
+            required: _vm.required
+          },
           domProps: { value: _vm.text },
           on: {
             input: [
@@ -68650,7 +68677,9 @@ var render = function() {
                   head: "id",
                   body: "id",
                   autocomplete: { available: true, data: _vm.batches },
-                  showBody: false
+                  showBody: false,
+                  disabled: _vm.edit,
+                  required: !_vm.edit
                 },
                 model: {
                   value: _vm.item.batch_id,
@@ -68813,7 +68842,8 @@ var render = function() {
                   head: "name",
                   body: "id",
                   autocomplete: { available: true, data: _vm.publishers },
-                  showBody: true
+                  disabled: _vm.edit,
+                  required: !_vm.edit
                 },
                 model: {
                   value: _vm.item.publisher_id,
