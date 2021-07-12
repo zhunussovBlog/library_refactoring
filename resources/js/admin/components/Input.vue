@@ -16,7 +16,7 @@
 				</span>
 			</span>
 		</form>
-		<div class="results" :class="{shown:shown}">
+		<div class="results" :class="{'shown bordered':shown}">
 			<div class="result text-ellipsis" :class="{no_border_bottom:index==results.length-1}" v-for="(result,index) in results" :key="index" @click="select(result)">{{$t(result[head])}}</div>
 		</div>
 	</div>
@@ -134,9 +134,9 @@ export default{
 		},
 		select(result){
 			let res=result[this.body];
-			this.text=result[this.head] + ' (' + res + ')';
 			this.$emit('input',res);
-			this.show();
+			this.setText(res);
+			this.shown=false;
 		},
 		reset(){
 			this.$emit('input','');
@@ -192,19 +192,20 @@ input{
 	background:white;
 	overflow:auto;
 	transition: .3s;
-	border:0.03125em solid transparent;
 	border-radius: .3125em;
 	z-index: 998;
 	max-height: 0em;
 }
 .shown{
 	max-height: 20em;
-	border-color: #B5BAC7;
 }
 .result{
 	padding:.4em .625em;
 	border-bottom:.03125em solid #B5BAC7;
 	cursor: pointer;
+}
+.bordered{
+	border:0.03125em solid #B5BAC7;
 }
 .result:hover{
 	background-color:rgba(100,100,100,0.1);

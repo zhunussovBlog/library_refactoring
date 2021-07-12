@@ -2290,9 +2290,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     select: function select(result) {
       var res = result[this.body];
-      this.text = result[this.head] + ' (' + res + ')';
       this.$emit('input', res);
-      this.show();
+      this.setText(res);
+      this.shown = false;
     },
     reset: function reset() {
       this.$emit('input', '');
@@ -3833,6 +3833,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mixins_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../mixins/common */ "./resources/js/admin/mixins/common.js");
 /* harmony import */ var _Batches_CreateBatches__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Batches/CreateBatches */ "./resources/js/admin/views/Acquisitions/Batches/CreateBatches.vue");
 /* harmony import */ var _Publisher_CreatePublisher__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Publisher/CreatePublisher */ "./resources/js/admin/views/Acquisitions/Publisher/CreatePublisher.vue");
+/* harmony import */ var _components_Input__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../components/Input */ "./resources/js/admin/components/Input.vue");
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3954,8 +3963,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mixins: [_mixins_showModal__WEBPACK_IMPORTED_MODULE_0__.default, _mixins_common__WEBPACK_IMPORTED_MODULE_1__.last, _mixins_common__WEBPACK_IMPORTED_MODULE_1__.last_created, _mixins_common__WEBPACK_IMPORTED_MODULE_1__.create_it, _mixins_common__WEBPACK_IMPORTED_MODULE_1__.edit_it],
+  components: {
+    InputDiv: _components_Input__WEBPACK_IMPORTED_MODULE_4__.default
+  },
   props: {
     edit: Boolean,
     data: Object,
@@ -5481,11 +5494,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
 // mixins
 
 
@@ -5599,35 +5607,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       });
       this.tagSelected = this.sectioned[0].tags[0];
     },
-    // importFromExt(){
-    //     var str='';
-    //     var res=[];
-    //     import('/schedules.js').then(response=>{
-    //         str=response.schedules;
-    //     }).then(()=>{
-    //         str=str.split('@');
-    //         str.forEach(elem=>{
-    //             let search_c_n=this.edit_info.find(item=>item.id=='010.c').data;
-    //             this.edit_info.forEach(item=>{
-    //                 if(item.id=='010.n'){
-    //                     search_c_n+=item.data;
-    //                 }
-    //             })
-    //             if(elem.includes(search_c_n)){
-    //                 let s=elem.split('\t');
-    //                 let data='';
-    //                 try{
-    //                     data=s[1].split('--')
-    //                 }catch(e){
-    //                     let datas=s[0].split('--');
-    //                     datas.shift();
-    //                     data=datas;
-    //                 }
-    //                 return ;
-    //             }
-    //         })
-    //     })
-    // },
     selectSection: function selectSection(section) {
       this.sectionSelected = section.section;
       this.tagSelected = section.tags[0];
@@ -29535,7 +29514,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\ninput[data-v-289cddaf]{\n\tpadding:unset;\n}\n.icon[data-v-289cddaf]{\n\tfont-size: 1.2em;\n\tposition: absolute;\n\ttop:0;\n\theight:100%;\n\tright:1.25em;\n}\n.selectable[data-v-289cddaf]{\n\t/*hard..*/\t\n\tright: .86em;\n}\n.padding-right[data-v-289cddaf]{\n\tpadding-right: 2.3em !important;\n}\n.down[data-v-289cddaf]{\n\ttransform: rotate(180deg);\n}\n.results[data-v-289cddaf]{\n\tposition: absolute;\n\ttop:110%;\n\twidth: 100%;\n\tbackground:white;\n\toverflow:auto;\n\ttransition: .3s;\n\tborder:0.03125em solid transparent;\n\tborder-radius: .3125em;\n\tz-index: 998;\n\tmax-height: 0em;\n}\n.shown[data-v-289cddaf]{\n\tmax-height: 20em;\n\tborder-color: #B5BAC7;\n}\n.result[data-v-289cddaf]{\n\tpadding:.4em .625em;\n\tborder-bottom:.03125em solid #B5BAC7;\n\tcursor: pointer;\n}\n.result[data-v-289cddaf]:hover{\n\tbackground-color:rgba(100,100,100,0.1);\n\tcolor:#FF9D29;\n}\n.no_border_bottom[data-v-289cddaf]{\n\tborder-bottom: none;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\ninput[data-v-289cddaf]{\n\tpadding:unset;\n}\n.icon[data-v-289cddaf]{\n\tfont-size: 1.2em;\n\tposition: absolute;\n\ttop:0;\n\theight:100%;\n\tright:1.25em;\n}\n.selectable[data-v-289cddaf]{\n\t/*hard..*/\t\n\tright: .86em;\n}\n.padding-right[data-v-289cddaf]{\n\tpadding-right: 2.3em !important;\n}\n.down[data-v-289cddaf]{\n\ttransform: rotate(180deg);\n}\n.results[data-v-289cddaf]{\n\tposition: absolute;\n\ttop:110%;\n\twidth: 100%;\n\tbackground:white;\n\toverflow:auto;\n\ttransition: .3s;\n\tborder-radius: .3125em;\n\tz-index: 998;\n\tmax-height: 0em;\n}\n.shown[data-v-289cddaf]{\n\tmax-height: 20em;\n}\n.result[data-v-289cddaf]{\n\tpadding:.4em .625em;\n\tborder-bottom:.03125em solid #B5BAC7;\n\tcursor: pointer;\n}\n.bordered[data-v-289cddaf]{\n\tborder:0.03125em solid #B5BAC7;\n}\n.result[data-v-289cddaf]:hover{\n\tbackground-color:rgba(100,100,100,0.1);\n\tcolor:#FF9D29;\n}\n.no_border_bottom[data-v-289cddaf]{\n\tborder-bottom: none;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -66475,7 +66454,7 @@ var render = function() {
       _vm._v(" "),
       _c(
         "div",
-        { staticClass: "results", class: { shown: _vm.shown } },
+        { staticClass: "results", class: { "shown bordered": _vm.shown } },
         _vm._l(_vm.results, function(result, index) {
           return _c(
             "div",
@@ -68661,55 +68640,35 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "d-flex w-100" }, [
-          _c("div", { staticClass: "pad w-100 select" }, [
-            _c(
-              "select",
-              {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.item.batch_id,
-                    expression: "item.batch_id"
-                  }
-                ],
-                attrs: { required: !_vm.edit, disabled: _vm.edit },
-                on: {
-                  change: function($event) {
-                    var $$selectedVal = Array.prototype.filter
-                      .call($event.target.options, function(o) {
-                        return o.selected
-                      })
-                      .map(function(o) {
-                        var val = "_value" in o ? o._value : o.value
-                        return val
-                      })
-                    _vm.$set(
-                      _vm.item,
-                      "batch_id",
-                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                    )
-                  }
+          _c(
+            "div",
+            { staticClass: "pad w-100" },
+            [
+              _c("input-div", {
+                attrs: {
+                  selectable: { available: true, data: _vm.batches },
+                  head: "id",
+                  body: "id",
+                  autocomplete: { available: true, data: _vm.batches },
+                  showBody: false
+                },
+                model: {
+                  value: _vm.item.batch_id,
+                  callback: function($$v) {
+                    _vm.$set(_vm.item, "batch_id", $$v)
+                  },
+                  expression: "item.batch_id"
                 }
-              },
-              [
-                _c("option", { attrs: { value: "" } }, [_vm._v(" ")]),
-                _vm._v(" "),
-                _vm._l(_vm.batches, function(batch, index) {
-                  return _c("option", { domProps: { value: batch.id } }, [
-                    _vm._v(_vm._s(batch.id))
-                  ])
-                })
-              ],
-              2
-            ),
-            _vm._v(" "),
-            _c(
-              "label",
-              { staticClass: "placeholder", class: { required: !_vm.edit } },
-              [_vm._v(_vm._s(_vm.$t("batches_number")))]
-            )
-          ]),
+              }),
+              _vm._v(" "),
+              _c(
+                "label",
+                { staticClass: "placeholder", class: { required: !_vm.edit } },
+                [_vm._v(_vm._s(_vm.$tc("batches", 1)))]
+              )
+            ],
+            1
+          ),
           _vm._v(" "),
           !_vm.edit
             ? _c("div", { staticClass: "pad col-2" }, [
@@ -68844,55 +68803,35 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "d-flex w-100" }, [
-          _c("div", { staticClass: "pad w-100 select" }, [
-            _c(
-              "select",
-              {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.item.publisher_id,
-                    expression: "item.publisher_id"
-                  }
-                ],
-                attrs: { disabled: _vm.edit, required: !_vm.edit },
-                on: {
-                  change: function($event) {
-                    var $$selectedVal = Array.prototype.filter
-                      .call($event.target.options, function(o) {
-                        return o.selected
-                      })
-                      .map(function(o) {
-                        var val = "_value" in o ? o._value : o.value
-                        return val
-                      })
-                    _vm.$set(
-                      _vm.item,
-                      "publisher_id",
-                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                    )
-                  }
+          _c(
+            "div",
+            { staticClass: "pad w-100" },
+            [
+              _c("input-div", {
+                attrs: {
+                  selectable: { available: true, data: _vm.publishers },
+                  head: "name",
+                  body: "id",
+                  autocomplete: { available: true, data: _vm.publishers },
+                  showBody: true
+                },
+                model: {
+                  value: _vm.item.publisher_id,
+                  callback: function($$v) {
+                    _vm.$set(_vm.item, "publisher_id", $$v)
+                  },
+                  expression: "item.publisher_id"
                 }
-              },
-              [
-                _c("option", { attrs: { value: "" } }, [_vm._v(" ")]),
-                _vm._v(" "),
-                _vm._l(_vm.publishers, function(publisher, index) {
-                  return _c("option", { domProps: { value: publisher.id } }, [
-                    _vm._v(_vm._s(publisher.name))
-                  ])
-                })
-              ],
-              2
-            ),
-            _vm._v(" "),
-            _c(
-              "label",
-              { staticClass: "placeholder", class: { required: !_vm.edit } },
-              [_vm._v(_vm._s(_vm.$tc("publishers", 1)))]
-            )
-          ]),
+              }),
+              _vm._v(" "),
+              _c(
+                "label",
+                { staticClass: "placeholder", class: { required: !_vm.edit } },
+                [_vm._v(_vm._s(_vm.$tc("publishers", 1)))]
+              )
+            ],
+            1
+          ),
           _vm._v(" "),
           !_vm.edit
             ? _c("div", { staticClass: "pad col-2" }, [
@@ -68993,9 +68932,11 @@ var render = function() {
                   : _vm._e(),
                 _vm._v(" "),
                 _vm._l(_vm.support_data.types, function(type, index) {
-                  return _c("option", { domProps: { value: type.type_key } }, [
-                    _vm._v(_vm._s(type.type))
-                  ])
+                  return _c(
+                    "option",
+                    { key: index, domProps: { value: type.type_key } },
+                    [_vm._v(_vm._s(type.type))]
+                  )
                 })
               ],
               2
@@ -69021,22 +68962,18 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.edit ? null : _vm.item.count,
-                  expression: "(edit) ? null : item.count"
+                  value: _vm.item.count,
+                  expression: "item.count"
                 }
               ],
               attrs: { type: "text", required: !_vm.edit, disabled: _vm.edit },
-              domProps: { value: _vm.edit ? null : _vm.item.count },
+              domProps: { value: _vm.item.count },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(
-                    _vm.edit ? null : _vm.item,
-                    "count",
-                    $event.target.value
-                  )
+                  _vm.$set(_vm.item, "count", $event.target.value)
                 }
               }
             }),
@@ -69114,7 +69051,7 @@ var render = function() {
                 _vm._l(_vm.support_data.currencies, function(currency, index) {
                   return _c(
                     "option",
-                    { domProps: { value: currency.currency } },
+                    { key: index, domProps: { value: currency.currency } },
                     [_vm._v(_vm._s(currency.currency))]
                   )
                 })
@@ -69164,7 +69101,7 @@ var render = function() {
                 _vm._l(_vm.support_data.locations, function(location, index) {
                   return _c(
                     "option",
-                    { domProps: { value: location.location_key } },
+                    { key: index, domProps: { value: location.location_key } },
                     [_vm._v(_vm._s(location.location))]
                   )
                 })

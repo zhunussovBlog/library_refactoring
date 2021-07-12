@@ -11,12 +11,16 @@
 				</div>
 			</div>
 			<div class="d-flex w-100">
-				<div class="pad w-100 select">
-					<select v-model="item.batch_id" :required="!edit" :disabled="edit">
-						<option value=''>&nbsp;</option>
-						<option v-for="(batch,index) in batches" :value="batch.id">{{batch.id}}</option>
-					</select>
-					<label class="placeholder" :class="{required:!edit}">{{$t('batches_number')}}</label>
+				<div class="pad w-100">
+					<input-div 
+						v-model="item.batch_id"
+						:selectable="{available:true,data:batches}"
+						:head="'id'"
+						:body="'id'"
+						:autocomplete="{available:true,data:batches}"
+						:showBody="false"
+					/>
+					<label class="placeholder" :class="{required:!edit}">{{$tc('batches',1)}}</label>
 				</div>
 				<div class="pad col-2" v-if="!edit">
 					<button class="outline-orange" type="button" @click="showModal(CreateBatches,{afterSave:loadBatches})">{{$t('create')}}</button>
@@ -45,11 +49,15 @@
 				</div>
 			</div>
 			<div class="d-flex w-100">
-				<div class="pad w-100 select">
-					<select v-model="item.publisher_id" :disabled="edit" :required="!edit">
-						<option value=''>&nbsp;</option>
-						<option v-for="(publisher,index) in publishers" :value="publisher.id">{{publisher.name}}</option>
-					</select>
+				<div class="pad w-100">
+					<input-div 
+						v-model="item.publisher_id"
+						:selectable="{available:true,data:publishers}"
+						:head="'name'"
+						:body="'id'"
+						:autocomplete="{available:true,data:publishers}"
+						:showBody="true"
+					/>
 					<label class="placeholder" :class="{required:!edit}">{{$tc('publishers',1)}}</label>
 				</div>
 				<div class="pad col-2" v-if="!edit">
@@ -69,7 +77,7 @@
 					<select v-model="item.item_type" :required="!(edit || reCreate)" :disabled="edit || reCreate">
 						<option value=''>&nbsp;</option>
 						<option :value="item.type" v-if="(edit || reCreate)">{{item.type}}</option>
-						<option v-for="(type,index) in support_data.types" :value="type.type_key">{{type.type}}</option>
+						<option v-for="(type,index) in support_data.types" :value="type.type_key" :key="index">{{type.type}}</option>
 					</select>
 					<label class="placeholder" :class="{required:!(edit || reCreate)}">{{$t('type_of_item')}}</label>
 				</div>
@@ -78,7 +86,7 @@
 		<div class="d-flex">
 			<div class="d-flex w-100">
 				<div class="pad w-100">
-					<input type="text" :required="!(edit)" v-model="(edit) ? null : item.count" :disabled="edit">
+					<input type="text" :required="!(edit)" v-model="item.count" :disabled="edit">
 					<label class="placeholder" :class="{required:!(edit)}">{{$t('count')}}</label>
 				</div>
 				<div class="pad w-100">
@@ -90,14 +98,14 @@
 				<div class="pad w-100 select">
 					<select v-model="item.currency" required>
 						<option value=''>&nbsp;</option>
-						<option v-for="(currency,index) in support_data.currencies" :value="currency.currency">{{currency.currency}}</option>
+						<option v-for="(currency,index) in support_data.currencies" :value="currency.currency" :key="index">{{currency.currency}}</option>
 					</select>
 					<label class="placeholder required">{{$t('currency')}}</label>
 				</div>
 				<div class="pad w-100 select">
 					<select v-model="item.location" required>
 						<option value=''>&nbsp;</option>
-						<option v-for="(location,index) in support_data.locations" :value="location.location_key">{{location.location}}</option>
+						<option v-for="(location,index) in support_data.locations" :value="location.location_key" :key="index">{{location.location}}</option>
 					</select>
 					<label class="placeholder required">{{$t('location')}}</label>
 				</div>
@@ -121,8 +129,13 @@ import {last,last_created,create_it,edit_it} from '../../../mixins/common'
 
 import CreateBatches from '../Batches/CreateBatches'
 import CreatePublisher from '../Publisher/CreatePublisher'
+
+import InputDiv from '../../../components/Input'
 export default{
 	mixins:[showModal,last,last_created,create_it,edit_it],
+	components:{
+		InputDiv
+	},
 	props:{
 		edit:Boolean,
 		data:Object,
