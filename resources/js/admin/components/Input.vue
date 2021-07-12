@@ -1,7 +1,7 @@
 <template>
-	<div class="position-relative h-100"  @submit.prevent="submitTotal" tabindex="1" @focusout="shown=false">
+	<div class="position-relative h-100"  @submit.prevent="submitTotal" tabindex="1" @focusout="close()">
 		<form class="position-relative h-100">
-			<input type="text" class="pl-3" :class="classes" v-model="text" @input="onInput()" :placeholder="placeholder"  />
+			<input type="text" class="pl-3" :class="classes" v-model="text" @input="onInput()" :placeholder="placeholder"  :disabled="disabled" :required="required" />
 			<span v-if="selectable.available" class="d-flex align-items-center icon cursor-pointer selectable">
 				<span @click="showList()">
 					<CaretUp class="down" />
@@ -70,6 +70,12 @@ export default{
 				return false
 			}
 		},
+		required:{
+			type:Boolean,
+			default(){
+				return false
+			}
+		},
 		onSubmit:{
 			type:Function,
 			default(){
@@ -93,6 +99,12 @@ export default{
 	watch:{
 		'value'(newValue){
 			this.setText(newValue);
+		},
+		'selectable.data'(){
+			this.setText(this.value);
+		},
+		'autocomplete.data'(){
+			this.setText(this.value);
 		}
 	},
 	data(){
@@ -131,6 +143,11 @@ export default{
 		},
 		show(){
 			this.shown=!this.shown;
+		},
+		close(){
+			setTimeout(()=>{
+				this.shown=false
+			},100)	
 		},
 		select(result){
 			let res=result[this.body];

@@ -19,6 +19,8 @@
 						:body="'id'"
 						:autocomplete="{available:true,data:batches}"
 						:showBody="false"
+						:disabled="edit"
+						:required="!edit"
 					/>
 					<label class="placeholder" :class="{required:!edit}">{{$tc('batches',1)}}</label>
 				</div>
@@ -56,7 +58,8 @@
 						:head="'name'"
 						:body="'id'"
 						:autocomplete="{available:true,data:publishers}"
-						:showBody="true"
+						:disabled="edit"
+						:required="!edit"
 					/>
 					<label class="placeholder" :class="{required:!edit}">{{$tc('publishers',1)}}</label>
 				</div>
